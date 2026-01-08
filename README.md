@@ -10,15 +10,15 @@
 
 | クイズ名 | 内容 |
 |---------|------|
-| [院内ルール確認クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/院内ルール確認クイズ.html) | 休診日、予約ルール、受付時間など院内の基本ルール |
-| [コンタクトレンズ処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
-| [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
+| [院内ルール確認クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/院内ルール確認クイズ.html) | 休診日、予約ルール、受付時間など院内の基本ルール |
+| [コンタクトレンズ処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
+| [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
 
 ### 患者様・ご家族向け
 
 | クイズ名 | 内容 |
 |---------|------|
-| [緑内障理解度クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/緑内障についてクイズ.html) | 緑内障について正しく理解するためのクイズ |
+| [緑内障理解度クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/緑内障についてクイズ.html) | 緑内障について正しく理解するためのクイズ |
 
 ## 機能
 
