@@ -550,12 +550,12 @@
                 📊 今日の10問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全28問）
+                📚 フルコース（全29問）
             </button>
             <div class="mode-description">
-                <strong>今日の5問:</strong> 全28問からランダムに5問を出題<br>
-                <strong>今日の10問:</strong> 全28問からランダムに10問を出題<br>
-                <strong>フルコース:</strong> 全28問を順番に出題
+                <strong>今日の5問:</strong> 全29問からランダムに5問を出題<br>
+                <strong>今日の10問:</strong> 全29問からランダムに10問を出題<br>
+                <strong>フルコース:</strong> 全29問を順番に出題
             </div>
         </div>
         
@@ -1076,11 +1076,11 @@
                 questionList = getRandomQuestions(10);
             } else {
                 isDaily = false;
-                totalQuestions = 28;
+                totalQuestions = 29;
                 questionList = [...allQuestions];
             }
-            
-            for (let i = 1; i <= 28; i++) {
+
+            for (let i = 1; i <= 29; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionList.includes(i)) {
                     if (i === questionList[0]) {
@@ -1264,7 +1264,7 @@
             score = 0;
             updateScore();
 
-            for (let i = 1; i <= 28; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement){
                     questionElement.style.display = '';
@@ -1306,12 +1306,12 @@
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
 
-            for (let i = 1; i <= 28; i++) {
+            for (let i = 1; i <= 29; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement) {
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
-                
+
                     const options = questionElement.querySelectorAll('.option');
                     options.forEach(option => {
                         option.classList.remove('correct', 'incorrect', 'disabled');
@@ -1332,7 +1332,7 @@
 
             currentQuestion = 1;
             score = 0;
-            totalQuestions = 28;
+            totalQuestions = 29;
             questionList = [];
             isDaily = false;
             
