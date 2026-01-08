@@ -20,7 +20,7 @@ const QUIZ_LIST = [
         id: 'contact-basic',
         name: 'コンタクトレンズ処方クイズ',
         file: 'コンタクト処方の基本クイズ.html',
-        totalQuestions: 28,
+        totalQuestions: 29,
         icon: '💧',
         category: 'staff',
         description: 'コンタクトレンズの処方に関する基本知識をテストします',
