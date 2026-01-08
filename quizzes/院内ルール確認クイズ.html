@@ -916,7 +916,6 @@
                 feedback.textContent = '🎉 正解です！';
                 feedback.className = 'feedback correct';
                 score++;
-                celebrateCorrect(selectedOption);
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
@@ -989,9 +988,16 @@
 
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.reset-button').classList.remove('hidden');
             document.querySelector('.top-button').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
+
+            // トップへスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 結果発表エフェクト
+            setTimeout(() => {
+                celebrateCorrect(document.getElementById('finalResult'));
+            }, 300);
         }
 
         function resetQuiz() {
@@ -1015,10 +1021,9 @@
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1059,10 +1064,9 @@
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1093,7 +1097,6 @@
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
       <div class="buttons">
-        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
         <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
         <a href="../index.html" class="top-button hidden">トップページへ</a>
       </div>
