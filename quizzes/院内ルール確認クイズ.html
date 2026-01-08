@@ -774,33 +774,45 @@
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
-        // 正解エフェクト
-        function celebrateCorrect(element) {
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
             // 振動フィードバック（スマホのみ）
             if (navigator.vibrate) {
-                navigator.vibrate([50, 30, 50]);
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
             }
 
-            // カードをフラッシュ
-            const card = element.closest('.question-card');
-            card.classList.add('correct-flash');
-            setTimeout(() => card.classList.remove('correct-flash'), 400);
-
             // 絵文字を飛ばす
-            const emojis = ['🎉', '⭐', '✨', '🌟', '👏'];
-            const rect = element.getBoundingClientRect();
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
 
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const emoji = document.createElement('div');
                     emoji.className = 'celebrate-emoji';
                     emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.left = (rect.left + Math.random() * rect.width) + 'px';
-                    emoji.style.top = (rect.top + Math.random() * 30) + 'px';
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
                     document.body.appendChild(emoji);
 
                     setTimeout(() => emoji.remove(), 1000);
-                }, i * 80);
+                }, i * 100);
             }
         }
 
@@ -916,6 +928,7 @@
                 feedback.textContent = '🎉 正解です！';
                 feedback.className = 'feedback correct';
                 score++;
+                flashCorrect(selectedOption);
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
@@ -994,9 +1007,10 @@
             // トップへスクロール
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 結果発表エフェクト
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
             setTimeout(() => {
-                celebrateCorrect(document.getElementById('finalResult'));
+                celebrateResult(isPerfect);
             }, 300);
         }
 
