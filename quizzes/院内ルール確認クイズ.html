@@ -859,7 +859,12 @@
             
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
-            
+
+            // スマホ用：回答後にフィードバックまでスクロール
+            setTimeout(() => {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+
             if (currentQuestion < totalQuestions - 1) {
                 nextButton.classList.remove('hidden');
             } else {
@@ -891,6 +896,7 @@
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
             let title, message;
@@ -925,6 +931,7 @@
 
         function resetQuiz() {
             document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
             score = 0;
             updateScore();
             
@@ -967,7 +974,8 @@
         function goHome() {
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
-            
+            document.querySelector('.quiz-container').classList.remove('hidden');
+
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
             
