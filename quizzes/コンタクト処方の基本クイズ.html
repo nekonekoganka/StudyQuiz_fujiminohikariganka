@@ -975,7 +975,10 @@
         </div>
     </div>
 
+    <script src="quiz-config.js"></script>
     <script>
+        const QUIZ_ID = 'contact-basic';
+
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 28;
@@ -1215,6 +1218,9 @@
             setTimeout(() => {
                 celebrateResult(isPerfect);
             }, 300);
+
+            // マイページ用に結果を記録
+            recordQuizResult(QUIZ_ID, score, totalQuestions);
         }
 
         function resetQuiz() {

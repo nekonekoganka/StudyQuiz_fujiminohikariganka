@@ -1,0 +1,188 @@
+/**
+ * クイズ設定ファイル
+ *
+ * 新しいクイズを追加する場合は、QUIZ_LIST に新しいエントリを追加してください。
+ * 詳細は README.md を参照してください。
+ */
+
+const QUIZ_LIST = [
+    {
+        id: 'innai-rule',
+        name: '院内ルール確認クイズ',
+        file: '院内ルール確認クイズ.html',
+        totalQuestions: 15,
+        icon: '🏥',
+        category: 'staff',
+        description: '休診日、予約ルール、受付時間など、院内の基本ルールを確認できます',
+        color: 'blue'
+    },
+    {
+        id: 'contact-basic',
+        name: 'コンタクトレンズ処方クイズ',
+        file: 'コンタクト処方の基本クイズ.html',
+        totalQuestions: 28,
+        icon: '💧',
+        category: 'staff',
+        description: 'コンタクトレンズの処方に関する基本知識をテストします',
+        color: 'cyan'
+    },
+    {
+        id: 'kafunsho',
+        name: '花粉症クイズ',
+        file: '花粉症についてのクイズ.html',
+        totalQuestions: 16,
+        icon: '🤧',
+        category: 'staff',
+        description: '花粉症の症状や対処法についての知識を確認できます',
+        color: 'teal'
+    },
+    {
+        id: 'ryokunaisho',
+        name: '緑内障理解度クイズ',
+        file: '緑内障についてクイズ.html',
+        totalQuestions: 17,
+        icon: '👁️',
+        category: 'patient',
+        description: '緑内障について正しく理解するためのクイズです',
+        color: 'green'
+    }
+];
+
+/**
+ * バッジ定義
+ */
+const BADGE_LIST = [
+    {
+        id: 'first-try',
+        name: 'はじめの一歩',
+        icon: '🔰',
+        description: '初めてクイズに挑戦',
+        check: (progress, stats) => stats.totalAttempts >= 1
+    },
+    {
+        id: 'all-tried',
+        name: '全制覇',
+        icon: '📚',
+        description: '全クイズを1回以上挑戦',
+        check: (progress, stats) => {
+            return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
+        }
+    },
+    {
+        id: 'perfect-once',
+        name: '満点達成',
+        icon: '🌸',
+        description: 'どれか1つで満点',
+        check: (progress, stats) => {
+            return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'quiz-master',
+        name: 'クイズマスター',
+        icon: '👑',
+        description: '全クイズで満点',
+        check: (progress, stats) => {
+            return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'hundred-answers',
+        name: '100問突破',
+        icon: '💯',
+        description: '累計100問に回答',
+        check: (progress, stats) => stats.totalAnswered >= 100
+    }
+];
+
+/**
+ * LocalStorage キー
+ */
+const STORAGE_KEY = 'hikari_quiz_data';
+
+/**
+ * 進捗データを取得
+ */
+function getQuizData() {
+    try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+            return JSON.parse(data);
+        }
+    } catch (e) {
+        console.error('Failed to load quiz data:', e);
+    }
+    return {
+        progress: {},
+        totalAnswered: 0,
+        badges: []
+    };
+}
+
+/**
+ * 進捗データを保存
+ */
+function saveQuizData(data) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+        console.error('Failed to save quiz data:', e);
+    }
+}
+
+/**
+ * クイズ結果を記録
+ * @param {string} quizId - クイズID
+ * @param {number} score - 今回のスコア
+ * @param {number} totalQuestions - 総問題数
+ */
+function recordQuizResult(quizId, score, totalQuestions) {
+    const data = getQuizData();
+
+    // 進捗を更新
+    if (!data.progress[quizId]) {
+        data.progress[quizId] = {
+            bestScore: 0,
+            totalQuestions: totalQuestions,
+            attempts: 0,
+            isPerfect: false
+        };
+    }
+
+    const quizProgress = data.progress[quizId];
+    quizProgress.attempts++;
+    quizProgress.totalQuestions = totalQuestions;
+
+    if (score > quizProgress.bestScore) {
+        quizProgress.bestScore = score;
+    }
+
+    if (score === totalQuestions) {
+        quizProgress.isPerfect = true;
+    }
+
+    // 累計回答数を更新
+    data.totalAnswered += totalQuestions;
+
+    // バッジをチェック
+    const stats = {
+        totalAttempts: Object.values(data.progress).reduce((sum, p) => sum + p.attempts, 0),
+        totalAnswered: data.totalAnswered
+    };
+
+    BADGE_LIST.forEach(badge => {
+        if (!data.badges.includes(badge.id) && badge.check(data.progress, stats)) {
+            data.badges.push(badge.id);
+        }
+    });
+
+    saveQuizData(data);
+    return data;
+}
+
+/**
+ * クイズ情報をIDで取得
+ */
+function getQuizById(quizId) {
+    return QUIZ_LIST.find(q => q.id === quizId);
+}
