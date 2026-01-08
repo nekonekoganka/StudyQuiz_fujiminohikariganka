@@ -30,6 +30,7 @@
 - 選択肢のランダムシャッフル
 - 正誤フィードバックと解説表示
 - スコア表示と結果評価
+- **マイページ**: 学習進捗の確認、実績バッジ
 - スマートフォン最適化（タップ操作に最適化されたUI）
 - iPhoneセーフエリア対応（ノッチ・ホームバー）
 
@@ -39,9 +40,161 @@
 2. 出題モードを選択
 3. 選択肢をタップして回答
 4. 解説を確認して次の問題へ
+5. **マイページ**で学習進捗を確認
 
 ## 推奨環境
 
 - **スマートフォン**（iPhone / Android）
 - Safari / Chrome などのモダンブラウザ
 - PC・タブレットでも利用可能
+
+---
+
+## マイページ機能
+
+トップページ下部の「マイページ」から、学習進捗を確認できます。
+
+### 進捗表示
+
+| マーク | 意味 |
+|--------|------|
+| ー | 未挑戦 |
+| ⭐ | 挑戦済み |
+| 🌸 | 満点達成 |
+| 🏆 | 全クイズコンプリート |
+
+### 実績バッジ
+
+| バッジ | 名前 | 条件 |
+|--------|------|------|
+| 🔰 | はじめの一歩 | 初めてクイズに挑戦 |
+| 📚 | 全制覇 | 全クイズを1回以上挑戦 |
+| 🌸 | 満点達成 | どれか1つで満点 |
+| 👑 | クイズマスター | 全クイズで満点 |
+| 💯 | 100問突破 | 累計100問に回答 |
+
+### データについて
+
+- データはブラウザの LocalStorage に保存されます
+- サーバーには送信されません
+- ブラウザのデータを消去すると進捗もリセットされます
+
+---
+
+## 開発者向け情報
+
+### ファイル構成
+
+```
+├── index.html              # トップページ
+├── mypage.html             # マイページ（進捗確認）
+├── quizzes/
+│   ├── quiz-config.js      # クイズ設定ファイル（重要）
+│   ├── 院内ルール確認クイズ.html
+│   ├── コンタクト処方の基本クイズ.html
+│   ├── 花粉症についてのクイズ.html
+│   └── 緑内障についてクイズ.html
+├── QUIZ_SPEC.md            # クイズHTML仕様書
+└── README.md               # このファイル
+```
+
+---
+
+## 新しいクイズを追加する方法
+
+### 手順1: quiz-config.js にエントリを追加
+
+`quizzes/quiz-config.js` の `QUIZ_LIST` 配列に新しいクイズを追加します。
+
+```javascript
+const QUIZ_LIST = [
+    // 既存のクイズ...
+
+    // 新しいクイズを追加
+    {
+        id: 'new-quiz',                    // 一意のID（英数字・ハイフン）
+        name: '新しいクイズ',               // 表示名
+        file: '新しいクイズ.html',          // ファイル名
+        totalQuestions: 10,                // 総問題数
+        icon: '📝',                        // アイコン絵文字
+        category: 'staff',                 // 'staff' または 'patient'
+        description: 'クイズの説明文',      // 説明
+        color: 'blue'                      // カードの色
+    }
+];
+```
+
+### 手順2: 新しいクイズHTMLを作成
+
+既存のクイズHTMLをコピーして、以下を変更します。
+
+#### 必須の変更箇所
+
+**1. タイトル・見出し**: クイズ名に変更
+
+**2. QUIZ_ID の設定**: quiz-config.js で設定した `id` と一致させる
+
+```html
+<script src="quiz-config.js"></script>
+<script>
+    const QUIZ_ID = 'new-quiz';  // ← quiz-config.js の id と一致させる
+```
+
+**3. 問題数の設定**:
+
+```javascript
+let totalQuestions = 10;  // 問題数
+const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];  // 問題番号の配列
+```
+
+**4. 問題と選択肢の内容**:
+
+```html
+<div id="question1" class="question-card hidden">
+    <div class="question-number">Q1</div>
+    <div class="question-text">問題文をここに書く</div>
+    <div class="options">
+        <button class="option" data-answer="true">正解の選択肢</button>
+        <button class="option" data-answer="false">不正解の選択肢</button>
+        <!-- 選択肢を追加 -->
+    </div>
+    <div class="feedback"></div>
+    <div class="explanation hidden">
+        <strong>解説:</strong> 解説文をここに書く
+    </div>
+</div>
+```
+
+**5. resetQuiz / goHome 内のループ数**: 問題数に合わせる
+
+```javascript
+for (let i = 1; i <= 10; i++) {  // ← 問題数に変更
+```
+
+### 手順3: 動作確認
+
+1. トップページにクイズが表示されることを確認
+2. クイズを最後まで実行して結果が表示されることを確認
+3. マイページに進捗が記録されることを確認
+
+---
+
+## クイズHTMLの詳細仕様
+
+詳細な仕様は [QUIZ_SPEC.md](./QUIZ_SPEC.md) を参照してください。
+
+---
+
+## デプロイ
+
+GitHub Pages で静的サイトとしてホスティングできます。
+
+1. リポジトリの Settings → Pages を開く
+2. Source で `main` ブランチを選択
+3. 保存すると自動的にデプロイされます
+
+---
+
+## ライセンス
+
+プライベートリポジトリ - ふじみ野ひかり眼科

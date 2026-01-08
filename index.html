@@ -221,6 +221,23 @@
             margin-top: 6px;
         }
 
+        .mypage-link {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .mypage-link:active {
+            transform: scale(0.95);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -300,6 +317,11 @@
             .footer-name {
                 font-size: 16px;
             }
+
+            .mypage-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            }
         }
     </style>
 </head>
@@ -376,6 +398,7 @@
             <div class="footer-icon">🌟</div>
             <div class="footer-text">目の健康をサポートします</div>
             <div class="footer-name">ふじみ野ひかり眼科</div>
+            <a href="mypage.html" class="mypage-link">📊 マイページ</a>
         </div>
     </div>
 </body>

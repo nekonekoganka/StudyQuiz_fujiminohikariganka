@@ -863,7 +863,10 @@
         </div>
     </div>
 
+    <script src="quiz-config.js"></script>
     <script>
+        const QUIZ_ID = 'ryokunaisho';
+
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 17;
@@ -1119,6 +1122,9 @@
             setTimeout(() => {
                 celebrateResult(isPerfect);
             }, 300);
+
+            // マイページ用に結果を記録
+            recordQuizResult(QUIZ_ID, score, totalQuestions);
         }
 
         function resetQuiz() {
