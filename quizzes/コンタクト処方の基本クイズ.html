@@ -282,16 +282,36 @@
             margin: 10px 10px;
             transition: all 0.3s ease;
         }
-        
+
+        .top-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
             .next-button, .reset-button, .home-button, .result-button {
                 padding: 12px 25px;
                 font-size: 16px;
                 margin: 10px 5px;
             }
+            .top-button {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 10px 5px;
+            }
         }
-        
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active {
+
+        .next-button:active, .reset-button:active, .home-button:active, .result-button:active, .top-button:active {
             transform: scale(0.97);
         }
 
@@ -299,6 +319,10 @@
             .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 25px rgba(0, 198, 251, 0.4);
+            }
+            .top-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
             }
         }
 
@@ -455,7 +479,7 @@
     <div class="quiz-container">
         <h1>💧 コンタクトレンズ処方クイズ 💧</h1>
         <div class="subtitle">スタッフ向け - 球面CL処方マスター</div>
-        <div class="top-link"><a href="../index.html">← クイズ一覧に戻る</a></div>
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily5')">
@@ -1094,6 +1118,8 @@
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
             document.querySelector('.reset-button').classList.remove('hidden');
+            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
         }
 
         function resetQuiz() {
@@ -1122,9 +1148,11 @@
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
-            
+            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
             document.querySelector('.quiz-status').classList.remove('hidden');
-            
+
             if (totalQuestions === 5) {
                 startQuiz('daily5');
             } else if (totalQuestions === 10) {
@@ -1162,6 +1190,8 @@
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
@@ -1195,6 +1225,7 @@
       <div class="buttons">
         <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
         <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+        <a href="../index.html" class="top-button hidden">トップページへ</a>
       </div>
     </div>
 
