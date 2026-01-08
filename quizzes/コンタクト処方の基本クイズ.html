@@ -84,18 +84,26 @@
         }
 
         .top-link a {
-            color: #5c6bc0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             text-decoration: none;
-            font-size: 15px;
-            padding: 8px 20px;
-            border: 2px solid #e8eaf6;
-            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 25px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
-        .top-link a:hover {
-            background: #e8eaf6;
-            border-color: #5c6bc0;
+        .top-link a:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 768px) {
+            .top-link a:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
         }
 
         .mode-selection {
@@ -471,6 +479,40 @@
             .result-title {font-size:28px}
             .result-detail{font-size:18px;line-height:1.7}
             .result-evaluation {font-size: 22px;}
+        }
+
+        /* 正解エフェクト */
+        .celebrate-emoji {
+            position: fixed;
+            font-size: 40px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: celebrate 1s ease-out forwards;
+        }
+
+        @keyframes celebrate {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-60px) scale(1.2) rotate(15deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(0.8) rotate(-10deg);
+            }
+        }
+
+        .correct-flash {
+            animation: flashGreen 0.4s ease-out;
+        }
+
+        @keyframes flashGreen {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
     </style>
@@ -942,6 +984,45 @@
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
         function startQuiz(mode) {
             document.querySelector('h1').classList.add('hidden');
             document.querySelector('.subtitle').classList.add('hidden');
@@ -1050,14 +1131,20 @@
                 feedback.textContent = '🎉 正解です！';
                 feedback.className = 'feedback correct';
                 score++;
+                flashCorrect(selectedOption);
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
             }
-            
+
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
-            
+
+            // スマホ用：回答後にフィードバックまでスクロール
+            setTimeout(() => {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+
             if (currentQuestion < totalQuestions - 1) {
                 nextButton.classList.remove('hidden');
             } else {
@@ -1088,6 +1175,8 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
             let title, message;
@@ -1105,48 +1194,53 @@
                 title = '💪 要復習！ 💪';
                 message = `良い学習の機会になりましたね。\nこのクイズを元に知識を整理し、明日からの臨床に活かしていきましょう！安全なCL処方には正確な知識が不可欠です。`;
             }
-            
-            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
 
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
             const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            
-            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
 
-            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.reset-button').classList.remove('hidden');
             document.querySelector('.top-button').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
+
+            // トップへスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 結果発表エフェクト
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
         }
 
         function resetQuiz() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
             score = 0;
             updateScore();
-            
+
             for (let i = 1; i <= 28; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement){
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
-                
+
                     const options = questionElement.querySelectorAll('.option');
                     options.forEach(option => {
                         option.classList.remove('correct', 'incorrect', 'disabled');
                     });
-                    
+
                     questionElement.querySelector('.feedback').style.display = 'none';
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1163,13 +1257,13 @@
         }
 
         function goHome() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
-            
+            document.querySelector('.quiz-container').classList.remove('hidden');
+
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
-            
+
             for (let i = 1; i <= 28; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement) {
@@ -1188,7 +1282,6 @@
             
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1216,14 +1309,9 @@
         });
     </script>
 
-    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
-      <div id="resultTitle" class="result-title"></div>
-    </div>
-
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
       <div class="buttons">
-        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
         <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
         <a href="../index.html" class="top-button hidden">トップページへ</a>
       </div>
