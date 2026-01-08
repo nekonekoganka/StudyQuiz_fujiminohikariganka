@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>院内ルール確認クイズ - スタッフ向け</title>
+    <title>緑内障理解度クイズ - 患者・家族向け</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,7 +12,7 @@
             font-family: 'Noto Sans JP', Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             min-height: 100vh;
         }
         .quiz-container {
@@ -35,7 +35,7 @@
         
         h1 {
             text-align: center;
-            color: #1a237e;
+            color: #1b5e20;
             font-size: 28px;
             margin-bottom: 4px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
@@ -49,17 +49,38 @@
         
         .subtitle {
             text-align: center;
-            color: #283593;
+            color: #2e7d32;
             font-size: 16px;
             margin-bottom: 15px;
         }
-        
+
         @media (max-width: 768px) {
             .subtitle {
                 font-size: 16px;
             }
         }
-        
+
+        .top-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-link a {
+            color: #388e3c;
+            text-decoration: none;
+            font-size: 15px;
+            padding: 8px 20px;
+            border: 2px solid #c8e6c9;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .top-link a:hover {
+            background: #e8f5e9;
+            border-color: #388e3c;
+        }
+
         .mode-selection {
             text-align: center;
             margin: 40px 0;
@@ -70,7 +91,7 @@
             width: 80%;
             max-width: 400px;
             margin: 15px auto;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
             color: white;
             border: none;
             padding: 20px 40px;
@@ -79,12 +100,12 @@
             font-size: 18px;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(248, 155, 41, 0.3);
+            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.3);
         }
         
         .mode-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
+            box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
         }
         
         @media (max-width: 768px) {
@@ -98,19 +119,19 @@
         
         .mode-description {
             font-size: 14px;
-            color: #1a237e;
+            color: #1b5e20;
             margin-top: 20px;
             line-height: 1.5;
         }
 
         .question-card {
-            background: #fdfefe;
+            background: #f1f8e9;
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
-            border-left: 6px solid #ff8f00;
+            border-left: 6px solid #388e3c;
             box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e8eaf6;
+            border: 1px solid #c8e6c9;
             display: flex;
             flex-wrap: wrap;
             align-items: baseline;
@@ -118,7 +139,7 @@
         
         .question-number {
             font-weight: bold;
-            color: #ff8f00;
+            color: #388e3c;
             font-size: 19px;
             margin-bottom: 20px;
             margin-right: 0.75em;
@@ -127,7 +148,7 @@
         .question-text {
             font-size: 22px;
             font-weight: 600;
-            color: #1a237e;
+            color: #1b5e20;
             margin-bottom: 20px;
             line-height: 1.5;
             flex-grow: 1;
@@ -166,7 +187,7 @@
         
         .option {
             background: white;
-            border: 2px solid #e8eaf6;
+            border: 2px solid #c8e6c9;
             border-radius: 10px;
             padding: 15px;
             cursor: pointer;
@@ -190,10 +211,10 @@
         }
         
         .option:hover {
-            border-color: #ff8f00;
-            background: #fff8e1;
+            border-color: #388e3c;
+            background: #e8f5e9;
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 143, 0, 0.25);
+            box-shadow: 0 6px 20px rgba(56, 142, 60, 0.25);
         }
         .option.correct {
             border-color: #4caf50;
@@ -203,11 +224,11 @@
             box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
         }
         .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
+            border-color: #dc2626;
+            background: #fef2f2;
             cursor: default;
             transform: none;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
         }
         .option.disabled {
             cursor: default;
@@ -218,7 +239,7 @@
             box-shadow: none;
         }
         .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
             color: white;
             border: none;
             padding: 15px 35px;
@@ -240,7 +261,7 @@
         
         .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
+            box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
         }
         .feedback {
             margin-top: 15px;
@@ -252,16 +273,15 @@
             text-align: center;
         }
         .feedback.correct {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 2px solid #64b5f6;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
         }
         .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
+            background: #fef2f2;
+            color: #dc2626;
+            border: 2px solid #ef5350;
         }
-        
         .quiz-status {
             display: flex;
             align-items: center;
@@ -273,19 +293,19 @@
             text-align: center;
             font-size: 22px;
             font-weight: bold;
-            color: #1a237e;
+            color: #1b5e20;
             margin: 0;
             padding: 12px;
-            background: #f1f3f9;
+            background: #e8f5e9;
             border-radius: 10px;
-            border: 2px solid #e8eaf6;
+            border: 2px solid #c8e6c9;
             flex-shrink: 0;
         }
         
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #e8eaf6;
+            background: #c8e6c9;
             border-radius: 4px;
             margin: 0;
             overflow: hidden;
@@ -303,7 +323,7 @@
                 width: 100%;
             }
         }
-
+        
         .hidden {
             display: none;
         }
@@ -312,14 +332,13 @@
             margin-top: 20px;
         }
         .explanation {
-            background: #e8eaf6;
-            border-left: 5px solid #3f51b5;
+            background: #e0f2f1;
+            border-left: 5px solid #009688;
             padding: 15px;
             margin-top: 15px;
             border-radius: 8px;
             font-size: 18px;
             line-height: 1.5;
-            color: #1a237e;
         }
         
         @media (max-width: 768px) {
@@ -329,16 +348,46 @@
             }
         }
         
+        .important-note {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #e65100;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .important-note {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
         .progress-fill {
             height: 100%;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
             transition: width 0.5s ease;
             border-radius: 4px;
         }
         
+        .medical-note {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #0d47a1;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+    
         .final-score-card{
-            background:#fdfefe;
-            border:2px solid #1a237e;
+            background:#f1f8e9;
+            border:2px solid #388e3c;
             border-radius:15px;
             padding:30px;
             margin-top:30px;
@@ -348,14 +397,14 @@
         .result-title {
             font-size:32px;
             font-weight:700;
-            color:#1a237e;
+            color:#1b5e20;
             margin-bottom:20px
         }
         
         .result-detail{
             font-size: 20px;
             line-height: 1.8;
-            color: #1a237e;
+            color: #1b5e20;
         }
 
         .result-evaluation {
@@ -365,7 +414,7 @@
         }
 
         .final-score-highlight {
-            color: #c62828;
+            color: #dc2626;
             font-weight: bold;
             font-size: 1.5em;
             display: block;
@@ -382,9 +431,10 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>🏥 院内ルール確認クイズ 🏥</h1>
-        <div class="subtitle">スタッフ向け - 円滑な患者様対応のために</div>
-        
+        <h1>👁️ 緑内障理解度クイズ 👁️</h1>
+        <div class="subtitle">患者・家族向け - 病気への理解を深めよう</div>
+        <div class="top-link"><a href="../index.html">← クイズ一覧に戻る</a></div>
+
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily3')">
                 📋 今日の3問
@@ -396,19 +446,19 @@
                 📈 今日の7問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全15問）
+                📚 フルコース（全17問）
             </button>
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全15問からランダムに3問を出題<br>
-                <strong>今日の5問:</strong> 全15問からランダムに5問を出題<br>
-                <strong>今日の7問:</strong> 全15問からランダムに7問を出題<br>
-                <strong>フルコース:</strong> 全15問を順番に出題
+                <strong>今日の3問:</strong> 全17問からランダムに3問を出題（約2分）<br>
+                <strong>今日の5問:</strong> 全17問からランダムに5問を出題（約3分）<br>
+                <strong>今日の7問:</strong> 全17問からランダムに7問を出題（約5分）<br>
+                <strong>フルコース:</strong> 全17問を順番に出題（約10分）
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">15</span></div>
+                <div class="score">スコア: <span id="score">0</span> / <span id="total">17</span></div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -416,226 +466,286 @@
             
             <div class="question-card" id="question1">
                 <div class="question-number">問題 1</div>
-                <div class="question-text">当院の 休診日は 何曜日ですか？</div>
+                <div class="question-text">40歳以上の日本人で緑内障の患者さんの割合はどのくらいでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">月曜日</div>
-                    <div class="option" data-answer="false">火曜日</div>
-                    <div class="option" data-answer="true">水曜日</div>
-                    <div class="option" data-answer="false">木曜日</div>
+                    <div class="option" data-answer="false">約1%（100人に1人）</div>
+                    <div class="option" data-answer="false">約2%（50人に1人）</div>
+                    <div class="option" data-answer="true">約5%（20人に1人）</div>
+                    <div class="option" data-answer="false">約10%（10人に1人）</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>2025年4月1日より、休診日が「水曜日」に変更されました。
+                    <strong>解説：</strong>緑内障は非常に多い病気で、40歳以上では5%、つまり20人に1人もいます。60歳以上では10人に1人と言われています。
+                    <div class="important-note">
+                        <strong>大切なポイント：</strong>これほど多くの方が患っている病気ですが、早期発見・適切な治療により、ほとんどの方が生涯にわたって視力と視野を保つことができます。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question2">
                 <div class="question-number">問題 2</div>
-                <div class="question-text">予約が 満席（❌表示）の場合、電話での 予約は 可能ですか？</div>
+                <div class="question-text">緑内障で最も大切な治療目標は何でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">可能です</div>
-                    <div class="option" data-answer="false">他の患者様の 迷惑にならない 時間帯であれば 可能です</div>
-                    <div class="option" data-answer="true">承ることは できません</div>
-                    <div class="option" data-answer="false">緊急の場合は 可能です</div>
+                    <div class="option" data-answer="false">視力を向上させること</div>
+                    <div class="option" data-answer="false">視野を広げること</div>
+                    <div class="option" data-answer="true">病気の進行を遅らせ、生涯視機能を保つこと</div>
+                    <div class="option" data-answer="false">眼圧を正常値まで下げること</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>予約が満席（❌表示）の場合、お電話等での予約は承ることができませんので、ご了承くださいと明記されています。
+                    <strong>解説：</strong>緑内障は治る病気ではなく、治療は進行を遅らせて、生涯にわたり視機能を保つことが目的です。死んだ神経を元に戻すことはできないため、視野を広げることはできません。
+                    <div class="important-note">
+                        <strong>理解しておきたいこと：</strong>早期発見・適切な治療により、進行を大幅に遅らせることができます。生涯、視野と視力を保てたなら治療は成功です。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question3">
                 <div class="question-number">問題 3</div>
-                <div class="question-text">予約を 無断キャンセルした場合、どのような 対応が 取られることが ありますか？</div>
+                <div class="question-text">眼圧の正常値の範囲はどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">特に 影響は ありません</div>
-                    <div class="option" data-answer="false">次回から 必ず電話で 予約するよう お願いされます</div>
-                    <div class="option" data-answer="true">今後の 予約を お断りする 場合が ございます</div>
-                    <div class="option" data-answer="false">キャンセル料が 発生します</div>
+                    <div class="option" data-answer="false">5～15mmHg</div>
+                    <div class="option" data-answer="true">10～21mmHg</div>
+                    <div class="option" data-answer="false">15～25mmHg</div>
+                    <div class="option" data-answer="false">20～30mmHg</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>無断キャンセルは固くお断りしており、他の患者様のご迷惑となるため、今後の予約をお断りする場合がございます。
+                    <strong>解説：</strong>眼圧の正常値は10～21mmHgですが、眼によって耐えられる眼圧が異なります。また、眼圧は1日の中でも4～5程度変動し、冬は高いことが多いです。
+                    <div class="important-note">
+                        <strong>知っておきたいこと：</strong>昼に一度測ったぐらいでは、その眼の眼圧のことは分かりません。緑内障の治療で眼圧を下げて、進みが遅くなればその眼にとって良い眼圧になったといえます。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question4">
                 <div class="question-number">問題 4</div>
-                <div class="question-text">発熱がある 患者様が 来院を希望した場合、どのように 案内すべきですか？</div>
+                <div class="question-text">緑内障の早期発見が難しい理由として最も適切なのはどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">体温計で 検温後、受診可能です</div>
-                    <div class="option" data-answer="true">症状が 改善してから 予約を 取るよう 案内します</div>
-                    <div class="option" data-answer="false">マスク着用で 受診を促します</div>
-                    <div class="option" data-answer="false">隔離された 場所で 診察可能です</div>
+                    <div class="option" data-answer="false">検査技術が発達していないから</div>
+                    <div class="option" data-answer="true">自覚症状がほとんどないから</div>
+                    <div class="option" data-answer="false">医師の診断が困難だから</div>
+                    <div class="option" data-answer="false">費用が高額だから</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>発熱がある方は受診をお控えいただき、体調不良の際は症状が改善してから予約を取るよう案内されています。また、37度以上の発熱の方、コロナ・インフルエンザ疑いの方は受診できません。
+                    <strong>解説：</strong>緑内障は早期発見には眼科に行かないと分からないことが多く、診断されても早期や中期では自覚症状がないために、治療をやめてしまう方が多いのが問題です。
+                    <div class="medical-note">
+                        <strong>重要なメッセージ：</strong>自覚症状がないのはまだ余裕があるということです。自覚がないうちに見つかった人は、早く見つかってラッキーだったと思ってください。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question5">
                 <div class="question-number">問題 5</div>
-                <div class="question-text">初めて 当院を 受診する患者様に、受付を スムーズに 進めるために 推奨されることは 何ですか？</div>
+                <div class="question-text">開放隅角緑内障の基本的な治療方法は何でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">事前に電話で 詳細な病歴を 伝える</div>
-                    <div class="option" data-answer="false">診察券を 忘れずに持参する</div>
-                    <div class="option" data-answer="true">問診票を ダウンロードして 記入しておく</div>
-                    <div class="option" data-answer="false">紹介状を 持参する</div>
+                    <div class="option" data-answer="true">点眼薬による治療</div>
+                    <div class="option" data-answer="false">レーザー治療</div>
+                    <div class="option" data-answer="false">手術治療</div>
+                    <div class="option" data-answer="false">内服薬による治療</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>初診の方は、問診票をダウンロードしてご記入いただくと、受付がスムーズになると案内されています。
+                    <strong>解説：</strong>開放隅角緑内障は、眼圧を下げることしか治療の方法がありません。そのために、まずは点眼薬により治療をします。点眼を続けても進行するなら、手術で眼圧を下げることになります。
+                    <div class="important-note">
+                        <strong>治療のポイント：</strong>ある程度眼圧を下げる目標を立てますが、効果は眼によって異なるため、追加で何剤か点眼薬を併用することも多いです。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question6">
                 <div class="question-number">問題 6</div>
-                <div class="question-text">コンタクトレンズの 処方箋（指示書）は、どのような 目的の場合に 発行されますか？</div>
+                <div class="question-text">点眼治療で最も重要なことは何でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">インターネット通販サイトで 購入するため</div>
-                    <div class="option" data-answer="false">他店で 購入するため</div>
-                    <div class="option" data-answer="true">2階の「エースコンタクト」を 利用する方へ</div>
-                    <div class="option" data-answer="false">友人から 譲り受けた コンタクトレンズを 使用するため</div>
+                    <div class="option" data-answer="false">1回に多く点眼すること</div>
+                    <div class="option" data-answer="true">継続して続けること</div>
+                    <div class="option" data-answer="false">複数の薬を同時に点眼すること</div>
+                    <div class="option" data-answer="false">眼圧が下がったら中止すること</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトレンズの処方箋（指示書）は、2階の「エースコンタクト」をご利用の方へのみ発行しており、他店やインターネット通販サイト等での購入目的での発行は行っていません。
+                    <strong>解説：</strong>点眼治療は、患者さんが自ら行う治療ですから、患者頼りになります。点眼を続けなければ、治療は成功しません。決して忘れず長く続けることが最も重要です。
+                    <div class="important-note">
+                        <strong>点眼のコツ：</strong>1回に1滴、異なる薬は5分以上開けて点すことを守ってください。1回に1滴以上はだめです。入れば十分ですから点しすぎないようにお願いします。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question7">
                 <div class="question-number">問題 7</div>
-                <div class="question-text">エースコンタクトで 先に受付を済ませた患者様が 当院で コンタクト処方を 希望する場合、事前の予約は 必要ですか？</div>
+                <div class="question-text">視野検査を受ける際に大切なことは何でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">必ず 予約が 必要です</div>
-                    <div class="option" data-answer="true">予約なしでも 診察可能です</div>
-                    <div class="option" data-answer="false">電話で 事前連絡が 必要です</div>
-                    <div class="option" data-answer="false">午後の診察時間内に限って 予約なしで 可能です</div>
+                    <div class="option" data-answer="false">できるだけ多くのボタンを押すこと</div>
+                    <div class="option" data-answer="true">焦らず正直に検査を受けること</div>
+                    <div class="option" data-answer="false">眼を積極的に動かすこと</div>
+                    <div class="option" data-answer="false">見えない光も見えたと答えること</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>先にエースコンタクトで受付を済ませた方は、予約なしでも診察可能と記載されています。受付時間内にご来院ください。
+                    <strong>解説：</strong>視野検査は、そのときの患者さんの気持ちや体調がよく反映される検査です。落ち込んでいたり、緊張してドキドキして検査を受けるとうまくいきません。
+                    <div class="medical-note">
+                        <strong>検査のコツ：</strong>視野検査は正常な方でも見えない光を提示したりして検査するので、焦らず正直に受けるようにお願いします。眼を動かすと検査結果が良く出てしまいます。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question8">
                 <div class="question-number">問題 8</div>
-                <div class="question-text">安全のため、コンタクトレンズの 処方の対象年齢は 何歳からですか？</div>
+                <div class="question-text">緑内障と診断された時の心構えとして最も適切なのはどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">3歳から</div>
-                    <div class="option" data-answer="true">小学生 6年生以上から</div>
-                    <div class="option" data-answer="false">中学生以上から</div>
-                    <div class="option" data-answer="false">18歳以上から</div>
+                    <div class="option" data-answer="false">すぐに仕事を辞める準備をする</div>
+                    <div class="option" data-answer="false">人生設計を大幅に変更する</div>
+                    <div class="option" data-answer="true">早く見つかって運が良かったと思って定期通院する</div>
+                    <div class="option" data-answer="false">失明は避けられないと諦める</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトレンズの処方は、安全のため小学生6年生以上を対象としています。
+                    <strong>解説：</strong>緑内障と診断されたら、早く見つかって運が良かったと思って、定期的に通院をしてください。仕事や生活を変える必要はありません。
+                    <div class="important-note">
+                        <strong>大切な考え方：</strong>かなりの高眼圧や末期の方以外は、じっくり治療に専念し、仕事や生活パターンを変えず、あせらず過ごすことが重要です。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question9">
                 <div class="question-number">問題 9</div>
-                <div class="question-text">斜視・弱視・色覚検査を 希望する患者様は、どのように 予約を 取る必要が ありますか？</div>
+                <div class="question-text">緑内障で自覚症状が出ている場合、どのような状態でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">ウェブサイトの 「一般予約」から 予約する</div>
-                    <div class="option" data-answer="false">予約なしで 直接来院する</div>
-                    <div class="option" data-answer="true">電話での 予約が 必要です</div>
-                    <div class="option" data-answer="false">紹介状が必須で、当院からは 予約できません</div>
+                    <div class="option" data-answer="false">まだ初期段階で余裕がある</div>
+                    <div class="option" data-answer="true">中心に視野欠損が出ていてピンチの状態</div>
+                    <div class="option" data-answer="false">治療の必要がない軽度の状態</div>
+                    <div class="option" data-answer="false">手術が必要な末期の状態</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>斜視・弱視・色覚検査を希望する方は、お一人おひとりの状態に合わせた丁寧な検査のため時間を要するため、電話での予約をお願いしています。
+                    <strong>解説：</strong>霞んだり、文字を読み飛ばしたりといった自覚症状が出ている場合は、中心に視野欠損が出ています。この様な自覚症状が出ている場合はピンチです。
+                    <div class="medical-note">
+                        <strong>重要：</strong>緑内障の視野欠損は暗くなりません。霞んできてそのうち濃い明るい霧の中にいるように感じます。積極的に治療に参加して、何とか生涯、視野や視力を保てるようにしましょう。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question10">
                 <div class="question-number">問題 10</div>
-                <div class="question-text">ふじみ野市・富士見市・三芳町の 緑内障検診の 自己負担金は いくらですか？</div>
+                <div class="question-text">点眼薬の副作用として最も一般的なものは何でしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">無料です</div>
-                    <div class="option" data-answer="false">500円（現金のみ）</div>
-                    <div class="option" data-answer="true">1,000円（現金のみ）</div>
-                    <div class="option" data-answer="false">2,000円（クレジットカード可）</div>
+                    <div class="option" data-answer="true">眼の充血</div>
+                    <div class="option" data-answer="false">視力低下</div>
+                    <div class="option" data-answer="false">眼圧上昇</div>
+                    <div class="option" data-answer="false">頭痛</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>緑内障検診の自己負担金は1,000円（現金のみ）と記載されています。
+                    <strong>解説：</strong>目薬には必ず副作用があります。ほとんどに共通する副作用は充血ですが、たいていの方が受け入れられます。アレルギーがでたら中止です。
+                    <div class="important-note">
+                        <strong>注意点：</strong>目薬で、喘息や息切れ、動悸、めまい、などの症状を起こすこともありますから、そのように感じたら主治医に相談をお願いします。
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question11">
                 <div class="question-number">問題 11</div>
-                <div class="question-text">初めて コンタクトレンズの処方で 来院される患者様の 午前の受付終了時間は 何時ですか？</div>
+                <div class="question-text">初期の開放隅角緑内障で、眼圧が「18mmHg」の患者さんについて正しいのはどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="true">午前 12:30まで</div>
-                    <div class="option" data-answer="false">午前 12:00まで</div>
-                    <div class="option" data-answer="false">午前 11:30まで</div>
-                    <div class="option" data-answer="false">午後 13:00まで</div>
+                    <div class="option" data-answer="false">正常値なので治療は不要</div>
+                    <div class="option" data-answer="true">その眼に合った適切な眼圧まで下げる必要がある</div>
+                    <div class="option" data-answer="false">すぐに手術が必要</div>
+                    <div class="option" data-answer="false">経過観察のみで十分</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトが初めての方は、午前12:30までに受付を済ませる必要があります。
+                    <strong>解説：</strong>眼圧が正常範囲内（10-21mmHg）でも、その眼にとって高すぎる場合があります。初期緑内障では、その患者さんの眼に適した「目標眼圧」まで下げることで、進行を防ぐことができます。これを「正常眼圧緑内障」と呼ぶこともあります。
                 </div>
             </div>
 
             <div class="question-card hidden" id="question12">
                 <div class="question-number">問題 12</div>
-                <div class="question-text">2回目以降の コンタクトレンズ受診の 午後の受付終了時間は 何時ですか？</div>
+                <div class="question-text">初期の開放隅角緑内障と診断された患者さんの理想的な通院間隔はどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">午後 17:30まで</div>
-                    <div class="option" data-answer="false">午後 18:00まで</div>
-                    <div class="option" data-answer="true">午後 18:30まで</div>
-                    <div class="option" data-answer="false">午後 19:00まで</div>
+                    <div class="option" data-answer="false">半年に1回</div>
+                    <div class="option" data-answer="true">2-3ヶ月に1回</div>
+                    <div class="option" data-answer="false">1年に1回</div>
+                    <div class="option" data-answer="false">症状が出たときのみ</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>2回目以降のコンタクト受診の受付は、午後は18:30まで可能です。
+                    <strong>解説：</strong>初期緑内障では、治療効果の確認と病気の進行チェックのため、2-3ヶ月に1回の定期通院が推奨されます。眼圧測定、視野検査、眼底検査を定期的に行い、点眼効果を評価します。自覚症状がなくても継続通院が重要です。
                 </div>
             </div>
 
             <div class="question-card hidden" id="question13">
                 <div class="question-number">問題 13</div>
-                <div class="question-text">ウェブ予約について、 「受付のための予約」と ありますが、これは 何を意味しますか？</div>
+                <div class="question-text">緑内障の診断で、OCT（眼底三次元画像解析）検査の目的として最も適切なのはどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">予約時間ちょうどに 診察が開始されることを 保証するものです</div>
-                    <div class="option" data-answer="false">検査・診察までの 待ち時間は 発生しないことを 意味します</div>
-                    <div class="option" data-answer="true">受付の順番を 確保するものであり、検査・診察までの 待ち時間は 生じます</div>
-                    <div class="option" data-answer="false">必ず希望する医師に 診てもらえることを 意味します</div>
+                    <div class="option" data-answer="false">白内障の程度を調べる</div>
+                    <div class="option" data-answer="false">眼圧を正確に測定する</div>
+                    <div class="option" data-answer="true">視神経の厚みを詳しく調べる</div>
+                    <div class="option" data-answer="false">角膜の状態を確認する</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>ウェブ予約は受付のための予約であり、検査・診察までの待ち時間は生じる旨が記載されています。
+                    <strong>解説：</strong>OCT検査では、視神経線維層の厚みを数値で測定できます。初期緑内障では視野に異常が出る前に、すでに視神経が薄くなっていることがあります。この検査により、より早期の診断と経過観察が可能になります。
                 </div>
             </div>
 
             <div class="question-card hidden" id="question14">
                 <div class="question-number">問題 14</div>
-                <div class="question-text">小児予約外来は、何曜日に 予約枠が ありますか？</div>
+                <div class="question-text">適切な治療を受けている初期緑内障の患者さんの多くは、将来的にどうなるでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">月・水・金曜日</div>
-                    <div class="option" data-answer="true">火・木・金曜日</div>
-                    <div class="option" data-answer="false">月・火・水曜日</div>
-                    <div class="option" data-answer="false">土・日・祝日</div>
+                    <div class="option" data-answer="false">ほぼ確実に失明する</div>
+                    <div class="option" data-answer="false">必ず手術が必要になる</div>
+                    <div class="option" data-answer="true">生涯にわたって視機能を保てる</div>
+                    <div class="option" data-answer="false">数年で急激に悪化する</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>小児予約外来は「火・木・金曜」の「11時から」と「15:30から」の予約枠があると記載されています。
+                    <strong>解説：</strong>初期で発見され、適切な治療を継続している緑内障患者さんの多くは、生涯にわたって日常生活に支障のない視機能を保つことができます。大切なのは、定期通院と点眼治療の継続です。過度に心配せず、医師と協力して治療を続けることが重要です。
                 </div>
             </div>
 
             <div class="question-card hidden" id="question15">
                 <div class="question-number">問題 15</div>
-                <div class="question-text">当院の代診医師が 対応していない 検査や検診は どれですか？</div>
+                <div class="question-text">2種類の点眼薬が処方された場合、点眼の間隔はどのくらい空けるべきでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">一般眼科診察</div>
-                    <div class="option" data-answer="false">コンタクト処方</div>
-                    <div class="option" data-answer="true">「市の緑内障検診」や 「斜視・弱視」</div>
-                    <div class="option" data-answer="false">眼鏡処方</div>
+                    <div class="option" data-answer="false">すぐに続けて点眼してよい</div>
+                    <div class="option" data-answer="true">5分以上間隔を空ける</div>
+                    <div class="option" data-answer="false">1時間以上間隔を空ける</div>
+                    <div class="option" data-answer="false">同じ時間に同時に点眼する</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>代診医師は「市の緑内障検診」や「斜視・弱視」には対応していないと明記されています。
+                    <strong>解説：</strong>複数の点眼薬を使用する場合は、5分以上間隔を空けて点眼します。連続して点眼すると、先に点眼した薬が後の薬で洗い流されてしまい、効果が減少する可能性があります。時間に余裕を持って点眼しましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question16">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">緑内障の患者さんが視野検査を受ける理想的な頻度はどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">毎月1回</div>
+                    <div class="option" data-answer="true">半年に1回</div>
+                    <div class="option" data-answer="false">2年に1回</div>
+                    <div class="option" data-answer="false">症状が悪化した時のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初期緑内障では、視野検査は半年に1回程度の頻度で行うのが一般的です。病気の進行を早期に発見し、治療効果を評価するために定期的な検査が重要です。進行が速い場合や治療変更時にはより頻繁に行うこともあります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question17">
+                <div class="question-number">問題 17</div>
+                <div class="question-text">視野検査を初めて受ける患者さんへの事前説明として最も重要なのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">「痛くない検査なので心配いりません」</div>
+                    <div class="option" data-answer="true">「集中力が必要で時間がかかりますが、正直に答えてください」</div>
+                    <div class="option" data-answer="false">「全部の光が見えるよう頑張ってください」</div>
+                    <div class="option" data-answer="false">「疲れたら途中で休憩できます」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>視野検査は集中力を要し、見えない光もある正常な検査であることを事前に説明することが重要です。「頑張って見ようとする」と正確な結果が得られません。リラックスして正直に反応することを伝えましょう。
                 </div>
             </div>
 
@@ -649,11 +759,11 @@
     <script>
         let currentQuestion = 1;
         let score = 0;
-        let totalQuestions = 15;
+        let totalQuestions = 17;
         let questionList = [];
         let isDaily = false;
 
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
         function startQuiz(mode) {
             document.querySelector('h1').classList.add('hidden');
@@ -675,11 +785,11 @@
                 questionList = getRandomQuestions(7);
             } else {
                 isDaily = false;
-                totalQuestions = 15;
+                totalQuestions = 17;
                 questionList = [...allQuestions];
             }
             
-            for (let i = 1; i <= 15; i++) {
+            for (let i = 1; i <= 17; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionList.includes(i)) {
                     if (i === questionList[0]) {
@@ -689,7 +799,7 @@
                     }
                 } else {
                     if(document.getElementById(`question${i}`)){
-                        document.getElementById(`question${i}`).style.display = 'none';
+                       document.getElementById(`question${i}`).style.display = 'none';
                     }
                 }
             }
@@ -709,7 +819,7 @@
         function updateQuestionNumbers() {
             questionList.forEach((questionId, index) => {
                 const questionElement = document.getElementById(`question${questionId}`);
-                if(questionElement) {
+                if (questionElement) {
                     const questionNumber = questionElement.querySelector('.question-number');
                     questionNumber.textContent = `問題 ${index + 1}`;
                 }
@@ -800,7 +910,9 @@
         function showFinalScore() {
             questionList.forEach(questionId => {
                 const qElem = document.getElementById(`question${questionId}`);
-                if(qElem) qElem.classList.add('hidden');
+                if (qElem) {
+                    qElem.classList.add('hidden');
+                }
             });
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
@@ -809,18 +921,34 @@
             const percentage = Math.round((score / totalQuestions) * 100);
             let title, message;
 
-            if (score === totalQuestions) {
-                title = '🏆 完璧です！ 🏆';
-                message = `全問正解！院内ルールを完全に把握していますね。\n自信を持って、日々の業務と患者様対応をお願いします。`;
-            } else if (score >= totalQuestions * 0.8) {
-                title = '🌟 素晴らしい！ 🌟';
-                message = `高得点です！重要なルールはしっかり理解できています。\n間違えた箇所を再確認し、全ての患者様に正確な案内ができるよう目指しましょう。`;
-            } else if (score >= totalQuestions * 0.5) {
-                title = '👍 あと一歩！ 👍';
-                message = `基本的なルールは身についています。\n患者様からの質問が多い項目や、間違いやすい受付時間などを中心に復習しましょう。`;
+            if (isDaily) {
+                if (score === totalQuestions) {
+                    title = '🎉 素晴らしい！ 🎉';
+                    message = `${totalQuestions}問全問正解！緑内障について とてもよく理解されています。\nこの知識を活かして、安心して治療に取り組んでください。`;
+                } else if (score >= Math.ceil(totalQuestions * 0.8)) {
+                    title = '👍 よく理解されています！ 👍';
+                    message = `基本的なポイントは よく押さえられています。\n間違えた箇所を確認して、さらに理解を深めましょう。`;
+                } else {
+                    title = '📖 学習を続けましょう！ 📖';
+                    message = `緑内障について 理解を深める良い機会になりました。\n病気のことをよく知ることで、より安心して治療に取り組めます。`;
+                }
             } else {
-                title = '💪 要復習！ 💪';
-                message = `今回は良い復習の機会になりましたね。\n院内マニュアルをもう一度読み返し、正確な知識を身につけましょう。正しい案内が患者様の信頼に繋がります。`;
+                if (score === totalQuestions) {
+                    title = '🏆 完璧な理解度！ 🏆';
+                    message = `全問正解！緑内障について 非常によく理解されています。\nこの知識があれば、自信を持って治療に取り組むことができます。\n定期的な通院と点眼治療を続けて、生涯にわたって視機能を保っていきましょう。`;
+                } else if (score >= totalQuestions * 0.9) {
+                    title = '🌟 優秀な理解度！ 🌟';
+                    message = `とても良い結果です！緑内障の重要ポイントを しっかりと理解されています。\n少し復習すれば、さらに完璧な知識になります。\n安心して医師と治療計画を立てていってください。`;
+                } else if (score >= totalQuestions * 0.8) {
+                    title = '📚 良い理解度です！ 📚';
+                    message = `基本的な知識は しっかりと身についています。\n間違えた部分を見直すことで、より深い理解が得られます。\n病気について知ることは、治療成功への第一歩です。`;
+                } else if (score >= totalQuestions * 0.7) {
+                    title = '🌱 理解が深まりました！ 🌱';
+                    message = `緑内障について 基本的なことは理解できています。\n不安な点や分からないことは、遠慮なく医師に相談しましょう。\n正しい知識を持つことで、より良い治療が受けられます。`;
+                } else {
+                    title = '💪 学習のスタートです！ 💪';
+                    message = `緑内障について 学ぶ良いきっかけになりました。\n病気を理解することは とても大切です。分からないことは医師や看護師に積極的に質問しましょう。\n正しい知識があれば、安心して治療に取り組むことができます。`;
+                }
             }
             
             document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
@@ -843,9 +971,9 @@
             score = 0;
             updateScore();
             
-            for (let i = 1; i <= 15; i++) {
+            for (let i = 1; i <= 17; i++) {
                 const questionElement = document.getElementById(`question${i}`);
-                if(questionElement){
+                if (questionElement) {
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
                 
@@ -860,8 +988,8 @@
             }
             
             document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
             
             document.querySelector('.quiz-status').classList.remove('hidden');
@@ -885,9 +1013,9 @@
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
             
-            for (let i = 1; i <= 15; i++) {
+            for (let i = 1; i <= 17; i++) {
                 const questionElement = document.getElementById(`question${i}`);
-                if(questionElement) {
+                if (questionElement) {
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
                 
@@ -909,7 +1037,7 @@
 
             currentQuestion = 1;
             score = 0;
-            totalQuestions = 15;
+            totalQuestions = 17;
             questionList = [];
             isDaily = false;
             
