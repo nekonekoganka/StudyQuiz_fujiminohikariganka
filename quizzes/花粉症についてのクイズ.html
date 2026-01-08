@@ -1001,9 +1001,9 @@
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
 
-            // スマホ用：回答後にフィードバックまでスクロール
+            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
             setTimeout(() => {
-                feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
 
             if (currentQuestion < totalQuestions - 1) {
