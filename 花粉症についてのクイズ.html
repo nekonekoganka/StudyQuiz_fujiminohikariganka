@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花粉症クイズ - 眼科スタッフ向け</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #4db6ac 0%, #00796b 100%);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .quiz-container {
+                padding: 20px;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #004d40;
+            font-size: 28px;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #00695c;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+        
+        .mode-selection {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .mode-button {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+        }
+        
+        .mode-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .mode-button {
+                width: 90%;
+                padding: 15px 30px;
+                font-size: 16px;
+                margin: 12px auto;
+            }
+        }
+        
+        .mode-description {
+            font-size: 14px;
+            color: #004d40;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .question-card {
+            background: #f4f9f8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 6px solid #26a69a;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border: 1px solid #b2dfdb;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #00695c;
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-right: 0.75em;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #004d40;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .options, .feedback, .explanation {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .question-card {
+                padding: 20px;
+                display: block;
+            }
+            .question-number {
+                margin-bottom: 12px;
+            }
+            .question-text {
+                font-size: 20px;
+            }
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #b2dfdb;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .option {
+                padding: 15px;
+                font-size: 16px;
+                min-height: 60px;
+            }
+        }
+        
+        .option:hover {
+            border-color: #26a69a;
+            background: #e0f2f1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(38, 166, 154, 0.25);
+        }
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .option.incorrect {
+            border-color: #f44336;
+            background: #ffebee;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+        .option.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .next-button, .reset-button, .home-button, .result-button {
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .next-button, .reset-button, .home-button, .result-button {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 10px 5px;
+            }
+        }
+        
+        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 137, 123, 0.4);
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+            text-align: center;
+        }
+        .feedback.correct {
+            background: #e0f2f1;
+            color: #00695c;
+            border: 2px solid #4db6ac;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+        
+        .quiz-status {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #004d40;
+            margin: 0;
+            padding: 12px;
+            background: #e0f2f1;
+            border-radius: 10px;
+            border: 2px solid #b2dfdb;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #b2dfdb;
+            border-radius: 4px;
+            margin: 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-status {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .score {
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .explanation {
+            background: #e0f7fa;
+            border-left: 5px solid #00acc1;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .explanation {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+        
+        .staff-point {
+            background: #fffde7;
+            border: 2px solid #fdd835;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #827717;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .final-score-card{
+            background:#f4f9f8;
+            border:2px solid #26a69a;
+            border-radius:15px;
+            padding:30px;
+            margin-top:30px;
+            text-align:center;
+            box-shadow:0 3px 15px rgba(0,0,0,.08)
+        }
+        .result-title {
+            font-size:32px;
+            font-weight:700;
+            color:#004d40;
+            margin-bottom:20px
+        }
+        
+        .result-detail{
+            font-size: 20px;
+            line-height: 1.8;
+            color: #004d40;
+        }
+
+        .result-evaluation {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .final-score-highlight {
+            color: #c62828;
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .result-title {font-size:28px}
+            .result-detail{font-size:18px;line-height:1.7}
+            .result-evaluation {font-size: 22px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🤧 花粉症クイズ 🤧</h1>
+        <div class="subtitle">眼科スタッフ向け - 患者様への説明力UP！</div>
+        
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily3')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily5')">
+                📊 今日の5問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily7')">
+                📈 今日の7問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 フルコース（全16問）
+            </button>
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 全16問からランダムに3問を出題（約2分）<br>
+                <strong>今日の5問:</strong> 全16問からランダムに5問を出題（約3分）<br>
+                <strong>今日の7問:</strong> 全16問からランダムに7問を出題（約4分）<br>
+                <strong>フルコース:</strong> 全16問を順番に出題（約8分）
+            </div>
+        </div>
+        
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="score">スコア: <span id="score">0</span> / <span id="total">16</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">花粉症の症状を引き起こす直接の原因となる化学伝達物質は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ヒスタミン</div>
+                    <div class="option" data-answer="false">アドレナリン</div>
+                    <div class="option" data-answer="false">コラーゲン</div>
+                    <div class="option" data-answer="false">IgE抗体</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>花粉が体内に入るとIgE抗体が作られ、マスト細胞に結合します。再び花粉が入ると、マスト細胞からヒスタミンなどが放出され、神経や血管を刺激してアレルギー症状を引き起こします。抗ヒスタミン薬は、このヒスタミンの働きをブロックする薬です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">アレルギー性結膜炎の代表的な症状として、適切でないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">目のかゆみ</div>
+                    <div class="option" data-answer="true">視力の大幅な低下</div>
+                    <div class="option" data-answer="false">目の充血</div>
+                    <div class="option" data-answer="false">サラサラした涙が出る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アレルギー性結膜炎の主な症状は、強いかゆみ、充血、異物感、涙などです。通常、視力が大幅に低下することはありません。急な視力低下は他の重篤な病気の可能性があるため、すぐに医師の診察が必要です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">日本で最も多くの人が悩まされている花粉症の原因植物は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">ヒノキ</div>
+                    <div class="option" data-answer="true">スギ</div>
+                    <div class="option" data-answer="false">ブタクサ</div>
+                    <div class="option" data-answer="false">イネ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>日本では、スギ花粉症が最も代表的で、多くの患者様が悩まされています。スギ花粉の飛散時期は地域によりますが、主に関東では2月上旬から4月下旬頃です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">「初期療法」として、お薬を使い始めるのに最も効果的なタイミングはいつですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">症状が完全に出てから</div>
+                    <div class="option" data-answer="true">花粉が飛び始める2週間前から</div>
+                    <div class="option" data-answer="false">花粉が飛び始めた当日</div>
+                    <div class="option" data-answer="false">症状が最もひどいときだけ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初期療法は、花粉が本格的に飛散する前（約2週間前）から薬物療法を開始する方法です。これにより、粘膜の過敏性を抑え、シーズン中の症状を軽くする効果が期待できます。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「早めに薬を始めることで、シーズンをずっと楽に過ごせますよ」と、初期療法のメリットを具体的にお伝えしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">花粉症対策のメガネについて、最も正しい説明はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">普通のメガネでは効果がない</div>
+                    <div class="option" data-answer="true">フード付きの防御カバー付きメガネが最も効果的</div>
+                    <div class="option" data-answer="false">コンタクトレンズの上からでも同じ効果がある</div>
+                    <div class="option" data-answer="false">かけたまま寝ると翌日の症状が軽くなる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>目に入る花粉の量を減らすには、防御カバー（フード）が付いた花粉症対策メガネが最も効果的です。普通のメガネでも、かけない場合に比べて目に入る花粉の量を減らす効果はありますが、防御カバー付きには劣ります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">アレルギー性結膜炎の患者様への点眼指導として、最も適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">「かゆい時に、1日に何回でも点眼してください」</div>
+                    <div class="option" data-answer="false">「症状がなくても、1回に2-3滴点眼してください」</div>
+                    <div class="option" data-answer="true">「症状がなくても、医師の指示通りに回数と量を守って続けてください」</div>
+                    <div class="option" data-answer="false">「薬が余ったら、来年のために取っておいてください」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>抗アレルギー点眼薬は、症状を抑えるだけでなく、症状が出ないように粘膜の状態を安定させる役割があります。そのため、症状がない時でも医師の指示通りに継続することが重要です。また、1回1滴で効果は十分です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">コンタクトレンズを使用している患者様への指導で、正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">症状が強いときはコンタクトの使用を中止し、メガネに切り替える</div>
+                    <div class="option" data-answer="false">コンタクトをつけたまま点眼できる薬を勧める</div>
+                    <div class="option" data-answer="false">コンタクトを清潔にすれば、終日装用しても問題ない</div>
+                    <div class="option" data-answer="false">ハードコンタクトなら花粉が付着しないので安心</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アレルギー症状があるときは、コンタクトレンズの装用自体が刺激になり、症状を悪化させる可能性があります。また、レンズに付着した花粉や汚れがアレルギー反応を長引かせます。症状が強いときは使用を中断し、メガネに切り替えるのが原則です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">花粉の飛散が多い時間帯は、一般的にいつとされていますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">早朝と深夜</div>
+                    <div class="option" data-answer="false">常に一定</div>
+                    <div class="option" data-answer="true">昼前後と夕方</div>
+                    <div class="option" data-answer="false">雨が降っている最中</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>一般的に花粉は、日中の気温が上昇する昼前後と、日中に上空へ舞い上がった花粉が地上に落下してくる夕方に飛散量が多くなると言われています。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">ステロイド点眼薬の処方があった患者様に、特に注意喚起すべき副作用は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">眠気</div>
+                    <div class="option" data-answer="true">眼圧の上昇</div>
+                    <div class="option" data-answer="false">ドライアイ</div>
+                    <div class="option" data-answer="false">充血</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ステロイド点眼薬は炎症を抑える効果が非常に高いですが、副作用として眼圧が上昇し、緑内障を引き起こす可能性があります。そのため、使用中は必ず医師の指示に従い、定期的な眼圧チェックが必要です。
+                    <div class="staff-point">
+                        <strong>スタッフの重要業務：</strong>ステロイド点眼薬を処方された患者様には、必ず定期的な受診が必要であることを伝え、予約を促すことが重要です。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">室内の花粉対策として、最も効果的な掃除方法はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">掃除機の前に、乾いた布で拭き掃除をする</div>
+                    <div class="option" data-answer="true">掃除機の前に、濡れた布で拭き掃除をする</div>
+                    <div class="option" data-answer="false">まず掃除機をかけてから、窓を開けて換気する</div>
+                    <div class="option" data-answer="false">強力な空気清浄機があれば掃除は不要</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>床に落ちた花粉は、人が動くと舞い上がってしまいます。そのため、いきなり掃除機をかけると花粉をまき散らすことになりかねません。まず濡れた雑巾やモップで拭き掃除をしてから、掃除機をかけるのが効果的です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">秋の花粉症の代表的な原因植物は次のうちどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">スギ・ヒノキ</div>
+                    <div class="option" data-answer="false">カバノキ科（ハンノキなど）</div>
+                    <div class="option" data-answer="true">キク科（ブタクサ・ヨモギ）</div>
+                    <div class="option" data-answer="false">マツ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>秋（8月～10月頃）の花粉症は、ブタクサやヨモギといったキク科の植物が主な原因となります。これらは道端や河原など、身近な場所に生えています。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question12">
+                <div class="question-number">問題 12</div>
+                <div class="question-text">患者様から人工涙液について聞かれました。正しい説明はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">目に入った花粉を洗い流す効果が期待できる</div>
+                    <div class="option" data-answer="false">アレルギーを抑える成分が入っている</div>
+                    <div class="option" data-answer="false">防腐剤が入っているので1日に1回しか使えない</div>
+                    <div class="option" data-answer="false">ドライアイの人しか使えない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>人工涙液は、涙に近い成分でできており、目に入った花粉やハウスダストなどのアレルゲンを物理的に洗い流すのに役立ちます。抗アレルギー成分は含まれていませんが、セルフケアとして有効です。
+                    <div class="staff-point">
+                        <strong>スタッフポイント：</strong>抗アレルギー点眼薬を使う前に人工涙液で目を洗うと、薬の効果が高まる可能性があります。ただし、点眼の間隔は5分以上あけるよう指導しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question13">
+                <div class="question-number">問題 13</div>
+                <div class="question-text">目のかゆみが強い患者様へのアドバイスとして、最も適切**ではない**ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「温かいタオルで目を温めると楽になりますよ」</div>
+                    <div class="option" data-answer="false">「目をこすらずに、冷たいタオルで冷やしてみてください」</div>
+                    <div class="option" data-answer="false">「まずは処方された点眼薬を使ってみてください」</div>
+                    <div class="option" data-answer="false">「水道水で目を洗うのは避けてくださいね」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>目のかゆみは炎症によるものなので、温めると血管が拡張してさらにかゆみが強くなることがあります。冷たいタオルなどで冷やすと、血管が収縮してかゆみが和らぐ効果が期待できます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question14">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">花粉が飛散しやすい気象条件として、正しい組み合わせはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">雨が降り、湿度が高い日</div>
+                    <div class="option" data-answer="true">晴れて、気温が高く、空気が乾燥している日</div>
+                    <div class="option" data-answer="false">曇りで、気温が低く、風が弱い日</div>
+                    <div class="option" data-answer="false">雨上がりの翌日で、風が弱い日</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>花粉は、晴天で気温が高く、空気が乾燥していて風が強い日に最も飛散しやすくなります。天気予報の花粉情報をチェックするよう患者様にアドバイスしましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question15">
+                <div class="question-number">問題 15</div>
+                <div class="question-text">アレルギーの原因を特定するための検査として、眼科で一般的に行われるのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">目のCTスキャン</div>
+                    <div class="option" data-answer="true">血液検査（特異的IgE抗体検査）</div>
+                    <div class="option" data-answer="false">皮膚に針を刺すパッチテスト</div>
+                    <div class="option" data-answer="false">視野検査</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アレルギーの原因（アレルゲン）を特定するためには、血液検査が一般的です。採血によって、どのアレルゲンに対して体が反応するのか（特異的IgE抗体の量）を調べることができます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question16">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">洗濯物を外に干した際に付着した花粉への対策として、最も効果的なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">軽くはたいてから取り込む</div>
+                    <div class="option" data-answer="true">取り込む前によく払い、さらに掃除機をかける</div>
+                    <div class="option" data-answer="false">そのまま取り込んで、室内で払う</div>
+                    <div class="option" data-answer="false">すぐにアイロンをかける</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>洗濯物や衣類を外に干すと、大量の花粉が付着します。取り込む際には、表面をよく払うことが重要です。さらに掃除機で吸い取るとより効果的です。花粉シーズン中は、できるだけ部屋干しを推奨しましょう。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 16;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            
+            if (mode === 'daily3') {
+                isDaily = true;
+                totalQuestions = 3;
+                questionList = getRandomQuestions(3);
+            } else if (mode === 'daily5') {
+                isDaily = true;
+                totalQuestions = 5;
+                questionList = getRandomQuestions(5);
+            } else if (mode === 'daily7') {
+                isDaily = true;
+                totalQuestions = 7;
+                questionList = getRandomQuestions(7);
+            } else {
+                isDaily = false;
+                totalQuestions = 16;
+                questionList = [...allQuestions];
+            }
+            
+            for (let i = 1; i <= 16; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionList.includes(i)) {
+                    if (i === questionList[0]) {
+                        questionElement.classList.remove('hidden');
+                    } else {
+                        questionElement.classList.add('hidden');
+                    }
+                } else {
+                    if(document.getElementById(`question${i}`)){
+                        document.getElementById(`question${i}`).style.display = 'none';
+                    }
+                }
+            }
+            
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+            
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+            
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+            
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+            
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+            
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+            
+            updateScore();
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+            
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+            
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                document.getElementById(`question${questionId}`).classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！花粉症の知識は万全ですね。\n患者様からのどんな質問にも、自信を持って的確に答えられるはずです。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！重要なポイントはしっかり理解できています。\n間違えた部分を復習すれば、さらに患者様への説明がスムーズになりますよ。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 よくできました！ 👍';
+                message = `基本的な知識は身についています。\nもう一歩です！解説を読み直して、知識をさらに確実なものにしましょう。`;
+            } else {
+                title = '💪 これからが本番！ 💪';
+                message = `今回は良い復習の機会になりましたね。\nこのクイズをきっかけに、もう一度知識を整理してみましょう。患者様への説明に必ず役立ちます！`;
+            }
+            
+            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
+
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+            
+            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.home-button').classList.remove('hidden');
+            document.querySelector('.reset-button').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            score = 0;
+            updateScore();
+            
+            for (let i = 1; i <= 16; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            
+            document.querySelector('.quiz-status').classList.remove('hidden');
+            
+            if (totalQuestions === 3) {
+                startQuiz('daily3');
+            } else if (totalQuestions === 5) {
+                startQuiz('daily5');
+            } else if (totalQuestions === 7) {
+                startQuiz('daily7');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            
+            for (let i = 1; i <= 16; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = 16;
+            questionList = [];
+            isDaily = false;
+            
+            updateScore();
+            
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
+      <div id="resultTitle" class="result-title"></div>
+    </div>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="buttons">
+        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
+        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+      </div>
+    </div>
+
+</body>
+</html>

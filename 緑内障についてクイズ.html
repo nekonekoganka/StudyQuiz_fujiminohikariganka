@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>緑内障理解度クイズ - 患者・家族向け</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .quiz-container {
+                padding: 20px;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1b5e20;
+            font-size: 28px;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #2e7d32;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+        
+        .mode-selection {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .mode-button {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.3);
+        }
+        
+        .mode-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .mode-button {
+                width: 90%;
+                padding: 15px 30px;
+                font-size: 16px;
+                margin: 12px auto;
+            }
+        }
+        
+        .mode-description {
+            font-size: 14px;
+            color: #1b5e20;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .question-card {
+            background: #f1f8e9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 6px solid #388e3c;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border: 1px solid #c8e6c9;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #388e3c;
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-right: 0.75em;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1b5e20;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .options, .feedback, .explanation {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .question-card {
+                padding: 20px;
+                display: block;
+            }
+            .question-number {
+                margin-bottom: 12px;
+            }
+            .question-text {
+                font-size: 20px;
+            }
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .option {
+                padding: 15px;
+                font-size: 16px;
+                min-height: 60px;
+            }
+        }
+        
+        .option:hover {
+            border-color: #388e3c;
+            background: #e8f5e9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(56, 142, 60, 0.25);
+        }
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .option.incorrect {
+            border-color: #dc2626;
+            background: #fef2f2;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+        .option.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .next-button, .reset-button, .home-button, .result-button {
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .next-button, .reset-button, .home-button, .result-button {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 10px 5px;
+            }
+        }
+        
+        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+            text-align: center;
+        }
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+        .feedback.incorrect {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 2px solid #ef5350;
+        }
+        .quiz-status {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #1b5e20;
+            margin: 0;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            border: 2px solid #c8e6c9;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #c8e6c9;
+            border-radius: 4px;
+            margin: 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-status {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .score {
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .explanation {
+            background: #e0f2f1;
+            border-left: 5px solid #009688;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .explanation {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+        
+        .important-note {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #e65100;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .important-note {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #388e3c, #2e7d32);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .medical-note {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #0d47a1;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+    
+        .final-score-card{
+            background:#f1f8e9;
+            border:2px solid #388e3c;
+            border-radius:15px;
+            padding:30px;
+            margin-top:30px;
+            text-align:center;
+            box-shadow:0 3px 15px rgba(0,0,0,.08)
+        }
+        .result-title {
+            font-size:32px;
+            font-weight:700;
+            color:#1b5e20;
+            margin-bottom:20px
+        }
+        
+        .result-detail{
+            font-size: 20px;
+            line-height: 1.8;
+            color: #1b5e20;
+        }
+
+        .result-evaluation {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .final-score-highlight {
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .result-title {font-size:28px}
+            .result-detail{font-size:18px;line-height:1.7}
+            .result-evaluation {font-size: 22px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ 緑内障理解度クイズ 👁️</h1>
+        <div class="subtitle">患者・家族向け - 病気への理解を深めよう</div>
+        
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily3')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily5')">
+                📊 今日の5問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily7')">
+                📈 今日の7問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 フルコース（全17問）
+            </button>
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 全17問からランダムに3問を出題（約2分）<br>
+                <strong>今日の5問:</strong> 全17問からランダムに5問を出題（約3分）<br>
+                <strong>今日の7問:</strong> 全17問からランダムに7問を出題（約5分）<br>
+                <strong>フルコース:</strong> 全17問を順番に出題（約10分）
+            </div>
+        </div>
+        
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="score">スコア: <span id="score">0</span> / <span id="total">17</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">40歳以上の日本人で緑内障の患者さんの割合はどのくらいでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">約1%（100人に1人）</div>
+                    <div class="option" data-answer="false">約2%（50人に1人）</div>
+                    <div class="option" data-answer="true">約5%（20人に1人）</div>
+                    <div class="option" data-answer="false">約10%（10人に1人）</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障は非常に多い病気で、40歳以上では5%、つまり20人に1人もいます。60歳以上では10人に1人と言われています。
+                    <div class="important-note">
+                        <strong>大切なポイント：</strong>これほど多くの方が患っている病気ですが、早期発見・適切な治療により、ほとんどの方が生涯にわたって視力と視野を保つことができます。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">緑内障で最も大切な治療目標は何でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">視力を向上させること</div>
+                    <div class="option" data-answer="false">視野を広げること</div>
+                    <div class="option" data-answer="true">病気の進行を遅らせ、生涯視機能を保つこと</div>
+                    <div class="option" data-answer="false">眼圧を正常値まで下げること</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障は治る病気ではなく、治療は進行を遅らせて、生涯にわたり視機能を保つことが目的です。死んだ神経を元に戻すことはできないため、視野を広げることはできません。
+                    <div class="important-note">
+                        <strong>理解しておきたいこと：</strong>早期発見・適切な治療により、進行を大幅に遅らせることができます。生涯、視野と視力を保てたなら治療は成功です。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">眼圧の正常値の範囲はどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">5～15mmHg</div>
+                    <div class="option" data-answer="true">10～21mmHg</div>
+                    <div class="option" data-answer="false">15～25mmHg</div>
+                    <div class="option" data-answer="false">20～30mmHg</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧の正常値は10～21mmHgですが、眼によって耐えられる眼圧が異なります。また、眼圧は1日の中でも4～5程度変動し、冬は高いことが多いです。
+                    <div class="important-note">
+                        <strong>知っておきたいこと：</strong>昼に一度測ったぐらいでは、その眼の眼圧のことは分かりません。緑内障の治療で眼圧を下げて、進みが遅くなればその眼にとって良い眼圧になったといえます。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">緑内障の早期発見が難しい理由として最も適切なのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">検査技術が発達していないから</div>
+                    <div class="option" data-answer="true">自覚症状がほとんどないから</div>
+                    <div class="option" data-answer="false">医師の診断が困難だから</div>
+                    <div class="option" data-answer="false">費用が高額だから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障は早期発見には眼科に行かないと分からないことが多く、診断されても早期や中期では自覚症状がないために、治療をやめてしまう方が多いのが問題です。
+                    <div class="medical-note">
+                        <strong>重要なメッセージ：</strong>自覚症状がないのはまだ余裕があるということです。自覚がないうちに見つかった人は、早く見つかってラッキーだったと思ってください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">開放隅角緑内障の基本的な治療方法は何でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">点眼薬による治療</div>
+                    <div class="option" data-answer="false">レーザー治療</div>
+                    <div class="option" data-answer="false">手術治療</div>
+                    <div class="option" data-answer="false">内服薬による治療</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>開放隅角緑内障は、眼圧を下げることしか治療の方法がありません。そのために、まずは点眼薬により治療をします。点眼を続けても進行するなら、手術で眼圧を下げることになります。
+                    <div class="important-note">
+                        <strong>治療のポイント：</strong>ある程度眼圧を下げる目標を立てますが、効果は眼によって異なるため、追加で何剤か点眼薬を併用することも多いです。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">点眼治療で最も重要なことは何でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">1回に多く点眼すること</div>
+                    <div class="option" data-answer="true">継続して続けること</div>
+                    <div class="option" data-answer="false">複数の薬を同時に点眼すること</div>
+                    <div class="option" data-answer="false">眼圧が下がったら中止すること</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>点眼治療は、患者さんが自ら行う治療ですから、患者頼りになります。点眼を続けなければ、治療は成功しません。決して忘れず長く続けることが最も重要です。
+                    <div class="important-note">
+                        <strong>点眼のコツ：</strong>1回に1滴、異なる薬は5分以上開けて点すことを守ってください。1回に1滴以上はだめです。入れば十分ですから点しすぎないようにお願いします。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">視野検査を受ける際に大切なことは何でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">できるだけ多くのボタンを押すこと</div>
+                    <div class="option" data-answer="true">焦らず正直に検査を受けること</div>
+                    <div class="option" data-answer="false">眼を積極的に動かすこと</div>
+                    <div class="option" data-answer="false">見えない光も見えたと答えること</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>視野検査は、そのときの患者さんの気持ちや体調がよく反映される検査です。落ち込んでいたり、緊張してドキドキして検査を受けるとうまくいきません。
+                    <div class="medical-note">
+                        <strong>検査のコツ：</strong>視野検査は正常な方でも見えない光を提示したりして検査するので、焦らず正直に受けるようにお願いします。眼を動かすと検査結果が良く出てしまいます。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">緑内障と診断された時の心構えとして最も適切なのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">すぐに仕事を辞める準備をする</div>
+                    <div class="option" data-answer="false">人生設計を大幅に変更する</div>
+                    <div class="option" data-answer="true">早く見つかって運が良かったと思って定期通院する</div>
+                    <div class="option" data-answer="false">失明は避けられないと諦める</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障と診断されたら、早く見つかって運が良かったと思って、定期的に通院をしてください。仕事や生活を変える必要はありません。
+                    <div class="important-note">
+                        <strong>大切な考え方：</strong>かなりの高眼圧や末期の方以外は、じっくり治療に専念し、仕事や生活パターンを変えず、あせらず過ごすことが重要です。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">緑内障で自覚症状が出ている場合、どのような状態でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">まだ初期段階で余裕がある</div>
+                    <div class="option" data-answer="true">中心に視野欠損が出ていてピンチの状態</div>
+                    <div class="option" data-answer="false">治療の必要がない軽度の状態</div>
+                    <div class="option" data-answer="false">手術が必要な末期の状態</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>霞んだり、文字を読み飛ばしたりといった自覚症状が出ている場合は、中心に視野欠損が出ています。この様な自覚症状が出ている場合はピンチです。
+                    <div class="medical-note">
+                        <strong>重要：</strong>緑内障の視野欠損は暗くなりません。霞んできてそのうち濃い明るい霧の中にいるように感じます。積極的に治療に参加して、何とか生涯、視野や視力を保てるようにしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">点眼薬の副作用として最も一般的なものは何でしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼の充血</div>
+                    <div class="option" data-answer="false">視力低下</div>
+                    <div class="option" data-answer="false">眼圧上昇</div>
+                    <div class="option" data-answer="false">頭痛</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>目薬には必ず副作用があります。ほとんどに共通する副作用は充血ですが、たいていの方が受け入れられます。アレルギーがでたら中止です。
+                    <div class="important-note">
+                        <strong>注意点：</strong>目薬で、喘息や息切れ、動悸、めまい、などの症状を起こすこともありますから、そのように感じたら主治医に相談をお願いします。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">初期の開放隅角緑内障で、眼圧が「18mmHg」の患者さんについて正しいのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">正常値なので治療は不要</div>
+                    <div class="option" data-answer="true">その眼に合った適切な眼圧まで下げる必要がある</div>
+                    <div class="option" data-answer="false">すぐに手術が必要</div>
+                    <div class="option" data-answer="false">経過観察のみで十分</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧が正常範囲内（10-21mmHg）でも、その眼にとって高すぎる場合があります。初期緑内障では、その患者さんの眼に適した「目標眼圧」まで下げることで、進行を防ぐことができます。これを「正常眼圧緑内障」と呼ぶこともあります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question12">
+                <div class="question-number">問題 12</div>
+                <div class="question-text">初期の開放隅角緑内障と診断された患者さんの理想的な通院間隔はどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">半年に1回</div>
+                    <div class="option" data-answer="true">2-3ヶ月に1回</div>
+                    <div class="option" data-answer="false">1年に1回</div>
+                    <div class="option" data-answer="false">症状が出たときのみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初期緑内障では、治療効果の確認と病気の進行チェックのため、2-3ヶ月に1回の定期通院が推奨されます。眼圧測定、視野検査、眼底検査を定期的に行い、点眼効果を評価します。自覚症状がなくても継続通院が重要です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question13">
+                <div class="question-number">問題 13</div>
+                <div class="question-text">緑内障の診断で、OCT（眼底三次元画像解析）検査の目的として最も適切なのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">白内障の程度を調べる</div>
+                    <div class="option" data-answer="false">眼圧を正確に測定する</div>
+                    <div class="option" data-answer="true">視神経の厚みを詳しく調べる</div>
+                    <div class="option" data-answer="false">角膜の状態を確認する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>OCT検査では、視神経線維層の厚みを数値で測定できます。初期緑内障では視野に異常が出る前に、すでに視神経が薄くなっていることがあります。この検査により、より早期の診断と経過観察が可能になります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question14">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">適切な治療を受けている初期緑内障の患者さんの多くは、将来的にどうなるでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">ほぼ確実に失明する</div>
+                    <div class="option" data-answer="false">必ず手術が必要になる</div>
+                    <div class="option" data-answer="true">生涯にわたって視機能を保てる</div>
+                    <div class="option" data-answer="false">数年で急激に悪化する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初期で発見され、適切な治療を継続している緑内障患者さんの多くは、生涯にわたって日常生活に支障のない視機能を保つことができます。大切なのは、定期通院と点眼治療の継続です。過度に心配せず、医師と協力して治療を続けることが重要です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question15">
+                <div class="question-number">問題 15</div>
+                <div class="question-text">2種類の点眼薬が処方された場合、点眼の間隔はどのくらい空けるべきでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">すぐに続けて点眼してよい</div>
+                    <div class="option" data-answer="true">5分以上間隔を空ける</div>
+                    <div class="option" data-answer="false">1時間以上間隔を空ける</div>
+                    <div class="option" data-answer="false">同じ時間に同時に点眼する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>複数の点眼薬を使用する場合は、5分以上間隔を空けて点眼します。連続して点眼すると、先に点眼した薬が後の薬で洗い流されてしまい、効果が減少する可能性があります。時間に余裕を持って点眼しましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question16">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">緑内障の患者さんが視野検査を受ける理想的な頻度はどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">毎月1回</div>
+                    <div class="option" data-answer="true">半年に1回</div>
+                    <div class="option" data-answer="false">2年に1回</div>
+                    <div class="option" data-answer="false">症状が悪化した時のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初期緑内障では、視野検査は半年に1回程度の頻度で行うのが一般的です。病気の進行を早期に発見し、治療効果を評価するために定期的な検査が重要です。進行が速い場合や治療変更時にはより頻繁に行うこともあります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question17">
+                <div class="question-number">問題 17</div>
+                <div class="question-text">視野検査を初めて受ける患者さんへの事前説明として最も重要なのはどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">「痛くない検査なので心配いりません」</div>
+                    <div class="option" data-answer="true">「集中力が必要で時間がかかりますが、正直に答えてください」</div>
+                    <div class="option" data-answer="false">「全部の光が見えるよう頑張ってください」</div>
+                    <div class="option" data-answer="false">「疲れたら途中で休憩できます」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>視野検査は集中力を要し、見えない光もある正常な検査であることを事前に説明することが重要です。「頑張って見ようとする」と正確な結果が得られません。リラックスして正直に反応することを伝えましょう。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 17;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            
+            if (mode === 'daily3') {
+                isDaily = true;
+                totalQuestions = 3;
+                questionList = getRandomQuestions(3);
+            } else if (mode === 'daily5') {
+                isDaily = true;
+                totalQuestions = 5;
+                questionList = getRandomQuestions(5);
+            } else if (mode === 'daily7') {
+                isDaily = true;
+                totalQuestions = 7;
+                questionList = getRandomQuestions(7);
+            } else {
+                isDaily = false;
+                totalQuestions = 17;
+                questionList = [...allQuestions];
+            }
+            
+            for (let i = 1; i <= 17; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionList.includes(i)) {
+                    if (i === questionList[0]) {
+                        questionElement.classList.remove('hidden');
+                    } else {
+                        questionElement.classList.add('hidden');
+                    }
+                } else {
+                    if(document.getElementById(`question${i}`)){
+                       document.getElementById(`question${i}`).style.display = 'none';
+                    }
+                }
+            }
+            
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if (questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+            
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+            
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+            
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+            
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+            
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+            
+            updateScore();
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+            
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+            
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if (qElem) {
+                    qElem.classList.add('hidden');
+                }
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let title, message;
+
+            if (isDaily) {
+                if (score === totalQuestions) {
+                    title = '🎉 素晴らしい！ 🎉';
+                    message = `${totalQuestions}問全問正解！緑内障について とてもよく理解されています。\nこの知識を活かして、安心して治療に取り組んでください。`;
+                } else if (score >= Math.ceil(totalQuestions * 0.8)) {
+                    title = '👍 よく理解されています！ 👍';
+                    message = `基本的なポイントは よく押さえられています。\n間違えた箇所を確認して、さらに理解を深めましょう。`;
+                } else {
+                    title = '📖 学習を続けましょう！ 📖';
+                    message = `緑内障について 理解を深める良い機会になりました。\n病気のことをよく知ることで、より安心して治療に取り組めます。`;
+                }
+            } else {
+                if (score === totalQuestions) {
+                    title = '🏆 完璧な理解度！ 🏆';
+                    message = `全問正解！緑内障について 非常によく理解されています。\nこの知識があれば、自信を持って治療に取り組むことができます。\n定期的な通院と点眼治療を続けて、生涯にわたって視機能を保っていきましょう。`;
+                } else if (score >= totalQuestions * 0.9) {
+                    title = '🌟 優秀な理解度！ 🌟';
+                    message = `とても良い結果です！緑内障の重要ポイントを しっかりと理解されています。\n少し復習すれば、さらに完璧な知識になります。\n安心して医師と治療計画を立てていってください。`;
+                } else if (score >= totalQuestions * 0.8) {
+                    title = '📚 良い理解度です！ 📚';
+                    message = `基本的な知識は しっかりと身についています。\n間違えた部分を見直すことで、より深い理解が得られます。\n病気について知ることは、治療成功への第一歩です。`;
+                } else if (score >= totalQuestions * 0.7) {
+                    title = '🌱 理解が深まりました！ 🌱';
+                    message = `緑内障について 基本的なことは理解できています。\n不安な点や分からないことは、遠慮なく医師に相談しましょう。\n正しい知識を持つことで、より良い治療が受けられます。`;
+                } else {
+                    title = '💪 学習のスタートです！ 💪';
+                    message = `緑内障について 学ぶ良いきっかけになりました。\n病気を理解することは とても大切です。分からないことは医師や看護師に積極的に質問しましょう。\n正しい知識があれば、安心して治療に取り組むことができます。`;
+                }
+            }
+            
+            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
+
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+            
+            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.home-button').classList.remove('hidden');
+            document.querySelector('.reset-button').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            score = 0;
+            updateScore();
+            
+            for (let i = 1; i <= 17; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            
+            document.querySelector('.quiz-status').classList.remove('hidden');
+            
+            if (totalQuestions === 3) {
+                startQuiz('daily3');
+            } else if (totalQuestions === 5) {
+                startQuiz('daily5');
+            } else if (totalQuestions === 7) {
+                startQuiz('daily7');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            
+            for (let i = 1; i <= 17; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = 17;
+            questionList = [];
+            isDaily = false;
+            
+            updateScore();
+            
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
+      <div id="resultTitle" class="result-title"></div>
+    </div>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="buttons">
+        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
+        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+      </div>
+    </div>
+
+</body>
+</html>
