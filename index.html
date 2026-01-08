@@ -33,11 +33,26 @@
             }
         }
 
-        h1 {
+        .header {
             text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
             color: #1a237e;
             font-size: 32px;
-            margin-bottom: 10px;
+            margin: 0 0 15px 0;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
@@ -45,19 +60,26 @@
             h1 {
                 font-size: 26px;
             }
+            .logo-icon {
+                font-size: 50px;
+            }
         }
 
         .subtitle {
-            text-align: center;
             color: #5c6bc0;
             font-size: 18px;
-            margin-bottom: 40px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle-decoration {
+            color: #9fa8da;
+            font-size: 14px;
+            letter-spacing: 3px;
         }
 
         @media (max-width: 768px) {
             .subtitle {
                 font-size: 16px;
-                margin-bottom: 30px;
             }
         }
 
@@ -65,13 +87,20 @@
             font-size: 20px;
             font-weight: bold;
             color: #1a237e;
-            margin: 30px 0 20px 0;
+            margin: 35px 0 20px 0;
             padding-bottom: 10px;
             border-bottom: 3px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .section-title:first-of-type {
             margin-top: 0;
+        }
+
+        .section-icon {
+            font-size: 24px;
         }
 
         .quiz-list {
@@ -81,11 +110,12 @@
         }
 
         .quiz-card {
-            display: block;
+            display: flex;
+            align-items: center;
             background: white;
             border: 2px solid #e8eaf6;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px 25px;
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
@@ -125,41 +155,55 @@
 
         @media (max-width: 768px) {
             .quiz-card {
-                padding: 20px;
+                padding: 18px 20px;
             }
         }
 
+        .quiz-icon {
+            font-size: 40px;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-icon {
+                font-size: 32px;
+                margin-right: 15px;
+            }
+        }
+
+        .quiz-content {
+            flex-grow: 1;
+        }
+
         .quiz-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: #1a237e;
-            margin-bottom: 8px;
-            padding-left: 15px;
+            margin-bottom: 6px;
         }
 
         @media (max-width: 768px) {
             .quiz-title {
-                font-size: 18px;
+                font-size: 17px;
             }
         }
 
         .quiz-description {
-            font-size: 15px;
+            font-size: 14px;
             color: #5c6bc0;
-            padding-left: 15px;
             line-height: 1.5;
+            margin-bottom: 8px;
         }
 
         .quiz-meta {
             display: flex;
-            gap: 15px;
-            margin-top: 12px;
-            padding-left: 15px;
+            gap: 10px;
         }
 
         .quiz-tag {
-            font-size: 13px;
-            padding: 5px 12px;
+            font-size: 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-weight: 500;
         }
@@ -175,77 +219,116 @@
         }
 
         .arrow {
-            position: absolute;
-            right: 25px;
-            top: 50%;
-            transform: translateY(-50%);
             font-size: 24px;
             color: #c5cae9;
             transition: all 0.3s ease;
+            margin-left: 15px;
+            flex-shrink: 0;
         }
 
         .quiz-card:hover .arrow {
             color: #5c6bc0;
-            right: 20px;
+            transform: translateX(5px);
         }
 
         .footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #e8eaf6;
+        }
+
+        .footer-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
             color: #9fa8da;
             font-size: 14px;
+        }
+
+        .footer-name {
+            color: #5c6bc0;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>ひかり眼科 学習クイズ</h1>
-        <div class="subtitle">知識を深めて、より良いサービスを提供しましょう</div>
+        <div class="header">
+            <div class="logo-icon">👁️✨</div>
+            <h1>ひかり眼科 学習クイズ</h1>
+            <div class="subtitle">📚 知識を深めて、より良いサービスを提供しましょう 📚</div>
+            <div class="subtitle-decoration">✦ ✦ ✦</div>
+        </div>
 
-        <div class="section-title">スタッフ向けクイズ</div>
+        <div class="section-title">
+            <span class="section-icon">👨‍⚕️</span>
+            スタッフ向けクイズ
+        </div>
         <div class="quiz-list">
             <a href="quizzes/院内ルール確認クイズ.html" class="quiz-card blue">
-                <div class="quiz-title">院内ルール確認クイズ</div>
-                <div class="quiz-description">休診日、予約ルール、受付時間など、院内の基本ルールを確認できます</div>
-                <div class="quiz-meta">
-                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                <div class="quiz-icon">🏥</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">院内ルール確認クイズ</div>
+                    <div class="quiz-description">休診日、予約ルール、受付時間など、院内の基本ルールを確認できます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                    </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
             <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan">
-                <div class="quiz-title">コンタクトレンズ処方クイズ</div>
-                <div class="quiz-description">コンタクトレンズの処方に関する基本知識をテストします</div>
-                <div class="quiz-meta">
-                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                <div class="quiz-icon">💧</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">コンタクトレンズ処方クイズ</div>
+                    <div class="quiz-description">コンタクトレンズの処方に関する基本知識をテストします</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                    </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
             <a href="quizzes/花粉症についてのクイズ.html" class="quiz-card teal">
-                <div class="quiz-title">花粉症クイズ</div>
-                <div class="quiz-description">花粉症の症状や対処法についての知識を確認できます</div>
-                <div class="quiz-meta">
-                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                <div class="quiz-icon">🤧</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">花粉症クイズ</div>
+                    <div class="quiz-description">花粉症の症状や対処法についての知識を確認できます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                    </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
         </div>
 
-        <div class="section-title">患者様・ご家族向けクイズ</div>
+        <div class="section-title">
+            <span class="section-icon">👨‍👩‍👧</span>
+            患者様・ご家族向けクイズ
+        </div>
         <div class="quiz-list">
             <a href="quizzes/緑内障についてクイズ.html" class="quiz-card green">
-                <div class="quiz-title">緑内障理解度クイズ</div>
-                <div class="quiz-description">緑内障について正しく理解するためのクイズです</div>
-                <div class="quiz-meta">
-                    <span class="quiz-tag tag-patient">患者様・ご家族向け</span>
+                <div class="quiz-icon">👁️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">緑内障理解度クイズ</div>
+                    <div class="quiz-description">緑内障について正しく理解するためのクイズです</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-patient">患者様・ご家族向け</span>
+                    </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
         </div>
 
         <div class="footer">
-            ふじみ野ひかり眼科
+            <div class="footer-icon">🌟</div>
+            <div class="footer-text">目の健康をサポートします</div>
+            <div class="footer-name">ふじみ野ひかり眼科</div>
         </div>
     </div>
 </body>
