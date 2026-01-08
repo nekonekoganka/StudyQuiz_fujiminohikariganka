@@ -890,6 +890,7 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
             let title, message;
@@ -907,16 +908,14 @@
                 title = '💪 要復習！ 💪';
                 message = `今回は良い復習の機会になりましたね。\n院内マニュアルをもう一度読み返し、正確な知識を身につけましょう。正しい案内が患者様の信頼に繋がります。`;
             }
-            
-            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
 
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
             const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            
-            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
 
-            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
             document.querySelector('.reset-button').classList.remove('hidden');
@@ -925,7 +924,6 @@
         }
 
         function resetQuiz() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             score = 0;
             updateScore();
@@ -967,7 +965,6 @@
         }
 
         function goHome() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
             
@@ -1019,10 +1016,6 @@
             }
         });
     </script>
-
-    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
-      <div id="resultTitle" class="result-title"></div>
-    </div>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
