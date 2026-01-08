@@ -98,6 +98,32 @@
             border-color: #388e3c;
         }
 
+        .top-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .top-button:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 768px) {
+            .top-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
+        }
+
         .mode-selection {
             text-align: center;
             margin: 40px 0;
@@ -472,7 +498,7 @@
     <div class="quiz-container">
         <h1>👁️ 緑内障理解度クイズ 👁️</h1>
         <div class="subtitle">患者・家族向け - 病気への理解を深めよう</div>
-        <div class="top-link"><a href="../index.html">← クイズ一覧に戻る</a></div>
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily3')">
@@ -1002,6 +1028,8 @@
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
             document.querySelector('.reset-button').classList.remove('hidden');
+            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
         }
 
         function resetQuiz() {
@@ -1030,9 +1058,11 @@
             document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
-            
+            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
             document.querySelector('.quiz-status').classList.remove('hidden');
-            
+
             if (totalQuestions === 3) {
                 startQuiz('daily3');
             } else if (totalQuestions === 5) {
@@ -1072,6 +1102,8 @@
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
@@ -1105,6 +1137,7 @@
       <div class="buttons">
         <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
         <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+        <a href="../index.html" class="top-button hidden">トップページへ</a>
       </div>
     </div>
 
