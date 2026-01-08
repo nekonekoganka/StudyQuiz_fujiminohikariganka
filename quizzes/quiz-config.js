@@ -20,7 +20,7 @@ const QUIZ_LIST = [
         id: 'contact-basic',
         name: 'コンタクトレンズ処方クイズ',
         file: 'コンタクト処方の基本クイズ.html',
-        totalQuestions: 28,
+        totalQuestions: 29,
         icon: '💧',
         category: 'staff',
         description: 'コンタクトレンズの処方に関する基本知識をテストします',
@@ -56,14 +56,16 @@ const BADGE_LIST = [
         id: 'first-try',
         name: 'はじめの一歩',
         icon: '🔰',
-        description: '初めてクイズに挑戦',
+        description: 'クイズに初挑戦',
+        condition: 'どれかのクイズに1回挑戦する',
         check: (progress, stats) => stats.totalAttempts >= 1
     },
     {
         id: 'all-tried',
         name: '全制覇',
         icon: '📚',
-        description: '全クイズを1回以上挑戦',
+        description: '全クイズに挑戦',
+        condition: 'すべてのクイズに1回以上挑戦する',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
         }
@@ -72,7 +74,8 @@ const BADGE_LIST = [
         id: 'perfect-once',
         name: '満点達成',
         icon: '🌸',
-        description: 'どれか1つで満点',
+        description: '全問モードで満点',
+        condition: 'どれかのクイズの「全問」モードで満点を取る',
         check: (progress, stats) => {
             return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
@@ -82,6 +85,7 @@ const BADGE_LIST = [
         name: 'クイズマスター',
         icon: '👑',
         description: '全クイズで満点',
+        condition: 'すべてのクイズの「全問」モードで満点を取る',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
@@ -90,7 +94,8 @@ const BADGE_LIST = [
         id: 'hundred-answers',
         name: '100問突破',
         icon: '💯',
-        description: '累計100問に回答',
+        description: '累計100問回答',
+        condition: '合計で100問以上回答する',
         check: (progress, stats) => stats.totalAnswered >= 100
     }
 ];
@@ -157,7 +162,10 @@ function recordQuizResult(quizId, score, totalQuestions) {
         quizProgress.bestScore = score;
     }
 
-    if (score === totalQuestions) {
+    // 全問モードで満点の場合のみ isPerfect を true にする
+    const quizConfig = getQuizById(quizId);
+    const isFullMode = quizConfig && totalQuestions === quizConfig.totalQuestions;
+    if (isFullMode && score === totalQuestions) {
         quizProgress.isPerfect = true;
     }
 

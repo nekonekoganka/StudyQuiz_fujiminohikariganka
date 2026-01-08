@@ -306,20 +306,35 @@
             display: inline-block;
         }
 
+        .mypage-button {
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
             .next-button, .reset-button, .home-button, .result-button {
                 padding: 12px 25px;
                 font-size: 16px;
                 margin: 10px 5px;
             }
-            .top-button {
+            .top-button, .mypage-button {
                 padding: 12px 25px;
                 font-size: 16px;
                 margin: 10px 5px;
             }
         }
 
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active, .top-button:active {
+        .next-button:active, .reset-button:active, .home-button:active, .result-button:active, .top-button:active, .mypage-button:active {
             transform: scale(0.97);
         }
 
@@ -331,6 +346,10 @@
             .top-button:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
+            .mypage-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
             }
         }
 
@@ -865,16 +884,16 @@
 
             <div class="question-card" id="question22">
                 <div class="question-number">問題 22</div>
-                <div class="question-text">強い遠視の患者様にSCLを処方する際、メガネの度数と比べてコンタクトの度数はどうなりますか？</div>
+                <div class="question-text">強い近視の患者様にSCLを処方する際、メガネの度数と比べてコンタクトの度数はどうなりますか？</div>
                 <div class="options">
-                    <div class="option" data-answer="true">強くなる（プラスの数字が大きくなる）</div>
-                    <div class="option" data-answer="false">弱くなる（プラスの数字が小さくなる）</div>
+                    <div class="option" data-answer="true">強くなる（マイナスの数字が大きくなる）</div>
+                    <div class="option" data-answer="false">弱くなる（マイナスの数字が小さくなる）</div>
                     <div class="option" data-answer="false">変わらない</div>
-                    <div class="option" data-answer="false">マイナス度数になる</div>
+                    <div class="option" data-answer="false">プラス度数になる</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>強いプラス度数のレンズは、目に近づけるほど効果が強くなります。そのため、メガネ（+8.00Dなど）からコンタクトレンズにする場合、度数はより強く（+8.50Dなど）なります。
+                    <strong>解説：</strong>眼鏡は角膜から約12mm離れた位置で装用されるため、マイナスレンズの発散効果が相対的に弱く働きます。一方、SCLは角膜上で直接作用するため、同じ矯正効果を得るには眼鏡より強いマイナス度数が必要です。そのため、近視ではCL度数＞眼鏡度数となります（例：眼鏡-8.00D → CL-8.50D程度）。この差は-4.00D以上で顕著になり、強度近視ほど影響が大きくなります。初回処方ではわずかに弱めから開始し、見え方と快適性を確認しながら調整することが望ましいです。
                 </div>
             </div>
 
@@ -968,6 +987,21 @@
                 </div>
             </div>
 
+            <div class="question-card" id="question29">
+                <div class="question-number">問題 29</div>
+                <div class="question-text">強い遠視の患者様にSCLを処方する際、メガネの度数と比べてコンタクトの度数はどうなりますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">強くなる（プラスの数字が大きくなる）</div>
+                    <div class="option" data-answer="true">弱くなる（プラスの数字が小さくなる）</div>
+                    <div class="option" data-answer="false">変わらない</div>
+                    <div class="option" data-answer="false">マイナス度数になる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼鏡は角膜から約12mm離れた位置で装用されるのに対し、SCLは角膜上に直接装用されます。この頂点間距離の差により、同じ矯正効果を得るにはコンタクトレンズの方が度数を弱く設定する必要があります。そのため、遠視ではCL度数＜眼鏡度数となります（例：眼鏡+8.00D → CL+7.50D程度）。この差は+4.00D以上で顕著になり、強度遠視ほど影響が大きくなります。初回処方ではわずかに弱めから開始し、見え方と快適性を確認しながら調整することが望ましいです。
+                </div>
+            </div>
+
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
@@ -981,11 +1015,11 @@
 
         let currentQuestion = 1;
         let score = 0;
-        let totalQuestions = 28;
+        let totalQuestions = 29;
         let questionList = [];
         let isDaily = false;
 
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 
         // 正解時フラッシュ効果
         function flashCorrect(element) {
@@ -1207,6 +1241,7 @@
 
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
+            document.querySelector('.mypage-button').classList.remove('hidden');
             document.querySelector('.top-button').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
 
@@ -1248,6 +1283,7 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.mypage-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
 
@@ -1289,6 +1325,7 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.mypage-button').classList.add('hidden');
             document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
@@ -1319,7 +1356,8 @@
       <div id="resultDetail" class="result-detail"></div>
       <div class="buttons">
         <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-        <a href="../index.html" class="top-button hidden">トップページへ</a>
+        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
+        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
       </div>
     </div>
 
