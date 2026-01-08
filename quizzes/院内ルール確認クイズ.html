@@ -84,18 +84,26 @@
         }
 
         .top-link a {
-            color: #5c6bc0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             text-decoration: none;
-            font-size: 15px;
-            padding: 8px 20px;
-            border: 2px solid #e8eaf6;
-            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 25px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
-        .top-link a:hover {
-            background: #e8eaf6;
-            border-color: #5c6bc0;
+        .top-link a:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 768px) {
+            .top-link a:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
         }
 
         .mode-selection {
