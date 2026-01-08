@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>院内ルール確認クイズ - スタッフ向け</title>
+    <title>ひかり眼科 学習クイズ</title>
     <style>
         * {
             box-sizing: border-box;
@@ -12,934 +12,241 @@
             font-family: 'Noto Sans JP', Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        .quiz-container {
-            max-width: 1200px;
+        .container {
+            max-width: 900px;
             margin: 0 auto;
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         }
-        
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
             }
-            .quiz-container {
-                padding: 20px;
+            .container {
+                padding: 25px;
             }
         }
-        
+
         h1 {
             text-align: center;
             color: #1a237e;
-            font-size: 28px;
-            margin-bottom: 4px;
+            font-size: 32px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         @media (max-width: 768px) {
             h1 {
-                font-size: 24px;
+                font-size: 26px;
             }
         }
-        
+
         .subtitle {
             text-align: center;
-            color: #283593;
-            font-size: 16px;
-            margin-bottom: 15px;
+            color: #5c6bc0;
+            font-size: 18px;
+            margin-bottom: 40px;
         }
-        
+
         @media (max-width: 768px) {
             .subtitle {
                 font-size: 16px;
+                margin-bottom: 30px;
             }
-        }
-        
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(248, 155, 41, 0.3);
-        }
-        
-        .mode-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 15px 30px;
-                font-size: 16px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #1a237e;
-            margin-top: 20px;
-            line-height: 1.5;
         }
 
-        .question-card {
-            background: #fdfefe;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #ff8f00;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e8eaf6;
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e8eaf6;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .quiz-list {
             display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #ff8f00;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1a237e;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
+        .quiz-card {
+            display: block;
             background: white;
             border: 2px solid #e8eaf6;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
+            border-radius: 15px;
+            padding: 25px;
+            text-decoration: none;
             transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:hover {
-            border-color: #ff8f00;
-            background: #fff8e1;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 143, 0, 0.25);
-        }
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-        
-        @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-        
-        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
-        }
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 2px solid #64b5f6;
-        }
-        .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
-        }
-        
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .score {
-            text-align: center;
+        .quiz-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+        }
+
+        .quiz-card.blue::before {
+            background: linear-gradient(180deg, #1e3c72, #2a5298);
+        }
+
+        .quiz-card.cyan::before {
+            background: linear-gradient(180deg, #4facfe, #00f2fe);
+        }
+
+        .quiz-card.green::before {
+            background: linear-gradient(180deg, #2e7d32, #1b5e20);
+        }
+
+        .quiz-card.teal::before {
+            background: linear-gradient(180deg, #4db6ac, #00796b);
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: #c5cae9;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-card {
+                padding: 20px;
+            }
+        }
+
+        .quiz-title {
             font-size: 22px;
             font-weight: bold;
             color: #1a237e;
-            margin: 0;
-            padding: 12px;
-            background: #f1f3f9;
-            border-radius: 10px;
-            border: 2px solid #e8eaf6;
-            flex-shrink: 0;
+            margin-bottom: 8px;
+            padding-left: 15px;
         }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e8eaf6;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
+
         @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
+            .quiz-title {
+                font-size: 18px;
             }
         }
 
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #e8eaf6;
-            border-left: 5px solid #3f51b5;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
+        .quiz-description {
+            font-size: 15px;
+            color: #5c6bc0;
+            padding-left: 15px;
             line-height: 1.5;
-            color: #1a237e;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .final-score-card{
-            background:#fdfefe;
-            border:2px solid #1a237e;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#1a237e;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #1a237e;
         }
 
-        .result-evaluation {
+        .quiz-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+            padding-left: 15px;
+        }
+
+        .quiz-tag {
+            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .tag-staff {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .tag-patient {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .arrow {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
+            color: #c5cae9;
+            transition: all 0.3s ease;
         }
 
-        .final-score-highlight {
-            color: #c62828;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
+        .quiz-card:hover .arrow {
+            color: #5c6bc0;
+            right: 20px;
         }
 
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #9fa8da;
+            font-size: 14px;
         }
-
     </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <h1>🏥 院内ルール確認クイズ 🏥</h1>
-        <div class="subtitle">スタッフ向け - 円滑な患者様対応のために</div>
-        
-        <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
-                📋 今日の3問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily7')">
-                📈 今日の7問
-            </button>
-            <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全15問）
-            </button>
-            <div class="mode-description">
-                <strong>今日の3問:</strong> 全15問からランダムに3問を出題<br>
-                <strong>今日の5問:</strong> 全15問からランダムに5問を出題<br>
-                <strong>今日の7問:</strong> 全15問からランダムに7問を出題<br>
-                <strong>フルコース:</strong> 全15問を順番に出題
-            </div>
+    <div class="container">
+        <h1>ひかり眼科 学習クイズ</h1>
+        <div class="subtitle">知識を深めて、より良いサービスを提供しましょう</div>
+
+        <div class="section-title">スタッフ向けクイズ</div>
+        <div class="quiz-list">
+            <a href="院内ルール確認クイズ.html" class="quiz-card blue">
+                <div class="quiz-title">院内ルール確認クイズ</div>
+                <div class="quiz-description">休診日、予約ルール、受付時間など、院内の基本ルールを確認できます</div>
+                <div class="quiz-meta">
+                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="コンタクト処方の基本クイズ.html" class="quiz-card cyan">
+                <div class="quiz-title">コンタクトレンズ処方クイズ</div>
+                <div class="quiz-description">コンタクトレンズの処方に関する基本知識をテストします</div>
+                <div class="quiz-meta">
+                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="花粉症についてのクイズ.html" class="quiz-card teal">
+                <div class="quiz-title">花粉症クイズ</div>
+                <div class="quiz-description">花粉症の症状や対処法についての知識を確認できます</div>
+                <div class="quiz-meta">
+                    <span class="quiz-tag tag-staff">スタッフ向け</span>
+                </div>
+                <span class="arrow">→</span>
+            </a>
         </div>
-        
-        <div id="quizArea" class="hidden">
-            <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">15</span></div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar"></div>
-                </div>
-            </div>
-            
-            <div class="question-card" id="question1">
-                <div class="question-number">問題 1</div>
-                <div class="question-text">当院の 休診日は 何曜日ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">月曜日</div>
-                    <div class="option" data-answer="false">火曜日</div>
-                    <div class="option" data-answer="true">水曜日</div>
-                    <div class="option" data-answer="false">木曜日</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>2025年4月1日より、休診日が「水曜日」に変更されました。
-                </div>
-            </div>
 
-            <div class="question-card hidden" id="question2">
-                <div class="question-number">問題 2</div>
-                <div class="question-text">予約が 満席（❌表示）の場合、電話での 予約は 可能ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">可能です</div>
-                    <div class="option" data-answer="false">他の患者様の 迷惑にならない 時間帯であれば 可能です</div>
-                    <div class="option" data-answer="true">承ることは できません</div>
-                    <div class="option" data-answer="false">緊急の場合は 可能です</div>
+        <div class="section-title">患者様・ご家族向けクイズ</div>
+        <div class="quiz-list">
+            <a href="緑内障についてクイズ.html" class="quiz-card green">
+                <div class="quiz-title">緑内障理解度クイズ</div>
+                <div class="quiz-description">緑内障について正しく理解するためのクイズです</div>
+                <div class="quiz-meta">
+                    <span class="quiz-tag tag-patient">患者様・ご家族向け</span>
                 </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>予約が満席（❌表示）の場合、お電話等での予約は承ることができませんので、ご了承くださいと明記されています。
-                </div>
-            </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
 
-            <div class="question-card hidden" id="question3">
-                <div class="question-number">問題 3</div>
-                <div class="question-text">予約を 無断キャンセルした場合、どのような 対応が 取られることが ありますか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">特に 影響は ありません</div>
-                    <div class="option" data-answer="false">次回から 必ず電話で 予約するよう お願いされます</div>
-                    <div class="option" data-answer="true">今後の 予約を お断りする 場合が ございます</div>
-                    <div class="option" data-answer="false">キャンセル料が 発生します</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>無断キャンセルは固くお断りしており、他の患者様のご迷惑となるため、今後の予約をお断りする場合がございます。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question4">
-                <div class="question-number">問題 4</div>
-                <div class="question-text">発熱がある 患者様が 来院を希望した場合、どのように 案内すべきですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">体温計で 検温後、受診可能です</div>
-                    <div class="option" data-answer="true">症状が 改善してから 予約を 取るよう 案内します</div>
-                    <div class="option" data-answer="false">マスク着用で 受診を促します</div>
-                    <div class="option" data-answer="false">隔離された 場所で 診察可能です</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>発熱がある方は受診をお控えいただき、体調不良の際は症状が改善してから予約を取るよう案内されています。また、37度以上の発熱の方、コロナ・インフルエンザ疑いの方は受診できません。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question5">
-                <div class="question-number">問題 5</div>
-                <div class="question-text">初めて 当院を 受診する患者様に、受付を スムーズに 進めるために 推奨されることは 何ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">事前に電話で 詳細な病歴を 伝える</div>
-                    <div class="option" data-answer="false">診察券を 忘れずに持参する</div>
-                    <div class="option" data-answer="true">問診票を ダウンロードして 記入しておく</div>
-                    <div class="option" data-answer="false">紹介状を 持参する</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>初診の方は、問診票をダウンロードしてご記入いただくと、受付がスムーズになると案内されています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question6">
-                <div class="question-number">問題 6</div>
-                <div class="question-text">コンタクトレンズの 処方箋（指示書）は、どのような 目的の場合に 発行されますか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">インターネット通販サイトで 購入するため</div>
-                    <div class="option" data-answer="false">他店で 購入するため</div>
-                    <div class="option" data-answer="true">2階の「エースコンタクト」を 利用する方へ</div>
-                    <div class="option" data-answer="false">友人から 譲り受けた コンタクトレンズを 使用するため</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトレンズの処方箋（指示書）は、2階の「エースコンタクト」をご利用の方へのみ発行しており、他店やインターネット通販サイト等での購入目的での発行は行っていません。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question7">
-                <div class="question-number">問題 7</div>
-                <div class="question-text">エースコンタクトで 先に受付を済ませた患者様が 当院で コンタクト処方を 希望する場合、事前の予約は 必要ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">必ず 予約が 必要です</div>
-                    <div class="option" data-answer="true">予約なしでも 診察可能です</div>
-                    <div class="option" data-answer="false">電話で 事前連絡が 必要です</div>
-                    <div class="option" data-answer="false">午後の診察時間内に限って 予約なしで 可能です</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>先にエースコンタクトで受付を済ませた方は、予約なしでも診察可能と記載されています。受付時間内にご来院ください。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question8">
-                <div class="question-number">問題 8</div>
-                <div class="question-text">安全のため、コンタクトレンズの 処方の対象年齢は 何歳からですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">3歳から</div>
-                    <div class="option" data-answer="true">小学生 6年生以上から</div>
-                    <div class="option" data-answer="false">中学生以上から</div>
-                    <div class="option" data-answer="false">18歳以上から</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトレンズの処方は、安全のため小学生6年生以上を対象としています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question9">
-                <div class="question-number">問題 9</div>
-                <div class="question-text">斜視・弱視・色覚検査を 希望する患者様は、どのように 予約を 取る必要が ありますか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">ウェブサイトの 「一般予約」から 予約する</div>
-                    <div class="option" data-answer="false">予約なしで 直接来院する</div>
-                    <div class="option" data-answer="true">電話での 予約が 必要です</div>
-                    <div class="option" data-answer="false">紹介状が必須で、当院からは 予約できません</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>斜視・弱視・色覚検査を希望する方は、お一人おひとりの状態に合わせた丁寧な検査のため時間を要するため、電話での予約をお願いしています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question10">
-                <div class="question-number">問題 10</div>
-                <div class="question-text">ふじみ野市・富士見市・三芳町の 緑内障検診の 自己負担金は いくらですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">無料です</div>
-                    <div class="option" data-answer="false">500円（現金のみ）</div>
-                    <div class="option" data-answer="true">1,000円（現金のみ）</div>
-                    <div class="option" data-answer="false">2,000円（クレジットカード可）</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>緑内障検診の自己負担金は1,000円（現金のみ）と記載されています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question11">
-                <div class="question-number">問題 11</div>
-                <div class="question-text">初めて コンタクトレンズの処方で 来院される患者様の 午前の受付終了時間は 何時ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="true">午前 12:30まで</div>
-                    <div class="option" data-answer="false">午前 12:00まで</div>
-                    <div class="option" data-answer="false">午前 11:30まで</div>
-                    <div class="option" data-answer="false">午後 13:00まで</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>コンタクトが初めての方は、午前12:30までに受付を済ませる必要があります。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question12">
-                <div class="question-number">問題 12</div>
-                <div class="question-text">2回目以降の コンタクトレンズ受診の 午後の受付終了時間は 何時ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">午後 17:30まで</div>
-                    <div class="option" data-answer="false">午後 18:00まで</div>
-                    <div class="option" data-answer="true">午後 18:30まで</div>
-                    <div class="option" data-answer="false">午後 19:00まで</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>2回目以降のコンタクト受診の受付は、午後は18:30まで可能です。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question13">
-                <div class="question-number">問題 13</div>
-                <div class="question-text">ウェブ予約について、 「受付のための予約」と ありますが、これは 何を意味しますか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">予約時間ちょうどに 診察が開始されることを 保証するものです</div>
-                    <div class="option" data-answer="false">検査・診察までの 待ち時間は 発生しないことを 意味します</div>
-                    <div class="option" data-answer="true">受付の順番を 確保するものであり、検査・診察までの 待ち時間は 生じます</div>
-                    <div class="option" data-answer="false">必ず希望する医師に 診てもらえることを 意味します</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>ウェブ予約は受付のための予約であり、検査・診察までの待ち時間は生じる旨が記載されています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question14">
-                <div class="question-number">問題 14</div>
-                <div class="question-text">小児予約外来は、何曜日に 予約枠が ありますか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">月・水・金曜日</div>
-                    <div class="option" data-answer="true">火・木・金曜日</div>
-                    <div class="option" data-answer="false">月・火・水曜日</div>
-                    <div class="option" data-answer="false">土・日・祝日</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>小児予約外来は「火・木・金曜」の「11時から」と「15:30から」の予約枠があると記載されています。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question15">
-                <div class="question-number">問題 15</div>
-                <div class="question-text">当院の代診医師が 対応していない 検査や検診は どれですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">一般眼科診察</div>
-                    <div class="option" data-answer="false">コンタクト処方</div>
-                    <div class="option" data-answer="true">「市の緑内障検診」や 「斜視・弱視」</div>
-                    <div class="option" data-answer="false">眼鏡処方</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>代診医師は「市の緑内障検診」や「斜視・弱視」には対応していないと明記されています。
-                </div>
-            </div>
-
-            <div class="buttons">
-                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
-                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
-            </div>
+        <div class="footer">
+            ふじみ野ひかり眼科
         </div>
     </div>
-
-    <script>
-        let currentQuestion = 1;
-        let score = 0;
-        let totalQuestions = 15;
-        let questionList = [];
-        let isDaily = false;
-
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
-        function startQuiz(mode) {
-            document.querySelector('h1').classList.add('hidden');
-            document.querySelector('.subtitle').classList.add('hidden');
-            document.getElementById('modeSelection').classList.add('hidden');
-            document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily3') {
-                isDaily = true;
-                totalQuestions = 3;
-                questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily7') {
-                isDaily = true;
-                totalQuestions = 7;
-                questionList = getRandomQuestions(7);
-            } else {
-                isDaily = false;
-                totalQuestions = 15;
-                questionList = [...allQuestions];
-            }
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionList.includes(i)) {
-                    if (i === questionList[0]) {
-                        questionElement.classList.remove('hidden');
-                    } else {
-                        questionElement.classList.add('hidden');
-                    }
-                } else {
-                    if(document.getElementById(`question${i}`)){
-                        document.getElementById(`question${i}`).style.display = 'none';
-                    }
-                }
-            }
-            
-            currentQuestion = 0;
-            updateQuestionNumbers();
-            document.getElementById('total').textContent = totalQuestions;
-            shuffleOptions(questionList[0]);
-            updateProgress();
-        }
-
-        function getRandomQuestions(count) {
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
-        }
-
-        function updateQuestionNumbers() {
-            questionList.forEach((questionId, index) => {
-                const questionElement = document.getElementById(`question${questionId}`);
-                if(questionElement) {
-                    const questionNumber = questionElement.querySelector('.question-number');
-                    questionNumber.textContent = `問題 ${index + 1}`;
-                }
-            });
-        }
-
-        function shuffleOptions(questionId) {
-            if (!questionId) return;
-            const container = document
-                .getElementById(`question${questionId}`)
-                .querySelector('.options');
-            if (!container) return;
-            
-            for (let i = container.children.length; i >= 0; i--) {
-                const rand = Math.floor(Math.random() * i);
-                if (container.children[rand]) {
-                    container.appendChild(container.children[rand]);
-                }
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function selectAnswer(selectedOption) {
-            const currentQuestionId = questionList[currentQuestion];
-            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
-            const options = currentQuestionElement.querySelectorAll('.option');
-            const feedback = currentQuestionElement.querySelector('.feedback');
-            const explanation = currentQuestionElement.querySelector('.explanation');
-            const nextButton = document.querySelector('.next-button');
-            const resultButton = document.querySelector('.result-button');
-            
-            const isCorrect = selectedOption.dataset.answer === 'true';
-            let correctAnswerText = '';
-            
-            options.forEach(option => {
-                if (option.dataset.answer === 'true') {
-                    correctAnswerText = option.textContent;
-                }
-            });
-            
-            options.forEach(option => {
-                option.classList.add('disabled');
-                if (option.dataset.answer === 'true') {
-                    option.classList.add('correct');
-                } else if (option === selectedOption && option.dataset.answer === 'false') {
-                    option.classList.add('incorrect');
-                }
-            });
-
-            if (isCorrect) {
-                feedback.textContent = '🎉 正解です！';
-                feedback.className = 'feedback correct';
-                score++;
-            } else {
-                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
-                feedback.className = 'feedback incorrect';
-            }
-            
-            feedback.style.display = 'block';
-            explanation.classList.remove('hidden');
-            
-            if (currentQuestion < totalQuestions - 1) {
-                nextButton.classList.remove('hidden');
-            } else {
-                resultButton.classList.remove('hidden');
-            }
-            
-            updateScore();
-        }
-
-        function nextQuestion() {
-            const currentQuestionId = questionList[currentQuestion];
-            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
-            
-            currentQuestion++;
-            const nextQuestionId = questionList[currentQuestion];
-            
-            shuffleOptions(nextQuestionId);
-            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
-            document.querySelector('.next-button').classList.add('hidden');
-            updateProgress();
-        }
-
-        function showFinalScore() {
-            questionList.forEach(questionId => {
-                const qElem = document.getElementById(`question${questionId}`);
-                if(qElem) qElem.classList.add('hidden');
-            });
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.add('hidden');
-
-            const percentage = Math.round((score / totalQuestions) * 100);
-            let title, message;
-
-            if (score === totalQuestions) {
-                title = '🏆 完璧です！ 🏆';
-                message = `全問正解！院内ルールを完全に把握していますね。\n自信を持って、日々の業務と患者様対応をお願いします。`;
-            } else if (score >= totalQuestions * 0.8) {
-                title = '🌟 素晴らしい！ 🌟';
-                message = `高得点です！重要なルールはしっかり理解できています。\n間違えた箇所を再確認し、全ての患者様に正確な案内ができるよう目指しましょう。`;
-            } else if (score >= totalQuestions * 0.5) {
-                title = '👍 あと一歩！ 👍';
-                message = `基本的なルールは身についています。\n患者様からの質問が多い項目や、間違いやすい受付時間などを中心に復習しましょう。`;
-            } else {
-                title = '💪 要復習！ 💪';
-                message = `今回は良い復習の機会になりましたね。\n院内マニュアルをもう一度読み返し、正確な知識を身につけましょう。正しい案内が患者様の信頼に繋がります。`;
-            }
-            
-            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
-
-            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
-            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
-            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            
-            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
-
-            document.getElementById('resultTitleCard').classList.remove('hidden');
-            document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.reset-button').classList.remove('hidden');
-        }
-
-        function resetQuiz() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
-            document.getElementById('finalResult').classList.add('hidden');
-            score = 0;
-            updateScore();
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement){
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-                
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-                    
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-            
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            
-            document.querySelector('.quiz-status').classList.remove('hidden');
-            
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 7) {
-                startQuiz('daily7');
-            } else {
-                startQuiz('full');
-            }
-        }
-
-        function goHome() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
-            document.getElementById('finalResult').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-            
-            document.querySelector('h1').classList.remove('hidden');
-            document.querySelector('.subtitle').classList.remove('hidden');
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement) {
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-                
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-                    
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-            
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            currentQuestion = 1;
-            score = 0;
-            totalQuestions = 15;
-            questionList = [];
-            isDaily = false;
-            
-            updateScore();
-            
-            document.getElementById('modeSelection').classList.remove('hidden');
-        }
-
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
-                selectAnswer(e.target);
-            }
-        });
-    </script>
-
-    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
-      <div id="resultTitle" class="result-title"></div>
-    </div>
-
-    <div id="finalResult" class="final-score-card hidden">
-      <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-      </div>
-    </div>
-
 </body>
 </html>
