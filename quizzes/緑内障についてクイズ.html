@@ -1060,8 +1060,9 @@
 
             updateScore();
 
+            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
             setTimeout(() => {
-                feedback.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
         }
 
