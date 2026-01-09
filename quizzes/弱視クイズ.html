@@ -103,6 +103,61 @@
             line-height: 1.5;
         }
 
+        /* 区切り線 */
+        .mode-divider {
+            margin: 30px 0 15px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* 復習モードボタン */
+        .mode-button.review-mode {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .mode-button.review-mode:hover {
+                box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+            }
+        }
+
+        /* 未挑戦モードボタン */
+        .mode-button.unanswered-mode {
+            background: linear-gradient(135deg, #4ecdc4, #45b7aa);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .mode-button.unanswered-mode:hover {
+                box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+            }
+        }
+
+        /* 問題数表示 */
+        .mode-count {
+            font-size: 14px;
+            font-weight: normal;
+            opacity: 0.9;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* 対象0問時のグレー表示 */
+        .mode-button.disabled {
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+            box-shadow: 0 4px 15px rgba(189, 195, 199, 0.3);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .mode-button.disabled:active,
+        .mode-button.disabled:hover {
+            transform: none;
+            box-shadow: 0 4px 15px rgba(189, 195, 199, 0.3);
+        }
+
         .question-card {
             background: #f9f4fb;
             border-radius: 12px;
@@ -487,20 +542,26 @@
             <button class="mode-button" onclick="startQuiz('daily3')">
                 📋 今日の3問
             </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily7')">
-                📈 今日の7問
-            </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全15問）
+                📚 全問モード（全15問）
             </button>
+
+            <div class="mode-divider">── 復習・学習 ──</div>
+
+            <button id="reviewModeBtn" class="mode-button review-mode disabled" onclick="startQuiz('review')" disabled>
+                🔄 復習モード
+                <span class="mode-count" id="reviewCount">（0問）</span>
+            </button>
+            <button id="unansweredModeBtn" class="mode-button unanswered-mode" onclick="startQuiz('unanswered')">
+                🆕 未挑戦モード
+                <span class="mode-count" id="unansweredCount">（15問）</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全15問からランダムに3問を出題<br>
-                <strong>今日の5問:</strong> 全15問からランダムに5問を出題<br>
-                <strong>今日の7問:</strong> 全15問からランダムに7問を出題<br>
-                <strong>フルコース:</strong> 全15問を順番に出題
+                <strong>今日の3問:</strong> ランダムに3問を出題<br>
+                <strong>全問モード:</strong> 全15問を順番に出題<br>
+                <strong>復習モード:</strong> 間違えた問題を重点的に学習<br>
+                <strong>未挑戦モード:</strong> まだ解いていない問題に挑戦
             </div>
         </div>
         
@@ -750,6 +811,7 @@
     <script src="quiz-config.js"></script>
     <script>
         const QUIZ_ID = 'jakushi';
+        const TOTAL_QUESTIONS = 15;
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 15;
@@ -757,6 +819,54 @@
         let isDaily = false;
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateModeButtons();
+        });
+
+        // モードボタンの状態を更新
+        function updateModeButtons() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+
+            // 復習モードボタン
+            const reviewBtn = document.getElementById('reviewModeBtn');
+            const reviewCount = document.getElementById('reviewCount');
+            if (reviewBtn && reviewCount) {
+                reviewCount.textContent = `（${incorrectList.length}問）`;
+                if (incorrectList.length === 0) {
+                    reviewBtn.classList.add('disabled');
+                    reviewBtn.disabled = true;
+                } else {
+                    reviewBtn.classList.remove('disabled');
+                    reviewBtn.disabled = false;
+                }
+            }
+
+            // 未挑戦モードボタン
+            const unansweredBtn = document.getElementById('unansweredModeBtn');
+            const unansweredCount = document.getElementById('unansweredCount');
+            if (unansweredBtn && unansweredCount) {
+                unansweredCount.textContent = `（${unansweredList.length}問）`;
+                if (unansweredList.length === 0) {
+                    unansweredBtn.classList.add('disabled');
+                    unansweredBtn.disabled = true;
+                } else {
+                    unansweredBtn.classList.remove('disabled');
+                    unansweredBtn.disabled = false;
+                }
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         // 正解時フラッシュ効果
         function flashCorrect(element) {
@@ -810,21 +920,31 @@
                 isDaily = true;
                 totalQuestions = 3;
                 questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily7') {
-                isDaily = true;
-                totalQuestions = 7;
-                questionList = getRandomQuestions(7);
+            } else if (mode === 'review') {
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    goHome();
+                    return;
+                }
+                questionList = shuffleArray([...questionList]);
+                totalQuestions = questionList.length;
+            } else if (mode === 'unanswered') {
+                isDaily = false;
+                questionList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+                if (questionList.length === 0) {
+                    goHome();
+                    return;
+                }
+                questionList = shuffleArray([...questionList]);
+                totalQuestions = questionList.length;
             } else {
                 isDaily = false;
-                totalQuestions = 15;
+                totalQuestions = TOTAL_QUESTIONS;
                 questionList = [...allQuestions];
             }
-            
-            for (let i = 1; i <= 15; i++) {
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionList.includes(i)) {
                     if (i === questionList[0]) {
@@ -917,7 +1037,12 @@
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
             }
-            
+
+            // 問題ごとの結果を記録（復習・未挑戦モード用）
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+            }
+
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
             setTimeout(() => {
@@ -1008,23 +1133,23 @@
             document.querySelector('.top-link').classList.remove('hidden');
             score = 0;
             updateScore();
-            
-            for (let i = 1; i <= 15; i++) {
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement){
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
-                
+
                     const options = questionElement.querySelectorAll('.option');
                     options.forEach(option => {
                         option.classList.remove('correct', 'incorrect', 'disabled');
                     });
-                    
+
                     questionElement.querySelector('.feedback').style.display = 'none';
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
@@ -1032,13 +1157,9 @@
             document.querySelector('.top-button').classList.add('hidden');
 
             document.querySelector('.quiz-status').classList.remove('hidden');
-            
+
             if (totalQuestions === 3) {
                 startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 7) {
-                startQuiz('daily7');
             } else {
                 startQuiz('full');
             }
@@ -1053,23 +1174,23 @@
             
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
-            
-            for (let i = 1; i <= 15; i++) {
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement) {
                     questionElement.style.display = '';
                     questionElement.classList.add('hidden');
-                
+
                     const options = questionElement.querySelectorAll('.option');
                     options.forEach(option => {
                         option.classList.remove('correct', 'incorrect', 'disabled');
                     });
-                    
+
                     questionElement.querySelector('.feedback').style.display = 'none';
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
@@ -1079,12 +1200,13 @@
 
             currentQuestion = 1;
             score = 0;
-            totalQuestions = 15;
+            totalQuestions = TOTAL_QUESTIONS;
             questionList = [];
             isDaily = false;
-            
+
             updateScore();
-            
+            updateModeButtons();
+
             document.getElementById('modeSelection').classList.remove('hidden');
         }
 

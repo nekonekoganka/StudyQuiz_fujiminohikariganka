@@ -31,6 +31,17 @@
 | 結果発表（通常） | 絵文字8個（🎉⭐✨👏🎊）+ 振動 |
 | 結果発表（満点） | 絵文字15個（🎉🏆👑💯⭐✨🌟🥇）+ 長め振動 |
 
+### 復習・未挑戦モード（2026-01追加）
+
+| 項目 | 内容 |
+|------|------|
+| モード数 | 4モード（今日の3問、全問モード、復習モード、未挑戦モード） |
+| 復習モード | 過去に間違えた問題のみを出題 |
+| 未挑戦モード | まだ解いていない問題のみを出題 |
+| 記録タイミング | 全モード（3問でも全問でも）で問題ごとに記録 |
+| 記録方式 | 最後の結果で上書き（正解→不正解で不正解に） |
+| 対象0問時 | ボタンをグレー表示＆非活性 |
+
 ---
 
 ## HTML構造
@@ -143,6 +154,46 @@ body
         opacity: 0;
         transform: translateY(-120px) scale(0.8) rotate(-10deg);
     }
+}
+```
+
+### 復習・未挑戦モード用CSS
+
+```css
+/* 区切り線 */
+.mode-divider {
+    margin: 30px 0 15px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+/* 復習モードボタン */
+.mode-button.review-mode {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+/* 未挑戦モードボタン */
+.mode-button.unanswered-mode {
+    background: linear-gradient(135deg, #4ecdc4, #45b7aa);
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+}
+
+/* 問題数表示 */
+.mode-count {
+    font-size: 14px;
+    font-weight: normal;
+    opacity: 0.9;
+    display: block;
+    margin-top: 5px;
+}
+
+/* 対象0問時のグレー表示 */
+.mode-button.disabled {
+    background: linear-gradient(135deg, #bdc3c7, #95a5a6);
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 ```
 
@@ -266,6 +317,7 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 
 ## 他クイズHTMLへの適用チェックリスト
 
+### 基本機能
 - [ ] CSS: `.top-link a` スタイルを紫グラデーションに変更
 - [ ] CSS: `.correct-flash` と `@keyframes flashGreen` を追加
 - [ ] CSS: `.celebrate-emoji` と `@keyframes celebrate` を追加
@@ -273,15 +325,24 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 - [ ] JS: `celebrateResult()` 関数を追加
 - [ ] JS: `selectAnswer()` に `flashCorrect()` と自動スクロールを追加
 - [ ] JS: `showFinalScore()` に quiz-container非表示、スクロール、エフェクトを追加
-- [ ] JS: `resetQuiz()` に quiz-container再表示を追加、reset-button参照を削除
-- [ ] JS: `goHome()` に quiz-container再表示を追加、reset-button参照を削除
 - [ ] HTML: `#finalResult` から reset-button を削除
 - [ ] HTML: top-link のテキストを「← トップページへ」に変更
 - [ ] **HTML: モード選択ボタンが `onclick="goHome()"` になっている**（`resetQuiz()`ではない）
 
+### 復習・未挑戦モード（2026-01追加）
+- [ ] JS: `TOTAL_QUESTIONS` 定数を追加
+- [ ] CSS: `.mode-divider`, `.review-mode`, `.unanswered-mode`, `.mode-count`, `.disabled` を追加
+- [ ] HTML: モード選択を4モードに変更（今日の3問、全問モード、復習モード、未挑戦モード）
+- [ ] JS: `updateModeButtons()` 関数を追加
+- [ ] JS: `shuffleArray()` 関数を追加
+- [ ] JS: `startQuiz()` に `review`, `unanswered` モード分岐を追加
+- [ ] JS: `selectAnswer()` に `recordQuestionResult()` 呼び出しを追加
+- [ ] JS: `goHome()` に `updateModeButtons()` 呼び出しを追加
+- [ ] JS: `DOMContentLoaded` で `updateModeButtons()` を呼び出す
+
 > **注意**: `resetQuiz()` と `goHome()` の違い
 > - `resetQuiz()`: 同じモードでクイズをやり直す
-> - `goHome()`: モード選択画面（今日の5問、全問モードなど）に戻る
+> - `goHome()`: モード選択画面に戻る
 >
 > 結果画面の「モード選択」ボタンは必ず `goHome()` を使用してください。
 
