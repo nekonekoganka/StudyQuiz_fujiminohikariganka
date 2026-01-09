@@ -217,7 +217,7 @@
             transform: none;
             box-shadow: none;
         }
-        .next-button, .reset-button, .home-button, .result-button {
+        .next-button, .home-button, .result-button {
             background: linear-gradient(135deg, #d38312, #a86007);
             color: white;
             border: none;
@@ -229,18 +229,58 @@
             margin: 10px 10px;
             transition: all 0.3s ease;
         }
-        
+
+        .mypage-button {
+            background: linear-gradient(135deg, #26a69a, #00897b);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .top-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
+            .next-button, .home-button, .result-button, .mypage-button, .top-button {
                 padding: 12px 25px;
                 font-size: 16px;
                 margin: 10px 5px;
             }
         }
-        
-        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
+
+        .next-button:hover, .home-button:hover, .result-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(211, 131, 18, 0.4);
+        }
+
+        .mypage-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
+        }
+
+        .top-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         .feedback {
             margin-top: 15px;
@@ -851,7 +891,10 @@
         </div>
     </div>
 
+    <script src="quiz-config.js"></script>
     <script>
+        const QUIZ_ID = 'megane-awase';
+
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 28;
@@ -975,7 +1018,12 @@
             
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
-            
+
+            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
+            setTimeout(() => {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
             if (currentQuestion < totalQuestions - 1) {
                 nextButton.classList.remove('hidden');
             } else {
@@ -1008,6 +1056,12 @@
             document.querySelector('.quiz-status').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果を記録
+            if (typeof recordQuizResult === 'function') {
+                recordQuizResult(QUIZ_ID, score, totalQuestions);
+            }
+
             let title, message;
 
             if (score === totalQuestions) {
@@ -1035,7 +1089,11 @@
             document.getElementById('resultTitleCard').classList.remove('hidden');
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.reset-button').classList.remove('hidden');
+            document.querySelector('.mypage-button').classList.remove('hidden');
+            document.querySelector('.top-button').classList.remove('hidden');
+
+            // トップへスクロール
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function resetQuiz() {
@@ -1062,11 +1120,12 @@
             
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
-            
+            document.querySelector('.mypage-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
+
             document.querySelector('.quiz-status').classList.remove('hidden');
-            
+
             if (totalQuestions === 5) {
                 startQuiz('daily5');
             } else if (totalQuestions === 10) {
@@ -1102,8 +1161,9 @@
             
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.mypage-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
@@ -1135,8 +1195,9 @@
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
       <div class="buttons">
-        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+        <button class="home-button hidden" onclick="resetQuiz()">🔄 モード選択</button>
+        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
+        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
       </div>
     </div>
 
