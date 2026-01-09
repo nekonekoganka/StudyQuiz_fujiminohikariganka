@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>緑内障検診クイズ - 受付スタッフ向け</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .quiz-container {
+                padding: 20px;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            font-size: 28px;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+        
+        .mode-selection {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .mode-button {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .mode-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .mode-button {
+                width: 90%;
+                padding: 15px 30px;
+                font-size: 16px;
+                margin: 12px auto;
+            }
+        }
+        
+        .mode-description {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-right: 0.75em;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .options, .feedback, .explanation {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .question-card {
+                padding: 20px;
+                display: block;
+            }
+            .question-number {
+                margin-bottom: 12px;
+            }
+            .question-text {
+                font-size: 20px;
+            }
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .option {
+                padding: 15px;
+                font-size: 16px;
+                min-height: 60px;
+            }
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #ebf4ff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.25);
+        }
+        .option.correct {
+            border-color: #48bb78;
+            background: #f0fff4;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+        .option.incorrect {
+            border-color: #f56565;
+            background: #fff5f5;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+        .option.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .next-button, .reset-button, .home-button, .result-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .next-button, .reset-button, .home-button, .result-button {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 10px 5px;
+            }
+        }
+        
+        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+            text-align: center;
+        }
+        .feedback.correct {
+            background: #f0fff4;
+            color: #38a169;
+            border: 2px solid #48bb78;
+        }
+        .feedback.incorrect {
+            background: #fff5f5;
+            color: #e53e3e;
+            border: 2px solid #f56565;
+        }
+        
+        .quiz-status {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #4a5568;
+            margin: 0;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-status {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .score {
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .explanation {
+            background: #e6fffa;
+            border-left: 5px solid #38b2ac;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .explanation {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+        
+        .important-note {
+            background: #fef5e7;
+            border: 2px solid #f6ad55;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #744210;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .important-note {
+                padding: 12px;
+                font-size: 16px;
+            }
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .clinic-note {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #856404;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+    
+        .final-score-card{
+            background:#f8fafc;
+            border:2px solid #667eea;
+            border-radius:15px;
+            padding:30px;
+            margin-top:30px;
+            text-align:center;
+            box-shadow:0 3px 15px rgba(0,0,0,.08)
+        }
+        .result-title {
+            font-size:32px;
+            font-weight:700;
+            color:#4a5568;
+            margin-bottom:20px
+        }
+        
+        .result-detail{
+            font-size: 20px;
+            line-height: 1.8;
+            color: #2d3748;
+        }
+
+        .result-evaluation {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .final-score-highlight {
+            color: #dc2626; /* スコアは赤色で統一 */
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .result-title {font-size:28px}
+            .result-detail{font-size:18px;line-height:1.7}
+            .result-evaluation {font-size: 22px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🏥 緑内障検診クイズ 🏥</h1>
+        <div class="subtitle">眼科受付スタッフ向け - 制度理解度チェック</div>
+        
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily3')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily5')">
+                📊 今日の5問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily7')">
+                📈 今日の7問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 フルコース（全14問）
+            </button>
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 全14問からランダムに3問を出題（約2分）<br>
+                <strong>今日の5問:</strong> 全14問からランダムに5問を出題（約3分）<br>
+                <strong>今日の7問:</strong> 全14問からランダムに7問を出題（約5分）<br>
+                <strong>フルコース:</strong> 全14問を順番に出題（約10分）
+            </div>
+        </div>
+        
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="score">スコア: <span id="score">0</span> / <span id="total">14</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">この緑内障検診を 受診できない自治体は どれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">ふじみ野市</div>
+                    <div class="option" data-answer="false">富士見市</div>
+                    <div class="option" data-answer="true">川越市</div>
+                    <div class="option" data-answer="false">三芳町</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障検診は「ふじみ野市、富士見市、三芳町の実施医療機関で受診できます」と記載されており、川越市は含まれていません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">令和7年度の緑内障検診対象者はどれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">令和7年中に 46歳と 56歳に なる方</div>
+                    <div class="option" data-answer="true">令和7年度内に 46歳と 56歳に なる方</div>
+                    <div class="option" data-answer="false">令和7年度内に 45歳と 55歳に なる方</div>
+                    <div class="option" data-answer="false">令和7年中に 45歳と 55歳に なる方</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>対象者は「令和7年度中に46歳、56歳になる方」と明記されています。「令和7年中」ではなく「令和7年度内に」が正しい表現です。
+                    <div class="important-note">
+                        <strong>受付での確認ポイント：</strong><br>
+                        ・「年度」と「年中」の違いを正しく理解することが重要<br>
+                        ・46歳：昭和54年 4月2日 〜 昭和55年 4月1日 生まれ<br>
+                        ・56歳：昭和44年 4月2日 〜 昭和45年 4月1日 生まれ
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">受診時に必要な持ち物で、マイナ保険証を 持参されない場合に 必要なものは どれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">健康保険証のみ</div>
+                    <div class="option" data-answer="true">資格確認書 と 住所が確認できるもの</div>
+                    <div class="option" data-answer="false">運転免許証のみ</div>
+                    <div class="option" data-answer="false">マイナンバーカードの 紙のコピー</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>必要な持ち物は「マイナ保険証」または「資格確認書 と 住所が確認できるもの」です。
+                    <div class="important-note">
+                        <strong>受付での確認：</strong>マイナ保険証を 持参されない場合は、資格確認書と 住所確認書類の 両方が 必要です。どちらか 一方だけでは 不十分なことを 患者さんに お伝えしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">緑内障検診の 予約をしたいと 言われました。当院で 案内する方法は どれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">💁窓口での 直接予約</div>
+                    <div class="option" data-answer="false">☎電話での 予約</div>
+                    <div class="option" data-answer="false">📶ネットでの「一般」予約</div>
+                    <div class="option" data-answer="true">📶ネットでの「視野」予約</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緑内障検診のご予約は「ネットでの視野予約」です。
+                    <div class="important-note">
+                        <strong>受付での案内：</strong>緑内障検診は「視野予約」枠です。窓口での直接予約、電話予約、一般予約では受け付けてません。必ず「ネットでの視野予約」をご利用いただくようご案内してください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">緑内障検診を 予約なしで 当日受診したいと 言われました。当院での 適切な対応は どれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">いかなる場合も、当日は不可</div>
+                    <div class="option" data-answer="true">視野予約枠が 空いていれば案内する。なければ、後日のネット予約を案内する。</div>
+                    <div class="option" data-answer="false">先着順で 受け付ける</div>
+                    <div class="option" data-answer="false">保健センターに 確認してから 判断</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「視野予約」の空きが有ればそのまま案内してください。無ければ、後日受診を勧めて下さい。
+                    <div class="important-note">
+                        <strong>受付での対応：</strong>緑内障検診は ネットの予約制です。枠の空きが無ければ 予約なしでの受診はできないことを お伝えし、予約を お取りしてからの受診を ご案内してください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">緑内障検診の 実施期間は いつから いつまで？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">5月 1日 〜 10月 31日</div>
+                    <div class="option" data-answer="true">6月 1日 〜 11月 30日</div>
+                    <div class="option" data-answer="false">7月 1日 〜 12月 31日</div>
+                    <div class="option" data-answer="false">4月 1日 〜 9月 30日</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>実施期間は「6月1日から11月30日まで」です。
+                    <div class="important-note">
+                        <strong>受付での対応：</strong>期間外に来院された方には、検診ハガキが利用できないことを 伝えてください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">緑内障検診の 自己負担金は いくらでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">500円</div>
+                    <div class="option" data-answer="true">1,000円</div>
+                    <div class="option" data-answer="false">1,500円</div>
+                    <div class="option" data-answer="false">無料</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>自己負担金は 💴1,000円です。
+                    <div class="important-note">
+                        <strong>注意：</strong>生活保護の方は、当院では生活保護の方の検診は実施できません。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">生活保護の方が 当院での緑内障検診を 希望された場合の対応で 正しいのは どれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">無料で検診を実施する</div>
+                    <div class="option" data-answer="true">当院では実施できないことをお伝えする</div>
+                    <div class="option" data-answer="false">自費で1,000円お支払いいただく</div>
+                    <div class="option" data-answer="false">保健センターに確認してから判断する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>当院は **生活保護指定医療機関 ではない** ため、生活保護を受給されている方の検診は実施できません。
+                    <div class="clinic-note">
+                        <strong>当院での重要な対応：</strong>生活保護を受給されている方には、当院では検診を実施できない旨をお伝えし、生活保護指定医療機関での受診（めぐみ眼科・高橋眼科 など）をご案内してください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">受診券（はがき）はいつ発送されるでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">4月</div>
+                    <div class="option" data-answer="true">5月</div>
+                    <div class="option" data-answer="false">6月</div>
+                    <div class="option" data-answer="false">3月</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>対象者には 自治体より 5月に受診券（はがき）が 発送されます。
+                    <div class="important-note">
+                        <strong>受付での対応：</strong>5月より前に問い合わせがあった場合は、5月発送予定とお伝えください。受診券を紛失された方は、お住いの自治体への問い合わせを 勧めて下さい。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">検診に 含まれていない 検査は どれでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">視野 検査</div>
+                    <div class="option" data-answer="false">眼圧 検査</div>
+                    <div class="option" data-answer="true">眼位 検査</div>
+                    <div class="option" data-answer="false">眼底三次元画像 検査</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>検診内容には「矯正視力・スリット検査・隅角検査・眼圧検査・精密眼底検査・視野検査・OCT（眼底三次元画像）検査」が含まれており、眼位検査は含まれていません。
+                    <div class="important-note">
+                        <strong>受付での説明：</strong>検診には、眼位・立体視・フリッカー検査は含まれていないこと、覚えておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">緑内障で 治療中・点眼中の方は 検診を受けられますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">受けることができる</div>
+                    <div class="option" data-answer="true">受けられない。検査するなら 保険診療での扱いとなる</div>
+                    <div class="option" data-answer="false">医師の判断による</div>
+                    <div class="option" data-answer="false">自己負担金が半額になる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「眼科で治療中の方、経過観察中の方は、原則医療での受診となります」と明記されています。
+                    <div class="important-note">
+                        <strong>重要な受付対応：</strong>緑内障で治療・点眼中の方は 検診対象外です。検診ハガキは使用できず、保険診療での 受診となることを お伝えしてください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question12">
+                <div class="question-number">問題 12</div>
+                <div class="question-text">47歳の方（昭和53年8月生まれ）から 検診について 問い合わせがありました。当院での返答はどうしますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">今年度は対象外 とお伝えする</div>
+                    <div class="option" data-answer="true">検診が55歳まで実施が無いので、検査希望なら 保険診療での 受診を勧める</div>
+                    <div class="option" data-answer="false">検診ハガキの利用可能と お伝えする</div>
+                    <div class="option" data-answer="false">自費での検診をお勧めする</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>対象年齢は 46歳と56歳 のみです。47歳の方は 次の検診対象年齢（56歳）まで 実施がないため、必要に応じて 保険診療での受診を お勧めします。
+                    <div class="important-note">
+                        <strong>受付での説明：</strong>検診対象外の方には、心配があれば 保険診療での受診を ご案内してください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question13">
+                <div class="question-number">問題 13</div>
+                <div class="question-text">初めて 当院に来て 緑内障検診を受けた人が、結果不良のため、次月に再検査で 受診しました。この人の算定は どうなる？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">保険診療（初診）</div>
+                    <div class="option" data-answer="true">保険診療（再診）＋屈折・角膜曲率のコストは 算定は可能</div>
+                    <div class="option" data-answer="false">自費1000円</div>
+                    <div class="option" data-answer="false">保険診療（再診）＋屈折・角膜曲率のコストは 算定不可</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>！解説！：</strong>検診で受診した後の再検査は、既に当院を受診しているため保険診療（再診）扱いとなります。しかし、保険診療での受診は初めてのため、屈折・角膜曲率のコストは　算定可能です。
+                    <div class="important-note">
+                        <strong>重要な受付対応：</strong>検診後の再検査は 保険診療となり、再診料や 検査料が 発生することを 事前にお伝えしてください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question14">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">当院のこの検診に関する 自治体への問い合わせ先は どちらでしょうか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ふじみ野市保健センター 健康推進係</div>
+                    <div class="option" data-answer="false">ふじみ野市役所 市民課</div>
+                    <div class="option" data-answer="false">埼玉県保健所</div>
+                    <div class="option" data-answer="false">各実施医療機関</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>問い合わせ先は「保健センター 健康推進係（049-264-8292）」です。
+                    <div class="important-note">
+                        <strong>受付での対応：</strong>制度に関する 詳細な問い合わせで 答えられない場合は、保健センターへの 連絡をお勧めしてください。連絡先を控えておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 14;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            
+            if (mode === 'daily3') {
+                isDaily = true;
+                totalQuestions = 3;
+                questionList = getRandomQuestions(3);
+            } else if (mode === 'daily5') {
+                isDaily = true;
+                totalQuestions = 5;
+                questionList = getRandomQuestions(5);
+            } else if (mode === 'daily7') {
+                isDaily = true;
+                totalQuestions = 7;
+                questionList = getRandomQuestions(7);
+            } else {
+                isDaily = false;
+                totalQuestions = 14;
+                questionList = [...allQuestions];
+            }
+            
+            for (let i = 1; i <= 14; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionList.includes(i)) {
+                    if (i === questionList[0]) {
+                        questionElement.classList.remove('hidden');
+                    } else {
+                        questionElement.classList.add('hidden');
+                    }
+                } else {
+                    questionElement.style.display = 'none';
+                }
+            }
+            
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                const questionNumber = questionElement.querySelector('.question-number');
+                questionNumber.textContent = `問題 ${index + 1}`;
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+            
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+            
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+            
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+            
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+            
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+            
+            updateScore();
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+            
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+            
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                document.getElementById(`question${questionId}`).classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let title, emoji, message;
+
+            if (isDaily) {
+                if (score === totalQuestions) {
+                    title = '🏆 PERFECT! 🏆';
+                    emoji = '🎉✨🎊';
+                    message = `${totalQuestions}問全問正解！緑内障検診の重要ポイントを しっかり理解していますね。\n今日も患者さんに 安心してもらえる対応を お願いします！\n${emoji}`;
+                } else if (score >= Math.ceil(totalQuestions * 0.8)) {
+                    title = '👍 GOOD JOB! 👍';
+                    emoji = '🎈📚💪';
+                    message = `よくできました！基本的なポイントは 押さえられています。\n間違えた箇所を 確認して、より確実な対応を 心がけましょう。\n${emoji}`;
+                } else {
+                    title = '📖 KEEP LEARNING! 📖';
+                    emoji = '🌱📝🔍';
+                    message = `今日は復習の機会になりましたね。\n緑内障検診の流れや重要ポイントを もう一度確認して、\n明日からの業務に活かしていきましょう！\n${emoji}`;
+                }
+            } else {
+                if (score === totalQuestions) {
+                    title = '🏆 PERFECT SCORE! 🏆';
+                    emoji = '🎉✨🎊';
+                    message = `100点満点！あなたは 緑内障検診の流れと 患者対応のポイントを 完全に 理解しています。\n患者さんへの 説明も 安心して 任せられる レベルです。\n日々の 受付業務に 自信を持って、これからも 患者さんの サポートを お願いします！\n${emoji}`;
+                } else if (score >= totalQuestions * 0.9) {
+                    title = '🌟 EXCELLENT! 🌟';
+                    emoji = '👏🎯💫';
+                    message = `素晴らしい出来です！検診の 手順や重要ポイントを 十分に理解しています。\nもう一度 簡単に復習すれば、より確実な 患者対応が できますよ。\n次回も この調子で、患者さんに 頼られる受付を 目指しましょう！\n${emoji}`;
+                } else if (score >= totalQuestions * 0.8) {
+                    title = '👍 GREAT JOB! 👍';
+                    emoji = '🎈📚💪';
+                    message = `良い結果です！主要な検査項目や 問診のポイントは 押さえられています。\n苦手な分野を 重点的に学習すれば、さらにスムーズな 受付対応が 可能です。\n実際の現場で 自信を持って 声かけしてみてくださいね！\n${emoji}`;
+                } else if (score >= totalQuestions * 0.7) {
+                    title = '📖 GOOD EFFORT! 📖';
+                    emoji = '🌱📝🔍';
+                    message = `努力が 実を結びつつ ありますね！検診の全体像は しっかり 理解できています。\n間違えた箇所を 見直し、患者への声かけを 意識することで、\nより質の高いサービスが 提供できます。\n引き続き 頑張りましょう！\n${emoji}`;
+                } else {
+                    title = '💪 KEEP LEARNING! 💪';
+                    emoji = '📚🌟💡';
+                    message = `今回は まだ課題が 見つかりましたが、緑内障検診の 受付業務に 慣れるための 大切なステップです。\n検査プロセスや 患者案内のポイントを しっかり復習し、実践で 活かしていきましょう。\n小さな学びが 大きな成果に つながります。次回は 必ず ステップアップできますよ！\n${emoji}`;
+                }
+            }
+            
+            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
+
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+            
+            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.home-button').classList.remove('hidden');
+            document.querySelector('.reset-button').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            score = 0;
+            updateScore();
+            
+            for (let i = 1; i <= 14; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                questionElement.style.display = '';
+                questionElement.classList.add('hidden');
+                
+                const options = questionElement.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.classList.remove('correct', 'incorrect', 'disabled');
+                });
+                
+                questionElement.querySelector('.feedback').style.display = 'none';
+                questionElement.querySelector('.explanation').classList.add('hidden');
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            
+            document.querySelector('.quiz-status').classList.remove('hidden');
+            
+            if (totalQuestions === 3) {
+                startQuiz('daily3');
+            } else if (totalQuestions === 5) {
+                startQuiz('daily5');
+            } else if (totalQuestions === 7) {
+                startQuiz('daily7');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            
+            for (let i = 1; i <= 14; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                questionElement.style.display = '';
+                questionElement.classList.add('hidden');
+                
+                const options = questionElement.querySelectorAll('.option');
+                options.forEach(option => {
+                    option.classList.remove('correct', 'incorrect', 'disabled');
+                });
+                
+                questionElement.querySelector('.feedback').style.display = 'none';
+                questionElement.querySelector('.explanation').classList.add('hidden');
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = 14;
+            questionList = [];
+            isDaily = false;
+            
+            updateScore();
+            
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <!-- ▼▼▼ HTML構造を修正 ▼▼▼ -->
+    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
+      <div id="resultTitle" class="result-title"></div>
+    </div>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="buttons">
+        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
+        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+      </div>
+    </div>
+    <!-- ▲▲▲ HTML構造を修正 ▲▲▲ -->
+
+</body>
+</html>

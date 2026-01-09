@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遠用メガネ度数決定クイズ - スタッフ向け</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Noto Sans JP', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+        }
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .quiz-container {
+                padding: 20px;
+            }
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1a2937;
+            font-size: 28px;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+        
+        .mode-selection {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .mode-button {
+            display: block;
+            width: 80%;
+            max-width: 400px;
+            margin: 15px auto;
+            background: linear-gradient(135deg, #d38312, #a86007);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(211, 131, 18, 0.3);
+        }
+        
+        .mode-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(211, 131, 18, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .mode-button {
+                width: 90%;
+                padding: 15px 30px;
+                font-size: 16px;
+                margin: 12px auto;
+            }
+        }
+        
+        .mode-description {
+            font-size: 14px;
+            color: #1a2937;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .question-card {
+            background: #fdfdfd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 6px solid #d38312;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border: 1px solid #ecf0f1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #a86007;
+            font-size: 19px;
+            margin-bottom: 20px;
+            margin-right: 0.75em;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .options, .feedback, .explanation {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .question-card {
+                padding: 20px;
+                display: block;
+            }
+            .question-number {
+                margin-bottom: 12px;
+            }
+            .question-text {
+                font-size: 20px;
+            }
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+        
+        .option {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .option {
+                padding: 15px;
+                font-size: 16px;
+                min-height: 60px;
+            }
+        }
+        
+        .option:hover {
+            border-color: #d38312;
+            background: #fff8e1;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(211, 131, 18, 0.25);
+        }
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        .option.incorrect {
+            border-color: #f44336;
+            background: #ffebee;
+            cursor: default;
+            transform: none;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+        }
+        .option.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+        .option.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .next-button, .reset-button, .home-button, .result-button {
+            background: linear-gradient(135deg, #d38312, #a86007);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 10px;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .next-button, .reset-button, .home-button, .result-button {
+                padding: 12px 25px;
+                font-size: 16px;
+                margin: 10px 5px;
+            }
+        }
+        
+        .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(211, 131, 18, 0.4);
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            display: none;
+            text-align: center;
+        }
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #a5d6a7;
+        }
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+        
+        .quiz-status {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #1a2937;
+            margin: 0;
+            padding: 12px;
+            background: #f5f7f8;
+            border-radius: 10px;
+            border: 2px solid #ecf0f1;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            margin: 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-status {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .score {
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+        .buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .explanation {
+            background: #eef2f3;
+            border-left: 5px solid #607d8b;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .explanation {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+        
+        .staff-point {
+            background: #fff8e1;
+            border: 2px solid #ffab00;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 18px;
+            color: #4e342e;
+            line-height: 1.4;
+            font-weight: 600;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #d38312, #a86007);
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .final-score-card{
+            background:#fdfdfd;
+            border:2px solid #2c3e50;
+            border-radius:15px;
+            padding:30px;
+            margin-top:30px;
+            text-align:center;
+            box-shadow:0 3px 15px rgba(0,0,0,.08)
+        }
+        .result-title {
+            font-size:32px;
+            font-weight:700;
+            color:#1a2937;
+            margin-bottom:20px
+        }
+        
+        .result-detail{
+            font-size: 20px;
+            line-height: 1.8;
+            color: #1a2937;
+        }
+
+        .result-evaluation {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .final-score-highlight {
+            color: #c62828;
+            font-weight: bold;
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .result-title {font-size:28px}
+            .result-detail{font-size:18px;line-height:1.7}
+            .result-evaluation {font-size: 22px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🤓 遠用メガネ度数決定クイズ 🤓</h1>
+        <div class="subtitle">スタッフ向け - 処方スキルアップ</div>
+        
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily5')">
+                📋 今日の5問
+            </button>
+            <button class="mode-button" onclick="startQuiz('daily10')">
+                📊 今日の10問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 フルコース（全28問）
+            </button>
+            <div class="mode-description">
+                <strong>今日の5問:</strong> 全28問からランダムに5問を出題<br>
+                <strong>今日の10問:</strong> 全28問からランダムに10問を出題<br>
+                <strong>フルコース:</strong> 全28問を順番に出題
+            </div>
+        </div>
+        
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="score">スコア: <span id="score">0</span> / <span id="total">28</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">眼鏡処方の第一歩として、最初に行うべきことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">問診（主訴と使用目的の聴取）</div>
+                    <div class="option" data-answer="false">オートレフフラクトメータ（AR）での測定</div>
+                    <div class="option" data-answer="false">視力検査</div>
+                    <div class="option" data-answer="false">眼圧検査</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>全ての検査の基本は問診です。患者様が何に困っていて、新しいメガネをどのような目的で使いたいのか（例：運転、PC作業、読書）を正確に把握することが、満足度の高い処方の第一歩となります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">オートレフ（AR）の測定値は、どのように扱うのが最も適切ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">そのまま処方値として採用する</div>
+                    <div class="option" data-answer="true">あくまで他覚的屈折検査の参考値として扱う</div>
+                    <div class="option" data-answer="false">レンズメーターの値と比較して、平均値をとる</div>
+                    <div class="option" data-answer="false">患者様には見せないようにする</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>オートレフは器械による他覚的な測定値であり、調節の介入などにより誤差が生じることがあります。そのため、処方の出発点となる重要な参考値ですが、必ず自覚的屈折検査で確認・修正が必要です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">「雲霧法」の主な目的は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">患者様の調節力を介入させない（リラックスさせる）ため</div>
+                    <div class="option" data-answer="false">乱視の軸を正確に測定するため</div>
+                    <div class="option" data-answer="false">両目の視力バランスを整えるため</div>
+                    <div class="option" data-answer="false">偽近視かどうかを判断するため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>雲霧法は、わざと強いプラス度数（雲霧レンズ）を入れて視界をぼやけさせ、目のピント調節筋（毛様体筋）の緊張をリラックスさせる手法です。これにより、調節が介入しない状態での正確な屈折度数を測定することができます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">雲霧法で、プラス度数を弱めていく際に、患者様から視力向上の訴えがなくなった最初の度数を何と呼びますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">仮性度数</div>
+                    <div class="option" data-answer="false">最高視力値</div>
+                    <div class="option" data-answer="true">球面度数の最強度数（最強主経線）</div>
+                    <div class="option" data-answer="false">加入度</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>プラス度数を弱めていき、それ以上弱めても視力が向上しなくなった最初の度数が、その時点での「最高視力の最強度数」となります。これは、乱視がない場合の球面度数の決定や、乱視検査の準備段階となります。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">放射線状の視標（乱視表）を見てもらい、特に濃く見える線の方向を確認する目的は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">乱視の度数を特定するため</div>
+                    <div class="option" data-answer="true">乱視の軸方向を推定するため</div>
+                    <div class="option" data-answer="false">近視の度数を特定するため</div>
+                    <div class="option" data-answer="false">視力の質を確認するため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>乱視があると、放射線視標のある特定の方向の線が他よりも濃く、はっきりと見えます。その方向を確認することで、乱視の軸（Axis）をおおよそ推定することができます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">クロスシリンダーレンズを用いて乱視軸を精密に検査する際、患者様には何を比較してもらいますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">レンズを反転させた時の、視標の見え方の差</div>
+                    <div class="option" data-answer="false">赤と緑の背景での視標の見え方</div>
+                    <div class="option" data-answer="false">片目ずつでの視標の見え方</div>
+                    <div class="option" data-answer="false">視標の大きさの変化</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>クロスシリンダー法では、レンズを反転させた時の1番の見え方と2番の見え方を比較してもらい、「どちらがよりハッキリ、または黒く見えるか」を答えてもらいます。その回答を元に、軸を微調整していきます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">クロスシリンダーで乱視度数を決定する際、最終的にどの状態を目指しますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">1番が圧倒的に良く見える状態</div>
+                    <div class="option" data-answer="false">2番が圧倒的に良く見える状態</div>
+                    <div class="option" data-answer="true">1番と2番の見え方が同じになる状態</div>
+                    <div class="option" data-answer="false">どちらもぼやけて見える状態</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>乱視度数が適切に矯正されると、クロスシリンダーを反転させても、縦線と横線の見え方の差がなくなります。つまり、「どちらも同じくらいに見える」という状態が、乱視度数決定のゴールとなります。
+                </div>
+            </div>
+
+             <div class="question-card" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">遠視眼の処方の原則として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">最高視力の得られる最「強」のプラス度数</div>
+                    <div class="option" data-answer="false">最高視力の得られる最「弱」のプラス度数</div>
+                    <div class="option" data-answer="false">オートレフと同じ度数</div>
+                    <div class="option" data-answer="false">本人が楽だと感じる一番弱い度数</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>遠視眼は、自身の調節力を使ってピントを合わせているため、その調節力をできるだけリラックスさせてあげることが重要です。そのため、良好な視力が得られる範囲で最も強いプラス度数（最強度数）を処方するのが原則です。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">近視眼の処方の原則として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">最高視力の得られる最「強」のマイナス度数</div>
+                    <div class="option" data-answer="true">最高視力の得られる最「弱」のマイナス度数</div>
+                    <div class="option" data-answer="false">少しぼやけるくらいの弱い度数</div>
+                    <div class="option" data-answer="false">本人が一番よく見えると答えた最も強い度数</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視の矯正でマイナス度数を強くしすぎると（過矯正）、目は常にピントを合わせようと緊張状態になり、眼精疲労の原因となります。そのため、良好な視力が得られる範囲で最も弱いマイナス度数（最弱度数）を処方するのが原則です。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">新しいメガネで「少しクラクラする」と患者様が訴えた際、度数以外で考えられる主な原因は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">レンズのコーティングの種類</div>
+                    <div class="option" data-answer="true">フレームのフィッティング（前傾角やそり角）が適切でないこと</div>
+                    <div class="option" data-answer="false">フレームの色が合わない</div>
+                    <div class="option" data-answer="false">レンズのメーカー</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>度数が合っていても、フレームの傾き（前傾角）や顔への沿い方（そり角）が適切でないと、見え方に違和感や歪みが生じることがあります。特に乱視が強い場合に影響が出やすいです。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">眼鏡処方において「頂間距離（VD）」の測定と考慮が特に重要になるのは、どのような場合ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">度数が強い（概ね±4.00D以上）場合</div>
+                    <div class="option" data-answer="false">乱視が強い場合</div>
+                    <div class="option" data-answer="false">老眼が始まったばかりの場合</div>
+                    <div class="option" data-answer="false">プリズム処方の場合</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>レンズと目の距離（頂間距離）が変わると、特に度数が強い場合に、実際に目に届く度数が変化してしまいます。検査時と装用時でこの距離が異なると、見え方に大きな影響が出るため、正確な測定が重要です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question12">
+                <div class="question-number">問題 12</div>
+                <div class="question-text">「利き目」は、眼鏡処方においてどのような意味を持ちますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">左右の矯正視力に差をつけざるを得ない場合、利き目を優先して矯正する</div>
+                    <div class="option" data-answer="false">利き目には必ず強い度数を入れる</div>
+                    <div class="option" data-answer="false">利き目には乱視矯正をしない</div>
+                    <div class="option" data-answer="false">眼鏡処方には全く関係ない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>不等像視などで左右の度数を完全に同じにできない場合、人は無意識に利き目からの情報を優先します。そのため、利き目の方の視力がより良好になるように度数を調整することが、快適な見え方につながります。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question13">
+                <div class="question-number">問題 13</div>
+                <div class="question-text">最終的な度数を決定する前に、テストフレームをかけた患者様になぜ歩いてもらうのですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">疲労度をチェックするため</div>
+                    <div class="option" data-answer="true">空間視（足元の見え方、歪み）に問題がないか確認するため</div>
+                    <div class="option" data-answer="false">全身のバランス感覚を測るため</div>
+                    <div class="option" data-answer="false">検査終了の合図</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>特に乱視の度数や軸を大きく変えた場合、静止した状態では良くても、歩いた時に床が浮いて見えたり、空間が歪んで感じられたりすることがあります。実際の使用感を確認するために、歩行テストは非常に重要です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question14">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">初めてメガネをかける患者様への度数決定で、特に配慮すべきことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">必ず完全矯正値にする</div>
+                    <div class="option" data-answer="false">少し強めの度数にして、将来の近視進行に備える</div>
+                    <div class="option" data-answer="true">慣れやすさを考慮し、完全矯正値より少し弱めにすることがある</div>
+                    <div class="option" data-answer="false">乱視は矯正しない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初めてのメガネの場合、脳が新しい見え方に慣れていないため、完全矯正値では違和感や疲れを感じることがあります。そのため、患者様と相談の上、あえて少し弱い度数から始めて、慣れてもらうことを優先する場合があります。
+                </div>
+            </div>
+
+            <div class="question-card" id="question15">
+                <div class="question-number">問題 15</div>
+                <div class="question-text">レンズメーターで測定した古いメガネの度数が、今回の処方と大きく異なる場合、どうしますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">患者様に見え方の変化や違和感について十分に説明し、同意を得る</div>
+                    <div class="option" data-answer="false">必ず古いメガネに近い度数に調整する</div>
+                    <div class="option" data-answer="false">レンズメーターの測定値は無視する</div>
+                    <div class="option" data-answer="false">新しい処方箋の発行を断る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>度数を大きく変更すると、見え方が劇的に変わるため、患者様が強い違和感を覚える可能性があります。「今よりハッキリ見えますが、慣れるまで少し時間がかかるかもしれません」といった事前説明とインフォームドコンセントが不可欠です。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question16">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">「球面レンズ」と「円柱レンズ」の組み合わせで、何を矯正しますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">近視と老眼</div>
+                    <div class="option" data-answer="true">近視または遠視と、乱視</div>
+                    <div class="option" data-answer="false">斜位と斜視</div>
+                    <div class="option" data-answer="false">色覚異常と立体視</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>球面レンズ（S）は、近視や遠視といった全体的なピントのズレを矯正します。円柱レンズ（C）は、乱視という方向によるピントのズレを矯正します。この二つを組み合わせて、鮮明な視界を作ります。
+                </div>
+            </div>
+
+            <div class="question-card" id="question17">
+                <div class="question-number">問題 17</div>
+                <div class="question-text">瞳孔径が小さい場合、焦点深度はどうなりますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">浅くなる（ピントの合う範囲が狭くなる）</div>
+                    <div class="option" data-answer="false">変わらない</div>
+                    <div class="option" data-answer="true">深くなる（ピントの合う範囲が広くなる）</div>
+                    <div class="option" data-answer="false">瞳孔径と焦点深度は無関係</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>瞳孔が小さいと、カメラの絞りを絞った時のように、ピントの合う範囲（焦点深度）が深くなります。そのため、多少ピントがずれていても、ある程度はっきり見えてしまいます。明るい場所での検査ではこの点に注意が必要です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question18">
+                <div class="question-number">問題 18</div>
+                <div class="question-text">乱視の軸が「180度」の場合、どの方向の線が歪んで見えますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">縦方向</div>
+                    <div class="option" data-answer="false">横方向</div>
+                    <div class="option" data-answer="false">斜め45度方向</div>
+                    <div class="option" data-answer="false">すべての方向</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>これは直乱視と呼ばれ、角膜の縦方向のカーブが強いために起こります。矯正には、横方向（180度）にマイナスの円柱レンズを置きます。
+                </div>
+            </div>
+
+            <div class="question-card" id="question19">
+                <div class="question-number">問題 19</div>
+                <div class="question-text">完全矯正値で視力が1.0の患者様が「運転免許の更新で1.0必要だが、今のメガネは0.8しか見えない」と来院されました。最も考えられることは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">白内障が進行した</div>
+                    <div class="option" data-answer="true">前回の処方が、慣れやすさを優先した低矯正だった</div>
+                    <div class="option" data-answer="false">乱視が進行した</div>
+                    <div class="option" data-answer="false">患者様の勘違い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>特に初めてのメガネや、度数を大きく変えた場合、意図的に少し弱い度数（低矯正）で処方することがあります。生活に支障はなくても、特定の目的（免許更新など）でより高い視力が必要になった場合、再調整が必要となります。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question20">
+                <div class="question-number">問題 20</div>
+                <div class="question-text">仮性近視の可能性がある若い患者様に雲霧法を行うと、どのような反応が予想されますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">最初から視力表がよく見える</div>
+                    <div class="option" data-answer="true">雲霧後、AR値より大幅に近視が弱くなる、または遠視になる</div>
+                    <div class="option" data-answer="false">乱視の軸が大きく変わる</div>
+                    <div class="option" data-answer="false">雲霧をしても全く視力が変わらない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>仮性近視は調節の緊張が原因です。雲霧法でその緊張が解けると、本来の屈折状態が現れるため、器械で測定したAR値よりも近視がかなり弱くなったり、時には遠視であることが判明したりします。
+                </div>
+            </div>
+
+            <div class="question-card" id="question21">
+                <div class="question-number">問題 21</div>
+                <div class="question-text">レッドグリーン（二色）テストで、近視の患者様が「赤がハッキリ見える」と答えた場合、度数はどうすべきですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">マイナス度数をさらに強める</div>
+                    <div class="option" data-answer="true">マイナス度数が強すぎる（過矯正）可能性があるので、弱める</div>
+                    <div class="option" data-answer="false">乱視の度数を調整する</div>
+                    <div class="option" data-answer="false">このままで良い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視矯正の場合、「赤がハッキリ」は過矯正のサインです（赤の光は網膜より後ろにピントを結ぶため）。目が無理をしている可能性があるので、マイナス度数を弱める方向に調整します。理想は「緑が少しハッキリ」または「同等」です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question22">
+                <div class="question-number">問題 22</div>
+                <div class="question-text">不同視（左右の度数差が大きい）の眼鏡処方で、最も注意すべきことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">左右の網膜に映る像の大きさの違い（不等像視）による違和感</div>
+                    <div class="option" data-answer="false">フレームが傾きやすいこと</div>
+                    <div class="option" data-answer="false">片方のレンズだけが非常に高価になること</div>
+                    <div class="option" data-answer="false">見た目のバランスが悪くなること</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>左右の度数差が大きいと、それぞれの目で見える像の大きさが異なってしまい、これが強い違和感や頭痛の原因となります。そのため、完全矯正ではなく、左右差を少なくした常用可能な度数に調整することがあります。
+                </div>
+            </div>
+
+            <div class="question-card" id="question23">
+                <div class="question-number">問題 23</div>
+                <div class="question-text">眼鏡処方における「S.E.（球面等価度数）」が有用なのは、どのような場面ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">乱視がない場合</div>
+                    <div class="option" data-answer="true">コンタクトレンズ処方への換算や、大まかな屈折状態を把握する時</div>
+                    <div class="option" data-answer="false">老眼鏡の度数を決める時</div>
+                    <div class="option" data-answer="false">プリズム度数を決める時</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>球面等価度数（球面度数＋円柱度数の半分）は、乱視を含んだ全体の屈折状態を、乱視がないかのように一つの球面度数で近似的に表した値です。大まかな度数の把握や、コンタクトレンズ処方の参考に役立ちます。
+                </div>
+            </div>
+
+            <div class="question-card" id="question24">
+                <div class="question-number">問題 24</div>
+                <div class="question-text">眼鏡処方で、なぜ視力値を「1.5」や「2.0」まで目指さないのですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">レンズの制作技術に限界があるから</div>
+                    <div class="option" data-answer="true">過矯正になりやすく、眼精疲労の原因になるから</div>
+                    <div class="option" data-answer="false">1.0以上の視力は日常生活に不要だから</div>
+                    <div class="option" data-answer="false">保険診療のルールで決まっているから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>必要以上の視力を目指して度数を強くすると、過矯正状態になりやすくなります。過矯正は、目が常に緊張状態になるため、頭痛や肩こりといった眼精疲労の大きな原因となります。快適に使えることがメガネの最も重要な役割です。
+                </div>
+            </div>
+            
+            <div class="question-card" id="question25">
+                <div class="question-number">問題 25</div>
+                <div class="question-text">患者様が「一番よく見える度数にしてほしい」と強く希望した場合、どのように対応するのが望ましいですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">過矯正のリスクと疲れやすさについて説明し、常用可能な快適な度数を提案する</div>
+                    <div class="option" data-answer="false">希望通り、最も強く見える度数で処方する</div>
+                    <div class="option" data-answer="false">院長に相談する</div>
+                    <div class="option" data-answer="false">希望には応えられないと断る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「最高視力＝最良のメガネ」ではないことを丁寧に説明する必要があります。「よく見えるけれど疲れるメガネ」よりも、「少し視力は落ちても一日中快適なメガネ」の方が、生活の質は向上することを伝え、納得してもらうことが大切です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question26">
+                <div class="question-number">問題 26</div>
+                <div class="question-text">パソコン作業用のメガネを処方する際、モニターの距離以外に確認すべき重要なことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">キーボードのメーカー</div>
+                    <div class="option" data-answer="false">椅子の高さ</div>
+                    <div class="option" data-answer="true">モニター画面と手元の書類を交互に見るか</div>
+                    <div class="option" data-answer="false">部屋の広さ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>パソコン作業と一言で言っても、画面だけを見るのか、手元の書類も頻繁に見るのかで、最適なレンズの種類（中近か近々かなど）が変わってきます。具体的な作業内容のヒアリングが重要です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question27">
+                <div class="question-number">問題 27</div>
+                <div class="question-text">患者様が「今のメガネで遠くは良く見えるが、スマホが見にくい」と訴えています。最も可能性が高いのは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">近視が進行した</div>
+                    <div class="option" data-answer="true">老眼（調節力の低下）が始まった、または進行した</div>
+                    <div class="option" data-answer="false">乱視が進行した</div>
+                    <div class="option" data-answer="false">白内障が始まった</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>遠方の見え方に変化がなく、近方のみが見えにくくなった場合、最も考えられるのは加齢による調節力の低下、つまり老眼です。
+                </div>
+            </div>
+
+            <div class="question-card" id="question28">
+                <div class="question-number">問題 28</div>
+                <div class="question-text">眼鏡処方の最終決定において、最も優先されるべきことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="false">検査データ上の完全矯正値</div>
+                    <div class="option" data-answer="false">年齢相応の平均的な度数</div>
+                    <div class="option" data-answer="true">患者様が最も快適で、目的に合った見え方だと感じること</div>
+                    <div class="option" data-answer="false">前回と同じ度数</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>検査データはあくまで客観的な指標です。最終的には、トライアルレンズを装用してもらい、実際の使用環境を想定した上で、患者様自身が「これなら快適に使える」と感じる度数に調整することが、満足度の高い眼鏡処方のゴールです。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 28;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            
+            if (mode === 'daily5') {
+                isDaily = true;
+                totalQuestions = 5;
+                questionList = getRandomQuestions(5);
+            } else if (mode === 'daily10') {
+                isDaily = true;
+                totalQuestions = 10;
+                questionList = getRandomQuestions(10);
+            } else {
+                isDaily = false;
+                totalQuestions = 28;
+                questionList = [...allQuestions];
+            }
+            
+            for (let i = 1; i <= 28; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionList.includes(i)) {
+                    if (i === questionList[0]) {
+                        questionElement.classList.remove('hidden');
+                    } else {
+                        questionElement.classList.add('hidden');
+                    }
+                } else {
+                    if(document.getElementById(`question${i}`)){
+                        document.getElementById(`question${i}`).style.display = 'none';
+                    }
+                }
+            }
+            
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+            
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+            
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+            
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+            
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+            
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+            
+            updateScore();
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+            
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+            
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！眼鏡処方の知識はプロフェッショナルレベルです。\n患者様一人ひとりに最適な提案ができますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！処方の重要ポイントをしっかり理解されています。\n間違えた箇所を復習し、さらに自信を持って患者様に対応しましょう。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 あと一歩！ 👍';
+                message = `基本的な知識は身についています。\n特に専門的なテスト（二色テスト、クロスシリンダー）の目的などを中心に復習すると、理解が深まります。`;
+            } else {
+                title = '💪 要復習！ 💪';
+                message = `良い学習の機会になりましたね。\nこのクイズを元に知識を整理し、明日からの臨床に活かしていきましょう！`;
+            }
+            
+            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
+
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+            
+            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.home-button').classList.remove('hidden');
+            document.querySelector('.reset-button').classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            score = 0;
+            updateScore();
+            
+            for (let i = 1; i <= 28; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            
+            document.querySelector('.quiz-status').classList.remove('hidden');
+            
+            if (totalQuestions === 5) {
+                startQuiz('daily5');
+            } else if (totalQuestions === 10) {
+                startQuiz('daily10');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('resultTitleCard').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            
+            for (let i = 1; i <= 28; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+                
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+                    
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+            
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.reset-button').classList.add('hidden');
+            document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = 28;
+            questionList = [];
+            isDaily = false;
+            
+            updateScore();
+            
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
+      <div id="resultTitle" class="result-title"></div>
+    </div>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="buttons">
+        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
+        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+      </div>
+    </div>
+
+</body>
+</html>
