@@ -42,7 +42,7 @@ const QUIZ_LIST = [
         file: '緑内障についてクイズ.html',
         totalQuestions: 17,
         icon: '👁️',
-        category: 'patient',
+        category: 'staff',
         description: '緑内障について正しく理解するためのクイズです',
         color: 'green'
     },
@@ -175,14 +175,14 @@ const BADGE_LIST = [
         }
     },
     {
-        id: 'double-perfect',
-        name: 'ダブル満点',
+        id: 'triple-perfect',
+        name: 'トリプル満点',
         icon: '⭐',
-        description: '2つで満点',
-        condition: '2つ以上のクイズの「全問」モードで満点を取る',
+        description: '3つで満点',
+        condition: '3つ以上のクイズの「全問」モードで満点を取る',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 2;
+            return perfectCount >= 3;
         }
     },
     {
@@ -194,14 +194,14 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAnswered >= 200
     },
     {
-        id: 'triple-perfect',
-        name: 'トリプル満点',
+        id: 'half-perfect',
+        name: 'ハーフ満点',
         icon: '💎',
-        description: '3つで満点',
-        condition: '3つ以上のクイズの「全問」モードで満点を取る',
+        description: '6つで満点',
+        condition: '6つ以上のクイズの「全問」モードで満点を取る',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 3;
+            return perfectCount >= 6;
         }
     },
     {
