@@ -10,21 +10,31 @@
 
 ## クイズ一覧
 
-### スタッフ向け
+### メガネ・コンタクト系
 
 | クイズ名 | 内容 |
 |---------|------|
-| [院内ルール確認クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/院内ルール確認クイズ.html) | 休診日、予約ルール、受付時間など院内の基本ルール |
-| [コンタクトレンズ処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
-| [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
+| [CL処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
+| [遠用メガネのクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/大人の遠く用メガネ合わせクイズ.html) | 大人の遠用メガネ処方の知識 |
 | [老眼鏡合わせクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/老眼鏡合わせ_クイズ.html) | 老眼鏡合わせに関する基本知識 |
+
+### 疾患系
+
+| クイズ名 | 内容 |
+|---------|------|
 | [近視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/近視についてのクイズ.html) | 近視の基礎知識と患者様への説明ポイント |
-| [斜視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/斜視クイズ.html) | 斜視の基礎知識と保護者への説明ポイント |
-| [遠用メガネ度数決定クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/大人の遠く用メガネ合わせクイズ.html) | 大人の遠用メガネ処方の知識 |
-| [弱視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/弱視クイズ.html) | 弱視の基礎知識と保護者への説明ポイント |
+| [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
 | [白内障クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/白内障についてクイズ.html) | 白内障の基礎知識と患者様への説明ポイント |
-| [緑内障検診クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/自治体の緑内障検診の制度のクイズ.html) | 自治体の緑内障検診制度についての知識 |
-| [緑内障理解度クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/緑内障についてクイズ.html) | 緑内障について正しく理解するためのクイズ |
+| [緑内障クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/緑内障についてクイズ.html) | 緑内障について正しく理解するためのクイズ |
+| [弱視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/弱視クイズ.html) | 弱視の基礎知識と保護者への説明ポイント |
+| [斜視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/斜視クイズ.html) | 斜視の基礎知識と保護者への説明ポイント |
+
+### ルール・検診系
+
+| クイズ名 | 内容 |
+|---------|------|
+| [検診の制度クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/自治体の緑内障検診の制度のクイズ.html) | 自治体の緑内障検診制度についての知識 |
+| [院内ルール確認クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/院内ルール確認クイズ.html) | 休診日、予約ルール、受付時間など院内の基本ルール |
 
 ## 機能
 

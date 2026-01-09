@@ -6,25 +6,47 @@
  */
 
 const QUIZ_LIST = [
-    {
-        id: 'innai-rule',
-        name: '院内ルール確認クイズ',
-        file: '院内ルール確認クイズ.html',
-        totalQuestions: 15,
-        icon: '🏥',
-        category: 'staff',
-        description: '休診日、予約ルール、受付時間など、院内の基本ルールを確認できます',
-        color: 'blue'
-    },
+    // === メガネ・コンタクト系 ===
     {
         id: 'contact-basic',
-        name: 'コンタクトレンズ処方クイズ',
+        name: 'CL処方クイズ',
         file: 'コンタクト処方の基本クイズ.html',
         totalQuestions: 29,
         icon: '💧',
         category: 'staff',
         description: 'コンタクトレンズの処方に関する基本知識をテストします',
         color: 'cyan'
+    },
+    {
+        id: 'enyo-megane',
+        name: '遠用メガネのクイズ',
+        file: '大人の遠く用メガネ合わせクイズ.html',
+        totalQuestions: 28,
+        icon: '🤓',
+        category: 'staff',
+        description: '大人の遠用メガネ処方の知識をテストします',
+        color: 'amber'
+    },
+    {
+        id: 'megane-awase',
+        name: '老眼鏡合わせクイズ',
+        file: '老眼鏡合わせ_クイズ.html',
+        totalQuestions: 28,
+        icon: '👓',
+        category: 'staff',
+        description: '老眼鏡合わせに関する基本知識をテストします',
+        color: 'amber'
+    },
+    // === 疾患系 ===
+    {
+        id: 'kinshi',
+        name: '近視クイズ',
+        file: '近視についてのクイズ.html',
+        totalQuestions: 10,
+        icon: '👁️‍🗨️',
+        category: 'staff',
+        description: '近視の基礎知識と患者様への説明ポイントを学べます',
+        color: 'blue'
     },
     {
         id: 'kafunsho',
@@ -37,54 +59,24 @@ const QUIZ_LIST = [
         color: 'teal'
     },
     {
+        id: 'hakunaisho',
+        name: '白内障クイズ',
+        file: '白内障についてクイズ.html',
+        totalQuestions: 10,
+        icon: '📖',
+        category: 'staff',
+        description: '白内障の基礎知識と患者様への説明ポイントを学べます',
+        color: 'cyan'
+    },
+    {
         id: 'ryokunaisho',
-        name: '緑内障理解度クイズ',
+        name: '緑内障クイズ',
         file: '緑内障についてクイズ.html',
         totalQuestions: 17,
         icon: '👁️',
         category: 'staff',
         description: '緑内障について正しく理解するためのクイズです',
         color: 'green'
-    },
-    {
-        id: 'megane-awase',
-        name: '老眼鏡合わせクイズ',
-        file: '老眼鏡合わせ_クイズ.html',
-        totalQuestions: 28,
-        icon: '👓',
-        category: 'staff',
-        description: '老眼鏡合わせに関する基本知識をテストします',
-        color: 'amber'
-    },
-    {
-        id: 'kinshi',
-        name: '近視クイズ',
-        file: '近視についてのクイズ.html',
-        totalQuestions: 10,
-        icon: '👁️‍🗨️',
-        category: 'staff',
-        description: '近視の基礎知識と患者様への説明ポイントを学べます',
-        color: 'blue'
-    },
-    {
-        id: 'shashi',
-        name: '斜視クイズ',
-        file: '斜視クイズ.html',
-        totalQuestions: 10,
-        icon: '🧐',
-        category: 'staff',
-        description: '斜視の基礎知識と保護者への説明ポイントを学べます',
-        color: 'purple'
-    },
-    {
-        id: 'enyo-megane',
-        name: '遠用メガネ度数決定クイズ',
-        file: '大人の遠く用メガネ合わせクイズ.html',
-        totalQuestions: 28,
-        icon: '🤓',
-        category: 'staff',
-        description: '大人の遠用メガネ処方の知識をテストします',
-        color: 'amber'
     },
     {
         id: 'jakushi',
@@ -97,24 +89,35 @@ const QUIZ_LIST = [
         color: 'purple'
     },
     {
-        id: 'hakunaisho',
-        name: '白内障クイズ',
-        file: '白内障についてクイズ.html',
+        id: 'shashi',
+        name: '斜視クイズ',
+        file: '斜視クイズ.html',
         totalQuestions: 10,
-        icon: '📖',
+        icon: '🧐',
         category: 'staff',
-        description: '白内障の基礎知識と患者様への説明ポイントを学べます',
-        color: 'cyan'
+        description: '斜視の基礎知識と保護者への説明ポイントを学べます',
+        color: 'purple'
     },
+    // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',
-        name: '緑内障検診クイズ',
+        name: '検診の制度クイズ',
         file: '自治体の緑内障検診の制度のクイズ.html',
         totalQuestions: 14,
         icon: '🏥',
         category: 'staff',
         description: '自治体の緑内障検診制度についての知識を確認できます',
         color: 'indigo'
+    },
+    {
+        id: 'innai-rule',
+        name: '院内ルール確認クイズ',
+        file: '院内ルール確認クイズ.html',
+        totalQuestions: 15,
+        icon: '🏥',
+        category: 'staff',
+        description: '休診日、予約ルール、受付時間など、院内の基本ルールを確認できます',
+        color: 'blue'
     }
 ];
 
