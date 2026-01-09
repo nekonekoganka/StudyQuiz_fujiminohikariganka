@@ -965,7 +965,7 @@
             if (mode === 'daily3') {
                 isDaily = true;
                 totalQuestions = 3;
-                questionList = getRandomQuestions(3);
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, 3);
             } else if (mode === 'review') {
                 // 復習モード: 間違えた問題のみ
                 isDaily = false;
