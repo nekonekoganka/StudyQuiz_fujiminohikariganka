@@ -140,6 +140,10 @@
             background: linear-gradient(180deg, #ffb300, #ff8f00);
         }
 
+        .quiz-card.purple::before {
+            background: linear-gradient(180deg, #ab47bc, #8e24aa);
+        }
+
         /* タップ時のフィードバック */
         .quiz-card:active {
             transform: scale(0.98);
@@ -397,6 +401,18 @@
                 <div class="quiz-content">
                     <div class="quiz-title">近視クイズ</div>
                     <div class="quiz-description">近視の基礎知識と患者様への説明ポイントを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/斜視クイズ.html" class="quiz-card purple">
+                <div class="quiz-icon">🧐</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">斜視クイズ</div>
+                    <div class="quiz-description">斜視の基礎知識と保護者への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
                     </div>
