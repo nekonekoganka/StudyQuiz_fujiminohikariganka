@@ -20,6 +20,10 @@
 | [老眼鏡合わせクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/老眼鏡合わせ_クイズ.html) | 老眼鏡合わせに関する基本知識 |
 | [近視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/近視についてのクイズ.html) | 近視の基礎知識と患者様への説明ポイント |
 | [斜視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/斜視クイズ.html) | 斜視の基礎知識と保護者への説明ポイント |
+| [遠用メガネ度数決定クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/大人の遠く用メガネ合わせクイズ.html) | 大人の遠用メガネ処方の知識 |
+| [弱視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/弱視クイズ.html) | 弱視の基礎知識と保護者への説明ポイント |
+| [白内障クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/白内障についてクイズ.html) | 白内障の基礎知識と患者様への説明ポイント |
+| [緑内障検診クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/自治体の緑内障検診の制度のクイズ.html) | 自治体の緑内障検診制度についての知識 |
 
 ### 患者様・ご家族向け
 
@@ -104,7 +108,11 @@
 │   ├── 緑内障についてクイズ.html
 │   ├── 老眼鏡合わせ_クイズ.html
 │   ├── 近視についてのクイズ.html
-│   └── 斜視クイズ.html
+│   ├── 斜視クイズ.html
+│   ├── 大人の遠く用メガネ合わせクイズ.html
+│   ├── 弱視クイズ.html
+│   ├── 白内障についてクイズ.html
+│   └── 自治体の緑内障検診の制度のクイズ.html
 ├── docs/
 │   └── QUIZ_SPECIFICATION.md       # クイズHTML仕様書（詳細版）
 ├── QUIZ_SPEC.md                    # クイズHTML仕様書（簡易版）
@@ -132,18 +140,19 @@ const QUIZ_LIST = [
         icon: '📝',                        // アイコン絵文字
         category: 'staff',                 // 'staff' または 'patient'
         description: 'クイズの説明文',      // 説明
-        color: 'blue'                      // カードの色（blue/cyan/teal/green/amber/purple）
+        color: 'blue'                      // カードの色（blue/cyan/teal/green/amber/purple/indigo）
     }
 ];
 ```
 
 #### 利用可能なカラーテーマ
 - `blue` - 青系（院内ルール、近視など）
-- `cyan` - シアン系（コンタクトレンズ）
+- `cyan` - シアン系（コンタクトレンズ、白内障）
 - `teal` - ティール系（花粉症）
-- `green` - 緑系（緑内障）
-- `amber` - 琥珀色系（老眼鏡合わせ）
-- `purple` - 紫系（斜視）
+- `green` - 緑系（緑内障理解度）
+- `amber` - 琥珀色系（老眼鏡合わせ、遠用メガネ）
+- `purple` - 紫系（斜視、弱視）
+- `indigo` - インディゴ系（緑内障検診）
 
 ### 手順2: 新しいクイズHTMLを作成
 

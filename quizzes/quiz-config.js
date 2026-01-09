@@ -75,6 +75,46 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '斜視の基礎知識と保護者への説明ポイントを学べます',
         color: 'purple'
+    },
+    {
+        id: 'enyo-megane',
+        name: '遠用メガネ度数決定クイズ',
+        file: '大人の遠く用メガネ合わせクイズ.html',
+        totalQuestions: 28,
+        icon: '🤓',
+        category: 'staff',
+        description: '大人の遠用メガネ処方の知識をテストします',
+        color: 'amber'
+    },
+    {
+        id: 'jakushi',
+        name: '弱視クイズ',
+        file: '弱視クイズ.html',
+        totalQuestions: 15,
+        icon: '👀',
+        category: 'staff',
+        description: '弱視の基礎知識と保護者への説明ポイントを学べます',
+        color: 'purple'
+    },
+    {
+        id: 'hakunaisho',
+        name: '白内障クイズ',
+        file: '白内障についてクイズ.html',
+        totalQuestions: 10,
+        icon: '📖',
+        category: 'staff',
+        description: '白内障の基礎知識と患者様への説明ポイントを学べます',
+        color: 'cyan'
+    },
+    {
+        id: 'ryokunaisho-kenshin',
+        name: '緑内障検診クイズ',
+        file: '自治体の緑内障検診の制度のクイズ.html',
+        totalQuestions: 14,
+        icon: '🏥',
+        category: 'staff',
+        description: '自治体の緑内障検診制度についての知識を確認できます',
+        color: 'indigo'
     }
 ];
 

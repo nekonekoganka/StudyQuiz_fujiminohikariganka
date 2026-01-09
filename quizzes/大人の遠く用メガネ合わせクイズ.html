@@ -389,13 +389,66 @@
             .result-evaluation {font-size: 22px;}
         }
 
+.top-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.top-link a {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 25px;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.top-link a:active {
+    transform: scale(0.97);
+}
+
+@media (min-width: 768px) {
+    .top-link a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+}
+
+.mypage-button, .top-button {
+    display: inline-block;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    margin: 5px;
+}
+
+.mypage-button {
+    background: linear-gradient(135deg, #26a69a, #00897b);
+    color: white;
+}
+
+.top-button {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>🤓 遠用メガネ度数決定クイズ 🤓</h1>
         <div class="subtitle">スタッフ向け - 処方スキルアップ</div>
-        
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily5')">
                 📋 今日の5問
@@ -848,7 +901,9 @@
         </div>
     </div>
 
+    <script src="quiz-config.js"></script>
     <script>
+        const QUIZ_ID = 'enyo-megane';
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 28;
@@ -972,7 +1027,10 @@
             
             feedback.style.display = 'block';
             explanation.classList.remove('hidden');
-            
+            setTimeout(() => {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
             if (currentQuestion < totalQuestions - 1) {
                 nextButton.classList.remove('hidden');
             } else {
@@ -1003,7 +1061,12 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
 
+            if (typeof recordQuizResult === 'function') {
+                recordQuizResult(QUIZ_ID, score, totalQuestions);
+            }
             const percentage = Math.round((score / totalQuestions) * 100);
             let title, message;
 
@@ -1032,12 +1095,17 @@
             document.getElementById('resultTitleCard').classList.remove('hidden');
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.reset-button').classList.remove('hidden');
+            document.querySelector('.mypage-button').classList.remove('hidden');
+            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function resetQuiz() {
             document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             score = 0;
             updateScore();
             
@@ -1056,12 +1124,13 @@
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
-            
+            document.querySelector('.mypage-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
+
             document.querySelector('.quiz-status').classList.remove('hidden');
             
             if (totalQuestions === 5) {
@@ -1077,6 +1146,8 @@
             document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
@@ -1096,11 +1167,12 @@
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.reset-button').classList.add('hidden');
             document.querySelector('.home-button').classList.add('hidden');
+            document.querySelector('.mypage-button').classList.add('hidden');
+            document.querySelector('.top-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
@@ -1132,8 +1204,9 @@
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
       <div class="buttons">
-        <button class="reset-button hidden" onclick="resetQuiz()">クイズをやり直す</button>
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
+        <button class="home-button hidden" onclick="resetQuiz()">🔄 モード選択</button>
+        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
+        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
       </div>
     </div>
 
