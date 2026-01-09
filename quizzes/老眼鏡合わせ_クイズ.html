@@ -937,7 +937,6 @@
         function startQuiz(mode) {
             document.querySelector('h1').classList.add('hidden');
             document.querySelector('.subtitle').classList.add('hidden');
-            document.querySelector('.top-link').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
             
@@ -1086,6 +1085,8 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
 
@@ -1129,6 +1130,7 @@
 
         function resetQuiz() {
             document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
             score = 0;
             updateScore();
@@ -1169,8 +1171,9 @@
         function goHome() {
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
-            
+
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
             
