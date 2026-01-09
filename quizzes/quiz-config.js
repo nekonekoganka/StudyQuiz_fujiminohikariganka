@@ -65,6 +65,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '近視の基礎知識と患者様への説明ポイントを学べます',
         color: 'blue'
+    },
+    {
+        id: 'shashi',
+        name: '斜視クイズ',
+        file: '斜視クイズ.html',
+        totalQuestions: 10,
+        icon: '🧐',
+        category: 'staff',
+        description: '斜視の基礎知識と保護者への説明ポイントを学べます',
+        color: 'purple'
     }
 ];
 
