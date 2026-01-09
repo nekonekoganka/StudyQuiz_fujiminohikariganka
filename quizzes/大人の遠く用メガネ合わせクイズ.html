@@ -495,17 +495,16 @@
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
-        /* ランダム選択バナー */
-        .random-banner {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            color: white;
+        /* クイズ中タイトル表示 */
+        .quiz-title-header {
             text-align: center;
-            padding: 12px 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+            color: #2c3e50;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
         }
 
     </style>
@@ -514,7 +513,7 @@
     <div class="quiz-container">
         <h1>🤓 遠用メガネ度数決定クイズ 🤓</h1>
         <div class="subtitle">スタッフ向け - 処方スキルアップ</div>
-        <div id="randomBanner" class="random-banner hidden">🎲 ランダム選択で「遠用メガネのクイズ」が選ばれました！</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🤓 遠用メガネ度数決定クイズ</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
@@ -1005,12 +1004,6 @@
             // URLパラメータをチェック
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
-            const fromRandom = urlParams.get('from') === 'random';
-
-            // ランダム選択からの場合はバナーを表示
-            if (fromRandom) {
-                document.getElementById('randomBanner').classList.remove('hidden');
-            }
 
             // モードが指定されていたら自動開始
             if (mode === 'daily3' || mode === 'full') {
@@ -1099,6 +1092,7 @@
             document.querySelector('.subtitle').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
 
             if (mode === 'daily3') {
                 isDaily = true;
@@ -1339,7 +1333,8 @@
             
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
-            
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
             for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement) {

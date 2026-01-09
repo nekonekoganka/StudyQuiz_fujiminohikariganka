@@ -175,6 +175,18 @@
             font-weight: bold;
         }
 
+        /* クイズ中タイトル表示 */
+        .quiz-title-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a237e;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+        }
+
         .question-card {
             background: #fdfefe;
             border-radius: 12px;
@@ -551,6 +563,8 @@
         <div class="subtitle">スタッフ向け - 円滑な患者様対応のために</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🏥 院内ルール確認クイズ</div>
+
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily3')">
                 📋 今日の3問
@@ -923,6 +937,7 @@
             document.querySelector('.subtitle').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
 
             if (mode === 'daily3') {
                 isDaily = true;
@@ -1161,6 +1176,7 @@
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
             document.querySelector('.quiz-container').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
 
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
