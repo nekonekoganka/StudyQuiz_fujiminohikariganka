@@ -103,59 +103,24 @@
             line-height: 1.5;
         }
 
-        /* 区切り線 */
-        .mode-divider {
-            margin: 30px 0 15px;
+        /* 学習状況表示 */
+        .progress-status {
+            margin: 25px 0 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
             font-size: 14px;
-            color: #666;
-            text-align: center;
+            color: #555;
         }
 
-        /* 復習モードボタン */
-        .mode-button.review-mode {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        .progress-status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
         }
 
-        @media (min-width: 768px) {
-            .mode-button.review-mode:hover {
-                box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-            }
-        }
-
-        /* 未挑戦モードボタン */
-        .mode-button.unanswered-mode {
-            background: linear-gradient(135deg, #4ecdc4, #45b7aa);
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
-        }
-
-        @media (min-width: 768px) {
-            .mode-button.unanswered-mode:hover {
-                box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
-            }
-        }
-
-        /* 問題数表示 */
-        .mode-count {
-            font-size: 14px;
-            font-weight: normal;
-            opacity: 0.9;
-            display: block;
-            margin-top: 5px;
-        }
-
-        /* 対象0問時のグレー表示 */
-        .mode-button.disabled {
-            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
-            box-shadow: 0 4px 15px rgba(189, 195, 199, 0.3);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .mode-button.disabled:active,
-        .mode-button.disabled:hover {
-            transform: none;
-            box-shadow: 0 4px 15px rgba(189, 195, 199, 0.3);
+        .progress-status-item span:last-child {
+            font-weight: bold;
         }
 
         .top-link {
@@ -564,22 +529,20 @@
                 📚 全問モード（全28問）
             </button>
 
-            <div class="mode-divider">── 復習・学習 ──</div>
-
-            <button id="reviewModeBtn" class="mode-button review-mode disabled" onclick="startQuiz('review')" disabled>
-                🔄 復習モード
-                <span class="mode-count" id="reviewCount">（0問）</span>
-            </button>
-            <button id="unansweredModeBtn" class="mode-button unanswered-mode" onclick="startQuiz('unanswered')">
-                🆕 未挑戦モード
-                <span class="mode-count" id="unansweredCount">（28問）</span>
-            </button>
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">28問</span>
+                </div>
+            </div>
 
             <div class="mode-description">
-                <strong>今日の3問:</strong> ランダムに3問を出題<br>
-                <strong>全問モード:</strong> 全28問を順番に出題<br>
-                <strong>復習モード:</strong> 間違えた問題を重点的に学習<br>
-                <strong>未挑戦モード:</strong> まだ解いていない問題に挑戦
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全28問を順番に出題
             </div>
         </div>
         
@@ -1036,40 +999,22 @@
 
         // ページ読み込み時にモードボタンの状態を更新
         document.addEventListener('DOMContentLoaded', function() {
-            updateModeButtons();
+            updateProgressStatus();
         });
 
-        // モードボタンの状態を更新
-        function updateModeButtons() {
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
             const incorrectList = getIncorrectQuestions(QUIZ_ID);
             const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
 
-            // 復習モードボタン
-            const reviewBtn = document.getElementById('reviewModeBtn');
-            const reviewCount = document.getElementById('reviewCount');
-            if (reviewBtn && reviewCount) {
-                reviewCount.textContent = `（${incorrectList.length}問）`;
-                if (incorrectList.length === 0) {
-                    reviewBtn.classList.add('disabled');
-                    reviewBtn.disabled = true;
-                } else {
-                    reviewBtn.classList.remove('disabled');
-                    reviewBtn.disabled = false;
-                }
-            }
-
-            // 未挑戦モードボタン
-            const unansweredBtn = document.getElementById('unansweredModeBtn');
+            const incorrectCount = document.getElementById('incorrectCount');
             const unansweredCount = document.getElementById('unansweredCount');
-            if (unansweredBtn && unansweredCount) {
-                unansweredCount.textContent = `（${unansweredList.length}問）`;
-                if (unansweredList.length === 0) {
-                    unansweredBtn.classList.add('disabled');
-                    unansweredBtn.disabled = true;
-                } else {
-                    unansweredBtn.classList.remove('disabled');
-                    unansweredBtn.disabled = false;
-                }
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
             }
         }
 
@@ -1129,29 +1074,11 @@
             document.querySelector('.subtitle').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
-            
+
             if (mode === 'daily3') {
                 isDaily = true;
                 totalQuestions = 3;
                 questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, 3);
-            } else if (mode === 'review') {
-                isDaily = false;
-                questionList = getIncorrectQuestions(QUIZ_ID);
-                if (questionList.length === 0) {
-                    goHome();
-                    return;
-                }
-                questionList = shuffleArray([...questionList]);
-                totalQuestions = questionList.length;
-            } else if (mode === 'unanswered') {
-                isDaily = false;
-                questionList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
-                if (questionList.length === 0) {
-                    goHome();
-                    return;
-                }
-                questionList = shuffleArray([...questionList]);
-                totalQuestions = questionList.length;
             } else {
                 isDaily = false;
                 totalQuestions = TOTAL_QUESTIONS;
@@ -1421,7 +1348,7 @@
             isDaily = false;
 
             updateScore();
-            updateModeButtons();
+            updateProgressStatus();
 
             document.getElementById('modeSelection').classList.remove('hidden');
         }
