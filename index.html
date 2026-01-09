@@ -136,6 +136,10 @@
             background: linear-gradient(180deg, #4db6ac, #00796b);
         }
 
+        .quiz-card.amber::before {
+            background: linear-gradient(180deg, #ffb300, #ff8f00);
+        }
+
         /* タップ時のフィードバック */
         .quiz-card:active {
             transform: scale(0.98);
@@ -369,6 +373,18 @@
                 <div class="quiz-content">
                     <div class="quiz-title">花粉症クイズ</div>
                     <div class="quiz-description">花粉症の症状や対処法についての知識を確認できます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/老眼鏡合わせ_クイズ.html" class="quiz-card amber">
+                <div class="quiz-icon">👓</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">老眼鏡合わせクイズ</div>
+                    <div class="quiz-description">老眼鏡合わせに関する基本知識をテストします</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
                     </div>

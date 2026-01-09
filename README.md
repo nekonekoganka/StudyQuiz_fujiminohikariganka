@@ -17,7 +17,7 @@
 | [院内ルール確認クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/院内ルール確認クイズ.html) | 休診日、予約ルール、受付時間など院内の基本ルール |
 | [コンタクトレンズ処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
 | [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
-| [メガネ合わせクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/老眼鏡合わせ_クイズ.html) | メガネ合わせに関する基本知識 |
+| [老眼鏡合わせクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/老眼鏡合わせ_クイズ.html) | 老眼鏡合わせに関する基本知識 |
 
 ### 患者様・ご家族向け
 

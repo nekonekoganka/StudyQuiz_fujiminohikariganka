@@ -48,12 +48,12 @@ const QUIZ_LIST = [
     },
     {
         id: 'megane-awase',
-        name: 'メガネ合わせクイズ',
+        name: '老眼鏡合わせクイズ',
         file: '老眼鏡合わせ_クイズ.html',
         totalQuestions: 28,
         icon: '👓',
         category: 'staff',
-        description: 'メガネ合わせに関する基本知識をテストします',
+        description: '老眼鏡合わせに関する基本知識をテストします',
         color: 'amber'
     }
 ];
