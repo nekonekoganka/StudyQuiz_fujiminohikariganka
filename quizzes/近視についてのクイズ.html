@@ -446,6 +446,40 @@
             .result-evaluation {font-size: 22px;}
         }
 
+        /* 正解エフェクト */
+        .celebrate-emoji {
+            position: fixed;
+            font-size: 40px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: celebrate 1s ease-out forwards;
+        }
+
+        @keyframes celebrate {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-60px) scale(1.2) rotate(15deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(0.8) rotate(-10deg);
+            }
+        }
+
+        .correct-flash {
+            animation: flashGreen 0.4s ease-out;
+        }
+
+        @keyframes flashGreen {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+
     </style>
 </head>
 <body>
@@ -658,6 +692,48 @@
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            // 振動フィードバック（スマホのみ）
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            // 絵文字を飛ばす
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
         function startQuiz(mode) {
             document.querySelector('h1').classList.add('hidden');
             document.querySelector('.subtitle').classList.add('hidden');
@@ -766,6 +842,7 @@
                 feedback.textContent = '🎉 正解です！';
                 feedback.className = 'feedback correct';
                 score++;
+                flashCorrect(selectedOption);
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
@@ -811,6 +888,12 @@
             document.querySelector('.quiz-container').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
 
             // 結果を記録
             if (typeof recordQuizResult === 'function') {
