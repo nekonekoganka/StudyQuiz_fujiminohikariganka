@@ -383,8 +383,22 @@ function getUnansweredQuestions(quizId, totalQuestions) {
 }
 
 /**
- * 重み付けランダムで問題を選択
- * 間違えた問題 > 未挑戦問題 > 正解済み問題 の順で出やすい
+ * 配列をシャッフル（Fisher-Yates）
+ * @param {Array} array - シャッフルする配列
+ * @returns {Array} - シャッフルされた新しい配列
+ */
+function shuffleArrayForConfig(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+/**
+ * 優先度方式で問題を選択
+ * 間違えた問題 > 未挑戦問題 > 正解済み問題 の優先順位で選ぶ
  * @param {string} quizId - クイズID
  * @param {number} totalQ - 総問題数
  * @param {number} count - 選択する問題数
@@ -405,36 +419,26 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
         !incorrect.includes(q) && !unanswered.includes(q)
     );
 
-    // 重み付け: 間違い=5, 未挑戦=3, 正解済み=1
-    const weighted = [];
-    incorrect.forEach(q => {
-        for (let i = 0; i < 5; i++) weighted.push(q);
-    });
-    unanswered.forEach(q => {
-        for (let i = 0; i < 3; i++) weighted.push(q);
-    });
-    correct.forEach(q => {
-        weighted.push(q);
-    });
+    let selected = [];
 
-    // 重複なしでcount個選ぶ
-    const selected = [];
-    const availableWeighted = [...weighted];
+    // 1. まず間違えた問題から選ぶ（最優先）
+    const shuffledIncorrect = shuffleArrayForConfig(incorrect);
+    selected.push(...shuffledIncorrect.slice(0, count));
 
-    while (selected.length < count && availableWeighted.length > 0) {
-        const randomIndex = Math.floor(Math.random() * availableWeighted.length);
-        const chosen = availableWeighted[randomIndex];
-
-        if (!selected.includes(chosen)) {
-            selected.push(chosen);
-        }
-        // 選ばれた問題を全て除去（重複防止）
-        for (let i = availableWeighted.length - 1; i >= 0; i--) {
-            if (availableWeighted[i] === chosen) {
-                availableWeighted.splice(i, 1);
-            }
-        }
+    // 2. 足りなければ未挑戦問題から追加
+    if (selected.length < count) {
+        const remaining = count - selected.length;
+        const shuffledUnanswered = shuffleArrayForConfig(unanswered);
+        selected.push(...shuffledUnanswered.slice(0, remaining));
     }
 
-    return selected;
+    // 3. それでも足りなければ正解済み問題から追加
+    if (selected.length < count) {
+        const remaining = count - selected.length;
+        const shuffledCorrect = shuffleArrayForConfig(correct);
+        selected.push(...shuffledCorrect.slice(0, remaining));
+    }
+
+    // 最終的な出題順をシャッフル
+    return shuffleArrayForConfig(selected);
 }
