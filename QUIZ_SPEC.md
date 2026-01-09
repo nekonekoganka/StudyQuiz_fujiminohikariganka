@@ -277,6 +277,13 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 - [ ] JS: `goHome()` に quiz-container再表示を追加、reset-button参照を削除
 - [ ] HTML: `#finalResult` から reset-button を削除
 - [ ] HTML: top-link のテキストを「← トップページへ」に変更
+- [ ] **HTML: モード選択ボタンが `onclick="goHome()"` になっている**（`resetQuiz()`ではない）
+
+> **注意**: `resetQuiz()` と `goHome()` の違い
+> - `resetQuiz()`: 同じモードでクイズをやり直す
+> - `goHome()`: モード選択画面（今日の5問、全問モードなど）に戻る
+>
+> 結果画面の「モード選択」ボタンは必ず `goHome()` を使用してください。
 
 ---
 
