@@ -556,12 +556,26 @@
             100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
         }
 
+        /* ランダム選択バナー */
+        .random-banner {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+        }
+
     </style>
 </head>
 <body>
     <div class="quiz-container">
         <h1>🤧 花粉症クイズ 🤧</h1>
         <div class="subtitle">眼科スタッフ向け - 患者様への説明力UP！</div>
+        <div id="randomBanner" class="random-banner hidden">🎲 ランダム選択で「花粉症クイズ」が選ばれました！</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
@@ -869,6 +883,21 @@
         // ページ読み込み時にモードボタンの状態を更新
         document.addEventListener('DOMContentLoaded', function() {
             updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const fromRandom = urlParams.get('from') === 'random';
+
+            // ランダム選択からの場合はバナーを表示
+            if (fromRandom) {
+                document.getElementById('randomBanner').classList.remove('hidden');
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode === 'daily3' || mode === 'full') {
+                startQuiz(mode);
+            }
         });
 
         // 学習状況の表示を更新

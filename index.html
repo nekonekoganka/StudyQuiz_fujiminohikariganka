@@ -250,6 +250,26 @@
             transform: scale(0.95);
         }
 
+        .random-quiz-button {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .random-quiz-button:active {
+            transform: scale(0.95);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -335,6 +355,11 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(38, 166, 154, 0.4);
             }
+
+            .random-quiz-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+            }
         }
     </style>
 </head>
@@ -346,6 +371,7 @@
             <div class="subtitle">📚 知識を深めて、より良い医療を提供しましょう 📚</div>
             <div class="subtitle-decoration">✦ ✦ ✦</div>
             <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+            <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
         </div>
 
         <div class="section-title">
@@ -496,5 +522,26 @@
             <a href="mypage.html" class="mypage-link">📊 学習記録</a>
         </div>
     </div>
+
+    <script>
+        // ランダムクイズ用のクイズリスト（院内ルール・検診制度クイズを除く）
+        const RANDOM_QUIZ_LIST = [
+            { name: 'CL処方クイズ', file: 'コンタクト処方の基本クイズ.html', icon: '💧' },
+            { name: '遠用メガネのクイズ', file: '大人の遠く用メガネ合わせクイズ.html', icon: '🤓' },
+            { name: '老眼鏡合わせクイズ', file: '老眼鏡合わせ_クイズ.html', icon: '👓' },
+            { name: '近視クイズ', file: '近視についてのクイズ.html', icon: '👁️‍🗨️' },
+            { name: '花粉症クイズ', file: '花粉症についてのクイズ.html', icon: '🤧' },
+            { name: '白内障クイズ', file: '白内障についてクイズ.html', icon: '📖' },
+            { name: '緑内障クイズ', file: '緑内障についてクイズ.html', icon: '👁️' },
+            { name: '弱視クイズ', file: '弱視クイズ.html', icon: '👀' },
+            { name: '斜視クイズ', file: '斜視クイズ.html', icon: '🧐' }
+        ];
+
+        function startRandomQuiz() {
+            const randomIndex = Math.floor(Math.random() * RANDOM_QUIZ_LIST.length);
+            const selectedQuiz = RANDOM_QUIZ_LIST[randomIndex];
+            window.location.href = `quizzes/${selectedQuiz.file}?mode=daily3&from=random`;
+        }
+    </script>
 </body>
 </html>
