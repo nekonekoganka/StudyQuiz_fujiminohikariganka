@@ -31,16 +31,15 @@
 | 結果発表（通常） | 絵文字8個（🎉⭐✨👏🎊）+ 振動 |
 | 結果発表（満点） | 絵文字15個（🎉🏆👑💯⭐✨🌟🥇）+ 長め振動 |
 
-### 復習・未挑戦モード（2026-01追加）
+### 学習状況トラッキング（2026-01追加）
 
 | 項目 | 内容 |
 |------|------|
-| モード数 | 4モード（今日の3問、全問モード、復習モード、未挑戦モード） |
-| 復習モード | 過去に間違えた問題のみを出題 |
-| 未挑戦モード | まだ解いていない問題のみを出題 |
-| 記録タイミング | 全モード（3問でも全問でも）で問題ごとに記録 |
+| モード数 | 2モード（今日の3問、全問モード） |
+| 今日の3問 | 間違い→未挑戦→正解済みの優先度で出題 |
+| 学習状況表示 | 間違えた問題数・未挑戦問題数を表示 |
+| 記録タイミング | 全モードで問題ごとに記録 |
 | 記録方式 | 最後の結果で上書き（正解→不正解で不正解に） |
-| 対象0問時 | ボタンをグレー表示＆非活性 |
 
 ---
 
@@ -53,7 +52,8 @@ body
 │   ├── div.subtitle
 │   ├── div.top-link > a（トップページへリンク）
 │   ├── div#modeSelection（モード選択画面）
-│   │   ├── button.mode-button × 4
+│   │   ├── button.mode-button × 2（今日の3問、全問モード）
+│   │   ├── div.progress-status（学習状況表示）
 │   │   └── div.mode-description
 │   └── div#quizArea.hidden（クイズエリア）
 │       ├── div.quiz-status（スコア・進捗バー）
@@ -157,43 +157,27 @@ body
 }
 ```
 
-### 復習・未挑戦モード用CSS
+### 学習状況表示用CSS
 
 ```css
-/* 区切り線 */
-.mode-divider {
-    margin: 30px 0 15px;
+/* 学習状況表示 */
+.progress-status {
+    margin: 25px 0 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
     font-size: 14px;
-    color: #666;
-    text-align: center;
+    color: #555;
 }
 
-/* 復習モードボタン */
-.mode-button.review-mode {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+.progress-status-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
 }
 
-/* 未挑戦モードボタン */
-.mode-button.unanswered-mode {
-    background: linear-gradient(135deg, #4ecdc4, #45b7aa);
-    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
-}
-
-/* 問題数表示 */
-.mode-count {
-    font-size: 14px;
-    font-weight: normal;
-    opacity: 0.9;
-    display: block;
-    margin-top: 5px;
-}
-
-/* 対象0問時のグレー表示 */
-.mode-button.disabled {
-    background: linear-gradient(135deg, #bdc3c7, #95a5a6);
-    cursor: not-allowed;
-    opacity: 0.6;
+.progress-status-item span:last-child {
+    font-weight: bold;
 }
 ```
 
@@ -329,16 +313,15 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 - [ ] HTML: top-link のテキストを「← トップページへ」に変更
 - [ ] **HTML: モード選択ボタンが `onclick="goHome()"` になっている**（`resetQuiz()`ではない）
 
-### 復習・未挑戦モード（2026-01追加）
+### 学習状況トラッキング（2026-01追加）
 - [ ] JS: `TOTAL_QUESTIONS` 定数を追加
-- [ ] CSS: `.mode-divider`, `.review-mode`, `.unanswered-mode`, `.mode-count`, `.disabled` を追加
-- [ ] HTML: モード選択を4モードに変更（今日の3問、全問モード、復習モード、未挑戦モード）
-- [ ] JS: `updateModeButtons()` 関数を追加
-- [ ] JS: `shuffleArray()` 関数を追加
-- [ ] JS: `startQuiz()` に `review`, `unanswered` モード分岐を追加
+- [ ] CSS: `.progress-status`, `.progress-status-item` を追加
+- [ ] HTML: モード選択を2モードに設定（今日の3問、全問モード）
+- [ ] HTML: 学習状況表示（間違い・未挑戦の問題数）を追加
+- [ ] JS: `updateProgressStatus()` 関数を追加
 - [ ] JS: `selectAnswer()` に `recordQuestionResult()` 呼び出しを追加
-- [ ] JS: `goHome()` に `updateModeButtons()` 呼び出しを追加
-- [ ] JS: `DOMContentLoaded` で `updateModeButtons()` を呼び出す
+- [ ] JS: `goHome()` に `updateProgressStatus()` 呼び出しを追加
+- [ ] JS: `DOMContentLoaded` で `updateProgressStatus()` を呼び出す
 
 > **注意**: `resetQuiz()` と `goHome()` の違い
 > - `resetQuiz()`: 同じモードでクイズをやり直す

@@ -480,16 +480,15 @@ function selectAnswer(selectedOption) {
 ### ループ処理
 - [ ] 全てのforループが総問題数と一致（問題追加時は要注意）
 
-### 復習・未挑戦モード（2026-01追加）
+### 学習状況トラッキング（2026-01追加）
 - [ ] JS: `TOTAL_QUESTIONS` 定数を追加
-- [ ] CSS: `.mode-divider`, `.review-mode`, `.unanswered-mode`, `.mode-count`, `.disabled` を追加
-- [ ] HTML: モード選択を4モードに変更（今日の3問、全問モード、復習モード、未挑戦モード）
-- [ ] JS: `updateModeButtons()` 関数を追加
-- [ ] JS: `shuffleArray()` 関数を追加
-- [ ] JS: `startQuiz()` に `review`, `unanswered` モード分岐を追加
+- [ ] CSS: `.progress-status`, `.progress-status-item` を追加
+- [ ] HTML: モード選択を2モードに設定（今日の3問、全問モード）
+- [ ] HTML: 学習状況表示（間違い・未挑戦の問題数）を追加
+- [ ] JS: `updateProgressStatus()` 関数を追加
 - [ ] JS: `selectAnswer()` に `recordQuestionResult()` 呼び出しを追加
-- [ ] JS: `goHome()` に `updateModeButtons()` 呼び出しを追加
-- [ ] JS: `DOMContentLoaded` で `updateModeButtons()` を呼び出す
+- [ ] JS: `goHome()` に `updateProgressStatus()` 呼び出しを追加
+- [ ] JS: `DOMContentLoaded` で `updateProgressStatus()` を呼び出す
 
 ---
 
@@ -539,7 +538,7 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | 2025-01 | index.htmlへの新色追加方法を追記 |
 | 2025-01 | 遠用メガネ・弱視・白内障・緑内障検診クイズを追加、indigoカラーテーマを追加 |
 | 2025-01 | **重要**: モード選択ボタンのバグ修正。`resetQuiz()`→`goHome()`に修正、仕様書にも反映 |
-| 2026-01 | **新機能**: 復習モード・未挑戦モードを追加。モードを4つに整理（今日の3問、全問、復習、未挑戦） |
+| 2026-01 | **新機能**: 学習状況トラッキング追加。2モード（今日の3問、全問）に簡略化。今日の3問は間違い・未挑戦を優先出題 |
 
 ---
 
