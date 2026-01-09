@@ -2,7 +2,7 @@
 
 **[クイズに挑戦する](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/)**
 
-ふじみ野ひかり眼科のスタッフ向け・患者様向け学習クイズアプリです。
+ふじみ野ひかり眼科のスタッフ向け学習クイズアプリです。
 
 > **スマートフォン最適化**
 > このアプリは主にスマートフォンでの利用を想定して設計されています。
@@ -24,11 +24,6 @@
 | [弱視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/弱視クイズ.html) | 弱視の基礎知識と保護者への説明ポイント |
 | [白内障クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/白内障についてクイズ.html) | 白内障の基礎知識と患者様への説明ポイント |
 | [緑内障検診クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/自治体の緑内障検診の制度のクイズ.html) | 自治体の緑内障検診制度についての知識 |
-
-### 患者様・ご家族向け
-
-| クイズ名 | 内容 |
-|---------|------|
 | [緑内障理解度クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/緑内障についてクイズ.html) | 緑内障について正しく理解するためのクイズ |
 
 ## 機能

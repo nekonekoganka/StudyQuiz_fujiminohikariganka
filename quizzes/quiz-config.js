@@ -42,7 +42,7 @@ const QUIZ_LIST = [
         file: '緑内障についてクイズ.html',
         totalQuestions: 17,
         icon: '👁️',
-        category: 'patient',
+        category: 'staff',
         description: '緑内障について正しく理解するためのクイズです',
         color: 'green'
     },
