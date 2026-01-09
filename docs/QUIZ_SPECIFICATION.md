@@ -34,11 +34,29 @@ quizzes/
 ```
 
 ### 利用可能なカラーテーマ
-- `blue` - 青系
-- `cyan` - シアン系
-- `teal` - ティール系
-- `green` - 緑系
-- `amber` - 琥珀色系（オレンジ）
+- `blue` - 青系（院内ルール、近視など）
+- `cyan` - シアン系（コンタクトレンズ）
+- `teal` - ティール系（花粉症）
+- `green` - 緑系（緑内障）
+- `amber` - 琥珀色系（老眼鏡合わせ）
+- `purple` - 紫系（斜視）
+
+### index.htmlに新しい色を追加する場合
+
+新しいカラーテーマを使用する場合は、`index.html`のCSS内に以下のスタイルを追加してください：
+
+```css
+.quiz-card.新色名::before {
+    background: linear-gradient(180deg, #開始色, #終了色);
+}
+```
+
+例（purple）:
+```css
+.quiz-card.purple::before {
+    background: linear-gradient(180deg, #ab47bc, #8e24aa);
+}
+```
 
 ---
 
@@ -490,5 +508,22 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 
 ## 更新履歴
 
-- 2024-01: 初版作成
-- 老眼鏡合わせクイズの実装を基に標準化
+| 日付 | 内容 |
+|------|------|
+| 2024-01 | 初版作成（老眼鏡合わせクイズを基に標準化） |
+| 2025-01 | 近視クイズ・斜視クイズを追加、purpleカラーテーマを追加 |
+| 2025-01 | index.htmlへの新色追加方法を追記 |
+
+---
+
+## 現在のクイズ一覧
+
+| ID | クイズ名 | 問題数 | カテゴリ | 色 |
+|----|---------|--------|----------|-----|
+| innai-rule | 院内ルール確認クイズ | 15問 | staff | blue |
+| contact-basic | コンタクトレンズ処方クイズ | 29問 | staff | cyan |
+| kafunsho | 花粉症クイズ | 16問 | staff | teal |
+| ryokunaisho | 緑内障理解度クイズ | 17問 | patient | green |
+| megane-awase | 老眼鏡合わせクイズ | 28問 | staff | amber |
+| kinshi | 近視クイズ | 10問 | staff | blue |
+| shashi | 斜視クイズ | 10問 | staff | purple |

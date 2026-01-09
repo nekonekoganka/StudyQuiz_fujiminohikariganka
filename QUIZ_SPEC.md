@@ -288,3 +288,12 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | `quizzes/コンタクト処方の基本クイズ.html` | ✅ 完了 |
 | `quizzes/花粉症についてのクイズ.html` | ✅ 完了 |
 | `quizzes/緑内障についてクイズ.html` | ✅ 完了 |
+| `quizzes/老眼鏡合わせ_クイズ.html` | ✅ 完了 |
+| `quizzes/近視についてのクイズ.html` | ✅ 完了（2025-01追加） |
+| `quizzes/斜視クイズ.html` | ✅ 完了（2025-01追加） |
+
+---
+
+## 詳細仕様書
+
+より詳しい仕様は [docs/QUIZ_SPECIFICATION.md](./docs/QUIZ_SPECIFICATION.md) を参照してください。
