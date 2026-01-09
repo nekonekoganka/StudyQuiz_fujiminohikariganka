@@ -126,9 +126,10 @@ quizzes/
     <div id="finalResult" class="final-score-card hidden">
         <div id="resultDetail" class="result-detail"></div>
         <div class="buttons">
-            <button class="home-button hidden" onclick="resetQuiz()">モード選択</button>
-            <a href="../mypage.html" class="mypage-button hidden">学習記録</a>
-            <a href="../index.html" class="top-button hidden">ホーム</a>
+            <!-- 重要: モード選択ボタンは必ず goHome() を使用する（resetQuiz()ではない） -->
+            <button class="home-button hidden" onclick="goHome()">🔄 モード選択</button>
+            <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
+            <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
         </div>
     </div>
 </body>
@@ -461,6 +462,7 @@ function selectAnswer(selectedOption) {
 - [ ] `recordQuizResult()`の呼び出しがある
 - [ ] `finalResult`が`quiz-container`の**外**に配置されている
 - [ ] 結果ボタン（モード選択、学習記録、ホーム）が存在する
+- [ ] **モード選択ボタンが `onclick="goHome()"` になっている**（`resetQuiz()`ではない）
 
 ### JavaScript関数
 - [ ] `startQuiz`: top-linkを非表示にしていない
@@ -505,6 +507,16 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 **原因**: forループの上限が古い問題数のまま
 **解決**: 全てのforループを新しい総問題数に更新
 
+### 問題: 「モード選択」ボタンを押しても同じモードでやり直しになる
+**原因**: 結果画面のモード選択ボタンで `resetQuiz()` を呼び出している
+**解決**: `onclick="resetQuiz()"` を `onclick="goHome()"` に変更
+
+> **重要**: `resetQuiz()` と `goHome()` の違い
+> - `resetQuiz()`: 同じモードでクイズをやり直す（モード選択画面には戻らない）
+> - `goHome()`: モード選択画面（今日の5問、全問モードなど）に戻る
+>
+> 結果画面の「モード選択」ボタンは必ず `goHome()` を使用してください。
+
 ---
 
 ## 更新履歴
@@ -515,6 +527,7 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | 2025-01 | 近視クイズ・斜視クイズを追加、purpleカラーテーマを追加 |
 | 2025-01 | index.htmlへの新色追加方法を追記 |
 | 2025-01 | 遠用メガネ・弱視・白内障・緑内障検診クイズを追加、indigoカラーテーマを追加 |
+| 2025-01 | **重要**: モード選択ボタンのバグ修正。`resetQuiz()`→`goHome()`に修正、仕様書にも反映 |
 
 ---
 
