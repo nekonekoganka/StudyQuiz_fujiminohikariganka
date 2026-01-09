@@ -397,8 +397,8 @@ function shuffleArrayForConfig(array) {
 }
 
 /**
- * 優先度方式で問題を選択
- * 間違えた問題 > 未挑戦問題 > 正解済み問題 の優先順位で選ぶ
+ * 確率重み付け方式で問題を選択
+ * 重み: 間違い=5, 未挑戦=10, 正解済み=1
  * @param {string} quizId - クイズID
  * @param {number} totalQ - 総問題数
  * @param {number} count - 選択する問題数
@@ -419,24 +419,35 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
         !incorrect.includes(q) && !unanswered.includes(q)
     );
 
-    let selected = [];
+    // 重み付きプールを作成（間違い:5, 未挑戦:10, 正解済み:1）
+    const weighted = [];
+    incorrect.forEach(q => {
+        for (let i = 0; i < 5; i++) weighted.push(q);
+    });
+    unanswered.forEach(q => {
+        for (let i = 0; i < 10; i++) weighted.push(q);
+    });
+    correct.forEach(q => {
+        weighted.push(q);
+    });
 
-    // 1. まず間違えた問題から選ぶ（最優先）
-    const shuffledIncorrect = shuffleArrayForConfig(incorrect);
-    selected.push(...shuffledIncorrect.slice(0, count));
+    // 重複なしでcount個選ぶ
+    const selected = [];
+    const availableWeighted = [...weighted];
 
-    // 2. 足りなければ未挑戦問題から追加
-    if (selected.length < count) {
-        const remaining = count - selected.length;
-        const shuffledUnanswered = shuffleArrayForConfig(unanswered);
-        selected.push(...shuffledUnanswered.slice(0, remaining));
-    }
+    while (selected.length < count && availableWeighted.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableWeighted.length);
+        const chosen = availableWeighted[randomIndex];
 
-    // 3. それでも足りなければ正解済み問題から追加
-    if (selected.length < count) {
-        const remaining = count - selected.length;
-        const shuffledCorrect = shuffleArrayForConfig(correct);
-        selected.push(...shuffledCorrect.slice(0, remaining));
+        if (!selected.includes(chosen)) {
+            selected.push(chosen);
+        }
+        // 選ばれた問題を全て除去（重複防止）
+        for (let i = availableWeighted.length - 1; i >= 0; i--) {
+            if (availableWeighted[i] === chosen) {
+                availableWeighted.splice(i, 1);
+            }
+        }
     }
 
     // 最終的な出題順をシャッフル
