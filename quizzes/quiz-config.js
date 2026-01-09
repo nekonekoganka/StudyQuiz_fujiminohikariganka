@@ -281,11 +281,17 @@ function recordQuizResult(quizId, score, totalQuestions) {
         quizProgress.bestScore = score;
     }
 
-    // 全問モードで満点の場合のみ isPerfect を true にする
+    // 全問題を1回以上正解（累積）した場合に isPerfect を true にする
     const quizConfig = getQuizById(quizId);
-    const isFullMode = quizConfig && totalQuestions === quizConfig.totalQuestions;
-    if (isFullMode && score === totalQuestions) {
-        quizProgress.isPerfect = true;
+    if (quizConfig && quizProgress.questionResults) {
+        const results = quizProgress.questionResults;
+        const totalQ = quizConfig.totalQuestions;
+        const answeredCount = Object.keys(results).length;
+        const allCorrect = answeredCount === totalQ &&
+                          Object.values(results).every(v => v === true);
+        if (allCorrect) {
+            quizProgress.isPerfect = true;
+        }
     }
 
     // 累計回答数を更新
