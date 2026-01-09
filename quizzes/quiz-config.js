@@ -55,6 +55,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '老眼鏡合わせに関する基本知識をテストします',
         color: 'amber'
+    },
+    {
+        id: 'kinshi',
+        name: '近視クイズ',
+        file: '近視についてのクイズ.html',
+        totalQuestions: 10,
+        icon: '👁️‍🗨️',
+        category: 'staff',
+        description: '近視の基礎知識と患者様への説明ポイントを学べます',
+        color: 'blue'
     }
 ];
 
