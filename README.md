@@ -18,6 +18,8 @@
 | [コンタクトレンズ処方クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/コンタクト処方の基本クイズ.html) | コンタクトレンズの処方に関する基本知識 |
 | [花粉症クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/花粉症についてのクイズ.html) | 花粉症の症状や対処法についての知識 |
 | [老眼鏡合わせクイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/老眼鏡合わせ_クイズ.html) | 老眼鏡合わせに関する基本知識 |
+| [近視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/近視についてのクイズ.html) | 近視の基礎知識と患者様への説明ポイント |
+| [斜視クイズ](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/quizzes/斜視クイズ.html) | 斜視の基礎知識と保護者への説明ポイント |
 
 ### 患者様・ご家族向け
 
@@ -92,16 +94,21 @@
 ### ファイル構成
 
 ```
-├── index.html              # トップページ
-├── mypage.html             # マイページ（進捗確認）
+├── index.html                      # トップページ
+├── mypage.html                     # マイページ（進捗確認）
 ├── quizzes/
-│   ├── quiz-config.js      # クイズ設定ファイル（重要）
+│   ├── quiz-config.js              # クイズ設定ファイル（重要）
 │   ├── 院内ルール確認クイズ.html
 │   ├── コンタクト処方の基本クイズ.html
 │   ├── 花粉症についてのクイズ.html
-│   └── 緑内障についてクイズ.html
-├── QUIZ_SPEC.md            # クイズHTML仕様書
-└── README.md               # このファイル
+│   ├── 緑内障についてクイズ.html
+│   ├── 老眼鏡合わせ_クイズ.html
+│   ├── 近視についてのクイズ.html
+│   └── 斜視クイズ.html
+├── docs/
+│   └── QUIZ_SPECIFICATION.md       # クイズHTML仕様書（詳細版）
+├── QUIZ_SPEC.md                    # クイズHTML仕様書（簡易版）
+└── README.md                       # このファイル
 ```
 
 ---
@@ -125,10 +132,18 @@ const QUIZ_LIST = [
         icon: '📝',                        // アイコン絵文字
         category: 'staff',                 // 'staff' または 'patient'
         description: 'クイズの説明文',      // 説明
-        color: 'blue'                      // カードの色
+        color: 'blue'                      // カードの色（blue/cyan/teal/green/amber/purple）
     }
 ];
 ```
+
+#### 利用可能なカラーテーマ
+- `blue` - 青系（院内ルール、近視など）
+- `cyan` - シアン系（コンタクトレンズ）
+- `teal` - ティール系（花粉症）
+- `green` - 緑系（緑内障）
+- `amber` - 琥珀色系（老眼鏡合わせ）
+- `purple` - 紫系（斜視）
 
 ### 手順2: 新しいクイズHTMLを作成
 
@@ -237,7 +252,9 @@ setTimeout(() => {
 
 ## クイズHTMLの詳細仕様
 
-詳細な仕様は [QUIZ_SPEC.md](./QUIZ_SPEC.md) を参照してください。
+詳細な仕様は以下を参照してください：
+- [docs/QUIZ_SPECIFICATION.md](./docs/QUIZ_SPECIFICATION.md) - 詳細版（Claude Code用）
+- [QUIZ_SPEC.md](./QUIZ_SPEC.md) - 簡易版
 
 ---
 
