@@ -61,6 +61,14 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAttempts >= 1
     },
     {
+        id: 'fifty-answers',
+        name: 'コツコツ学習',
+        icon: '🌱',
+        description: '累計50問回答',
+        condition: '合計で50問以上回答する',
+        check: (progress, stats) => stats.totalAnswered >= 50
+    },
+    {
         id: 'all-tried',
         name: '全制覇',
         icon: '📚',
@@ -69,6 +77,22 @@ const BADGE_LIST = [
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
         }
+    },
+    {
+        id: 'hundred-answers',
+        name: '100問突破',
+        icon: '💯',
+        description: '累計100問回答',
+        condition: '合計で100問以上回答する',
+        check: (progress, stats) => stats.totalAnswered >= 100
+    },
+    {
+        id: 'ten-attempts',
+        name: '熱心な挑戦者',
+        icon: '🔥',
+        description: '10回挑戦',
+        condition: '合計で10回以上クイズに挑戦する',
+        check: (progress, stats) => stats.totalAttempts >= 10
     },
     {
         id: 'perfect-once',
@@ -81,6 +105,36 @@ const BADGE_LIST = [
         }
     },
     {
+        id: 'double-perfect',
+        name: 'ダブル満点',
+        icon: '⭐',
+        description: '2つで満点',
+        condition: '2つ以上のクイズの「全問」モードで満点を取る',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= 2;
+        }
+    },
+    {
+        id: 'two-hundred-answers',
+        name: '勉強家',
+        icon: '📖',
+        description: '累計200問回答',
+        condition: '合計で200問以上回答する',
+        check: (progress, stats) => stats.totalAnswered >= 200
+    },
+    {
+        id: 'triple-perfect',
+        name: 'トリプル満点',
+        icon: '💎',
+        description: '3つで満点',
+        condition: '3つ以上のクイズの「全問」モードで満点を取る',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= 3;
+        }
+    },
+    {
         id: 'quiz-master',
         name: 'クイズマスター',
         icon: '👑',
@@ -89,14 +143,6 @@ const BADGE_LIST = [
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
-    },
-    {
-        id: 'hundred-answers',
-        name: '100問突破',
-        icon: '💯',
-        description: '累計100問回答',
-        condition: '合計で100問以上回答する',
-        check: (progress, stats) => stats.totalAnswered >= 100
     }
 ];
 
