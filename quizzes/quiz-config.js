@@ -313,3 +313,65 @@ function recordQuizResult(quizId, score, totalQuestions) {
 function getQuizById(quizId) {
     return QUIZ_LIST.find(q => q.id === quizId);
 }
+
+/**
+ * 問題ごとの結果を記録
+ * @param {string} quizId - クイズID
+ * @param {number} questionNumber - 問題番号
+ * @param {boolean} isCorrect - 正解したか
+ */
+function recordQuestionResult(quizId, questionNumber, isCorrect) {
+    const data = getQuizData();
+
+    if (!data.progress[quizId]) {
+        data.progress[quizId] = {
+            bestScore: 0,
+            totalQuestions: 0,
+            attempts: 0,
+            isPerfect: false,
+            questionResults: {}
+        };
+    }
+
+    if (!data.progress[quizId].questionResults) {
+        data.progress[quizId].questionResults = {};
+    }
+
+    // 最後の結果で上書き
+    data.progress[quizId].questionResults[questionNumber] = isCorrect;
+
+    saveQuizData(data);
+}
+
+/**
+ * 間違えた問題の番号リストを取得
+ * @param {string} quizId - クイズID
+ * @returns {number[]} - 間違えた問題番号の配列
+ */
+function getIncorrectQuestions(quizId) {
+    const data = getQuizData();
+    const results = data.progress[quizId]?.questionResults || {};
+
+    return Object.entries(results)
+        .filter(([_, isCorrect]) => isCorrect === false)
+        .map(([num, _]) => parseInt(num));
+}
+
+/**
+ * 未挑戦の問題番号リストを取得
+ * @param {string} quizId - クイズID
+ * @param {number} totalQuestions - 総問題数
+ * @returns {number[]} - 未挑戦の問題番号の配列
+ */
+function getUnansweredQuestions(quizId, totalQuestions) {
+    const data = getQuizData();
+    const results = data.progress[quizId]?.questionResults || {};
+
+    const unanswered = [];
+    for (let i = 1; i <= totalQuestions; i++) {
+        if (!(i.toString() in results)) {
+            unanswered.push(i);
+        }
+    }
+    return unanswered;
+}
