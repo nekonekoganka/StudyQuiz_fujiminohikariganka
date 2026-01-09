@@ -45,6 +45,16 @@ const QUIZ_LIST = [
         category: 'patient',
         description: '緑内障について正しく理解するためのクイズです',
         color: 'green'
+    },
+    {
+        id: 'megane-awase',
+        name: 'メガネ合わせクイズ',
+        file: '老眼鏡合わせ_クイズ.html',
+        totalQuestions: 28,
+        icon: '👓',
+        category: 'staff',
+        description: 'メガネ合わせに関する基本知識をテストします',
+        color: 'amber'
     }
 ];
 
