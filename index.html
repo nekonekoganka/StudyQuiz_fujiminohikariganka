@@ -93,8 +93,8 @@
         }
 
         .quiz-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 16px;
         }
 
@@ -278,6 +278,7 @@
             }
 
             .quiz-list {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
             }
 
@@ -443,6 +444,7 @@
             <div class="footer-icon">🌟</div>
             <div class="footer-text">目の健康をサポートします</div>
             <div class="footer-name">ふじみ野ひかり眼科</div>
+            <a href="mypage.html" class="mypage-link">📊 学習記録</a>
         </div>
     </div>
 </body>
