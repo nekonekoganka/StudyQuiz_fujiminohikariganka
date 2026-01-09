@@ -35,11 +35,12 @@ quizzes/
 
 ### 利用可能なカラーテーマ
 - `blue` - 青系（院内ルール、近視など）
-- `cyan` - シアン系（コンタクトレンズ）
+- `cyan` - シアン系（コンタクトレンズ、白内障）
 - `teal` - ティール系（花粉症）
-- `green` - 緑系（緑内障）
-- `amber` - 琥珀色系（老眼鏡合わせ）
-- `purple` - 紫系（斜視）
+- `green` - 緑系（緑内障理解度）
+- `amber` - 琥珀色系（老眼鏡合わせ、遠用メガネ）
+- `purple` - 紫系（斜視、弱視）
+- `indigo` - インディゴ系（緑内障検診）
 
 ### index.htmlに新しい色を追加する場合
 
@@ -513,6 +514,7 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | 2024-01 | 初版作成（老眼鏡合わせクイズを基に標準化） |
 | 2025-01 | 近視クイズ・斜視クイズを追加、purpleカラーテーマを追加 |
 | 2025-01 | index.htmlへの新色追加方法を追記 |
+| 2025-01 | 遠用メガネ・弱視・白内障・緑内障検診クイズを追加、indigoカラーテーマを追加 |
 
 ---
 
@@ -527,3 +529,7 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | megane-awase | 老眼鏡合わせクイズ | 28問 | staff | amber |
 | kinshi | 近視クイズ | 10問 | staff | blue |
 | shashi | 斜視クイズ | 10問 | staff | purple |
+| enyo-megane | 遠用メガネ度数決定クイズ | 28問 | staff | amber |
+| jakushi | 弱視クイズ | 15問 | staff | purple |
+| hakunaisho | 白内障クイズ | 10問 | staff | cyan |
+| ryokunaisho-kenshin | 緑内障検診クイズ | 14問 | staff | indigo |

@@ -291,6 +291,10 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | `quizzes/老眼鏡合わせ_クイズ.html` | ✅ 完了 |
 | `quizzes/近視についてのクイズ.html` | ✅ 完了（2025-01追加） |
 | `quizzes/斜視クイズ.html` | ✅ 完了（2025-01追加） |
+| `quizzes/大人の遠く用メガネ合わせクイズ.html` | ✅ 完了（2025-01追加） |
+| `quizzes/弱視クイズ.html` | ✅ 完了（2025-01追加） |
+| `quizzes/白内障についてクイズ.html` | ✅ 完了（2025-01追加） |
+| `quizzes/自治体の緑内障検診の制度のクイズ.html` | ✅ 完了（2025-01追加） |
 
 ---
 
