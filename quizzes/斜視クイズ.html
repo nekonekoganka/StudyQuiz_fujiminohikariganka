@@ -540,6 +540,14 @@
                     <span>🆕 未挑戦の問題:</span>
                     <span id="unansweredCount">10問</span>
                 </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
             </div>
 
             <div class="mode-description">
@@ -750,15 +758,24 @@
         function updateProgressStatus() {
             const incorrectList = getIncorrectQuestions(QUIZ_ID);
             const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
 
             const incorrectCount = document.getElementById('incorrectCount');
             const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
 
             if (incorrectCount) {
                 incorrectCount.textContent = `${incorrectList.length}問`;
             }
             if (unansweredCount) {
                 unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
             }
         }
 
