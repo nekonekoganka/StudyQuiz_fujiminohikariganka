@@ -848,7 +848,7 @@
             if (mode === 'daily3') {
                 isDaily = true;
                 totalQuestions = 3;
-                questionList = getRandomQuestions(3);
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, 3);
             } else if (mode === 'review') {
                 isDaily = false;
                 questionList = getIncorrectQuestions(QUIZ_ID);

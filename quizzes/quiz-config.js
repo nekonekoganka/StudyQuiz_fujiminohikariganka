@@ -381,3 +381,60 @@ function getUnansweredQuestions(quizId, totalQuestions) {
     }
     return unanswered;
 }
+
+/**
+ * 重み付けランダムで問題を選択
+ * 間違えた問題 > 未挑戦問題 > 正解済み問題 の順で出やすい
+ * @param {string} quizId - クイズID
+ * @param {number} totalQ - 総問題数
+ * @param {number} count - 選択する問題数
+ * @returns {number[]} - 選択された問題番号の配列
+ */
+function getWeightedRandomQuestions(quizId, totalQ, count) {
+    const incorrect = getIncorrectQuestions(quizId);
+    const unanswered = getUnansweredQuestions(quizId, totalQ);
+
+    // 全問題リストを作成
+    const allQuestions = [];
+    for (let i = 1; i <= totalQ; i++) {
+        allQuestions.push(i);
+    }
+
+    // 正解済み問題を算出
+    const correct = allQuestions.filter(q =>
+        !incorrect.includes(q) && !unanswered.includes(q)
+    );
+
+    // 重み付け: 間違い=5, 未挑戦=3, 正解済み=1
+    const weighted = [];
+    incorrect.forEach(q => {
+        for (let i = 0; i < 5; i++) weighted.push(q);
+    });
+    unanswered.forEach(q => {
+        for (let i = 0; i < 3; i++) weighted.push(q);
+    });
+    correct.forEach(q => {
+        weighted.push(q);
+    });
+
+    // 重複なしでcount個選ぶ
+    const selected = [];
+    const availableWeighted = [...weighted];
+
+    while (selected.length < count && availableWeighted.length > 0) {
+        const randomIndex = Math.floor(Math.random() * availableWeighted.length);
+        const chosen = availableWeighted[randomIndex];
+
+        if (!selected.includes(chosen)) {
+            selected.push(chosen);
+        }
+        // 選ばれた問題を全て除去（重複防止）
+        for (let i = availableWeighted.length - 1; i >= 0; i--) {
+            if (availableWeighted[i] === chosen) {
+                availableWeighted.splice(i, 1);
+            }
+        }
+    }
+
+    return selected;
+}
