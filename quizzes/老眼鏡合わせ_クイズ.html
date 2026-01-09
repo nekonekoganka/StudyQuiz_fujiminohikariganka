@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>メガネ合わせクイズ - スタッフ向け</title>
+    <title>老眼鏡合わせクイズ - スタッフ向け</title>
     <style>
         * {
             box-sizing: border-box;
@@ -101,6 +101,35 @@
             color: #1a2937;
             margin-top: 20px;
             line-height: 1.5;
+        }
+
+        .top-link {
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .top-link a {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 24px;
+            border-radius: 25px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .top-link a:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 768px) {
+            .top-link a:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            }
         }
 
         .question-card {
@@ -433,9 +462,11 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>👓 メガネ合わせクイズ 👓</h1>
+        <h1>👓 老眼鏡合わせクイズ 👓</h1>
         <div class="subtitle">スタッフ向け - 近用度数決定マスター</div>
-        
+
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
         <div id="modeSelection" class="mode-selection">
             <button class="mode-button" onclick="startQuiz('daily5')">
                 📋 今日の5問
@@ -906,6 +937,7 @@
         function startQuiz(mode) {
             document.querySelector('h1').classList.add('hidden');
             document.querySelector('.subtitle').classList.add('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
             
@@ -1078,27 +1110,26 @@
                 message = `良い学習の機会になりましたね。\nこのクイズを元に知識を整理し、明日からの臨床に活かしていきましょう！`;
             }
             
-            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
-
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
             const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            
-            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
 
-            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
             document.querySelector('.mypage-button').classList.remove('hidden');
             document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
 
             // トップへスクロール
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function resetQuiz() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             score = 0;
             updateScore();
             
@@ -1136,9 +1167,9 @@
         }
 
         function goHome() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
             
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
@@ -1187,10 +1218,6 @@
             }
         });
     </script>
-
-    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
-      <div id="resultTitle" class="result-title"></div>
-    </div>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
