@@ -387,6 +387,75 @@
                 box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
             }
         }
+
+        /* ダークモード */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+
+            .container {
+                background: #1e1e2e;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            }
+
+            h1 {
+                color: #e0e0e0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+
+            .subtitle {
+                color: #b0b0b0;
+            }
+
+            .quiz-card {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+
+            .quiz-card:hover {
+                border-color: #5a5a6e;
+            }
+
+            .quiz-card.tried {
+                background: linear-gradient(135deg, #3d3520 0%, #4a4025 100%);
+                border-color: #6d6030;
+            }
+
+            .quiz-card.perfect {
+                background: linear-gradient(135deg, #3d2035 0%, #4a2540 100%);
+                border-color: #6d3050;
+            }
+
+            .quiz-title {
+                color: #e0e0e0;
+            }
+
+            .quiz-description {
+                color: #a0a0b0;
+            }
+
+            .tag-staff {
+                background: #1b2a3d;
+                color: #7ab3e0;
+            }
+
+            .arrow {
+                color: #5a5a6e;
+            }
+
+            .footer {
+                border-top-color: #3a3a4e;
+            }
+
+            .footer-text {
+                color: #707080;
+            }
+
+            .footer-name {
+                color: #a0a0b0;
+            }
+        }
     </style>
 </head>
 <body>
