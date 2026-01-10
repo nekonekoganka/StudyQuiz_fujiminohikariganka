@@ -171,8 +171,8 @@ const BADGE_LIST = [
         id: 'perfect-once',
         name: '満点達成',
         icon: '🌸',
-        description: '1つのクイズで全問正解',
-        condition: 'どれかのクイズで全問正解する',
+        description: '1つのクイズを累積で全問正解',
+        condition: 'どれかのクイズで全問正解（累積）',
         check: (progress, stats) => {
             return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
@@ -181,8 +181,8 @@ const BADGE_LIST = [
         id: 'triple-perfect',
         name: 'トリプル満点',
         icon: '⭐',
-        description: '3つのクイズで全問正解',
-        condition: '3つ以上のクイズで全問正解する',
+        description: '3つのクイズを累積で全問正解',
+        condition: '3つ以上のクイズで全問正解（累積）',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
             return perfectCount >= 3;
@@ -200,8 +200,8 @@ const BADGE_LIST = [
         id: 'half-perfect',
         name: 'ハーフ満点',
         icon: '💎',
-        description: '6つのクイズで全問正解',
-        condition: '6つ以上のクイズで全問正解する',
+        description: '6つのクイズを累積で全問正解',
+        condition: '6つ以上のクイズで全問正解（累積）',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
             return perfectCount >= 6;
@@ -211,8 +211,8 @@ const BADGE_LIST = [
         id: 'quiz-master',
         name: 'クイズマスター',
         icon: '👑',
-        description: '全クイズで全問正解',
-        condition: 'すべてのクイズで全問正解する',
+        description: '全クイズを累積で全問正解',
+        condition: 'すべてのクイズで全問正解（累積）',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
