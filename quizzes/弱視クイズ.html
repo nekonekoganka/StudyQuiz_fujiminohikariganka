@@ -284,45 +284,40 @@
         }
         
         .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .score {
-            text-align: center;
-            font-size: 22px;
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+
+        .question-progress {
+            font-size: 15px;
             font-weight: bold;
             color: #4a148c;
-            margin: 0;
-            padding: 12px;
-            background: #f3e5f5;
-            border-radius: 10px;
-            border: 2px solid #e1bee7;
-            flex-shrink: 0;
         }
-        
+
+        .score-display {
+            font-size: 15px;
+            font-weight: bold;
+            color: #4a148c;
+        }
+
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 4px;
             background: #e1bee7;
-            border-radius: 4px;
-            margin: 0;
+            border-radius: 2px;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
+
+        /* 問題カード内の問題番号は非表示 */
+        .question-number {
+            display: none;
         }
 
         .hidden {
@@ -462,6 +457,104 @@
     color: white;
 }
 
+        /* 結果画面ボタン */
+        .result-buttons {
+            margin-top: 25px;
+        }
+
+        .result-buttons-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .result-buttons-row.secondary {
+            margin-bottom: 0;
+        }
+
+        .shuffle-button, .retry-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            text-decoration: none;
+        }
+
+        .shuffle-button {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        .btn-sub {
+            font-size: 11px;
+            font-weight: normal;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        .record-button, .home-button-small {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .record-button {
+            background: linear-gradient(135deg, #26a69a, #00897b);
+        }
+
+        .home-button-small {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .shuffle-button:active, .retry-button:active, .record-button:active, .home-button-small:active {
+            transform: scale(0.97);
+        }
+
+        @media (min-width: 768px) {
+            .shuffle-button:hover, .retry-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            }
+            .record-button:hover, .home-button-small:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .shuffle-button, .retry-button {
+                min-width: 130px;
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+            .record-button, .home-button-small {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+
         /* 正解エフェクト */
         .celebrate-emoji {
             position: fixed;
@@ -552,7 +645,10 @@
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">15</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">15</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -797,6 +893,23 @@
     <script>
         const QUIZ_ID = 'jakushi';
         const TOTAL_QUESTIONS = 15;
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
         let currentQuestion = 1;
         let score = 0;
         let totalQuestions = 15;
@@ -967,6 +1080,7 @@
         function updateProgress() {
             const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
         }
 
         function selectAnswer(selectedOption) {
@@ -1085,9 +1199,10 @@
             document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
 
             document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1117,9 +1232,10 @@
 
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
 
             document.querySelector('.quiz-status').classList.remove('hidden');
 
@@ -1158,9 +1274,10 @@
 
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
@@ -1179,6 +1296,18 @@
             document.getElementById('score').textContent = score;
         }
 
+        // シャッフル3問：別ジャンルのクイズへ
+        function goToRandomQuiz() {
+            const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            window.location.href = encodeURI(randomQuiz) + '?mode=daily3';
+        }
+
+        // もう3問：このクイズの今日の3問を再開
+        function restartThisQuiz() {
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + '?mode=daily3';
+        }
+
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
                 selectAnswer(e.target);
@@ -1188,10 +1317,15 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">🔄 モード選択</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">このクイズ</span></button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 
