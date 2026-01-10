@@ -41,7 +41,7 @@
         }
 
         .logo-icon {
-            width: 120px;
+            width: 168px;
             height: auto;
             margin-bottom: 12px;
         }
@@ -61,10 +61,8 @@
             line-height: 1.5;
         }
 
-        .subtitle-decoration {
-            color: #9fa8da;
-            font-size: 14px;
-            letter-spacing: 3px;
+        .header-content {
+            text-align: center;
         }
 
         .section-title {
@@ -275,8 +273,20 @@
                 padding: 40px;
             }
 
+            .header {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 30px;
+            }
+
             .logo-icon {
-                width: 150px;
+                width: 210px;
+                flex-shrink: 0;
+            }
+
+            .header-content {
+                text-align: left;
             }
 
             h1 {
@@ -362,17 +372,14 @@
     <div class="container">
         <div class="header">
             <img src="ふじみ野ぴかぴかり眼科_ロゴ.png" alt="ふじみ野ひかり眼科ロゴ" class="logo-icon">
-            <h1>ひかり眼科 学習クイズ</h1>
-            <div class="subtitle">📚 知識を深めて、より良い医療を 📚</div>
-            <div class="subtitle-decoration">✦ ✦ ✦</div>
-            <a href="mypage.html" class="mypage-link">📊 学習記録</a>
-            <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
+            <div class="header-content">
+                <h1>ひかり眼科 学習クイズ</h1>
+                <div class="subtitle">📚 知識を深めて、より良い医療を 📚</div>
+                <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+                <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
+            </div>
         </div>
 
-        <div class="section-title">
-            <span class="section-icon">👨‍⚕️</span>
-            スタッフ向けクイズ
-        </div>
         <div class="quiz-list">
             <!-- メガネ・コンタクト系 -->
             <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan">
