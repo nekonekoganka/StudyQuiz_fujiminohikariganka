@@ -105,12 +105,13 @@
 
         /* 学習状況表示 */
         .progress-status {
-            margin: 25px 0 15px;
+            margin: 25px auto 15px;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
             font-size: 14px;
             color: #555;
+            max-width: 500px;
         }
 
         .progress-status-item {
@@ -1008,15 +1009,13 @@
                 message = `今回は良い復習の機会になりましたね。\nこのクイズをきっかけに、白内障についてもう一度学んでみましょう。知識は必ず業務に役立ちます！`;
             }
             
-            document.getElementById('resultTitle').textContent = '🎊 結果発表 🎊';
-
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
             const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            
-            document.getElementById('resultDetail').innerHTML = evaluationHTML + scoreHTML + messageHTML;
 
-            document.getElementById('resultTitleCard').classList.remove('hidden');
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.home-button').classList.remove('hidden');
             document.querySelector('.mypage-button').classList.remove('hidden');
@@ -1027,7 +1026,6 @@
         }
 
         function resetQuiz() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.querySelector('.quiz-container').classList.remove('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1064,7 +1062,6 @@
         }
 
         function goHome() {
-            document.getElementById('resultTitleCard').classList.add('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             document.querySelector('.quiz-container').classList.remove('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
@@ -1117,10 +1114,6 @@
             }
         });
     </script>
-
-    <div id="resultTitleCard" class="final-score-card hidden" style="margin-bottom: 20px;">
-      <div id="resultTitle" class="result-title"></div>
-    </div>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
