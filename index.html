@@ -202,6 +202,26 @@
             flex-shrink: 0;
         }
 
+        /* 進捗状態による背景色 */
+        .quiz-card.tried {
+            background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+            border-color: #fff59d;
+        }
+
+        .quiz-card.perfect {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-color: #f48fb1;
+        }
+
+        /* 進捗バッジ */
+        .progress-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 20px;
+            z-index: 1;
+        }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -382,7 +402,7 @@
 
         <div class="quiz-list">
             <!-- メガネ・コンタクト系 -->
-            <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan">
+            <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan" data-quiz-id="contact-basic">
                 <div class="quiz-icon">💧</div>
                 <div class="quiz-content">
                     <div class="quiz-title">CL処方クイズ</div>
@@ -394,7 +414,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/大人の遠く用メガネ合わせクイズ.html" class="quiz-card amber">
+            <a href="quizzes/大人の遠く用メガネ合わせクイズ.html" class="quiz-card amber" data-quiz-id="enyo-megane">
                 <div class="quiz-icon">🤓</div>
                 <div class="quiz-content">
                     <div class="quiz-title">遠用メガネのクイズ</div>
@@ -406,7 +426,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/老眼鏡合わせ_クイズ.html" class="quiz-card amber">
+            <a href="quizzes/老眼鏡合わせ_クイズ.html" class="quiz-card amber" data-quiz-id="megane-awase">
                 <div class="quiz-icon">👓</div>
                 <div class="quiz-content">
                     <div class="quiz-title">老眼鏡合わせクイズ</div>
@@ -419,7 +439,7 @@
             </a>
 
             <!-- 疾患系 -->
-            <a href="quizzes/近視についてのクイズ.html" class="quiz-card blue">
+            <a href="quizzes/近視についてのクイズ.html" class="quiz-card blue" data-quiz-id="kinshi">
                 <div class="quiz-icon">👁️‍🗨️</div>
                 <div class="quiz-content">
                     <div class="quiz-title">近視クイズ</div>
@@ -431,7 +451,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/花粉症についてのクイズ.html" class="quiz-card teal">
+            <a href="quizzes/花粉症についてのクイズ.html" class="quiz-card teal" data-quiz-id="kafunsho">
                 <div class="quiz-icon">🤧</div>
                 <div class="quiz-content">
                     <div class="quiz-title">花粉症クイズ</div>
@@ -443,7 +463,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/白内障についてクイズ.html" class="quiz-card cyan">
+            <a href="quizzes/白内障についてクイズ.html" class="quiz-card cyan" data-quiz-id="hakunaisho">
                 <div class="quiz-icon">📖</div>
                 <div class="quiz-content">
                     <div class="quiz-title">白内障クイズ</div>
@@ -455,7 +475,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/緑内障についてクイズ.html" class="quiz-card green">
+            <a href="quizzes/緑内障についてクイズ.html" class="quiz-card green" data-quiz-id="ryokunaisho">
                 <div class="quiz-icon">👁️</div>
                 <div class="quiz-content">
                     <div class="quiz-title">緑内障クイズ</div>
@@ -467,7 +487,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/弱視クイズ.html" class="quiz-card purple">
+            <a href="quizzes/弱視クイズ.html" class="quiz-card purple" data-quiz-id="jakushi">
                 <div class="quiz-icon">👀</div>
                 <div class="quiz-content">
                     <div class="quiz-title">弱視クイズ</div>
@@ -479,7 +499,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/斜視クイズ.html" class="quiz-card purple">
+            <a href="quizzes/斜視クイズ.html" class="quiz-card purple" data-quiz-id="shashi">
                 <div class="quiz-icon">🧐</div>
                 <div class="quiz-content">
                     <div class="quiz-title">斜視クイズ</div>
@@ -492,7 +512,7 @@
             </a>
 
             <!-- ルール・検診系 -->
-            <a href="quizzes/自治体の緑内障検診の制度のクイズ.html" class="quiz-card indigo">
+            <a href="quizzes/自治体の緑内障検診の制度のクイズ.html" class="quiz-card indigo" data-quiz-id="ryokunaisho-kenshin">
                 <div class="quiz-icon">🏥</div>
                 <div class="quiz-content">
                     <div class="quiz-title">検診の制度クイズ</div>
@@ -504,7 +524,7 @@
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/院内ルール確認クイズ.html" class="quiz-card blue">
+            <a href="quizzes/院内ルール確認クイズ.html" class="quiz-card blue" data-quiz-id="innai-rule">
                 <div class="quiz-icon">🏥</div>
                 <div class="quiz-content">
                     <div class="quiz-title">院内ルール確認クイズ</div>
@@ -525,6 +545,7 @@
         </div>
     </div>
 
+    <script src="quizzes/quiz-config.js"></script>
     <script>
         // ランダムクイズ用のクイズリスト（院内ルール・検診制度クイズを除く）
         const RANDOM_QUIZ_LIST = [
@@ -544,6 +565,44 @@
             const selectedQuiz = RANDOM_QUIZ_LIST[randomIndex];
             window.location.href = `quizzes/${selectedQuiz.file}?mode=daily3`;
         }
+
+        // 進捗表示を更新
+        function updateProgressDisplay() {
+            const data = getQuizData();
+            const progress = data.progress || {};
+
+            document.querySelectorAll('.quiz-card[data-quiz-id]').forEach(card => {
+                const quizId = card.dataset.quizId;
+                const quizProgress = progress[quizId];
+
+                if (quizProgress) {
+                    // 進捗バッジを追加
+                    let badge = card.querySelector('.progress-badge');
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'progress-badge';
+                        card.appendChild(badge);
+                    }
+
+                    if (quizProgress.isPerfect) {
+                        // 満点達成
+                        card.classList.add('perfect');
+                        card.classList.remove('tried');
+                        badge.textContent = '🌸';
+                        badge.title = '満点達成！';
+                    } else {
+                        // 挑戦中
+                        card.classList.add('tried');
+                        card.classList.remove('perfect');
+                        badge.textContent = '⭐';
+                        badge.title = '挑戦中';
+                    }
+                }
+            });
+        }
+
+        // ページ読み込み時に実行
+        updateProgressDisplay();
     </script>
 </body>
 </html>
