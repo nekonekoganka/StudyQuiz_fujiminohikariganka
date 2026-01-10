@@ -1339,20 +1339,16 @@
             document.getElementById('score').textContent = score;
         }
 
-        // ランダムに別のクイズへ移動
+        // シャッフル3問：別ジャンルのクイズへ
         function goToRandomQuiz() {
             const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
-            if (otherQuizzes.length > 0) {
-                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
-                window.location.href = randomQuiz;
-            } else {
-                window.location.href = '../index.html';
-            }
+            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            window.location.href = encodeURI(randomQuiz) + '?mode=daily3';
         }
 
-        // このクイズをもう一度（モード選択へ戻る）
+        // もう3問：このクイズの今日の3問を再開
         function restartThisQuiz() {
-            goHome();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + '?mode=daily3';
         }
 
         document.addEventListener('click', function(e) {

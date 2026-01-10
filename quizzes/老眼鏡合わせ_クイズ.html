@@ -1517,14 +1517,16 @@
             document.getElementById('score').textContent = score;
         }
 
+        // シャッフル3問：別ジャンルのクイズへ
         function goToRandomQuiz() {
             const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
             const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
-            window.location.href = randomQuiz + '?mode=daily3';
+            window.location.href = encodeURI(randomQuiz) + '?mode=daily3';
         }
 
+        // もう3問：このクイズの今日の3問を再開
         function restartThisQuiz() {
-            resetQuiz();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + '?mode=daily3';
         }
 
         document.addEventListener('click', function(e) {
