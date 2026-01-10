@@ -341,45 +341,40 @@
         }
         
         .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .score {
-            text-align: center;
-            font-size: 22px;
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 0 4px;
+        }
+
+        .question-progress {
+            font-size: 15px;
             font-weight: bold;
             color: #2c3e50;
-            margin: 0;
-            padding: 12px;
-            background: #f1f3f9;
-            border-radius: 10px;
-            border: 2px solid #e0e6f7;
-            flex-shrink: 0;
         }
-        
+
+        .score-display {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 4px;
             background: #e0e6f7;
-            border-radius: 4px;
-            margin: 0;
+            border-radius: 2px;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
+
+        /* 問題カード内の問題番号は非表示 */
+        .question-number {
+            display: none;
         }
 
         .hidden {
@@ -558,7 +553,10 @@
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">10</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
@@ -905,6 +903,7 @@
         function updateProgress() {
             const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
         }
 
         function selectAnswer(selectedOption) {
