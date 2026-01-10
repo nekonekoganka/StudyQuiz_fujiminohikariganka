@@ -622,3 +622,122 @@ h1 {
     background: linear-gradient(135deg, #f8f9fa, #e9ecef);
     border-radius: 10px;
 }
+
+/* ダークモード */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .quiz-container {
+        background: #1e1e2e;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+        color: #e0e0e0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+        color: #b0b0b0;
+    }
+
+    .mode-description {
+        color: #b0b0b0;
+    }
+
+    .progress-status {
+        background: #2a2a3e;
+        color: #c0c0c0;
+    }
+
+    .question-card {
+        background: #2a2a3e;
+        border-color: #3a3a4e;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+    }
+
+    .question-text {
+        color: #e0e0e0;
+    }
+
+    .question-number {
+        color: #7a9fd6;
+    }
+
+    .option {
+        background: #2a2a3e;
+        border-color: #3a3a4e;
+        color: #e0e0e0;
+    }
+
+    .option:hover {
+        background: #3a3a4e;
+        border-color: #6f86d6;
+    }
+
+    .option.correct {
+        background: #1b3d1b;
+        border-color: #4caf50;
+        color: #a5d6a7;
+    }
+
+    .option.incorrect {
+        background: #3d1b1b;
+        border-color: #f44336;
+        color: #ef9a9a;
+    }
+
+    .feedback.correct {
+        background: #1b3d3d;
+        color: #a5d6d6;
+        border-color: #48c6ef;
+    }
+
+    .feedback.incorrect {
+        background: #3d1b1b;
+        color: #ef9a9a;
+        border-color: #f44336;
+    }
+
+    .explanation {
+        background: #1b2a3d;
+        border-color: #2196f3;
+        color: #b0c4de;
+    }
+
+    .staff-point {
+        background: #3d3520;
+        border-color: #f9a825;
+        color: #ffe082;
+    }
+
+    .progress-bar {
+        background: #3a3a4e;
+    }
+
+    .question-progress,
+    .score-display {
+        color: #e0e0e0;
+    }
+
+    .final-score-card {
+        background: #1e1e2e;
+        border-color: #48c6ef;
+    }
+
+    .result-title,
+    .result-detail {
+        color: #e0e0e0;
+    }
+
+    .final-score-highlight {
+        color: #ff6b6b;
+    }
+
+    .quiz-title-header {
+        background: linear-gradient(135deg, #2a2a3e, #3a3a4e);
+        color: #e0e0e0;
+    }
+}

@@ -398,6 +398,101 @@
                 box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
             }
         }
+
+        /* ダークモード */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+
+            .container {
+                background: #1e1e2e;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            }
+
+            h1 {
+                color: #e0e0e0;
+            }
+
+            .header-subtitle {
+                color: #a0a0b0;
+            }
+
+            .section-title {
+                color: #e0e0e0;
+                border-bottom-color: #3a3a4e;
+            }
+
+            .badge {
+                background: #2a2a3e;
+            }
+
+            .badge.earned {
+                background: linear-gradient(135deg, #3d3520, #4a4025);
+            }
+
+            .badge-name {
+                color: #b0b0b0;
+            }
+
+            .badge.earned .badge-name {
+                color: #e0e0e0;
+            }
+
+            .badge-condition {
+                color: #707080;
+            }
+
+            .badge.earned .badge-condition {
+                color: #a0a0b0;
+            }
+
+            .stat-item {
+                background: #2a2a3e;
+            }
+
+            .stat-value {
+                color: #e0e0e0;
+            }
+
+            .stat-label {
+                color: #a0a0b0;
+            }
+
+            .progress-item {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+
+            .progress-title {
+                color: #e0e0e0;
+            }
+
+            .progress-detail {
+                color: #a0a0b0;
+            }
+
+            .progress-bar-container {
+                background: #3a3a4e;
+            }
+
+            .progress-percentage {
+                color: #7ab3e0;
+            }
+
+            .not-attempted {
+                color: #707080;
+            }
+
+            .complete-banner {
+                background: linear-gradient(135deg, #5d4037, #4a3025);
+                color: #ffe082;
+            }
+
+            .reset-button {
+                color: #707080;
+            }
+        }
     </style>
 </head>
 <body>
