@@ -630,87 +630,87 @@ h1 {
     }
 
     .quiz-container {
-        background: #1e1e2e;
+        background: #1a1a28;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     h1 {
-        color: #e0e0e0;
+        color: #f5f5f5;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
     .subtitle {
-        color: #b0b0b0;
+        color: #c5c5c5;
     }
 
     .mode-description {
-        color: #b0b0b0;
+        color: #c5c5c5;
     }
 
     .progress-status {
-        background: #2a2a3e;
-        color: #c0c0c0;
+        background: #222235;
+        color: #d5d5d5;
     }
 
     .question-card {
-        background: #2a2a3e;
+        background: #222235;
         border-color: #3a3a4e;
         box-shadow: 0 3px 15px rgba(0,0,0,0.3);
     }
 
     .question-text {
-        color: #e0e0e0;
+        color: #f5f5f5;
     }
 
     .question-number {
-        color: #7a9fd6;
+        color: #8eb0e8;
     }
 
     .option {
-        background: #2a2a3e;
+        background: #222235;
         border-color: #3a3a4e;
-        color: #e0e0e0;
+        color: #f0f0f0;
     }
 
     .option:hover {
-        background: #3a3a4e;
-        border-color: #6f86d6;
+        background: #2e2e42;
+        border-color: #8aa0e6;
     }
 
     .option.correct {
         background: #1b3d1b;
-        border-color: #4caf50;
-        color: #a5d6a7;
+        border-color: #5cbf60;
+        color: #b8e6ba;
     }
 
     .option.incorrect {
         background: #3d1b1b;
-        border-color: #f44336;
-        color: #ef9a9a;
+        border-color: #f55a4e;
+        color: #f5b0b0;
     }
 
     .feedback.correct {
         background: #1b3d3d;
-        color: #a5d6d6;
-        border-color: #48c6ef;
+        color: #c0e8e8;
+        border-color: #5ad0f5;
     }
 
     .feedback.incorrect {
         background: #3d1b1b;
-        color: #ef9a9a;
-        border-color: #f44336;
+        color: #f5b0b0;
+        border-color: #f55a4e;
     }
 
     .explanation {
-        background: #1b2a3d;
-        border-color: #2196f3;
-        color: #b0c4de;
+        background: #1a2840;
+        border-color: #3aa0f5;
+        color: #d5e5f5;
     }
 
     .staff-point {
         background: #3d3520;
         border-color: #f9a825;
-        color: #ffe082;
+        color: #ffeca0;
     }
 
     .progress-bar {
@@ -719,25 +719,25 @@ h1 {
 
     .question-progress,
     .score-display {
-        color: #e0e0e0;
+        color: #f5f5f5;
     }
 
     .final-score-card {
-        background: #1e1e2e;
-        border-color: #48c6ef;
+        background: #1a1a28;
+        border-color: #5ad0f5;
     }
 
     .result-title,
     .result-detail {
-        color: #e0e0e0;
+        color: #f5f5f5;
     }
 
     .final-score-highlight {
-        color: #ff6b6b;
+        color: #ff7a7a;
     }
 
     .quiz-title-header {
-        background: linear-gradient(135deg, #2a2a3e, #3a3a4e);
-        color: #e0e0e0;
+        background: linear-gradient(135deg, #222235, #2e2e42);
+        color: #f5f5f5;
     }
 }
