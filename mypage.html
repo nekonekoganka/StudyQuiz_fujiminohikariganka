@@ -403,16 +403,23 @@
         }
 
         /* トグルスイッチ */
+        .toggle-setting .setting-header {
+            margin-bottom: 0;
+        }
+
         .toggle-switch {
             position: relative;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .toggle-label {
-            font-size: 13px;
-            color: #666;
+            font-size: 12px;
+            color: #999;
+            min-width: 24px;
+            text-align: center;
         }
 
         .toggle-label.active {
@@ -426,12 +433,13 @@
 
         .toggle-slider {
             position: relative;
-            width: 56px;
-            height: 30px;
+            width: 50px;
+            height: 28px;
             background: #ccc;
-            border-radius: 30px;
+            border-radius: 28px;
             cursor: pointer;
             transition: background 0.3s;
+            flex-shrink: 0;
         }
 
         .toggle-slider::before {
@@ -439,8 +447,8 @@
             position: absolute;
             top: 3px;
             left: 3px;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             background: white;
             border-radius: 50%;
             transition: transform 0.3s;
@@ -452,7 +460,7 @@
         }
 
         .toggle-input:checked + .toggle-slider::before {
-            transform: translateX(26px);
+            transform: translateX(22px);
         }
 
         /* タブレット・PC向け */
@@ -660,6 +668,10 @@
             .toggle-slider {
                 background: #4a4a5e;
             }
+
+            .toggle-setting .setting-header {
+                margin-bottom: 0;
+            }
         }
 
         /* ダークモード強制切り替え */
@@ -690,9 +702,10 @@
         body.force-light .setting-description { color: #666 !important; }
         body.force-light .selector-button { background: white !important; border-color: #ddd !important; color: #666 !important; }
         body.force-light .selector-button.active { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; }
-        body.force-light .toggle-label { color: #666 !important; }
+        body.force-light .toggle-label { color: #999 !important; }
         body.force-light .toggle-label.active { color: #1a237e !important; }
         body.force-light .toggle-slider { background: #ccc !important; }
+        body.force-light .toggle-setting .setting-header { margin-bottom: 0 !important; }
 
         body.force-dark {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
@@ -724,6 +737,7 @@
         body.force-dark .toggle-label { color: #a0a0b0 !important; }
         body.force-dark .toggle-label.active { color: #7ab3e0 !important; }
         body.force-dark .toggle-slider { background: #4a4a5e !important; }
+        body.force-dark .toggle-setting .setting-header { margin-bottom: 0 !important; }
     </style>
 </head>
 <body>
@@ -812,7 +826,7 @@
             </div>
 
             <!-- 効果音 -->
-            <div class="setting-item">
+            <div class="setting-item toggle-setting">
                 <div class="setting-header">
                     <div class="setting-info">
                         <div class="setting-label">効果音</div>
@@ -830,7 +844,7 @@
             </div>
 
             <!-- アニメーション -->
-            <div class="setting-item">
+            <div class="setting-item toggle-setting">
                 <div class="setting-header">
                     <div class="setting-info">
                         <div class="setting-label">アニメーション</div>
@@ -839,7 +853,7 @@
                     <div class="toggle-switch">
                         <span class="toggle-label" id="animationLabelOff">オフ</span>
                         <label>
-                            <input type="checkbox" class="toggle-input" id="animationToggle" onchange="toggleAnimation()" checked>
+                            <input type="checkbox" class="toggle-input" id="animationToggle" onchange="toggleAnimation()">
                             <span class="toggle-slider"></span>
                         </label>
                         <span class="toggle-label" id="animationLabelOn">オン</span>
@@ -873,86 +887,108 @@
 
     <script src="quizzes/quiz-config.js"></script>
     <script>
+        // クイズ設定が読み込まれているか確認
+        if (typeof QUIZ_LIST === 'undefined' || typeof BADGE_LIST === 'undefined') {
+            console.error('quiz-config.js が正しく読み込まれていません');
+        }
+
         function renderPage() {
-            const data = getQuizData();
-            const progress = data.progress || {};
-            const badges = data.badges || [];
+            try {
+                const data = getQuizData();
+                const progress = data.progress || {};
+                const badges = data.badges || [];
 
-            // バッジを表示
-            const badgeContainer = document.getElementById('badgeContainer');
-            badgeContainer.innerHTML = BADGE_LIST.map(badge => {
-                const isEarned = badges.includes(badge.id);
-                return `
-                    <div class="badge ${isEarned ? 'earned' : 'locked'}" title="${badge.description}">
-                        <div class="badge-icon">${isEarned ? badge.icon : '🔒'}</div>
-                        <div class="badge-name">${badge.name}</div>
-                        <div class="badge-condition">${badge.condition}</div>
-                    </div>
-                `;
-            }).join('');
-
-            // 統計を表示
-            document.getElementById('totalAnswered').textContent = data.totalAnswered || 0;
-
-            let perfectCount = 0;
-            QUIZ_LIST.forEach(quiz => {
-                if (progress[quiz.id] && progress[quiz.id].isPerfect) {
-                    perfectCount++;
-                }
-            });
-            document.getElementById('perfectCount').textContent = `${perfectCount}/${QUIZ_LIST.length}`;
-
-            // コンプリートバナー
-            if (perfectCount === QUIZ_LIST.length && QUIZ_LIST.length > 0) {
-                document.getElementById('completeBanner').classList.remove('hidden');
-            }
-
-            // クイズ進捗を表示
-            const progressList = document.getElementById('progressList');
-            progressList.innerHTML = QUIZ_LIST.map(quiz => {
-                const quizProgress = progress[quiz.id];
-                const totalQ = quiz.totalQuestions;
-                let statusIcon = 'ー';
-                let correctCount = 0;
-                let percentage = 0;
-                let detailText = '未挑戦';
-
-                if (quizProgress) {
-                    if (quizProgress.isPerfect) {
-                        statusIcon = '🌸';
-                    } else {
-                        statusIcon = '⭐';
-                    }
-                    // questionResultsから正解数を計算
-                    const results = quizProgress.questionResults || {};
-                    correctCount = Object.values(results).filter(v => v === true).length;
-                    percentage = Math.round((correctCount / totalQ) * 100);
-                    detailText = `正解: ${correctCount}/${totalQ}問 | ${quizProgress.attempts}回挑戦`;
-                }
-
-                return `
-                    <a href="quizzes/${quiz.file}" class="progress-item" style="text-decoration: none;">
-                        <div class="progress-icon">${quiz.icon}</div>
-                        <div class="progress-content">
-                            <div class="progress-title">
-                                <span class="progress-status">${statusIcon}</span>
-                                ${quiz.name}
+                // バッジを表示
+                const badgeContainer = document.getElementById('badgeContainer');
+                if (badgeContainer && typeof BADGE_LIST !== 'undefined') {
+                    badgeContainer.innerHTML = BADGE_LIST.map(badge => {
+                        const isEarned = badges.includes(badge.id);
+                        return `
+                            <div class="badge ${isEarned ? 'earned' : 'locked'}" title="${badge.description}">
+                                <div class="badge-icon">${isEarned ? badge.icon : '🔒'}</div>
+                                <div class="badge-name">${badge.name}</div>
+                                <div class="badge-condition">${badge.condition}</div>
                             </div>
-                            ${quizProgress ? `
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill ${quizProgress.isPerfect ? 'perfect' : ''}" style="width: ${percentage}%"></div>
+                        `;
+                    }).join('');
+                }
+
+                // 統計を表示
+                const totalAnsweredEl = document.getElementById('totalAnswered');
+                if (totalAnsweredEl) {
+                    totalAnsweredEl.textContent = data.totalAnswered || 0;
+                }
+
+                let perfectCount = 0;
+                if (typeof QUIZ_LIST !== 'undefined') {
+                    QUIZ_LIST.forEach(quiz => {
+                        if (progress[quiz.id] && progress[quiz.id].isPerfect) {
+                            perfectCount++;
+                        }
+                    });
+                }
+                const perfectCountEl = document.getElementById('perfectCount');
+                if (perfectCountEl) {
+                    perfectCountEl.textContent = `${perfectCount}/${typeof QUIZ_LIST !== 'undefined' ? QUIZ_LIST.length : 0}`;
+                }
+
+                // コンプリートバナー
+                const completeBanner = document.getElementById('completeBanner');
+                if (completeBanner && typeof QUIZ_LIST !== 'undefined' && perfectCount === QUIZ_LIST.length && QUIZ_LIST.length > 0) {
+                    completeBanner.classList.remove('hidden');
+                }
+
+                // クイズ進捗を表示
+                const progressList = document.getElementById('progressList');
+                if (progressList && typeof QUIZ_LIST !== 'undefined') {
+                    progressList.innerHTML = QUIZ_LIST.map(quiz => {
+                        const quizProgress = progress[quiz.id];
+                        const totalQ = quiz.totalQuestions;
+                        let statusIcon = 'ー';
+                        let correctCount = 0;
+                        let percentage = 0;
+                        let detailText = '未挑戦';
+
+                        if (quizProgress) {
+                            if (quizProgress.isPerfect) {
+                                statusIcon = '🌸';
+                            } else {
+                                statusIcon = '⭐';
+                            }
+                            // questionResultsから正解数を計算
+                            const results = quizProgress.questionResults || {};
+                            correctCount = Object.values(results).filter(v => v === true).length;
+                            percentage = Math.round((correctCount / totalQ) * 100);
+                            detailText = `正解: ${correctCount}/${totalQ}問 | ${quizProgress.attempts}回挑戦`;
+                        }
+
+                        return `
+                            <a href="quizzes/${quiz.file}" class="progress-item" style="text-decoration: none;">
+                                <div class="progress-icon">${quiz.icon}</div>
+                                <div class="progress-content">
+                                    <div class="progress-title">
+                                        <span class="progress-status">${statusIcon}</span>
+                                        ${quiz.name}
+                                    </div>
+                                    ${quizProgress ? `
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar-fill ${quizProgress.isPerfect ? 'perfect' : ''}" style="width: ${percentage}%"></div>
+                                        </div>
+                                        <div class="progress-stats">
+                                            <span>${detailText}</span>
+                                            <span class="progress-percentage">${percentage}%</span>
+                                        </div>
+                                    ` : `
+                                        <div class="progress-detail not-attempted">${detailText}</div>
+                                    `}
                                 </div>
-                                <div class="progress-stats">
-                                    <span>${detailText}</span>
-                                    <span class="progress-percentage">${percentage}%</span>
-                                </div>
-                            ` : `
-                                <div class="progress-detail not-attempted">${detailText}</div>
-                            `}
-                        </div>
-                    </a>
-                `;
-            }).join('');
+                            </a>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error('renderPage error:', e);
+            }
         }
 
         function confirmReset() {
@@ -964,13 +1000,7 @@
         }
 
         // ===== 設定関連 =====
-        const SETTINGS_KEYS = {
-            fontSize: 'hikari-quiz-fontsize',
-            darkMode: 'hikari-quiz-darkmode',
-            sound: 'hikari-quiz-sound',
-            animation: 'hikari-quiz-animation',
-            dailyCount: 'hikari-quiz-dailycount'
-        };
+        // SETTINGS_KEYS は quiz-config.js から読み込まれます
 
         // ----- フォントサイズ -----
         function setFontSize(size) {
