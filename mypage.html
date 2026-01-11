@@ -37,23 +37,70 @@
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .header-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         h1 {
             color: #1a237e;
-            font-size: 24px;
-            margin: 0 0 8px 0;
+            font-size: 22px;
+            margin: 0 0 6px 0;
         }
 
         .header-subtitle {
             color: #5c6bc0;
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        /* アコーディオン設定 */
+        .settings-accordion {
+            margin-bottom: 20px;
+        }
+
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-toggle:active {
+            transform: scale(0.98);
+        }
+
+        .settings-toggle-icon {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .settings-toggle.open .settings-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .settings-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f8f9ff;
+            border-radius: 0 0 12px 12px;
+            margin-top: -8px;
+            padding-top: 8px;
+        }
+
+        .settings-content.open {
+            max-height: 500px;
+        }
+
+        .settings-inner {
+            padding: 16px;
         }
 
         .section {
@@ -72,23 +119,20 @@
             gap: 8px;
         }
 
-        /* バッジセクション */
+        /* バッジセクション - 3列表示 */
         .badge-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
 
         .badge {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px 10px;
-            border-radius: 12px;
+            padding: 10px 6px;
+            border-radius: 10px;
             background: #f5f5f5;
-            min-width: 90px;
-            max-width: 110px;
             transition: transform 0.2s;
         }
 
@@ -102,8 +146,8 @@
         }
 
         .badge-icon {
-            font-size: 32px;
-            margin-bottom: 6px;
+            font-size: 26px;
+            margin-bottom: 4px;
         }
 
         .badge.locked .badge-icon {
@@ -111,10 +155,10 @@
         }
 
         .badge-name {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .badge.earned .badge-name {
@@ -123,11 +167,11 @@
         }
 
         .badge-condition {
-            font-size: 10px;
+            font-size: 9px;
             color: #999;
             text-align: center;
-            line-height: 1.3;
-            margin-top: 4px;
+            line-height: 1.2;
+            margin-top: 2px;
         }
 
         .badge.earned .badge-condition {
@@ -332,43 +376,27 @@
             text-decoration: underline;
         }
 
-        /* 設定セクション */
-        .settings-section {
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 2px solid #e8eaf6;
-        }
-
+        /* 設定アイテム */
         .setting-item {
-            display: flex;
-            flex-direction: column;
-            padding: 16px;
-            background: #f8f9ff;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .setting-item:last-child {
             margin-bottom: 0;
         }
 
-        .setting-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
         .setting-label {
-            font-size: 15px;
+            font-size: 14px;
             color: #333;
             font-weight: 500;
+            margin-bottom: 8px;
         }
 
         .setting-description {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
-            margin-top: 4px;
+            margin-top: 2px;
+            margin-bottom: 8px;
         }
 
         /* 3ボタンセレクタ */
@@ -429,34 +457,33 @@
                 padding: 40px;
             }
 
-            .header-icon {
-                font-size: 56px;
-            }
-
             h1 {
-                font-size: 28px;
+                font-size: 26px;
             }
 
             .section-title {
                 font-size: 18px;
             }
 
+            .badge-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+            }
+
             .badge {
-                min-width: 110px;
-                max-width: 140px;
-                padding: 16px 12px;
+                padding: 14px 10px;
             }
 
             .badge-icon {
-                font-size: 40px;
+                font-size: 32px;
             }
 
             .badge-name {
-                font-size: 12px;
+                font-size: 11px;
             }
 
             .badge-condition {
-                font-size: 11px;
+                font-size: 10px;
             }
 
             .stat-value {
@@ -580,11 +607,7 @@
                 color: #707080;
             }
 
-            .settings-section {
-                border-top-color: #3a3a4e;
-            }
-
-            .setting-item {
+            .settings-content {
                 background: #2a2a3e;
             }
 
@@ -618,25 +641,46 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-icon">📊</div>
-            <h1>学習記録</h1>
+            <h1>📊 学習記録</h1>
             <div class="header-subtitle">学習の進捗を確認しましょう</div>
+        </div>
+
+        <!-- 設定アコーディオン -->
+        <div class="settings-accordion">
+            <button class="settings-toggle" onclick="toggleSettings()">
+                <span>⚙️ 設定</span>
+                <span class="settings-toggle-icon">▼</span>
+            </button>
+            <div class="settings-content" id="settingsContent">
+                <div class="settings-inner">
+                    <!-- 文字の大きさ -->
+                    <div class="setting-item">
+                        <div class="setting-label">文字の大きさ</div>
+                        <div class="button-selector" id="fontSizeSelector">
+                            <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
+                            <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
+                            <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
+                        </div>
+                    </div>
+
+                    <!-- 今日の問題数 -->
+                    <div class="setting-item">
+                        <div class="setting-label">今日の問題数</div>
+                        <div class="setting-description">「今日の○問」モードで出題される問題数</div>
+                        <div class="button-selector" id="dailyCountSelector">
+                            <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
+                            <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
+                            <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="completeBanner" class="complete-banner hidden">
             <div class="complete-icon">🏆</div>
             <div class="complete-text">全クイズ コンプリート！</div>
             <div class="complete-sub">すべてのクイズで満点を達成しました</div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">
-                <span>🎖️</span>
-                実績バッジ
-            </div>
-            <div id="badgeContainer" class="badge-container">
-                <!-- JSで動的生成 -->
-            </div>
         </div>
 
         <div class="section">
@@ -666,39 +710,13 @@
             </div>
         </div>
 
-        <div class="section settings-section">
+        <div class="section">
             <div class="section-title">
-                <span>⚙️</span>
-                設定
+                <span>🎖️</span>
+                実績バッジ
             </div>
-
-            <!-- 文字の大きさ -->
-            <div class="setting-item">
-                <div class="setting-header">
-                    <div class="setting-info">
-                        <div class="setting-label">文字の大きさ</div>
-                    </div>
-                </div>
-                <div class="button-selector" id="fontSizeSelector">
-                    <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
-                    <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
-                    <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
-                </div>
-            </div>
-
-            <!-- 今日の問題数 -->
-            <div class="setting-item">
-                <div class="setting-header">
-                    <div class="setting-info">
-                        <div class="setting-label">今日の問題数</div>
-                        <div class="setting-description">「今日の○問」モードで出題される問題数</div>
-                    </div>
-                </div>
-                <div class="button-selector" id="dailyCountSelector">
-                    <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
-                    <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
-                    <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
-                </div>
+            <div id="badgeContainer" class="badge-container">
+                <!-- JSで動的生成 -->
             </div>
         </div>
 
@@ -826,6 +844,14 @@
 
         // ===== 設定関連 =====
         // SETTINGS_KEYS は quiz-config.js から読み込まれます
+
+        // ----- 設定アコーディオン -----
+        function toggleSettings() {
+            const toggle = document.querySelector('.settings-toggle');
+            const content = document.getElementById('settingsContent');
+            toggle.classList.toggle('open');
+            content.classList.toggle('open');
+        }
 
         // ----- フォントサイズ -----
         function setFontSize(size) {
