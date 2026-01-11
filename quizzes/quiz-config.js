@@ -455,20 +455,72 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
 }
 
 /**
- * フォントサイズ設定キー
+ * 設定キー
  */
-const FONT_SIZE_KEY = 'hikari-quiz-fontsize';
+const SETTINGS_KEYS = {
+    fontSize: 'hikari-quiz-fontsize',
+    darkMode: 'hikari-quiz-darkmode',
+    sound: 'hikari-quiz-sound',
+    animation: 'hikari-quiz-animation',
+    dailyCount: 'hikari-quiz-dailycount'
+};
 
 /**
  * フォントサイズ設定を適用
- * 各ページの読み込み時に呼び出す
  */
 function applyFontSize() {
-    const saved = localStorage.getItem(FONT_SIZE_KEY);
-    if (saved === 'large') {
+    const saved = localStorage.getItem(SETTINGS_KEYS.fontSize) || 'normal';
+    document.body.classList.remove('small-font', 'large-font');
+    if (saved === 'small') {
+        document.body.classList.add('small-font');
+    } else if (saved === 'large') {
         document.body.classList.add('large-font');
     }
 }
 
+/**
+ * ダークモード設定を適用
+ */
+function applyDarkMode() {
+    const saved = localStorage.getItem(SETTINGS_KEYS.darkMode) || 'auto';
+    document.body.classList.remove('force-light', 'force-dark');
+    if (saved === 'light') {
+        document.body.classList.add('force-light');
+    } else if (saved === 'dark') {
+        document.body.classList.add('force-dark');
+    }
+}
+
+/**
+ * 効果音設定を取得
+ */
+function isSoundEnabled() {
+    return localStorage.getItem(SETTINGS_KEYS.sound) === 'on';
+}
+
+/**
+ * アニメーション設定を取得
+ */
+function isAnimationEnabled() {
+    const saved = localStorage.getItem(SETTINGS_KEYS.animation);
+    return saved !== 'off'; // デフォルトはオン
+}
+
+/**
+ * 今日の問題数設定を取得
+ */
+function getDailyQuestionCount() {
+    const saved = localStorage.getItem(SETTINGS_KEYS.dailyCount);
+    return saved ? parseInt(saved) : 3;
+}
+
+/**
+ * 全設定を適用
+ */
+function applyAllSettings() {
+    applyFontSize();
+    applyDarkMode();
+}
+
 // ページ読み込み時に自動で適用
-document.addEventListener('DOMContentLoaded', applyFontSize);
+document.addEventListener('DOMContentLoaded', applyAllSettings);
