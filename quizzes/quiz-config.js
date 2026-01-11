@@ -118,6 +118,16 @@ const QUIZ_LIST = [
         description: '子どもの近視予防と保護者への説明ポイントを学べます',
         color: 'purple'
     },
+    {
+        id: 'diabetic_retinopathy',
+        name: '糖尿病網膜症クイズ',
+        file: '糖尿病網膜症_クイズ.html',
+        totalQuestions: 10,
+        icon: '🩺',
+        category: 'staff',
+        description: '糖尿病網膜症の基礎知識と患者様への説明ポイントを学べます',
+        color: 'indigo'
+    },
     // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',
