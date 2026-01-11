@@ -545,6 +545,10 @@
 
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
+            // ボタンのテキストを設定値に更新
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
             document.querySelector('.retry-button').classList.remove('hidden');
             document.querySelector('.record-button').classList.remove('hidden');
             document.querySelector('.home-button-small').classList.remove('hidden');
