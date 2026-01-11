@@ -14,7 +14,7 @@
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
@@ -386,8 +386,15 @@
             const urlParams = new URLSearchParams(window.location.search);
             const mode = urlParams.get('mode');
 
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
             // モードが指定されていたら自動開始
-            if (mode === 'daily3' || mode === 'full') {
+            if (mode && (mode.startsWith('daily') || mode === 'full')) {
                 startQuiz(mode);
             }
         });
@@ -470,10 +477,11 @@
             document.getElementById('quizArea').classList.remove('hidden');
             document.getElementById('quizTitleHeader').classList.remove('hidden');
 
-            if (mode === 'daily3') {
+            if (mode.startsWith('daily')) {
                 isDaily = true;
-                totalQuestions = 3;
-                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, 3);
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
             } else {
                 isDaily = false;
                 totalQuestions = TOTAL_QUESTIONS;
@@ -712,8 +720,8 @@
 
             document.querySelector('.quiz-status').classList.remove('hidden');
 
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
+            if (isDaily) {
+                startQuiz('daily');
             } else {
                 startQuiz('full');
             }
@@ -773,12 +781,14 @@
         function goToRandomQuiz() {
             const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
             const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
-            window.location.href = encodeURI(randomQuiz) + '?mode=daily3';
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
         }
 
         // もう3問：このクイズの今日の3問を再開
         function restartThisQuiz() {
-            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + '?mode=daily3';
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
         }
 
         document.addEventListener('click', function(e) {

@@ -341,11 +341,22 @@
 
         .setting-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
             padding: 16px;
             background: #f8f9ff;
             border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .setting-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
 
         .setting-label {
@@ -358,6 +369,37 @@
             font-size: 12px;
             color: #666;
             margin-top: 4px;
+        }
+
+        /* 3ボタンセレクタ */
+        .button-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .selector-button {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .selector-button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .selector-button.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            color: white;
         }
 
         /* トグルスイッチ */
@@ -590,6 +632,23 @@
                 color: #a0a0b0;
             }
 
+            .selector-button {
+                background: #3a3a4e;
+                border-color: #4a4a5e;
+                color: #a0a0b0;
+            }
+
+            .selector-button:hover {
+                border-color: #667eea;
+                color: #7ab3e0;
+            }
+
+            .selector-button.active {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-color: transparent;
+                color: white;
+            }
+
             .toggle-label {
                 color: #a0a0b0;
             }
@@ -602,6 +661,69 @@
                 background: #4a4a5e;
             }
         }
+
+        /* ダークモード強制切り替え */
+        body.force-light {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        body.force-light .container {
+            background: white !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important;
+        }
+        body.force-light h1 { color: #1a237e !important; }
+        body.force-light .header-subtitle { color: #5c6bc0 !important; }
+        body.force-light .section-title { color: #1a237e !important; border-bottom-color: #e8eaf6 !important; }
+        body.force-light .badge { background: #f5f5f5 !important; }
+        body.force-light .badge.earned { background: linear-gradient(135deg, #fff9c4, #fff59d) !important; }
+        body.force-light .badge-name { color: #666 !important; }
+        body.force-light .badge.earned .badge-name { color: #333 !important; }
+        body.force-light .stat-item { background: #f8f9ff !important; }
+        body.force-light .stat-value { color: #1a237e !important; }
+        body.force-light .stat-label { color: #666 !important; }
+        body.force-light .progress-item { background: white !important; border-color: #e8eaf6 !important; }
+        body.force-light .progress-title { color: #333 !important; }
+        body.force-light .progress-detail { color: #666 !important; }
+        body.force-light .progress-bar-container { background: #e8eaf6 !important; }
+        body.force-light .progress-percentage { color: #1a237e !important; }
+        body.force-light .setting-item { background: #f8f9ff !important; }
+        body.force-light .setting-label { color: #333 !important; }
+        body.force-light .setting-description { color: #666 !important; }
+        body.force-light .selector-button { background: white !important; border-color: #ddd !important; color: #666 !important; }
+        body.force-light .selector-button.active { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; }
+        body.force-light .toggle-label { color: #666 !important; }
+        body.force-light .toggle-label.active { color: #1a237e !important; }
+        body.force-light .toggle-slider { background: #ccc !important; }
+
+        body.force-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+        }
+        body.force-dark .container {
+            background: #1e1e2e !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5) !important;
+        }
+        body.force-dark h1 { color: #e0e0e0 !important; }
+        body.force-dark .header-subtitle { color: #a0a0b0 !important; }
+        body.force-dark .section-title { color: #e0e0e0 !important; border-bottom-color: #3a3a4e !important; }
+        body.force-dark .badge { background: #2a2a3e !important; }
+        body.force-dark .badge.earned { background: linear-gradient(135deg, #3d3520, #4a4025) !important; }
+        body.force-dark .badge-name { color: #b0b0b0 !important; }
+        body.force-dark .badge.earned .badge-name { color: #e0e0e0 !important; }
+        body.force-dark .stat-item { background: #2a2a3e !important; }
+        body.force-dark .stat-value { color: #e0e0e0 !important; }
+        body.force-dark .stat-label { color: #a0a0b0 !important; }
+        body.force-dark .progress-item { background: #2a2a3e !important; border-color: #3a3a4e !important; }
+        body.force-dark .progress-title { color: #e0e0e0 !important; }
+        body.force-dark .progress-detail { color: #a0a0b0 !important; }
+        body.force-dark .progress-bar-container { background: #3a3a4e !important; }
+        body.force-dark .progress-percentage { color: #7ab3e0 !important; }
+        body.force-dark .setting-item { background: #2a2a3e !important; }
+        body.force-dark .setting-label { color: #e0e0e0 !important; }
+        body.force-dark .setting-description { color: #a0a0b0 !important; }
+        body.force-dark .selector-button { background: #3a3a4e !important; border-color: #4a4a5e !important; color: #a0a0b0 !important; }
+        body.force-dark .selector-button.active { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; }
+        body.force-dark .toggle-label { color: #a0a0b0 !important; }
+        body.force-dark .toggle-label.active { color: #7ab3e0 !important; }
+        body.force-dark .toggle-slider { background: #4a4a5e !important; }
     </style>
 </head>
 <body>
@@ -660,18 +782,83 @@
                 <span>⚙️</span>
                 設定
             </div>
+
+            <!-- 文字の大きさ -->
             <div class="setting-item">
-                <div class="setting-info">
-                    <div class="setting-label">文字を大きく表示する</div>
-                    <div class="setting-description">クイズの文字が読みやすくなります</div>
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <div class="setting-label">文字の大きさ</div>
+                    </div>
                 </div>
-                <div class="toggle-switch">
-                    <span class="toggle-label" id="labelOff">ふつう</span>
-                    <label>
-                        <input type="checkbox" class="toggle-input" id="fontSizeToggle" onchange="toggleFontSize()">
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <span class="toggle-label" id="labelOn">大きい</span>
+                <div class="button-selector" id="fontSizeSelector">
+                    <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
+                    <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
+                    <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
+                </div>
+            </div>
+
+            <!-- ダークモード -->
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <div class="setting-label">画面の明るさ</div>
+                    </div>
+                </div>
+                <div class="button-selector" id="darkModeSelector">
+                    <button class="selector-button active" data-value="auto" onclick="setDarkMode('auto')">自動</button>
+                    <button class="selector-button" data-value="light" onclick="setDarkMode('light')">明るい</button>
+                    <button class="selector-button" data-value="dark" onclick="setDarkMode('dark')">暗い</button>
+                </div>
+            </div>
+
+            <!-- 効果音 -->
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <div class="setting-label">効果音</div>
+                        <div class="setting-description">正解・不正解時に音が鳴ります</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <span class="toggle-label" id="soundLabelOff">オフ</span>
+                        <label>
+                            <input type="checkbox" class="toggle-input" id="soundToggle" onchange="toggleSound()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label" id="soundLabelOn">オン</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アニメーション -->
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <div class="setting-label">アニメーション</div>
+                        <div class="setting-description">正解時のエフェクトを表示します</div>
+                    </div>
+                    <div class="toggle-switch">
+                        <span class="toggle-label" id="animationLabelOff">オフ</span>
+                        <label>
+                            <input type="checkbox" class="toggle-input" id="animationToggle" onchange="toggleAnimation()" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label" id="animationLabelOn">オン</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 今日の問題数 -->
+            <div class="setting-item">
+                <div class="setting-header">
+                    <div class="setting-info">
+                        <div class="setting-label">今日の問題数</div>
+                        <div class="setting-description">「今日の○問」モードで出題される問題数</div>
+                    </div>
+                </div>
+                <div class="button-selector" id="dailyCountSelector">
+                    <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
+                    <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
+                    <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
                 </div>
             </div>
         </div>
@@ -776,37 +963,141 @@
             }
         }
 
-        // フォントサイズ設定
-        const FONT_SIZE_KEY = 'hikari-quiz-fontsize';
+        // ===== 設定関連 =====
+        const SETTINGS_KEYS = {
+            fontSize: 'hikari-quiz-fontsize',
+            darkMode: 'hikari-quiz-darkmode',
+            sound: 'hikari-quiz-sound',
+            animation: 'hikari-quiz-animation',
+            dailyCount: 'hikari-quiz-dailycount'
+        };
 
-        function toggleFontSize() {
-            const toggle = document.getElementById('fontSizeToggle');
-            const isLarge = toggle.checked;
-
-            localStorage.setItem(FONT_SIZE_KEY, isLarge ? 'large' : 'normal');
-            updateToggleLabels(isLarge);
-
-            // 現在のページにも適用（プレビュー用）
-            document.body.classList.toggle('large-font', isLarge);
+        // ----- フォントサイズ -----
+        function setFontSize(size) {
+            localStorage.setItem(SETTINGS_KEYS.fontSize, size);
+            updateFontSizeButtons(size);
+            applyFontSize(size);
         }
 
-        function updateToggleLabels(isLarge) {
-            document.getElementById('labelOff').classList.toggle('active', !isLarge);
-            document.getElementById('labelOn').classList.toggle('active', isLarge);
+        function updateFontSizeButtons(size) {
+            document.querySelectorAll('#fontSizeSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === size);
+            });
+        }
+
+        function applyFontSize(size) {
+            document.body.classList.remove('small-font', 'large-font');
+            if (size === 'small') {
+                document.body.classList.add('small-font');
+            } else if (size === 'large') {
+                document.body.classList.add('large-font');
+            }
         }
 
         function initFontSize() {
-            const saved = localStorage.getItem(FONT_SIZE_KEY);
-            const isLarge = saved === 'large';
+            const saved = localStorage.getItem(SETTINGS_KEYS.fontSize) || 'normal';
+            updateFontSizeButtons(saved);
+            applyFontSize(saved);
+        }
 
-            document.getElementById('fontSizeToggle').checked = isLarge;
-            updateToggleLabels(isLarge);
-            document.body.classList.toggle('large-font', isLarge);
+        // ----- ダークモード -----
+        function setDarkMode(mode) {
+            localStorage.setItem(SETTINGS_KEYS.darkMode, mode);
+            updateDarkModeButtons(mode);
+            applyDarkMode(mode);
+        }
+
+        function updateDarkModeButtons(mode) {
+            document.querySelectorAll('#darkModeSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === mode);
+            });
+        }
+
+        function applyDarkMode(mode) {
+            document.body.classList.remove('force-light', 'force-dark');
+            if (mode === 'light') {
+                document.body.classList.add('force-light');
+            } else if (mode === 'dark') {
+                document.body.classList.add('force-dark');
+            }
+        }
+
+        function initDarkMode() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.darkMode) || 'auto';
+            updateDarkModeButtons(saved);
+            applyDarkMode(saved);
+        }
+
+        // ----- 効果音 -----
+        function toggleSound() {
+            const toggle = document.getElementById('soundToggle');
+            const isOn = toggle.checked;
+            localStorage.setItem(SETTINGS_KEYS.sound, isOn ? 'on' : 'off');
+            updateSoundLabels(isOn);
+        }
+
+        function updateSoundLabels(isOn) {
+            document.getElementById('soundLabelOff').classList.toggle('active', !isOn);
+            document.getElementById('soundLabelOn').classList.toggle('active', isOn);
+        }
+
+        function initSound() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.sound);
+            const isOn = saved === 'on';
+            document.getElementById('soundToggle').checked = isOn;
+            updateSoundLabels(isOn);
+        }
+
+        // ----- アニメーション -----
+        function toggleAnimation() {
+            const toggle = document.getElementById('animationToggle');
+            const isOn = toggle.checked;
+            localStorage.setItem(SETTINGS_KEYS.animation, isOn ? 'on' : 'off');
+            updateAnimationLabels(isOn);
+        }
+
+        function updateAnimationLabels(isOn) {
+            document.getElementById('animationLabelOff').classList.toggle('active', !isOn);
+            document.getElementById('animationLabelOn').classList.toggle('active', isOn);
+        }
+
+        function initAnimation() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.animation);
+            // デフォルトはオン
+            const isOn = saved !== 'off';
+            document.getElementById('animationToggle').checked = isOn;
+            updateAnimationLabels(isOn);
+        }
+
+        // ----- 今日の問題数 -----
+        function setDailyCount(count) {
+            localStorage.setItem(SETTINGS_KEYS.dailyCount, count.toString());
+            updateDailyCountButtons(count);
+        }
+
+        function updateDailyCountButtons(count) {
+            document.querySelectorAll('#dailyCountSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === count.toString());
+            });
+        }
+
+        function initDailyCount() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.dailyCount) || '3';
+            updateDailyCountButtons(parseInt(saved));
+        }
+
+        // ----- 初期化 -----
+        function initSettings() {
+            initFontSize();
+            initDarkMode();
+            initSound();
+            initAnimation();
+            initDailyCount();
         }
 
         // 初期化
         renderPage();
-        initFontSize();
+        initSettings();
     </script>
 </body>
 </html>

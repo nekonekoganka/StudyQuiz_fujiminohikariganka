@@ -488,6 +488,54 @@
                 font-size: 15px;
             }
         }
+
+        /* 小さめ文字モード */
+        body.small-font .quiz-title {
+            font-size: 14px;
+        }
+
+        body.small-font .quiz-description {
+            font-size: 11px;
+        }
+
+        body.small-font .quiz-tag {
+            font-size: 10px;
+        }
+
+        /* ダークモード強制切り替え */
+        body.force-light {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        body.force-light .container { background: white !important; }
+        body.force-light h1 { color: #1a237e !important; }
+        body.force-light .subtitle { color: #5c6bc0 !important; }
+        body.force-light .quiz-card { background: white !important; border-color: #e8eaf6 !important; }
+        body.force-light .quiz-title { color: #333 !important; }
+        body.force-light .quiz-description { color: #666 !important; }
+        body.force-light .quiz-tag { background: #e8eaf6 !important; color: #1a237e !important; }
+        body.force-light .mypage-link { background: rgba(255,255,255,0.9) !important; color: #5c6bc0 !important; }
+        body.force-light .random-quiz-button { background: linear-gradient(135deg, #ff6b6b, #ffa500) !important; color: white !important; }
+        body.force-light .footer { border-top-color: #e8eaf6 !important; }
+        body.force-light .footer-text { color: #999 !important; }
+        body.force-light .footer-name { color: #666 !important; }
+        body.force-light .arrow { color: #ccc !important; }
+
+        body.force-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+        }
+        body.force-dark .container { background: #1e1e2e !important; }
+        body.force-dark h1 { color: #e0e0e0 !important; }
+        body.force-dark .subtitle { color: #a0a0b0 !important; }
+        body.force-dark .quiz-card { background: #2a2a3e !important; border-color: #3a3a4e !important; }
+        body.force-dark .quiz-title { color: #e0e0e0 !important; }
+        body.force-dark .quiz-description { color: #a0a0b0 !important; }
+        body.force-dark .quiz-tag { background: #3a3a4e !important; color: #a0a0b0 !important; }
+        body.force-dark .mypage-link { background: rgba(42,42,62,0.9) !important; color: #7ab3e0 !important; }
+        body.force-dark .random-quiz-button { background: linear-gradient(135deg, #d35400, #c0392b) !important; }
+        body.force-dark .footer { border-top-color: #3a3a4e !important; }
+        body.force-dark .footer-text { color: #707080 !important; }
+        body.force-dark .footer-name { color: #a0a0b0 !important; }
+        body.force-dark .arrow { color: #5a5a6e !important; }
     </style>
 </head>
 <body>
@@ -665,7 +713,17 @@
         function startRandomQuiz() {
             const randomIndex = Math.floor(Math.random() * RANDOM_QUIZ_LIST.length);
             const selectedQuiz = RANDOM_QUIZ_LIST[randomIndex];
-            window.location.href = `quizzes/${selectedQuiz.file}?mode=daily3`;
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = `quizzes/${selectedQuiz.file}?mode=daily${dailyCount}`;
+        }
+
+        // 今日の○問ボタンのテキストを更新
+        function updateDailyButtonText() {
+            const dailyCount = getDailyQuestionCount();
+            const btn = document.querySelector('.random-quiz-button');
+            if (btn) {
+                btn.textContent = `🎲 今日の${dailyCount}問`;
+            }
         }
 
         // 進捗表示を更新
@@ -705,6 +763,7 @@
 
         // ページ読み込み時に実行
         updateProgressDisplay();
+        updateDailyButtonText();
     </script>
 </body>
 </html>

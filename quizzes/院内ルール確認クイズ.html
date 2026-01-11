@@ -15,7 +15,7 @@
         <div id="quizTitleHeader" class="quiz-title-header hidden">🏥 院内ルール確認クイズ</div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
@@ -407,10 +407,11 @@
             document.getElementById('quizArea').classList.remove('hidden');
             document.getElementById('quizTitleHeader').classList.remove('hidden');
 
-            if (mode === 'daily3') {
+            if (mode.startsWith('daily')) {
                 isDaily = true;
-                totalQuestions = 3;
-                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, 3);
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
             } else {
                 // 全問モード
                 isDaily = false;
@@ -636,8 +637,8 @@
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             // 同じモードで再スタート
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
+            if (isDaily) {
+                startQuiz('daily');
             } else {
                 startQuiz('full');
             }
@@ -697,12 +698,14 @@
         function goToRandomQuiz() {
             const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
             const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
-            window.location.href = encodeURI(randomQuiz) + '?mode=daily3';
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
         }
 
         // もう3問：このクイズの今日の3問を再開
         function restartThisQuiz() {
-            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + '?mode=daily3';
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
         }
 
         document.addEventListener('click', function(e) {
