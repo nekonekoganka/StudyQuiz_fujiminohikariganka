@@ -430,6 +430,42 @@
             color: white;
         }
 
+        /* バックアップボタン */
+        .backup-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .backup-button {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .backup-button:hover {
+            background: #f0f4ff;
+        }
+
+        .backup-button:active {
+            transform: scale(0.98);
+        }
+
+        .backup-button.restore {
+            border-color: #43a047;
+            color: #43a047;
+        }
+
+        .backup-button.restore:hover {
+            background: #f0fff0;
+        }
+
         /* フォントサイズ設定 */
         body.small-font .setting-label { font-size: 13px; }
         body.small-font .setting-description { font-size: 11px; }
@@ -635,6 +671,25 @@
                 border-color: transparent;
                 color: white;
             }
+
+            .backup-button {
+                background: #3a3a4e;
+                border-color: #667eea;
+                color: #9ab3ea;
+            }
+
+            .backup-button:hover {
+                background: #4a4a5e;
+            }
+
+            .backup-button.restore {
+                border-color: #66bb6a;
+                color: #81c784;
+            }
+
+            .backup-button.restore:hover {
+                background: #3a4a3e;
+            }
         }
     </style>
 </head>
@@ -671,6 +726,17 @@
                             <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
                             <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
                             <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
+                        </div>
+                    </div>
+
+                    <!-- データバックアップ -->
+                    <div class="setting-item">
+                        <div class="setting-label">データバックアップ</div>
+                        <div class="setting-description">キャッシュ削除に備えて学習データを保存できます</div>
+                        <div class="backup-buttons">
+                            <button class="backup-button" onclick="exportData()">💾 バックアップ</button>
+                            <button class="backup-button restore" onclick="document.getElementById('importFile').click()">📂 復元</button>
+                            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
                         </div>
                     </div>
                 </div>
@@ -840,6 +906,87 @@
                 renderPage();
                 alert('学習データをリセットしました。');
             }
+        }
+
+        // ===== データバックアップ機能 =====
+        function exportData() {
+            try {
+                // 保存するすべてのlocalStorageキー
+                const keysToExport = [
+                    STORAGE_KEY,
+                    SETTINGS_KEYS.fontSize,
+                    SETTINGS_KEYS.dailyCount
+                ];
+
+                const exportObj = {
+                    exportDate: new Date().toISOString(),
+                    appVersion: '1.0',
+                    data: {}
+                };
+
+                keysToExport.forEach(key => {
+                    const value = localStorage.getItem(key);
+                    if (value !== null) {
+                        exportObj.data[key] = value;
+                    }
+                });
+
+                // JSONファイルをダウンロード
+                const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const date = new Date().toLocaleDateString('ja-JP').replace(/\//g, '-');
+                a.download = `ひかり眼科クイズ_バックアップ_${date}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                alert('バックアップファイルをダウンロードしました。\n大切に保管してください。');
+            } catch (e) {
+                console.error('Export error:', e);
+                alert('バックアップに失敗しました。');
+            }
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importObj = JSON.parse(e.target.result);
+
+                    // バリデーション
+                    if (!importObj.data || typeof importObj.data !== 'object') {
+                        throw new Error('無効なバックアップファイルです');
+                    }
+
+                    // 確認ダイアログ
+                    const exportDate = importObj.exportDate ?
+                        new Date(importObj.exportDate).toLocaleString('ja-JP') : '不明';
+
+                    if (!confirm(`このバックアップを復元しますか？\n\nバックアップ日時: ${exportDate}\n\n※現在のデータは上書きされます`)) {
+                        event.target.value = '';
+                        return;
+                    }
+
+                    // データを復元
+                    Object.keys(importObj.data).forEach(key => {
+                        localStorage.setItem(key, importObj.data[key]);
+                    });
+
+                    alert('データを復元しました。\nページを再読み込みします。');
+                    location.reload();
+                } catch (err) {
+                    console.error('Import error:', err);
+                    alert('復元に失敗しました。\nファイルが正しいか確認してください。');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         // ===== 設定関連 =====
