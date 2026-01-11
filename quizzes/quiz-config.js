@@ -128,6 +128,16 @@ const QUIZ_LIST = [
         description: '糖尿病網膜症の基礎知識と患者様への説明ポイントを学べます',
         color: 'indigo'
     },
+    {
+        id: 'epiphora',
+        name: '流涙症クイズ',
+        file: '流涙症_クイズ.html',
+        totalQuestions: 8,
+        icon: '💧',
+        category: 'staff',
+        description: '流涙症の原因や涙道の仕組みについて学べます',
+        color: 'cyan'
+    },
     // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',
