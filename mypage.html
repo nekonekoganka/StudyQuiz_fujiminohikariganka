@@ -332,6 +332,87 @@
             text-decoration: underline;
         }
 
+        /* 設定セクション */
+        .settings-section {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 2px solid #e8eaf6;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9ff;
+            border-radius: 12px;
+        }
+
+        .setting-label {
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .setting-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* トグルスイッチ */
+        .toggle-switch {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .toggle-label.active {
+            color: #1a237e;
+            font-weight: bold;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .toggle-input:checked + .toggle-slider::before {
+            transform: translateX(26px);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -492,6 +573,34 @@
             .reset-button {
                 color: #707080;
             }
+
+            .settings-section {
+                border-top-color: #3a3a4e;
+            }
+
+            .setting-item {
+                background: #2a2a3e;
+            }
+
+            .setting-label {
+                color: #e0e0e0;
+            }
+
+            .setting-description {
+                color: #a0a0b0;
+            }
+
+            .toggle-label {
+                color: #a0a0b0;
+            }
+
+            .toggle-label.active {
+                color: #7ab3e0;
+            }
+
+            .toggle-slider {
+                background: #4a4a5e;
+            }
         }
     </style>
 </head>
@@ -543,6 +652,27 @@
             </div>
             <div id="progressList" class="progress-list">
                 <!-- JSで動的生成 -->
+            </div>
+        </div>
+
+        <div class="section settings-section">
+            <div class="section-title">
+                <span>⚙️</span>
+                設定
+            </div>
+            <div class="setting-item">
+                <div class="setting-info">
+                    <div class="setting-label">文字を大きく表示する</div>
+                    <div class="setting-description">クイズの文字が読みやすくなります</div>
+                </div>
+                <div class="toggle-switch">
+                    <span class="toggle-label" id="labelOff">ふつう</span>
+                    <label>
+                        <input type="checkbox" class="toggle-input" id="fontSizeToggle" onchange="toggleFontSize()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="labelOn">大きい</span>
+                </div>
             </div>
         </div>
 
@@ -646,8 +776,37 @@
             }
         }
 
+        // フォントサイズ設定
+        const FONT_SIZE_KEY = 'hikari-quiz-fontsize';
+
+        function toggleFontSize() {
+            const toggle = document.getElementById('fontSizeToggle');
+            const isLarge = toggle.checked;
+
+            localStorage.setItem(FONT_SIZE_KEY, isLarge ? 'large' : 'normal');
+            updateToggleLabels(isLarge);
+
+            // 現在のページにも適用（プレビュー用）
+            document.body.classList.toggle('large-font', isLarge);
+        }
+
+        function updateToggleLabels(isLarge) {
+            document.getElementById('labelOff').classList.toggle('active', !isLarge);
+            document.getElementById('labelOn').classList.toggle('active', isLarge);
+        }
+
+        function initFontSize() {
+            const saved = localStorage.getItem(FONT_SIZE_KEY);
+            const isLarge = saved === 'large';
+
+            document.getElementById('fontSizeToggle').checked = isLarge;
+            updateToggleLabels(isLarge);
+            document.body.classList.toggle('large-font', isLarge);
+        }
+
         // 初期化
         renderPage();
+        initFontSize();
     </script>
 </body>
 </html>

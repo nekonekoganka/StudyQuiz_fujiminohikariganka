@@ -453,3 +453,22 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
     // 最終的な出題順をシャッフル
     return shuffleArrayForConfig(selected);
 }
+
+/**
+ * フォントサイズ設定キー
+ */
+const FONT_SIZE_KEY = 'hikari-quiz-fontsize';
+
+/**
+ * フォントサイズ設定を適用
+ * 各ページの読み込み時に呼び出す
+ */
+function applyFontSize() {
+    const saved = localStorage.getItem(FONT_SIZE_KEY);
+    if (saved === 'large') {
+        document.body.classList.add('large-font');
+    }
+}
+
+// ページ読み込み時に自動で適用
+document.addEventListener('DOMContentLoaded', applyFontSize);
