@@ -18,6 +18,16 @@ const QUIZ_LIST = [
         color: 'cyan'
     },
     {
+        id: 'cl_complication',
+        name: 'CL合併症クイズ',
+        file: 'CL合併症_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️‍🗨️',
+        category: 'staff',
+        description: 'コンタクトレンズの眼合併症と対策について学べます',
+        color: 'cyan'
+    },
+    {
         id: 'enyo-megane',
         name: '遠用メガネのクイズ',
         file: '大人の遠く用メガネ合わせクイズ.html',
