@@ -138,6 +138,16 @@ const QUIZ_LIST = [
         description: '流涙症の原因や涙道の仕組みについて学べます',
         color: 'cyan'
     },
+    {
+        id: 'macular_membrane',
+        name: '黄斑前膜クイズ',
+        file: '黄斑前膜_クイズ.html',
+        totalQuestions: 8,
+        icon: '👁️',
+        category: 'staff',
+        description: '黄斑前膜の症状や治療について学べます',
+        color: 'indigo'
+    },
     // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',

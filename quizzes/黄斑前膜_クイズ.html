@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄斑前膜クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ 黄斑前膜クイズ 👁️</h1>
+        <div class="subtitle">眼科スタッフ向け - 黄斑前膜の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 黄斑前膜クイズ</div>
+
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">8</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">黄斑前膜は40歳以上のおよそ何人に1人がなるといわれていますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">20人に1人</div>
+                    <div class="option" data-answer="false">50人に1人</div>
+                    <div class="option" data-answer="false">100人に1人</div>
+                    <div class="option" data-answer="false">200人に1人</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜は網膜の病気の中では最も多い病気のひとつで、40歳以上のおよそ20人に1人がなるといわれています。中でも50歳から70歳ぐらいの女性に多い傾向があります。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">黄斑前膜と加齢黄斑変性の違いについて正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑前膜は新生血管が生えないため、基本的に失明には至らない</div>
+                    <div class="option" data-answer="false">黄斑前膜は新生血管が生えるため、失明することがある</div>
+                    <div class="option" data-answer="false">加齢黄斑変性は新生血管が生えないため、失明しない</div>
+                    <div class="option" data-answer="false">両者は同じ病気の別名である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>加齢黄斑変性は網膜の裏側から新生血管が生えて起き、激しい出血や萎縮で失明することもあります。一方、黄斑前膜では新生血管が生えないため、出血や萎縮が起きることは少なく、基本的には失明には至らない比較的良性の病気です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者様には「黄斑前膜は基本的に失明に至らない比較的良性の病気です」と説明すると安心されます。ただし、見え方が悪くなり生活に支障をきたすこともあることも伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">特発性黄斑前膜の主な原因として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">後部硝子体剥離</div>
+                    <div class="option" data-answer="false">白内障</div>
+                    <div class="option" data-answer="false">緑内障</div>
+                    <div class="option" data-answer="false">角膜混濁</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>特発性黄斑前膜は、加齢性の生理現象である「後部硝子体剥離」が主な原因です。後部硝子体剥離が起きる際、硝子体と黄斑の癒着が強いと、黄斑にわずかに残った硝子体を基にして黄斑前膜が後に生じてきます。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">黄斑前膜の症状として正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">飛蚊症（蚊が飛んで見える）</div>
+                    <div class="option" data-answer="false">歪視（ゆがんで見える）</div>
+                    <div class="option" data-answer="false">大視症（大きく見える）</div>
+                    <div class="option" data-answer="false">霧視（かすんで見える）</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜の症状には、歪視（ゆがみ）、大視症（大きく見える）、霧視（かすんで見える）などがあります。飛蚊症は後部硝子体剥離の症状であり、黄斑前膜自体の症状ではありません。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">黄斑前膜のセルフチェックに使用するアムスラーチャートの使い方として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">老眼鏡をかけたまま30cmほど離れ、片方の目のみで中心の点を見る</div>
+                    <div class="option" data-answer="false">裸眼で1m離れ、両目で全体を見る</div>
+                    <div class="option" data-answer="false">遠用眼鏡をかけて50cm離れ、両目で見る</div>
+                    <div class="option" data-answer="false">裸眼で10cm離れ、片方の目のみで見る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アムスラーチャートは老眼鏡をかけたまま30cmほど離れ、中心の黒い丸い点を片方の目のみで見ます。格子状の直線が波線になって見えたり、ゆがんで見える部分があれば、黄斑の病気である可能性が高くなります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「時々、片方の目を手で隠して、もう片方の目の見え方を確認してみましょう」と患者様にセルフチェックの重要性を伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">黄斑前膜と老眼の関係について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑前膜は40歳以降に起き、老眼と勘違いして放置されることがある</div>
+                    <div class="option" data-answer="false">黄斑前膜は20歳代に多く発症する</div>
+                    <div class="option" data-answer="false">老眼があると黄斑前膜にはならない</div>
+                    <div class="option" data-answer="false">黄斑前膜の症状は老眼鏡で改善する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜が起きるのは通常40歳以降のため、老眼を感じはじめる年代と重なります。初期症状は軽度のことが多く、「老眼がひどくなったかな」と勘違いして放置され、しばらくしてから黄斑前膜が見つかることもあるので注意が必要です。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">黄斑前膜の治療について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">治療は手術のみで、点眼や内服薬では治らない</div>
+                    <div class="option" data-answer="false">点眼薬で完治する</div>
+                    <div class="option" data-answer="false">内服薬で進行を止められる</div>
+                    <div class="option" data-answer="false">レーザー治療が第一選択である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜の治療は手術（硝子体手術）のみになります。視力が良好で自覚症状も少なく、日常生活に支障のない方は経過観察で良いこともありますが、薬物治療では治りません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「進行がゆっくりなので、すぐに手術しなくても経過観察という選択肢もあります。担当医とよく相談しましょう」と伝えると患者様の不安が軽減されます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">黄斑前膜の類縁疾患である黄斑円孔について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑の中心窩に穴が開き、視力0.1未満になることもある</div>
+                    <div class="option" data-answer="false">黄斑前膜より視力低下が軽度である</div>
+                    <div class="option" data-answer="false">手術後にうつむき姿勢は不要である</div>
+                    <div class="option" data-answer="false">穴の直径は通常5mm以上である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑円孔は黄斑の真ん中の中心窩に穴（直径0.5mm未満）が開く病気です。中心窩は視力に最も関わる部分であるため、視力低下は黄斑前膜よりひどくなり、視力0.1未満になることもあります。手術では目の中に空気やガスを入れるため、術後数日間うつむき姿勢が必要です。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // ============================================================
+        // クイズ固有の設定
+        // ============================================================
+        const QUIZ_ID = 'macular_membrane';
+        const TOTAL_QUESTIONS = 8;
+
+        // ============================================================
+        // 以下は変更不要（共通処理）
+        // ============================================================
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html',
+            '小児近視対策_クイズ.html',
+            'CL合併症_クイズ.html',
+            '糖尿病網膜症_クイズ.html',
+            '流涙症_クイズ.html',
+            '黄斑前膜_クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = TOTAL_QUESTIONS;
+        let questionList = [];
+        let isDaily = false;
+
+        // 問題番号の配列を生成
+        const allQuestions = Array.from({length: TOTAL_QUESTIONS}, (_, i) => i + 1);
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode.startsWith('daily')) {
+                isDaily = true;
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+            } else {
+                isDaily = false;
+                totalQuestions = TOTAL_QUESTIONS;
+                questionList = [...allQuestions];
+            }
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    if (questionList.includes(i)) {
+                        if (i === questionList[0]) {
+                            questionElement.classList.remove('hidden');
+                        } else {
+                            questionElement.classList.add('hidden');
+                        }
+                    } else {
+                        questionElement.style.display = 'none';
+                    }
+                }
+            }
+
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+                flashCorrect(selectedOption);
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+            }
+
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+
+            updateScore();
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            if (typeof recordQuizResult === 'function') {
+                recordQuizResult(QUIZ_ID, score, totalQuestions);
+            }
+
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！素晴らしい知識です。\n患者様への説明にも自信を持って対応できますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！重要ポイントをしっかり理解されています。\n間違えた箇所を復習すれば、さらに的確なアドバイスができますよ。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 よくできました！ 👍';
+                message = `基本的な知識は身についています。\n解説を読み直して、知識を固めましょう。`;
+            } else {
+                title = '💪 これからが本番！ 💪';
+                message = `良い復習の機会になりましたね。\nこのクイズを元に知識を整理し、日々の患者様対応に活かしていきましょう！`;
+            }
+
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+            score = 0;
+            updateScore();
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            if (isDaily) {
+                startQuiz('daily');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = TOTAL_QUESTIONS;
+            questionList = [];
+            isDaily = false;
+
+            updateScore();
+            updateProgressStatus();
+
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function goToRandomQuiz() {
+            const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
