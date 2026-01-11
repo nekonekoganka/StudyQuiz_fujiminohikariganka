@@ -479,19 +479,6 @@ function applyFontSize() {
 }
 
 /**
- * ダークモード設定を適用
- */
-function applyDarkMode() {
-    const saved = localStorage.getItem(SETTINGS_KEYS.darkMode) || 'auto';
-    document.body.classList.remove('force-light', 'force-dark');
-    if (saved === 'light') {
-        document.body.classList.add('force-light');
-    } else if (saved === 'dark') {
-        document.body.classList.add('force-dark');
-    }
-}
-
-/**
  * 効果音設定を取得
  */
 function isSoundEnabled() {
@@ -519,7 +506,6 @@ function getDailyQuestionCount() {
  */
 function applyAllSettings() {
     applyFontSize();
-    applyDarkMode();
 }
 
 // ページ読み込み時に自動で適用
