@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖尿病網膜症クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🩺 糖尿病網膜症クイズ 🩺</h1>
+        <div class="subtitle">眼科スタッフ向け - 糖尿病網膜症の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🩺 糖尿病網膜症クイズ</div>
+
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全10問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">10問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
+            </div>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全10問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">糖尿病で視力が低下する仕組みとして正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼球の透明な組織の混濁と、網膜の機能が失われること</div>
+                    <div class="option" data-answer="false">眼圧の上昇のみ</div>
+                    <div class="option" data-answer="false">角膜の屈折異常のみ</div>
+                    <div class="option" data-answer="false">視神経の圧迫のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>糖尿病で視力が低下する仕組みは2つあります。1つは眼球の透明な組織が混濁すること（白内障、水泡性角膜症、硝子体出血など）、もう1つは光を感じる神経である網膜の機能が失われることです。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">糖尿病網膜症における2大失明原因として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">牽引性網膜剥離と血管新生緑内障</div>
+                    <div class="option" data-answer="false">白内障と角膜混濁</div>
+                    <div class="option" data-answer="false">硝子体出血と黄斑浮腫</div>
+                    <div class="option" data-answer="false">ドライアイと結膜炎</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>糖尿病による直接的な2大失明原因は、牽引性網膜剥離と血管新生緑内障です。どちらも糖尿病によって網膜の血管が損傷される糖尿病網膜症によって引き起こされます。
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">糖尿病黄斑浮腫について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">早期なら血糖コントロールで治る可能性がある</div>
+                    <div class="option" data-answer="false">一度発症したら治療法はない</div>
+                    <div class="option" data-answer="false">視力には影響しない</div>
+                    <div class="option" data-answer="false">網膜の周辺部にのみ影響する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>糖尿病黄斑浮腫は、早期であれば血糖をコントロールすることで血管からの漏出が減って治る可能性があります。黄斑に水ぶくれが生じると、物がかすんだり歪んで見えたりして視力が低下します。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「まだ見えているから大丈夫」と思っている患者様には、早期治療で視力が回復・維持できる可能性があることを伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">新生血管ができる原因となる物質は何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">VEGF（血管内皮増殖因子）</div>
+                    <div class="option" data-answer="false">インスリン</div>
+                    <div class="option" data-answer="false">ヘモグロビン</div>
+                    <div class="option" data-answer="false">コレステロール</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>網膜の血管が閉塞すると、酸素を供給しようとしてVEGF（血管内皮増殖因子）という物質が放出され、新生血管が作られます。しかし新生血管は正常な血管と異なり、出血しやすく視力低下につながります。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">糖尿病網膜症と血糖管理について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">高血糖も重症低血糖も網膜症を進行させる</div>
+                    <div class="option" data-answer="false">低血糖は網膜症に影響しない</div>
+                    <div class="option" data-answer="false">血糖値は低ければ低いほど網膜症に良い</div>
+                    <div class="option" data-answer="false">高血糖のみが網膜症のリスク因子である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>高血糖が続くことが糖尿病網膜症の原因ですが、経過中に他人の介助を必要とするような重症の低血糖症は、糖尿病網膜症を急激に進行させます。血糖の乱れ（高血糖・低血糖の両方）が網膜症のリスク因子です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者様には「血糖は高すぎても低すぎてもダメ」ということを伝え、急激な血糖変動を避ける重要性を説明しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">血管新生緑内障について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼圧が50mmHgを超えることもあり、通常の点眼薬では下がらない</div>
+                    <div class="option" data-answer="false">通常の緑内障と同じ治療で対応できる</div>
+                    <div class="option" data-answer="false">眼圧は正常範囲内に保たれる</div>
+                    <div class="option" data-answer="false">自然に治癒することが多い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>血管新生緑内障は、新生血管が房水の排水口（線維柱帯）を塞ぐことで異常に眼圧が上昇します。通常21mmHg以下が正常のところ、50mmHgを超えることもあり、通常の点眼薬や飲み薬では眼圧が下がりません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>糖尿病網膜症が進行すると緑内障も合併しうることを説明し、定期検査の重要性を伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">汎網膜光凝固（レーザー治療）の目的として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">酸素不足の網膜神経細胞を凝固してVEGF産生を止める</div>
+                    <div class="option" data-answer="false">白内障を治療する</div>
+                    <div class="option" data-answer="false">眼圧を下げる</div>
+                    <div class="option" data-answer="false">角膜の透明性を回復させる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>汎網膜光凝固は、酸素を受け取れなくなった網膜の神経細胞をレーザーで凝固して間引くことで、VEGF産生を止める治療です。この治療が糖尿病網膜症を失明原因の首位から3位まで下げることができた主な原因です。
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">糖尿病網膜症を進行させる全身因子として、適切でないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">高尿酸血症</div>
+                    <div class="option" data-answer="false">高血圧</div>
+                    <div class="option" data-answer="false">腎機能低下</div>
+                    <div class="option" data-answer="false">妊娠</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>糖尿病網膜症を進行させる全身因子として、血糖の乱れ（高血糖・低血糖）、高血圧、腎機能低下、妊娠、喫煙などが挙げられます。高尿酸血症は直接的な進行因子としては挙げられていません。
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">糖尿病網膜症の発症・進展を予防できるとされるHbA1cの目標値はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">7.0％未満</div>
+                    <div class="option" data-answer="false">8.0％未満</div>
+                    <div class="option" data-answer="false">6.0％未満</div>
+                    <div class="option" data-answer="false">9.0％未満</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>血中ヘモグロビン（Hb）A1cが7.0％未満を維持すれば、糖尿病網膜症の発症・進展が予防できることが示唆されています。内科受診時に自分のHbA1c値を記憶する習慣を身につけることが大切です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者様には「HbA1cの値を覚えておいてください」とお伝えし、内科との連携の重要性を説明しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題10 ========== -->
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">患者様から「糖尿病と言われたけど目は見えているから眼科は必要ない」と言われた場合、最も適切な説明はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">自覚症状がないうちに進行し、症状が出た時には失明の危機のことが多いので早期受診が必要</div>
+                    <div class="option" data-answer="false">見えているなら眼科受診は不要なので、視力が下がってから来てもらえばよい</div>
+                    <div class="option" data-answer="false">糖尿病の薬を飲んでいれば網膜症にはならないので心配ない</div>
+                    <div class="option" data-answer="false">若い人は網膜症にならないので高齢になってから受診すればよい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>糖尿病網膜症の困った特徴は、症状が自覚されないうちに進行し、自覚症状が現れたときには既に失明の危機に瀕した状態であることがほとんどです。糖尿病と診断されたら、血管閉塞が生じる前に早期に眼科を受診することが大切です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「見えているから大丈夫」は危険なサインです。運転免許証や仕事を失わないためにも、無症状のうちから定期検査を受ける重要性を強調しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // ============================================================
+        // クイズ固有の設定
+        // ============================================================
+        const QUIZ_ID = 'diabetic_retinopathy';
+        const TOTAL_QUESTIONS = 10;
+
+        // ============================================================
+        // 以下は変更不要（共通処理）
+        // ============================================================
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html',
+            '小児近視対策_クイズ.html',
+            'CL合併症_クイズ.html',
+            '糖尿病網膜症_クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = TOTAL_QUESTIONS;
+        let questionList = [];
+        let isDaily = false;
+
+        // 問題番号の配列を生成
+        const allQuestions = Array.from({length: TOTAL_QUESTIONS}, (_, i) => i + 1);
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode.startsWith('daily')) {
+                isDaily = true;
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+            } else {
+                isDaily = false;
+                totalQuestions = TOTAL_QUESTIONS;
+                questionList = [...allQuestions];
+            }
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    if (questionList.includes(i)) {
+                        if (i === questionList[0]) {
+                            questionElement.classList.remove('hidden');
+                        } else {
+                            questionElement.classList.add('hidden');
+                        }
+                    } else {
+                        questionElement.style.display = 'none';
+                    }
+                }
+            }
+
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+                flashCorrect(selectedOption);
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+            }
+
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+
+            updateScore();
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            if (typeof recordQuizResult === 'function') {
+                recordQuizResult(QUIZ_ID, score, totalQuestions);
+            }
+
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！素晴らしい知識です。\n患者様への説明にも自信を持って対応できますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！重要ポイントをしっかり理解されています。\n間違えた箇所を復習すれば、さらに的確なアドバイスができますよ。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 よくできました！ 👍';
+                message = `基本的な知識は身についています。\n解説を読み直して、知識を固めましょう。`;
+            } else {
+                title = '💪 これからが本番！ 💪';
+                message = `良い復習の機会になりましたね。\nこのクイズを元に知識を整理し、日々の患者様対応に活かしていきましょう！`;
+            }
+
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+            score = 0;
+            updateScore();
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            if (isDaily) {
+                startQuiz('daily');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = TOTAL_QUESTIONS;
+            questionList = [];
+            isDaily = false;
+
+            updateScore();
+            updateProgressStatus();
+
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function goToRandomQuiz() {
+            const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

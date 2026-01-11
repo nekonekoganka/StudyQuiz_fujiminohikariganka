@@ -18,6 +18,26 @@ const QUIZ_LIST = [
         color: 'cyan'
     },
     {
+        id: 'cl_complication',
+        name: 'CL合併症クイズ',
+        file: 'CL合併症_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️‍🗨️',
+        category: 'staff',
+        description: 'コンタクトレンズの眼合併症と対策について学べます',
+        color: 'cyan'
+    },
+    {
+        id: 'cl_makeup',
+        name: 'CLの種類と使い方クイズ',
+        file: 'CLの種類と使い方_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️‍🗨️',
+        category: 'staff',
+        description: 'コンタクトレンズとお化粧の順番やケア方法を学べます',
+        color: 'cyan'
+    },
+    {
         id: 'enyo-megane',
         name: '遠用メガネのクイズ',
         file: '大人の遠く用メガネ合わせクイズ.html',
@@ -96,6 +116,56 @@ const QUIZ_LIST = [
         icon: '🧐',
         category: 'staff',
         description: '斜視の基礎知識と保護者への説明ポイントを学べます',
+        color: 'purple'
+    },
+    {
+        id: 'pediatric_myopia',
+        name: '小児近視対策クイズ',
+        file: '小児近視対策_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️',
+        category: 'staff',
+        description: '子どもの近視予防と保護者への説明ポイントを学べます',
+        color: 'purple'
+    },
+    {
+        id: 'diabetic_retinopathy',
+        name: '糖尿病網膜症クイズ',
+        file: '糖尿病網膜症_クイズ.html',
+        totalQuestions: 10,
+        icon: '🩺',
+        category: 'staff',
+        description: '糖尿病網膜症の基礎知識と患者様への説明ポイントを学べます',
+        color: 'indigo'
+    },
+    {
+        id: 'epiphora',
+        name: '流涙症クイズ',
+        file: '流涙症_クイズ.html',
+        totalQuestions: 8,
+        icon: '💧',
+        category: 'staff',
+        description: '流涙症の原因や涙道の仕組みについて学べます',
+        color: 'cyan'
+    },
+    {
+        id: 'macular_membrane',
+        name: '黄斑前膜クイズ',
+        file: '黄斑前膜_クイズ.html',
+        totalQuestions: 8,
+        icon: '👁️',
+        category: 'staff',
+        description: '黄斑前膜の症状や治療について学べます',
+        color: 'indigo'
+    },
+    {
+        id: 'color_vision',
+        name: '色覚異常クイズ',
+        file: '色覚異常_クイズ.html',
+        totalQuestions: 9,
+        icon: '🎨',
+        category: 'staff',
+        description: '色覚異常の頻度や遺伝、カラーユニバーサルデザインを学べます',
         color: 'purple'
     },
     // === ルール・検診系 ===

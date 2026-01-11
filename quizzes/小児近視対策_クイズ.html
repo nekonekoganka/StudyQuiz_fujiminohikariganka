@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小児近視対策クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ 小児近視対策クイズ 👁️</h1>
+        <div class="subtitle">眼科スタッフ向け - 子どもの近視予防の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 小児近視対策クイズ</div>
+
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全10問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">10問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
+            </div>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全10問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">近視とは、眼球内に入った光線のピントが合う位置がどこにある状態ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">網膜より前</div>
+                    <div class="option" data-answer="false">網膜より後ろ</div>
+                    <div class="option" data-answer="false">網膜上（正常と同じ）</div>
+                    <div class="option" data-answer="false">水晶体の中</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視は眼球の形が前後方向に長くなり、光線のピントが網膜より前で合ってしまう状態です。そのため近くのものははっきり見えますが、遠くのものがぼやけて見えます。遠視は逆に網膜より後ろでピントが合う状態です。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">近視の発症・進行に関与する要因として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">遺伝と環境の両方</div>
+                    <div class="option" data-answer="false">遺伝のみ</div>
+                    <div class="option" data-answer="false">環境のみ</div>
+                    <div class="option" data-answer="false">食生活のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視には遺伝要因と環境要因の両方が関与します。環境要因としては屋外活動の減少や近業の増加などが挙げられます。両者がともに深く関係して近視になりますが、その割合は人によって異なります。
+                    <div class="staff-point">
+                        <strong>保護者への説明ポイント：</strong>「親が近視だから仕方ない」と言われた場合、遺伝だけでなく生活習慣で予防できる部分もあることをお伝えしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">軽度の近視であっても、近視がない場合と比較して緑内障になるリスクは何倍高くなりますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">約4倍</div>
+                    <div class="option" data-answer="false">約2倍</div>
+                    <div class="option" data-answer="false">約1.5倍</div>
+                    <div class="option" data-answer="false">リスクは変わらない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>疫学調査により、軽度の近視であっても緑内障になるリスクは近視がない場合の約4倍であることがわかっています。近視はメガネで矯正できるから問題ないという考えは誤りで、将来の眼疾患リスクに大きく影響します。
+                    <div class="staff-point">
+                        <strong>保護者への説明ポイント：</strong>「近視でも眼鏡をかければ大丈夫」と考える保護者には、将来の目の病気のリスクが上がることをやさしく説明しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">近視予防のために推奨される1日の屋外活動時間はどれくらいですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">2時間以上</div>
+                    <div class="option" data-answer="false">30分以上</div>
+                    <div class="option" data-answer="false">1時間以上</div>
+                    <div class="option" data-answer="false">3時間以上</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視がある子もない子も、1日2時間は屋外にいることが近視予防に有効とされています。学校の昼休みや授業の合間の休憩時間を活用し、体育の授業が外で行われれば2時間程度は確保できます。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">屋外活動による近視予防効果について、正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">木陰や日陰でも予防効果がある</div>
+                    <div class="option" data-answer="false">直射日光を浴びないと効果がない</div>
+                    <div class="option" data-answer="false">サングラスをすると効果がなくなる</div>
+                    <div class="option" data-answer="false">運動をしないと効果がない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>木陰や建物の影でも、屋外であれば室内に比べて近視予防に十分な照度（1000〜3000ルクス以上）が確保できることが多いです。帽子やサングラスを使用しても効果は得られます。むしろ直射日光では熱中症や紫外線の悪影響に注意が必要です。
+                    <div class="staff-point">
+                        <strong>保護者への説明ポイント：</strong>「日差しが強くて外に出られない」という保護者には、木陰でも効果があること、帽子やサングラスをしても大丈夫なことをお伝えしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">読書や書き物をするときに近視予防として推奨される目と対象物の距離は？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">30cm以上</div>
+                    <div class="option" data-answer="false">20cm以上</div>
+                    <div class="option" data-answer="false">50cm以上</div>
+                    <div class="option" data-answer="false">15cm以上</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近業時は少なくとも30cm以上離して作業することが近視予防に効果があると証明されています。また、30分に一度は遠くを見て連続させないことも重要です。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">小学校入学前からの強い近視について、正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">病的近視や他の病気が隠れている可能性がある</div>
+                    <div class="option" data-answer="false">成長とともに必ず改善する</div>
+                    <div class="option" data-answer="false">環境要因のみが原因である</div>
+                    <div class="option" data-answer="false">治療の必要性は低い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>小学校入学前からの強い近視は、遺伝が環境よりも強く影響しており、病的近視や近視以外の病気が隠れていることがあります。両親に強い近視がなくても、祖父母などから遺伝子を受け継いでいる場合があります。
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">近視の年間進行量について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">低年齢であるほど年間進行量が大きい</div>
+                    <div class="option" data-answer="false">年齢に関係なく一定である</div>
+                    <div class="option" data-answer="false">高学年になるほど進行量が大きい</div>
+                    <div class="option" data-answer="false">近視は発症後すぐに進行が止まる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視は一度発症すると17歳ごろまで進行し、低年齢であるほど年間進行量が大きい特徴があります。つまり低年齢で発症すれば、強度近視に至る可能性が高くなります。そのため早期からの予防が重要です。
+                    <div class="staff-point">
+                        <strong>保護者への説明ポイント：</strong>小さいお子さんの保護者には、早い時期からの生活習慣の改善が特に大切であることを強調してお伝えしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">近視が将来引き起こす可能性のある眼疾患として、資料に記載されていないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">結膜炎</div>
+                    <div class="option" data-answer="false">緑内障</div>
+                    <div class="option" data-answer="false">網膜剥離</div>
+                    <div class="option" data-answer="false">近視性脈絡膜新生血管</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近視は緑内障、網膜剥離、近視性脈絡膜新生血管、近視性網膜脈絡膜萎縮、近視性牽引黄斑症などのリスクを上昇させます。結膜炎は近視とは直接関連しない疾患です。
+                </div>
+            </div>
+
+            <!-- ========== 問題10 ========== -->
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">保護者から「子どもがゲームばかりしているが、近視予防のためにどうすればよいか」と相談された場合、最も適切な説明はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">30分に一度は遠くを見て休憩し、1日2時間は屋外で過ごすことを勧める</div>
+                    <div class="option" data-answer="false">ゲームは完全に禁止するべきと伝える</div>
+                    <div class="option" data-answer="false">画面を大きくすれば問題ないと伝える</div>
+                    <div class="option" data-answer="false">暗い部屋で遊ばなければ大丈夫と伝える</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>近業の完全禁止は現実的ではありません。30cm以上離して、30分に一度は遠くを見て休憩することが効果的です。また、1日2時間の屋外活動が近視予防に有効であることを伝え、外遊びの時間を増やすよう勧めましょう。
+                    <div class="staff-point">
+                        <strong>保護者への説明ポイント：</strong>「ゲームをやめさせる」より「外で遊ぶ時間を増やす」という前向きな提案の方が保護者に受け入れられやすいです。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        const QUIZ_ID = 'pediatric_myopia';
+        const TOTAL_QUESTIONS = 10;
+
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html',
+            '小児近視対策_クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 10;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            if (mode && (mode.startsWith('daily') || mode === 'full')) {
+                startQuiz(mode);
+            }
+        });
+
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode.startsWith('daily')) {
+                isDaily = true;
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+            } else {
+                isDaily = false;
+                totalQuestions = TOTAL_QUESTIONS;
+                questionList = [...allQuestions];
+            }
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    if (questionList.includes(i)) {
+                        if (i === questionList[0]) {
+                            questionElement.classList.remove('hidden');
+                        } else {
+                            questionElement.classList.add('hidden');
+                        }
+                    } else {
+                        questionElement.style.display = 'none';
+                    }
+                }
+            }
+
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+                flashCorrect(selectedOption);
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+            }
+
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+
+            updateScore();
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            if (typeof recordQuizResult === 'function') {
+                recordQuizResult(QUIZ_ID, score, totalQuestions);
+            }
+
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！小児近視対策の知識は万全です。\n保護者への説明も自信を持ってできますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！小児近視対策の重要ポイントをしっかり理解されています。\n間違えた箇所を復習すれば、さらに的確なアドバイスができますよ。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 よくできました！ 👍';
+                message = `基本的な知識は身についています。\n解説を読み直して、特に屋外活動や近業に関する知識を固めましょう。`;
+            } else {
+                title = '💪 これからが本番！ 💪';
+                message = `良い復習の機会になりましたね。\nこのクイズを元に知識を整理し、保護者への説明に活かしていきましょう！`;
+            }
+
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+            score = 0;
+            updateScore();
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            if (isDaily) {
+                startQuiz('daily');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = TOTAL_QUESTIONS;
+            questionList = [];
+            isDaily = false;
+
+            updateScore();
+            updateProgressStatus();
+
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function goToRandomQuiz() {
+            const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
