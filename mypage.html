@@ -402,66 +402,22 @@
             color: white;
         }
 
-        /* トグルスイッチ */
-        .toggle-setting .setting-header {
-            margin-bottom: 0;
-        }
+        /* フォントサイズ設定 */
+        body.small-font .setting-label { font-size: 13px; }
+        body.small-font .setting-description { font-size: 11px; }
+        body.small-font .selector-button { font-size: 12px; padding: 8px 10px; }
+        body.small-font .section-title { font-size: 14px; }
+        body.small-font .badge-name { font-size: 10px; }
+        body.small-font .progress-title { font-size: 12px; }
+        body.small-font .stat-value { font-size: 24px; }
 
-        .toggle-switch {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .toggle-label {
-            font-size: 12px;
-            color: #999;
-            min-width: 24px;
-            text-align: center;
-        }
-
-        .toggle-label.active {
-            color: #1a237e;
-            font-weight: bold;
-        }
-
-        .toggle-input {
-            display: none;
-        }
-
-        .toggle-slider {
-            position: relative;
-            width: 50px;
-            height: 28px;
-            background: #ccc;
-            border-radius: 28px;
-            cursor: pointer;
-            transition: background 0.3s;
-            flex-shrink: 0;
-        }
-
-        .toggle-slider::before {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .toggle-input:checked + .toggle-slider {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-
-        .toggle-input:checked + .toggle-slider::before {
-            transform: translateX(22px);
-        }
+        body.large-font .setting-label { font-size: 17px; }
+        body.large-font .setting-description { font-size: 14px; }
+        body.large-font .selector-button { font-size: 15px; padding: 12px 14px; }
+        body.large-font .section-title { font-size: 18px; }
+        body.large-font .badge-name { font-size: 13px; }
+        body.large-font .progress-title { font-size: 16px; }
+        body.large-font .stat-value { font-size: 32px; }
 
         /* タブレット・PC向け */
         @media (min-width: 768px) {
@@ -656,22 +612,6 @@
                 border-color: transparent;
                 color: white;
             }
-
-            .toggle-label {
-                color: #a0a0b0;
-            }
-
-            .toggle-label.active {
-                color: #7ab3e0;
-            }
-
-            .toggle-slider {
-                background: #4a4a5e;
-            }
-
-            .toggle-setting .setting-header {
-                margin-bottom: 0;
-            }
         }
 
         /* ダークモード強制切り替え */
@@ -702,10 +642,6 @@
         body.force-light .setting-description { color: #666 !important; }
         body.force-light .selector-button { background: white !important; border-color: #ddd !important; color: #666 !important; }
         body.force-light .selector-button.active { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; }
-        body.force-light .toggle-label { color: #999 !important; }
-        body.force-light .toggle-label.active { color: #1a237e !important; }
-        body.force-light .toggle-slider { background: #ccc !important; }
-        body.force-light .toggle-setting .setting-header { margin-bottom: 0 !important; }
 
         body.force-dark {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
@@ -734,10 +670,6 @@
         body.force-dark .setting-description { color: #a0a0b0 !important; }
         body.force-dark .selector-button { background: #3a3a4e !important; border-color: #4a4a5e !important; color: #a0a0b0 !important; }
         body.force-dark .selector-button.active { background: linear-gradient(135deg, #667eea, #764ba2) !important; color: white !important; }
-        body.force-dark .toggle-label { color: #a0a0b0 !important; }
-        body.force-dark .toggle-label.active { color: #7ab3e0 !important; }
-        body.force-dark .toggle-slider { background: #4a4a5e !important; }
-        body.force-dark .toggle-setting .setting-header { margin-bottom: 0 !important; }
     </style>
 </head>
 <body>
@@ -822,42 +754,6 @@
                     <button class="selector-button active" data-value="auto" onclick="setDarkMode('auto')">自動</button>
                     <button class="selector-button" data-value="light" onclick="setDarkMode('light')">明るい</button>
                     <button class="selector-button" data-value="dark" onclick="setDarkMode('dark')">暗い</button>
-                </div>
-            </div>
-
-            <!-- 効果音 -->
-            <div class="setting-item toggle-setting">
-                <div class="setting-header">
-                    <div class="setting-info">
-                        <div class="setting-label">効果音</div>
-                        <div class="setting-description">正解・不正解時に音が鳴ります</div>
-                    </div>
-                    <div class="toggle-switch">
-                        <span class="toggle-label" id="soundLabelOff">オフ</span>
-                        <label>
-                            <input type="checkbox" class="toggle-input" id="soundToggle" onchange="toggleSound()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <span class="toggle-label" id="soundLabelOn">オン</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- アニメーション -->
-            <div class="setting-item toggle-setting">
-                <div class="setting-header">
-                    <div class="setting-info">
-                        <div class="setting-label">アニメーション</div>
-                        <div class="setting-description">正解時のエフェクトを表示します</div>
-                    </div>
-                    <div class="toggle-switch">
-                        <span class="toggle-label" id="animationLabelOff">オフ</span>
-                        <label>
-                            <input type="checkbox" class="toggle-input" id="animationToggle" onchange="toggleAnimation()">
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <span class="toggle-label" id="animationLabelOn">オン</span>
-                    </div>
                 </div>
             </div>
 
@@ -1058,47 +954,6 @@
             applyDarkMode(saved);
         }
 
-        // ----- 効果音 -----
-        function toggleSound() {
-            const toggle = document.getElementById('soundToggle');
-            const isOn = toggle.checked;
-            localStorage.setItem(SETTINGS_KEYS.sound, isOn ? 'on' : 'off');
-            updateSoundLabels(isOn);
-        }
-
-        function updateSoundLabels(isOn) {
-            document.getElementById('soundLabelOff').classList.toggle('active', !isOn);
-            document.getElementById('soundLabelOn').classList.toggle('active', isOn);
-        }
-
-        function initSound() {
-            const saved = localStorage.getItem(SETTINGS_KEYS.sound);
-            const isOn = saved === 'on';
-            document.getElementById('soundToggle').checked = isOn;
-            updateSoundLabels(isOn);
-        }
-
-        // ----- アニメーション -----
-        function toggleAnimation() {
-            const toggle = document.getElementById('animationToggle');
-            const isOn = toggle.checked;
-            localStorage.setItem(SETTINGS_KEYS.animation, isOn ? 'on' : 'off');
-            updateAnimationLabels(isOn);
-        }
-
-        function updateAnimationLabels(isOn) {
-            document.getElementById('animationLabelOff').classList.toggle('active', !isOn);
-            document.getElementById('animationLabelOn').classList.toggle('active', isOn);
-        }
-
-        function initAnimation() {
-            const saved = localStorage.getItem(SETTINGS_KEYS.animation);
-            // デフォルトはオン
-            const isOn = saved !== 'off';
-            document.getElementById('animationToggle').checked = isOn;
-            updateAnimationLabels(isOn);
-        }
-
         // ----- 今日の問題数 -----
         function setDailyCount(count) {
             localStorage.setItem(SETTINGS_KEYS.dailyCount, count.toString());
@@ -1120,8 +975,6 @@
         function initSettings() {
             initFontSize();
             initDarkMode();
-            initSound();
-            initAnimation();
             initDailyCount();
         }
 
