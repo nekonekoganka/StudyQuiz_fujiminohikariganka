@@ -158,6 +158,16 @@ const QUIZ_LIST = [
         description: '黄斑前膜の症状や治療について学べます',
         color: 'indigo'
     },
+    {
+        id: 'color_vision',
+        name: '色覚異常クイズ',
+        file: '色覚異常_クイズ.html',
+        totalQuestions: 9,
+        icon: '🎨',
+        category: 'staff',
+        description: '色覚異常の頻度や遺伝、カラーユニバーサルデザインを学べます',
+        color: 'purple'
+    },
     // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',
