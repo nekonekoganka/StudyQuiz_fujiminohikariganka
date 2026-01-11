@@ -98,6 +98,16 @@ const QUIZ_LIST = [
         description: '斜視の基礎知識と保護者への説明ポイントを学べます',
         color: 'purple'
     },
+    {
+        id: 'pediatric_myopia',
+        name: '小児近視対策クイズ',
+        file: '小児近視対策_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️',
+        category: 'staff',
+        description: '子どもの近視予防と保護者への説明ポイントを学べます',
+        color: 'purple'
+    },
     // === ルール・検診系 ===
     {
         id: 'ryokunaisho-kenshin',
