@@ -566,6 +566,184 @@
         body.small-font .quiz-tag {
             font-size: 10px;
         }
+
+        /* バックアップリマインダーバナー */
+        .backup-reminder {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ffb74d;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .backup-reminder.show {
+            display: block;
+        }
+
+        .backup-reminder-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .backup-reminder-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e65100;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .backup-reminder-icon {
+            font-size: 24px;
+        }
+
+        .backup-reminder-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .backup-reminder-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .backup-reminder-btn.primary {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .backup-reminder-btn.secondary {
+            background: rgba(255, 152, 0, 0.2);
+            color: #e65100;
+        }
+
+        .backup-reminder-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* フッターのバックアップセクション */
+        .backup-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #c5cae9;
+        }
+
+        .backup-section-title {
+            font-size: 13px;
+            color: #5c6bc0;
+            margin-bottom: 12px;
+        }
+
+        .backup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .backup-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 2px solid #e8eaf6;
+            background: white;
+            color: #5c6bc0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+
+        .backup-btn.download {
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .backup-btn.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+
+        .last-backup-info {
+            font-size: 12px;
+            color: #9fa8da;
+            margin-top: 10px;
+        }
+
+        .last-backup-date {
+            color: #5c6bc0;
+            font-weight: 500;
+        }
+
+        /* 復元用の隠しinput */
+        #restoreInput {
+            display: none;
+        }
+
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            .backup-reminder {
+                background: linear-gradient(135deg, #3d2f20, #4a3828);
+                border-color: #8d6e3a;
+            }
+
+            .backup-reminder-text {
+                color: #ffb74d;
+            }
+
+            .backup-reminder-btn.secondary {
+                background: rgba(255, 152, 0, 0.15);
+                color: #ffb74d;
+            }
+
+            .backup-section {
+                border-top-color: #3a3a4e;
+            }
+
+            .backup-section-title {
+                color: #a0a0b0;
+            }
+
+            .backup-btn {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+                color: #a0a0b0;
+            }
+
+            .backup-btn.download {
+                border-color: #4caf50;
+                color: #81c784;
+            }
+
+            .backup-btn.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+
+            .last-backup-info {
+                color: #707080;
+            }
+
+            .last-backup-date {
+                color: #a0a0b0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -578,6 +756,20 @@
                 <a href="mypage.html" class="mypage-link">📊 学習記録</a>
                 <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
                 <a href="help.html" class="help-link">❓ 使い方</a>
+            </div>
+        </div>
+
+        <!-- バックアップリマインダーバナー -->
+        <div id="backupReminder" class="backup-reminder">
+            <div class="backup-reminder-content">
+                <div class="backup-reminder-text">
+                    <span class="backup-reminder-icon">💾</span>
+                    <span id="reminderText">7日以上バックアップしていません</span>
+                </div>
+                <div class="backup-reminder-buttons">
+                    <button class="backup-reminder-btn primary" onclick="downloadBackup()">今すぐバックアップ</button>
+                    <button class="backup-reminder-btn secondary" onclick="dismissReminder()">後で</button>
+                </div>
             </div>
         </div>
 
@@ -841,6 +1033,23 @@
             <div class="footer-text">目の健康をサポートします</div>
             <div class="footer-name">ふじみ野ひかり眼科</div>
             <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+
+            <!-- バックアップセクション -->
+            <div class="backup-section">
+                <div class="backup-section-title">💾 学習データの保護</div>
+                <div class="backup-buttons">
+                    <button class="backup-btn download" onclick="downloadBackup()">
+                        <span>📥</span> バックアップ
+                    </button>
+                    <button class="backup-btn restore" onclick="document.getElementById('restoreInput').click()">
+                        <span>📤</span> 復元
+                    </button>
+                    <input type="file" id="restoreInput" accept=".json" onchange="restoreBackup(event)">
+                </div>
+                <div class="last-backup-info">
+                    最終バックアップ: <span id="lastBackupDate" class="last-backup-date">なし</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -917,9 +1126,167 @@
             });
         }
 
+        // バックアップ関連の定数
+        const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+        const REMINDER_DISMISS_KEY = 'hikari_quiz_reminder_dismissed';
+        const BACKUP_REMINDER_DAYS = 7;
+
+        // 最終バックアップ日を取得
+        function getLastBackupDate() {
+            const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        // 最終バックアップ日を保存
+        function setLastBackupDate() {
+            localStorage.setItem(BACKUP_STORAGE_KEY, new Date().toISOString());
+        }
+
+        // リマインダーを閉じた日を取得
+        function getReminderDismissDate() {
+            const dateStr = localStorage.getItem(REMINDER_DISMISS_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        // 日付をフォーマット
+        function formatDate(date) {
+            if (!date) return 'なし';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+
+        // バックアップリマインダーの表示判定
+        function shouldShowReminder() {
+            const lastBackup = getLastBackupDate();
+            const dismissDate = getReminderDismissDate();
+            const now = new Date();
+
+            // 一度もバックアップしていない場合
+            if (!lastBackup) {
+                // データがある場合のみ表示
+                const data = getQuizData();
+                if (data.totalAnswered > 0) {
+                    return { show: true, message: 'まだバックアップしていません' };
+                }
+                return { show: false };
+            }
+
+            // 最後のバックアップから何日経過したか
+            const daysSinceBackup = Math.floor((now - lastBackup) / (1000 * 60 * 60 * 24));
+
+            if (daysSinceBackup >= BACKUP_REMINDER_DAYS) {
+                // 今日すでに「後で」を押していたら表示しない
+                if (dismissDate) {
+                    const daysSinceDismiss = Math.floor((now - dismissDate) / (1000 * 60 * 60 * 24));
+                    if (daysSinceDismiss < 1) {
+                        return { show: false };
+                    }
+                }
+                return { show: true, message: `${daysSinceBackup}日以上バックアップしていません` };
+            }
+
+            return { show: false };
+        }
+
+        // リマインダーバナーを表示
+        function updateReminderBanner() {
+            const reminder = document.getElementById('backupReminder');
+            const reminderText = document.getElementById('reminderText');
+            const result = shouldShowReminder();
+
+            if (result.show) {
+                reminderText.textContent = result.message;
+                reminder.classList.add('show');
+            } else {
+                reminder.classList.remove('show');
+            }
+        }
+
+        // リマインダーを閉じる
+        function dismissReminder() {
+            localStorage.setItem(REMINDER_DISMISS_KEY, new Date().toISOString());
+            document.getElementById('backupReminder').classList.remove('show');
+        }
+
+        // 最終バックアップ日の表示を更新
+        function updateLastBackupDisplay() {
+            const lastBackupDate = document.getElementById('lastBackupDate');
+            const date = getLastBackupDate();
+            lastBackupDate.textContent = formatDate(date);
+        }
+
+        // バックアップをダウンロード
+        function downloadBackup() {
+            const data = getQuizData();
+            data.backupDate = new Date().toISOString();
+            data.appVersion = '1.0';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            const dateStr = new Date().toISOString().split('T')[0];
+            a.download = `hikari_quiz_backup_${dateStr}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // 最終バックアップ日を更新
+            setLastBackupDate();
+            updateLastBackupDisplay();
+
+            // リマインダーを非表示
+            document.getElementById('backupReminder').classList.remove('show');
+
+            alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
+        }
+
+        // バックアップを復元
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    // データの検証
+                    if (!data.progress && !data.totalAnswered && !data.badges) {
+                        throw new Error('無効なバックアップファイルです');
+                    }
+
+                    if (confirm('⚠️ 現在の学習データを上書きします。\nよろしいですか？')) {
+                        // バックアップ日は除外して保存
+                        delete data.backupDate;
+                        delete data.appVersion;
+                        saveQuizData(data);
+
+                        // バックアップ日を更新
+                        setLastBackupDate();
+
+                        alert('✅ データを復元しました！\nページを再読み込みします。');
+                        location.reload();
+                    }
+                } catch (error) {
+                    alert('❌ ファイルの読み込みに失敗しました。\n正しいバックアップファイルを選択してください。');
+                }
+            };
+            reader.readAsText(file);
+
+            // inputをリセット（同じファイルを再選択できるように）
+            event.target.value = '';
+        }
+
         // ページ読み込み時に実行
         updateProgressDisplay();
         updateDailyButtonText();
+        updateLastBackupDisplay();
+        updateReminderBanner();
     </script>
 </body>
 </html>
