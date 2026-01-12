@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="学習クイズ">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
     <title>ひかり眼科 学習クイズ</title>
     <style>
         * {
@@ -292,6 +299,24 @@
             transform: scale(0.95);
         }
 
+        .help-link {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #5c6bc0, #3949ab);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .help-link:active {
+            transform: scale(0.95);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -395,6 +420,11 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
             }
+
+            .help-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(92, 107, 192, 0.4);
+            }
         }
 
         /* ダークモード */
@@ -480,6 +510,11 @@
                 color: white;
             }
 
+            .help-link {
+                background: linear-gradient(135deg, #5c6bc0, #3949ab);
+                color: white;
+            }
+
             .section-title {
                 color: #e0e0e0;
                 border-bottom-color: #3a3a4e;
@@ -504,7 +539,8 @@
         }
 
         body.large-font .mypage-link,
-        body.large-font .random-quiz-button {
+        body.large-font .random-quiz-button,
+        body.large-font .help-link {
             font-size: 14px;
         }
 
@@ -541,6 +577,7 @@
                 <div class="subtitle">📚 知識を深めて、より良い医療を 📚</div>
                 <a href="mypage.html" class="mypage-link">📊 学習記録</a>
                 <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
+                <a href="help.html" class="help-link">❓ 使い方</a>
             </div>
         </div>
 
