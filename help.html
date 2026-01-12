@@ -450,6 +450,14 @@
             <div class="tip-box" style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-left-color: #ff9800;">
                 <h4 style="color: #e65100;">⚠️ データ保護について</h4>
                 <p style="color: #bf360c;">学習データは端末のブラウザ内に保存されています。そのため「履歴とWebサイトデータを消去」などの操作をすると一緒に消えてしまいます。定期的なバックアップをおすすめします。</p>
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="downloadBackup()" style="padding: 10px 20px; border-radius: 20px; border: 2px solid #4caf50; background: white; color: #2e7d32; font-size: 13px; font-weight: 500; cursor: pointer;">📥 バックアップ</button>
+                    <button onclick="document.getElementById('restoreInput').click()" style="padding: 10px 20px; border-radius: 20px; border: 2px solid #2196f3; background: white; color: #1565c0; font-size: 13px; font-weight: 500; cursor: pointer;">📤 復元</button>
+                    <input type="file" id="restoreInput" accept=".json" onchange="restoreBackup(event)" style="display: none;">
+                </div>
+                <div id="lastBackupInfo" style="margin-top: 8px; font-size: 12px; color: #bf360c;">
+                    最終バックアップ: <span id="lastBackupDate">確認中...</span>
+                </div>
             </div>
         </div>
 
@@ -689,6 +697,7 @@
         </div>
     </div>
 
+    <script src="quizzes/quiz-config.js"></script>
     <script>
         function showDevice(device) {
             // タブの切り替え
@@ -703,6 +712,89 @@
             });
             document.getElementById(device + '-content').classList.add('active');
         }
+
+        // バックアップ関連
+        const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+
+        function getLastBackupDate() {
+            const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        function setLastBackupDate() {
+            localStorage.setItem(BACKUP_STORAGE_KEY, new Date().toISOString());
+        }
+
+        function formatDate(date) {
+            if (!date) return 'なし';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+
+        function updateLastBackupDisplay() {
+            const el = document.getElementById('lastBackupDate');
+            if (el) {
+                el.textContent = formatDate(getLastBackupDate());
+            }
+        }
+
+        function downloadBackup() {
+            const data = getQuizData();
+            data.backupDate = new Date().toISOString();
+            data.appVersion = '1.0';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            const dateStr = new Date().toISOString().split('T')[0];
+            a.download = `hikari_quiz_backup_${dateStr}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            setLastBackupDate();
+            updateLastBackupDisplay();
+
+            alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
+        }
+
+        function restoreBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (!data.progress && !data.totalAnswered && !data.badges) {
+                        throw new Error('無効なバックアップファイルです');
+                    }
+
+                    if (confirm('⚠️ 現在の学習データを上書きします。\nよろしいですか？')) {
+                        delete data.backupDate;
+                        delete data.appVersion;
+                        saveQuizData(data);
+                        setLastBackupDate();
+
+                        alert('✅ データを復元しました！\nページを再読み込みします。');
+                        location.reload();
+                    }
+                } catch (error) {
+                    alert('❌ ファイルの読み込みに失敗しました。\n正しいバックアップファイルを選択してください。');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ページ読み込み時
+        updateLastBackupDisplay();
     </script>
 </body>
 </html>
