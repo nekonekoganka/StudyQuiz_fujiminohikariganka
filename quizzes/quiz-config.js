@@ -380,6 +380,11 @@ function recordQuizResult(quizId, score, totalQuestions) {
     });
 
     saveQuizData(data);
+
+    // クイズ完了回数をカウントし、自動バックアップをチェック
+    const backupExecuted = onQuizComplete();
+    data._backupExecuted = backupExecuted;
+
     return data;
 }
 
@@ -534,6 +539,141 @@ const SETTINGS_KEYS = {
     animation: 'hikari-quiz-animation',
     dailyCount: 'hikari-quiz-dailycount'
 };
+
+/**
+ * 自動バックアップ関連の定数
+ */
+const AUTO_BACKUP_INTERVAL = 5; // 5回ごとにバックアップ
+const AUTO_BACKUP_COUNT_KEY = 'hikari_quiz_completion_count';
+const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+
+/**
+ * クイズ完了回数を取得
+ */
+function getCompletionCount() {
+    const count = localStorage.getItem(AUTO_BACKUP_COUNT_KEY);
+    return count ? parseInt(count) : 0;
+}
+
+/**
+ * クイズ完了回数を増加
+ */
+function incrementCompletionCount() {
+    const count = getCompletionCount() + 1;
+    localStorage.setItem(AUTO_BACKUP_COUNT_KEY, count.toString());
+    return count;
+}
+
+/**
+ * 最終バックアップ日を保存
+ */
+function setLastBackupDate() {
+    localStorage.setItem(BACKUP_STORAGE_KEY, new Date().toISOString());
+}
+
+/**
+ * 自動バックアップを実行（ダウンロード）
+ */
+function performAutoBackup() {
+    const data = getQuizData();
+    data.backupDate = new Date().toISOString();
+    data.appVersion = '1.0';
+    data.autoBackup = true;
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    const dateStr = new Date().toISOString().split('T')[0];
+    a.download = `hikari_quiz_backup_${dateStr}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    setLastBackupDate();
+
+    // 通知を表示（少し遅延させてダウンロード後に表示）
+    const count = getCompletionCount();
+    setTimeout(() => {
+        showAutoBackupNotification(count);
+    }, 500);
+}
+
+/**
+ * 自動バックアップ通知を表示
+ */
+function showAutoBackupNotification(count) {
+    // 既存の通知があれば削除
+    const existing = document.getElementById('autoBackupNotification');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.id = 'autoBackupNotification';
+    notification.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 10000;
+            text-align: center;
+            max-width: 90%;
+            animation: slideDown 0.3s ease;
+        ">
+            <div style="font-size: 24px; margin-bottom: 8px;">💾</div>
+            <div style="font-weight: bold; margin-bottom: 4px;">${count}回目のクイズ完了！</div>
+            <div style="font-size: 13px; opacity: 0.9;">学習データを自動バックアップしました</div>
+        </div>
+        <style>
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+        </style>
+    `;
+    document.body.appendChild(notification);
+
+    // 5秒後に自動で消す
+    setTimeout(() => {
+        notification.style.transition = 'opacity 0.3s';
+        notification.style.opacity = '0';
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
+
+/**
+ * クイズ完了時に呼び出す（自動バックアップチェック）
+ * @returns {boolean} - バックアップが実行されたかどうか
+ */
+function onQuizComplete() {
+    const count = incrementCompletionCount();
+
+    if (count % AUTO_BACKUP_INTERVAL === 0) {
+        // 自動バックアップを実行
+        performAutoBackup();
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 自動バックアップのメッセージを取得
+ * @returns {string|null} - メッセージまたはnull
+ */
+function getAutoBackupMessage() {
+    const count = getCompletionCount();
+    if (count % AUTO_BACKUP_INTERVAL === 0 && count > 0) {
+        return `💾 ${count}回目のクイズ完了！\n学習データを自動バックアップしました`;
+    }
+    return null;
+}
 
 /**
  * フォントサイズ設定を適用
