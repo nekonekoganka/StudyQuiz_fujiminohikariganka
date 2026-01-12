@@ -763,8 +763,11 @@
         <div id="backupReminder" class="backup-reminder">
             <div class="backup-reminder-content">
                 <div class="backup-reminder-text">
-                    <span class="backup-reminder-icon">💾</span>
-                    <span id="reminderText">7日以上バックアップしていません</span>
+                    <span class="backup-reminder-icon">⚠️</span>
+                    <div>
+                        <div id="reminderText" style="font-weight: bold;">データ保護について</div>
+                        <div style="font-size: 12px; margin-top: 4px;">学習データはブラウザ内に保存されています。「履歴とWebサイトデータを消去」で消えてしまいます。</div>
+                    </div>
                 </div>
                 <div class="backup-reminder-buttons">
                     <button class="backup-reminder-btn primary" onclick="downloadBackup()">今すぐバックアップ</button>
@@ -1168,7 +1171,7 @@
                 // データがある場合のみ表示
                 const data = getQuizData();
                 if (data.totalAnswered > 0) {
-                    return { show: true, message: 'まだバックアップしていません' };
+                    return { show: true };
                 }
                 return { show: false };
             }
@@ -1184,7 +1187,7 @@
                         return { show: false };
                     }
                 }
-                return { show: true, message: `${daysSinceBackup}日以上バックアップしていません` };
+                return { show: true };
             }
 
             return { show: false };
@@ -1193,11 +1196,9 @@
         // リマインダーバナーを表示
         function updateReminderBanner() {
             const reminder = document.getElementById('backupReminder');
-            const reminderText = document.getElementById('reminderText');
             const result = shouldShowReminder();
 
             if (result.show) {
-                reminderText.textContent = result.message;
                 reminder.classList.add('show');
             } else {
                 reminder.classList.remove('show');
