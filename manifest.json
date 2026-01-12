@@ -2,7 +2,7 @@
     "name": "ひかり眼科 学習クイズ",
     "short_name": "学習クイズ",
     "description": "眼科スタッフ向けの学習クイズアプリ",
-    "start_url": "/index.html",
+    "start_url": "./index.html",
     "display": "standalone",
     "background_color": "#667eea",
     "theme_color": "#667eea",
