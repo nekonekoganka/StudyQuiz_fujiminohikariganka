@@ -1044,10 +1044,10 @@
                     <button class="backup-btn download" onclick="downloadBackup()">
                         <span>📥</span> バックアップ
                     </button>
-                    <button class="backup-btn restore" onclick="document.getElementById('restoreInput').click()">
-                        <span>📤</span> 復元
+                    <button class="backup-btn restore" onclick="startRestore()">
+                        <span>📂</span> ファイルを選んで復元
                     </button>
-                    <input type="file" id="restoreInput" accept=".json" onchange="restoreBackup(event)">
+                    <input type="file" id="restoreInput" accept=".json" onchange="handleRestoreFile(event)">
                 </div>
                 <div class="last-backup-info">
                     最終バックアップ: <span id="lastBackupDate" class="last-backup-date">なし</span>
@@ -1055,6 +1055,103 @@
             </div>
         </div>
     </div>
+
+    <!-- 復元プレビューモーダル -->
+    <div id="restorePreviewModal" class="restore-modal" style="display: none;">
+        <div class="restore-modal-content">
+            <div id="restorePreviewContent"></div>
+        </div>
+    </div>
+
+    <style>
+        .restore-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .restore-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .restore-preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .restore-preview-title.success { color: #2e7d32; }
+        .restore-preview-title.error { color: #c62828; }
+        .restore-preview-info {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .restore-preview-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .restore-preview-row:last-child { border-bottom: none; }
+        .restore-preview-label { color: #666; }
+        .restore-preview-value { font-weight: bold; color: #333; }
+        .restore-warning {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .restore-error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .restore-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .restore-modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .restore-modal-btn.primary {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        .restore-modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .restore-modal-btn.close {
+            background: #e0e0e0;
+            color: #333;
+        }
+    </style>
 
     <script src="quizzes/quiz-config.js"></script>
     <script>
@@ -1225,8 +1322,7 @@
 
             const a = document.createElement('a');
             a.href = url;
-            const dateStr = new Date().toISOString().split('T')[0];
-            a.download = `hikari_quiz_backup_${dateStr}.json`;
+            a.download = generateBackupFileName();
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1242,8 +1338,17 @@
             alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
         }
 
-        // バックアップを復元
-        function restoreBackup(event) {
+        // 復元開始（クリップボードにコピーしてファイル選択）
+        async function startRestore() {
+            await copySearchTextAndShowToast();
+            document.getElementById('restoreInput').click();
+        }
+
+        // 復元用の一時データ
+        let pendingRestoreData = null;
+
+        // ファイル選択時の処理
+        function handleRestoreFile(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -1251,32 +1356,97 @@
             reader.onload = function(e) {
                 try {
                     const data = JSON.parse(e.target.result);
+                    const validation = validateBackupData(data);
 
-                    // データの検証
-                    if (!data.progress && !data.totalAnswered && !data.badges) {
-                        throw new Error('無効なバックアップファイルです');
-                    }
-
-                    if (confirm('⚠️ 現在の学習データを上書きします。\nよろしいですか？')) {
-                        // バックアップ日は除外して保存
-                        delete data.backupDate;
-                        delete data.appVersion;
-                        saveQuizData(data);
-
-                        // バックアップ日を更新
-                        setLastBackupDate();
-
-                        alert('✅ データを復元しました！\nページを再読み込みします。');
-                        location.reload();
+                    if (validation.valid) {
+                        pendingRestoreData = data;
+                        showRestorePreview(data);
+                    } else {
+                        showRestoreError(validation.error);
                     }
                 } catch (error) {
-                    alert('❌ ファイルの読み込みに失敗しました。\n正しいバックアップファイルを選択してください。');
+                    showRestoreError('invalid_format');
                 }
             };
             reader.readAsText(file);
-
-            // inputをリセット（同じファイルを再選択できるように）
             event.target.value = '';
+        }
+
+        // 復元プレビューを表示
+        function showRestorePreview(data) {
+            const info = getBackupPreviewInfo(data);
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            content.innerHTML = `
+                <div class="restore-preview-title success">✅ バックアップファイルを確認</div>
+                <div class="restore-preview-info">
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📅 バックアップ日</span>
+                        <span class="restore-preview-value">${formatBackupDate(info.backupDate)}</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📝 累計回答数</span>
+                        <span class="restore-preview-value">${info.totalAnswered}回</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🌸 満点クイズ</span>
+                        <span class="restore-preview-value">${info.perfectCount}個</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🏅 獲得バッジ</span>
+                        <span class="restore-preview-value">${info.badgeCount}個</span>
+                    </div>
+                </div>
+                <div class="restore-warning">⚠️ 現在のデータは上書きされます</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn secondary" onclick="closeRestoreModal()">キャンセル</button>
+                    <button class="restore-modal-btn primary" onclick="executeRestore()">復元する</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // エラー表示
+        function showRestoreError(errorType) {
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            let message = '';
+            if (errorType === 'invalid_format') {
+                message = 'このファイルはバックアップファイルではありません。<br><br>「ひかりクイズデータ_」で始まるJSONファイルを選択してください。';
+            } else if (errorType === 'no_quiz_data') {
+                message = '学習データが含まれていません。<br><br>正しいバックアップファイルを選択してください。';
+            }
+
+            content.innerHTML = `
+                <div class="restore-preview-title error">❌ ファイルを読み込めません</div>
+                <div class="restore-error-message">${message}</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn close" onclick="closeRestoreModal()">閉じる</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // 復元実行
+        function executeRestore() {
+            if (!pendingRestoreData) return;
+
+            delete pendingRestoreData.backupDate;
+            delete pendingRestoreData.appVersion;
+            saveQuizData(pendingRestoreData);
+            setLastBackupDate();
+
+            closeRestoreModal();
+            alert('✅ データを復元しました！\nページを再読み込みします。');
+            location.reload();
+        }
+
+        // モーダルを閉じる
+        function closeRestoreModal() {
+            document.getElementById('restorePreviewModal').style.display = 'none';
+            pendingRestoreData = null;
         }
 
         // ページ読み込み時に実行
