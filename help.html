@@ -854,10 +854,12 @@
             alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
         }
 
-        // 復元開始
+        // 復元開始（確認ダイアログを表示してからファイル選択）
         async function startRestore() {
-            await copySearchTextAndShowToast();
-            document.getElementById('restoreInput').click();
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('restoreInput').click();
+            }
         }
 
         // 復元用の一時データ
