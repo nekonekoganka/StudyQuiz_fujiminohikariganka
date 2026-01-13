@@ -588,6 +588,17 @@ function setLastBackupDate() {
 }
 
 /**
+ * バックアップファイル名を生成
+ */
+function generateBackupFileName() {
+    const now = new Date();
+    const date = now.toISOString().split('T')[0]; // 2026-01-13
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `ひかりクイズデータ_${date}_${hours}${minutes}.json`;
+}
+
+/**
  * 自動バックアップを実行（ダウンロード）
  */
 function performAutoBackup() {
@@ -601,8 +612,7 @@ function performAutoBackup() {
 
     const a = document.createElement('a');
     a.href = url;
-    const dateStr = new Date().toISOString().split('T')[0];
-    a.download = `hikari_quiz_backup_${dateStr}.json`;
+    a.download = generateBackupFileName();
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -686,10 +696,120 @@ function onQuizComplete() {
  */
 function getAutoBackupMessage() {
     const count = getCompletionCount();
-    if (count % AUTO_BACKUP_INTERVAL === 0 && count > 0) {
+    const interval = getAutoBackupInterval();
+    if (count % interval === 0 && count > 0) {
         return `💾 ${count}回目のクイズ完了！\n学習データを自動バックアップしました`;
     }
     return null;
+}
+
+/**
+ * 復元用：クリップボードにテキストをコピーしてトースト表示
+ */
+async function copySearchTextAndShowToast() {
+    const searchText = 'ひかりクイズデータ';
+    try {
+        await navigator.clipboard.writeText(searchText);
+        showRestoreToast('📋 検索用テキストをコピーしました！\nファイル選択画面で貼り付けて検索できます');
+    } catch (err) {
+        // クリップボードAPIが使えない場合は何もしない
+        console.log('Clipboard API not available');
+    }
+}
+
+/**
+ * 復元用：トースト表示
+ */
+function showRestoreToast(message) {
+    const existing = document.getElementById('restoreToast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'restoreToast';
+    toast.innerHTML = `
+        <div style="
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 10001;
+            text-align: center;
+            white-space: pre-line;
+            max-width: 90%;
+            animation: fadeIn 0.3s ease;
+        ">
+            ${message}
+        </div>
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+            }
+        </style>
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s';
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+/**
+ * 復元用：バックアップデータを検証
+ */
+function validateBackupData(data) {
+    if (!data || typeof data !== 'object') {
+        return { valid: false, error: 'invalid_format' };
+    }
+    // 最低限どれかのデータがあるか確認
+    if (!data.progress && !data.totalAnswered && !data.badges) {
+        return { valid: false, error: 'no_quiz_data' };
+    }
+    return { valid: true };
+}
+
+/**
+ * 復元用：プレビュー情報を取得
+ */
+function getBackupPreviewInfo(data) {
+    const backupDate = data.backupDate ? new Date(data.backupDate) : null;
+    const totalAnswered = data.totalAnswered || 0;
+    const badges = data.badges ? Object.keys(data.badges).length : 0;
+
+    // 満点クイズ数を計算
+    let perfectCount = 0;
+    if (data.progress) {
+        for (const quizId in data.progress) {
+            if (data.progress[quizId]?.isPerfect) {
+                perfectCount++;
+            }
+        }
+    }
+
+    return {
+        backupDate: backupDate,
+        totalAnswered: totalAnswered,
+        perfectCount: perfectCount,
+        badgeCount: badges
+    };
+}
+
+/**
+ * 復元用：日付フォーマット
+ */
+function formatBackupDate(date) {
+    if (!date) return '不明';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
 }
 
 /**
