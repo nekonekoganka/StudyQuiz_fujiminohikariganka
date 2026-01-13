@@ -58,58 +58,6 @@
             font-size: 13px;
         }
 
-        /* アコーディオン設定 */
-        .settings-accordion {
-            margin-bottom: 20px;
-        }
-
-        .settings-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 14px 18px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .settings-toggle:active {
-            transform: scale(0.98);
-        }
-
-        .settings-toggle-icon {
-            font-size: 18px;
-            transition: transform 0.3s ease;
-        }
-
-        .settings-toggle.open .settings-toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .settings-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: #f8f9ff;
-            border-radius: 0 0 12px 12px;
-            margin-top: -8px;
-            padding-top: 8px;
-        }
-
-        .settings-content.open {
-            max-height: 500px;
-        }
-
-        .settings-inner {
-            padding: 16px;
-        }
-
         .section {
             margin-bottom: 28px;
         }
@@ -490,8 +438,36 @@
         body.large-font .progress-title { font-size: 16px; }
         body.large-font .stat-value { font-size: 32px; }
 
+        /* PC版上部ナビ */
+        .top-nav {
+            display: none;
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
+            .top-nav {
+                display: block;
+                text-align: left;
+                margin-bottom: 16px;
+            }
+            .top-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #5c6bc0;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #f0f2ff;
+                transition: all 0.2s;
+            }
+            .top-nav-link:hover {
+                background: #e0e4ff;
+                color: #3949ab;
+            }
+
             body {
                 padding: 20px;
             }
@@ -702,63 +678,13 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-nav">
+            <a href="index.html" class="top-nav-link">← ホームに戻る</a>
+        </div>
+
         <div class="header">
             <h1>📊 学習記録</h1>
             <div class="header-subtitle">学習の進捗を確認しましょう</div>
-        </div>
-
-        <!-- 設定アコーディオン -->
-        <div id="settings" class="settings-accordion">
-            <button class="settings-toggle" onclick="toggleSettings()">
-                <span>⚙️ 設定</span>
-                <span class="settings-toggle-icon">▼</span>
-            </button>
-            <div class="settings-content" id="settingsContent">
-                <div class="settings-inner">
-                    <!-- 文字の大きさ -->
-                    <div class="setting-item">
-                        <div class="setting-label">文字の大きさ</div>
-                        <div class="button-selector" id="fontSizeSelector">
-                            <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
-                            <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
-                            <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
-                        </div>
-                    </div>
-
-                    <!-- 今日の問題数 -->
-                    <div class="setting-item">
-                        <div class="setting-label">今日の問題数</div>
-                        <div class="setting-description">「今日の○問」モードで出題される問題数</div>
-                        <div class="button-selector" id="dailyCountSelector">
-                            <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
-                            <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
-                            <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
-                        </div>
-                    </div>
-
-                    <!-- 自動バックアップ間隔 -->
-                    <div class="setting-item">
-                        <div class="setting-label">自動バックアップ間隔</div>
-                        <div class="setting-description">クイズを指定回数完了するごとに、学習データが自動でダウンロードされます</div>
-                        <div class="button-selector" id="autoBackupSelector">
-                            <button class="selector-button" data-value="3" onclick="setAutoBackupIntervalSetting(3)">3回ごと</button>
-                            <button class="selector-button active" data-value="5" onclick="setAutoBackupIntervalSetting(5)">5回ごと</button>
-                            <button class="selector-button" data-value="10" onclick="setAutoBackupIntervalSetting(10)">10回ごと</button>
-                        </div>
-                    </div>
-
-                    <!-- データバックアップ -->
-                    <div class="setting-item">
-                        <div class="setting-label">データバックアップ</div>
-                        <div class="setting-description">キャッシュ削除に備えて学習データを保存できます</div>
-                        <div class="backup-buttons">
-                            <button class="backup-button" onclick="exportData()">💾 バックアップ</button>
-                            <button class="backup-button restore" onclick="startRestore()">📂 ファイルを選んで復元</button>
-                            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleRestoreFile(event)">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div id="completeBanner" class="complete-banner hidden">
@@ -1250,106 +1176,9 @@
             pendingRestoreData = null;
         }
 
-        // ===== 設定関連 =====
-        // SETTINGS_KEYS は quiz-config.js から読み込まれます
-
-        // ----- 設定アコーディオン -----
-        function toggleSettings() {
-            const toggle = document.querySelector('.settings-toggle');
-            const content = document.getElementById('settingsContent');
-            toggle.classList.toggle('open');
-            content.classList.toggle('open');
-        }
-
-        // ----- フォントサイズ -----
-        function setFontSize(size) {
-            localStorage.setItem(SETTINGS_KEYS.fontSize, size);
-            updateFontSizeButtons(size);
-            applyFontSize(size);
-        }
-
-        function updateFontSizeButtons(size) {
-            document.querySelectorAll('#fontSizeSelector .selector-button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.value === size);
-            });
-        }
-
-        function applyFontSize(size) {
-            document.body.classList.remove('small-font', 'large-font');
-            if (size === 'small') {
-                document.body.classList.add('small-font');
-            } else if (size === 'large') {
-                document.body.classList.add('large-font');
-            }
-        }
-
-        function initFontSize() {
-            const saved = localStorage.getItem(SETTINGS_KEYS.fontSize) || 'normal';
-            updateFontSizeButtons(saved);
-            applyFontSize(saved);
-        }
-
-        // ----- 今日の問題数 -----
-        function setDailyCount(count) {
-            localStorage.setItem(SETTINGS_KEYS.dailyCount, count.toString());
-            updateDailyCountButtons(count);
-        }
-
-        function updateDailyCountButtons(count) {
-            document.querySelectorAll('#dailyCountSelector .selector-button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.value === count.toString());
-            });
-        }
-
-        function initDailyCount() {
-            const saved = localStorage.getItem(SETTINGS_KEYS.dailyCount) || '3';
-            updateDailyCountButtons(parseInt(saved));
-        }
-
-        // ----- 自動バックアップ間隔 -----
-        function setAutoBackupIntervalSetting(interval) {
-            setAutoBackupInterval(interval);
-            updateAutoBackupButtons(interval);
-        }
-
-        function updateAutoBackupButtons(interval) {
-            document.querySelectorAll('#autoBackupSelector .selector-button').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.value === interval.toString());
-            });
-        }
-
-        function initAutoBackupInterval() {
-            const saved = getAutoBackupInterval();
-            updateAutoBackupButtons(saved);
-        }
-
-        // ----- 初期化 -----
-        function initSettings() {
-            initFontSize();
-            initDailyCount();
-            initAutoBackupInterval();
-        }
-
-        // ハッシュリンクで設定セクションを開く
-        function checkSettingsHash() {
-            if (window.location.hash === '#settings') {
-                const content = document.getElementById('settingsContent');
-                const icon = document.querySelector('.settings-toggle-icon');
-                if (content && !content.classList.contains('open')) {
-                    content.classList.add('open');
-                    if (icon) icon.textContent = '▲';
-                }
-                // 少し遅延してスクロール
-                setTimeout(() => {
-                    document.getElementById('settings').scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            }
-        }
-
         // 初期化
         renderPage();
-        initSettings();
-        checkSettingsHash();
+        applyFontSize(); // quiz-config.jsからフォントサイズを適用
     </script>
 </body>
 </html>

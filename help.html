@@ -312,8 +312,36 @@
             display: block;
         }
 
+        /* PC版上部ナビ */
+        .top-nav {
+            display: none;
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
+            .top-nav {
+                display: block;
+                text-align: left;
+                margin-bottom: 16px;
+            }
+            .top-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #5c6bc0;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #f0f2ff;
+                transition: all 0.2s;
+            }
+            .top-nav-link:hover {
+                background: #e0e4ff;
+                color: #3949ab;
+            }
+
             body {
                 padding: 20px;
             }
@@ -430,6 +458,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-nav">
+            <a href="index.html" class="top-nav-link">← ホームに戻る</a>
+        </div>
+
         <div class="header">
             <img src="images/ふじみ野ぴかぴかり眼科_ロゴ.png" alt="ふじみ野ひかり眼科ロゴ" class="logo-icon">
             <h1>使い方ガイド</h1>
