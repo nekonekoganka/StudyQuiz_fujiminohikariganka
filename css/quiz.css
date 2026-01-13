@@ -400,8 +400,29 @@ h1 {
     background: #5e35b1;
 }
 
-.shuffle-button:active, .retry-button:active, .record-button:active, .home-button-small:active {
+.shuffle-button:active, .retry-button:active, .record-button:active, .home-button-small:active, .review-incorrect-button:active {
     transform: scale(0.97);
+}
+
+/* 間違えた問題を復習ボタン */
+.review-incorrect-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    text-decoration: none;
+    background: #ff5722;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 @media (min-width: 768px) {
@@ -451,6 +472,18 @@ h1 {
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         opacity: 1;
     }
+
+    .review-incorrect-button {
+        max-width: 320px;
+        padding: 18px 24px;
+        font-size: 17px;
+        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    }
+
+    .review-incorrect-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+    }
 }
 
 @media (max-width: 768px) {
@@ -463,6 +496,11 @@ h1 {
         min-width: 130px;
         padding: 12px 16px;
         font-size: 15px;
+    }
+    .review-incorrect-button {
+        padding: 12px 16px;
+        font-size: 15px;
+        max-width: 280px;
     }
 }
 
@@ -600,6 +638,70 @@ h1 {
     font-size: 1.5em;
     display: block;
     margin-bottom: 25px;
+}
+
+/* リザルト画面の進捗表示 */
+.result-progress-section {
+    margin: 25px auto 0;
+    padding: 18px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: left;
+}
+
+.result-progress-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.result-progress-bar-container {
+    background: #e0e6f7;
+    border-radius: 8px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.result-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #48c6ef, #6f86d6);
+    border-radius: 8px;
+    transition: width 0.5s ease;
+}
+
+.result-progress-bar-fill.perfect {
+    background: linear-gradient(135deg, #e91e63, #f48fb1);
+}
+
+.result-progress-percentage {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 12px;
+}
+
+.result-progress-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.result-progress-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: white;
+    border-radius: 6px;
+}
+
+.result-progress-stat span:last-child {
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
@@ -772,6 +874,27 @@ h1 {
 
     .final-score-highlight {
         color: #ff7a7a;
+    }
+
+    .result-progress-section {
+        background: #222235;
+    }
+
+    .result-progress-title {
+        color: #c5c5c5;
+    }
+
+    .result-progress-bar-container {
+        background: #3a3a4e;
+    }
+
+    .result-progress-percentage {
+        color: #f5f5f5;
+    }
+
+    .result-progress-stat {
+        background: #2e2e42;
+        color: #d5d5d5;
     }
 
     .quiz-title-header {
