@@ -902,7 +902,7 @@ async function showRestoreGuideDialog() {
                     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
                     text-align: center;
                 ">
-                    <div style="font-size: 40px; margin-bottom: 12px;">📋</div>
+                    <div style="font-size: 40px; margin-bottom: 12px;">${clipboardSuccess ? '✅' : '📂'}</div>
                     <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 16px;">
                         ${clipboardSuccess ? '検索用テキストをコピーしました' : 'ファイルを選択してください'}
                     </div>
@@ -922,11 +922,12 @@ async function showRestoreGuideDialog() {
                             font-size: 14px;
                             line-height: 1.6;
                             margin-bottom: 20px;
+                            text-align: left;
                         ">
-                            次の画面でファイルを探すとき、<br>
-                            <strong>検索欄に貼り付ける</strong>と<br>
-                            バックアップファイルが<br>
-                            見つけやすくなります。
+                            <strong>使い方：</strong><br>
+                            ファイル選択画面で<br>
+                            検索欄に貼り付け →<br>
+                            バックアップが見つかります
                         </div>
                     ` : `
                         <div style="
