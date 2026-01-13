@@ -628,7 +628,7 @@ function performAutoBackup() {
 }
 
 /**
- * 自動バックアップ通知を表示
+ * バックアップ完了通知を表示
  */
 function showAutoBackupNotification(count) {
     // 既存の通知があれば削除
@@ -653,9 +653,8 @@ function showAutoBackupNotification(count) {
             max-width: 90%;
             animation: slideUp 0.3s ease;
         ">
-            <div style="font-size: 24px; margin-bottom: 8px;">💾</div>
-            <div style="font-weight: bold; margin-bottom: 4px;">${count}回目のクイズ完了！</div>
-            <div style="font-size: 13px; opacity: 0.9;">学習データを自動バックアップしました</div>
+            <div style="font-size: 24px; margin-bottom: 8px;">✅</div>
+            <div style="font-weight: bold;">バックアップ完了！</div>
         </div>
         <style>
             @keyframes slideUp {
@@ -666,28 +665,183 @@ function showAutoBackupNotification(count) {
     `;
     document.body.appendChild(notification);
 
-    // 5秒後に自動で消す
+    // 3秒後に自動で消す
     setTimeout(() => {
         notification.style.transition = 'opacity 0.3s';
         notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 300);
-    }, 5000);
+    }, 3000);
 }
 
 /**
  * クイズ完了時に呼び出す（自動バックアップチェック）
- * @returns {boolean} - バックアップが実行されたかどうか
+ * @returns {boolean} - バックアップ通知が表示されたかどうか
  */
 function onQuizComplete() {
     const count = incrementCompletionCount();
     const interval = getAutoBackupInterval();
 
     if (count % interval === 0) {
-        // 自動バックアップを実行
-        performAutoBackup();
+        // バックアップ確認通知を表示（自動ダウンロードではなく）
+        showBackupPrompt(count);
         return true;
     }
     return false;
+}
+
+/**
+ * バックアップ確認通知を表示
+ */
+function showBackupPrompt(count) {
+    // 既存の通知があれば削除
+    const existing = document.getElementById('backupPrompt');
+    if (existing) existing.remove();
+
+    const prompt = document.createElement('div');
+    prompt.id = 'backupPrompt';
+    prompt.innerHTML = `
+        <style>
+            #backupPromptInner {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #ff9800, #f57c00);
+                color: white;
+                padding: 16px 20px;
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideUpPrompt 0.3s ease;
+            }
+            #backupPromptContent {
+                max-width: 600px;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+            .backup-prompt-icon {
+                font-size: 28px;
+                flex-shrink: 0;
+            }
+            .backup-prompt-text {
+                flex-grow: 1;
+            }
+            .backup-prompt-title {
+                font-weight: bold;
+                font-size: 15px;
+                margin-bottom: 2px;
+            }
+            .backup-prompt-subtitle {
+                font-size: 13px;
+                opacity: 0.9;
+            }
+            .backup-prompt-buttons {
+                display: flex;
+                gap: 8px;
+                flex-shrink: 0;
+            }
+            .backup-prompt-btn {
+                padding: 10px 16px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                border: none;
+                transition: all 0.2s;
+            }
+            .backup-prompt-btn.primary {
+                background: white;
+                color: #e65100;
+            }
+            .backup-prompt-btn.primary:active {
+                transform: scale(0.95);
+            }
+            .backup-prompt-btn.close {
+                background: rgba(255,255,255,0.2);
+                color: white;
+                padding: 10px 12px;
+            }
+            .backup-prompt-btn.close:active {
+                transform: scale(0.95);
+            }
+            @keyframes slideUpPrompt {
+                from { transform: translateY(100%); }
+                to { transform: translateY(0); }
+            }
+            /* PC版: 右下にカード表示 */
+            @media (min-width: 768px) {
+                #backupPromptInner {
+                    bottom: 20px;
+                    left: auto;
+                    right: 20px;
+                    width: 360px;
+                    border-radius: 12px;
+                    padding: 20px;
+                }
+                #backupPromptContent {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 12px;
+                }
+                .backup-prompt-buttons {
+                    width: 100%;
+                }
+                .backup-prompt-btn.primary {
+                    flex-grow: 1;
+                }
+                .backup-prompt-btn.primary:hover {
+                    background: #fff3e0;
+                }
+                .backup-prompt-btn.close:hover {
+                    background: rgba(255,255,255,0.3);
+                }
+            }
+        </style>
+        <div id="backupPromptInner">
+            <div id="backupPromptContent">
+                <div class="backup-prompt-icon">💾</div>
+                <div class="backup-prompt-text">
+                    <div class="backup-prompt-title">${count}回達成！バックアップしませんか？</div>
+                    <div class="backup-prompt-subtitle">学習データを保存して安心</div>
+                </div>
+                <div class="backup-prompt-buttons">
+                    <button class="backup-prompt-btn primary" onclick="executeBackupFromPrompt()">今すぐ保存</button>
+                    <button class="backup-prompt-btn close" onclick="dismissBackupPrompt()">✕</button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(prompt);
+}
+
+/**
+ * バックアップ確認通知から実行
+ */
+function executeBackupFromPrompt() {
+    // 通知を閉じる
+    dismissBackupPrompt();
+
+    // バックアップを実行
+    performAutoBackup();
+}
+
+/**
+ * バックアップ確認通知を閉じる
+ */
+function dismissBackupPrompt() {
+    const prompt = document.getElementById('backupPrompt');
+    if (prompt) {
+        const inner = document.getElementById('backupPromptInner');
+        if (inner) {
+            inner.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+            inner.style.transform = 'translateY(100%)';
+            inner.style.opacity = '0';
+            setTimeout(() => prompt.remove(), 300);
+        } else {
+            prompt.remove();
+        }
+    }
 }
 
 /**
