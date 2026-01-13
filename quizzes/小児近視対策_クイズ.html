@@ -544,6 +544,9 @@
 
             document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
 
+            // 進捗表示を追加
+            document.getElementById('quizProgressSection').innerHTML = generateProgressHTML('小児近視対策クイズ', QUIZ_ID, TOTAL_QUESTIONS);
+
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
             const dailyCount = getDailyQuestionCount();
@@ -667,6 +670,7 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
+      <div id="quizProgressSection"></div>
       <div class="result-buttons">
         <div class="result-buttons-row">
           <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">

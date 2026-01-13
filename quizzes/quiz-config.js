@@ -530,6 +530,73 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
 }
 
 /**
+ * クイズの進捗統計を取得
+ * @param {string} quizId - クイズID
+ * @param {number} totalQuestions - 総問題数
+ * @returns {Object} - 進捗統計
+ */
+function getQuizProgressStats(quizId, totalQuestions) {
+    const incorrect = getIncorrectQuestions(quizId);
+    const unanswered = getUnansweredQuestions(quizId, totalQuestions);
+    const correctCount = totalQuestions - incorrect.length - unanswered.length;
+    const completedCount = totalQuestions - unanswered.length;
+    const percentage = Math.round((correctCount / totalQuestions) * 100);
+
+    return {
+        correct: correctCount,
+        incorrect: incorrect.length,
+        unanswered: unanswered.length,
+        total: totalQuestions,
+        completed: completedCount,
+        percentage: percentage
+    };
+}
+
+/**
+ * 進捗表示HTMLを生成
+ * @param {string} quizName - クイズ名
+ * @param {string} quizId - クイズID
+ * @param {number} totalQuestions - 総問題数
+ * @returns {string} - HTML文字列
+ */
+function generateProgressHTML(quizName, quizId, totalQuestions) {
+    const stats = getQuizProgressStats(quizId, totalQuestions);
+    const progressPercent = Math.round((stats.completed / stats.total) * 100);
+
+    return `
+        <div class="quiz-progress-section">
+            <div class="quiz-progress-title">📊 ${quizName} の進捗</div>
+            <div class="quiz-progress-bar-container">
+                <div class="quiz-progress-bar" style="width: ${progressPercent}%"></div>
+            </div>
+            <div class="quiz-progress-percent">${progressPercent}% 挑戦済み</div>
+            <div class="quiz-progress-stats">
+                <div class="quiz-stat-item correct">
+                    <span class="quiz-stat-icon">✅</span>
+                    <span class="quiz-stat-value">${stats.correct}</span>
+                    <span class="quiz-stat-label">正解</span>
+                </div>
+                <div class="quiz-stat-item incorrect">
+                    <span class="quiz-stat-icon">❌</span>
+                    <span class="quiz-stat-value">${stats.incorrect}</span>
+                    <span class="quiz-stat-label">不正解</span>
+                </div>
+                <div class="quiz-stat-item unanswered">
+                    <span class="quiz-stat-icon">❓</span>
+                    <span class="quiz-stat-value">${stats.unanswered}</span>
+                    <span class="quiz-stat-label">未挑戦</span>
+                </div>
+                <div class="quiz-stat-item total">
+                    <span class="quiz-stat-icon">📝</span>
+                    <span class="quiz-stat-value">${stats.total}</span>
+                    <span class="quiz-stat-label">全問題</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/**
  * 設定キー
  */
 const SETTINGS_KEYS = {

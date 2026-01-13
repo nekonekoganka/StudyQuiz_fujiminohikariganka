@@ -328,6 +328,136 @@ h1 {
     color: white;
 }
 
+/* 進捗表示セクション */
+.quiz-progress-section {
+    background: linear-gradient(135deg, #f5f7fa, #e8eaf6);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.quiz-progress-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a237e;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.quiz-progress-bar-container {
+    background: #e0e0e0;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.quiz-progress-bar {
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.quiz-progress-percent {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+.quiz-progress-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 8px;
+}
+
+.quiz-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 8px;
+    background: white;
+    border-radius: 12px;
+    min-width: 60px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.quiz-stat-icon {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.quiz-stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.quiz-stat-label {
+    font-size: 11px;
+    color: #666;
+    margin-top: 2px;
+}
+
+.quiz-stat-item.correct .quiz-stat-value { color: #2e7d32; }
+.quiz-stat-item.incorrect .quiz-stat-value { color: #c62828; }
+.quiz-stat-item.unanswered .quiz-stat-value { color: #f57c00; }
+.quiz-stat-item.total .quiz-stat-value { color: #1565c0; }
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    .quiz-progress-section {
+        background: linear-gradient(135deg, #2a2a3e, #1e1e2e);
+    }
+    .quiz-progress-title {
+        color: #e0e0e0;
+    }
+    .quiz-progress-bar-container {
+        background: #3a3a4e;
+    }
+    .quiz-progress-percent {
+        color: #a0a0b0;
+    }
+    .quiz-stat-item {
+        background: #2a2a3e;
+    }
+    .quiz-stat-value {
+        color: #e0e0e0;
+    }
+    .quiz-stat-label {
+        color: #a0a0b0;
+    }
+}
+
+/* PC版: 進捗表示を大きく */
+@media (min-width: 768px) {
+    .quiz-progress-section {
+        padding: 28px;
+        margin-top: 28px;
+    }
+    .quiz-progress-title {
+        font-size: 18px;
+    }
+    .quiz-progress-bar-container {
+        height: 16px;
+    }
+    .quiz-stat-item {
+        min-width: 80px;
+        padding: 14px 12px;
+    }
+    .quiz-stat-icon {
+        font-size: 22px;
+    }
+    .quiz-stat-value {
+        font-size: 26px;
+    }
+    .quiz-stat-label {
+        font-size: 13px;
+    }
+}
+
 /* 結果画面ボタン */
 .result-buttons {
     margin-top: 25px;

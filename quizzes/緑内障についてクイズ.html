@@ -669,6 +669,9 @@
 
             document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML;
 
+            // 進捗表示を追加
+            document.getElementById('quizProgressSection').innerHTML = generateProgressHTML('緑内障についてクイズ', QUIZ_ID, TOTAL_QUESTIONS);
+
             document.querySelector('.quiz-container').classList.add('hidden');
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
@@ -804,6 +807,7 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
+      <div id="quizProgressSection"></div>
       <div class="result-buttons">
         <div class="result-buttons-row primary">
           <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
