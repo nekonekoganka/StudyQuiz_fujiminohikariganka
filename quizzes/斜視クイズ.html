@@ -260,7 +260,7 @@
             }
 
             // モードが指定されていたら自動開始
-            if (mode && (mode.startsWith('daily') || mode === 'full')) {
+            if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
                 startQuiz(mode);
             }
         });
@@ -348,7 +348,16 @@
             document.getElementById('quizArea').classList.remove('hidden');
             document.getElementById('quizTitleHeader').classList.remove('hidden');
 
-            if (mode.startsWith('daily')) {
+            if (mode === 'review') {
+                // 間違えた問題のみを出題
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    // 間違えた問題がない場合はデイリーモードに戻す
+                    questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, getDailyQuestionCount());
+                }
+                totalQuestions = questionList.length;
+            } else if (mode.startsWith('daily')) {
                 isDaily = true;
                 const countFromUrl = parseInt(mode.replace('daily', ''));
                 totalQuestions = countFromUrl || getDailyQuestionCount();
@@ -532,7 +541,10 @@
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
 
-            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+            // 進捗情報を取得して表示
+            const progressHTML = generateResultProgressHTML();
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
 
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
@@ -544,6 +556,18 @@
             document.querySelector('.record-button').classList.remove('hidden');
             document.querySelector('.home-button-small').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
+
+            // 間違えた問題ボタンの表示制御
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const reviewBtn = document.getElementById('reviewIncorrectButton');
+            if (reviewBtn) {
+                if (incorrectList.length > 0) {
+                    reviewBtn.classList.remove('hidden');
+                    reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewBtn.classList.add('hidden');
+                }
+            }
 
             // トップへスクロール
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -639,6 +663,43 @@
         }
 
         // シャッフル3問：別ジャンルのクイズへ
+        // リザルト画面用の進捗HTML生成
+        function generateResultProgressHTML() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+            const progressPercent = Math.round((correctNum / TOTAL_QUESTIONS) * 100);
+            const isPerfect = correctNum === TOTAL_QUESTIONS;
+
+            return `
+                <div class="result-progress-section">
+                    <div class="result-progress-title">📊 このクイズの進捗</div>
+                    <div class="result-progress-bar-container">
+                        <div class="result-progress-bar-fill ${isPerfect ? 'perfect' : ''}" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="result-progress-percentage">${isPerfect ? '🌸 ' : ''}${progressPercent}%${isPerfect ? ' マスター！' : ''}</div>
+                    <div class="result-progress-stats">
+                        <div class="result-progress-stat">
+                            <span>✅ 正解</span>
+                            <span>${correctNum}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>❌ 間違い</span>
+                            <span>${incorrectList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>🆕 未挑戦</span>
+                            <span>${unansweredList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>📝 全問題</span>
+                            <span>${TOTAL_QUESTIONS}問</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
         function goToRandomQuiz() {
             const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
             const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
@@ -649,7 +710,16 @@
         // もう3問：このクイズの今日の3問を再開
         function restartThisQuiz() {
             const dailyCount = getDailyQuestionCount();
-            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily${dailyCount}`;
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily`;
+        }
+
+        // 間違えた問題を復習
+        function reviewIncorrectQuestions() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            if (incorrectList.length === 0) return;
+
+            // 間違えた問題数をURLパラメータとして渡す
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
         }
 
         document.addEventListener('click', function(e) {
@@ -665,6 +735,12 @@
         <div class="result-buttons-row primary">
           <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
           <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
         </div>
         <div class="result-buttons-row secondary">
           <a href="../mypage.html" class="record-button hidden">📊 記録</a>
