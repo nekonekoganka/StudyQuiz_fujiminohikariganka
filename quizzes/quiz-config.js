@@ -903,10 +903,15 @@ async function showRestoreGuideDialog() {
                     text-align: center;
                 ">
                     <div style="font-size: 40px; margin-bottom: 12px;">${clipboardSuccess ? '✅' : '📂'}</div>
-                    <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 16px;">
-                        ${clipboardSuccess ? '検索用テキストをコピーしました' : 'ファイルを選択してください'}
+                    <div style="font-size: 15px; font-weight: bold; color: #333; margin-bottom: 16px; line-height: 1.5;">
+                        ${clipboardSuccess ? '検索用テキストを<br>「クリップボード」にコピーしました' : 'ファイルを選択してください'}
                     </div>
                     ${clipboardSuccess ? `
+                        <div style="
+                            color: #666;
+                            font-size: 13px;
+                            margin-bottom: 8px;
+                        ">テキスト：</div>
                         <div style="
                             background: #e3f2fd;
                             border-radius: 8px;
@@ -926,7 +931,7 @@ async function showRestoreGuideDialog() {
                         ">
                             <strong>使い方：</strong><br>
                             ファイル選択画面で<br>
-                            検索欄に貼り付け →<br>
+                            検索欄にテキストを貼り付け →<br>
                             バックアップが見つかります
                         </div>
                     ` : `
