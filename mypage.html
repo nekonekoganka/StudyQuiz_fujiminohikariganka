@@ -708,7 +708,7 @@
         </div>
 
         <!-- 設定アコーディオン -->
-        <div class="settings-accordion">
+        <div id="settings" class="settings-accordion">
             <button class="settings-toggle" onclick="toggleSettings()">
                 <span>⚙️ 設定</span>
                 <span class="settings-toggle-icon">▼</span>
@@ -1328,9 +1328,26 @@
             initAutoBackupInterval();
         }
 
+        // ハッシュリンクで設定セクションを開く
+        function checkSettingsHash() {
+            if (window.location.hash === '#settings') {
+                const content = document.getElementById('settingsContent');
+                const icon = document.querySelector('.settings-toggle-icon');
+                if (content && !content.classList.contains('open')) {
+                    content.classList.add('open');
+                    if (icon) icon.textContent = '▲';
+                }
+                // 少し遅延してスクロール
+                setTimeout(() => {
+                    document.getElementById('settings').scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+
         // 初期化
         renderPage();
         initSettings();
+        checkSettingsHash();
     </script>
 </body>
 </html>

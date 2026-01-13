@@ -317,6 +317,24 @@
             transform: scale(0.95);
         }
 
+        .settings-link {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #78909c, #546e7a);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .settings-link:active {
+            transform: scale(0.95);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -425,6 +443,11 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(92, 107, 192, 0.4);
             }
+
+            .settings-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(120, 144, 156, 0.4);
+            }
         }
 
         /* ダークモード */
@@ -515,6 +538,11 @@
                 color: white;
             }
 
+            .settings-link {
+                background: linear-gradient(135deg, #78909c, #546e7a);
+                color: white;
+            }
+
             .section-title {
                 color: #e0e0e0;
                 border-bottom-color: #3a3a4e;
@@ -540,7 +568,8 @@
 
         body.large-font .mypage-link,
         body.large-font .random-quiz-button,
-        body.large-font .help-link {
+        body.large-font .help-link,
+        body.large-font .settings-link {
             font-size: 14px;
         }
 
@@ -756,6 +785,7 @@
                 <a href="mypage.html" class="mypage-link">📊 学習記録</a>
                 <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
                 <a href="help.html" class="help-link">❓ 使い方</a>
+                <a href="mypage.html#settings" class="settings-link">⚙️ 設定</a>
             </div>
         </div>
 
