@@ -697,6 +697,27 @@ function showBackupPrompt(count) {
     const existing = document.getElementById('backupPrompt');
     if (existing) existing.remove();
 
+    // ランダム励ましメッセージ
+    const encourageMessages = [
+        'クイズ頑張ってますね！',
+        '学習お疲れさま！',
+        '今日もコツコツえらい！',
+        'いい調子で学習中！',
+        '継続は力なり！',
+        'その調子！学習順調！',
+        '学習習慣バッチリ！',
+        'よく頑張ってますね！'
+    ];
+
+    const subMessages = [
+        'バックアップしませんか？',
+        'データを保存しておきましょう',
+        '学習データを守りましょう'
+    ];
+
+    const mainMessage = encourageMessages[Math.floor(Math.random() * encourageMessages.length)];
+    const subMessage = subMessages[Math.floor(Math.random() * subMessages.length)];
+
     const prompt = document.createElement('div');
     prompt.id = 'backupPrompt';
     prompt.innerHTML = `
@@ -802,8 +823,8 @@ function showBackupPrompt(count) {
             <div id="backupPromptContent">
                 <div class="backup-prompt-icon">💾</div>
                 <div class="backup-prompt-text">
-                    <div class="backup-prompt-title">${count}回達成！バックアップしませんか？</div>
-                    <div class="backup-prompt-subtitle">学習データを保存して安心</div>
+                    <div class="backup-prompt-title">${mainMessage}</div>
+                    <div class="backup-prompt-subtitle">${subMessage}</div>
                 </div>
                 <div class="backup-prompt-buttons">
                     <button class="backup-prompt-btn primary" onclick="executeBackupFromPrompt()">今すぐ保存</button>
