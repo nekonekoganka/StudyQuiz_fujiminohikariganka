@@ -1066,10 +1066,12 @@
             }
         }
 
-        // 復元開始
+        // 復元開始（確認ダイアログを表示してからファイル選択）
         async function startRestore() {
-            await copySearchTextAndShowToast();
-            document.getElementById('importFile').click();
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('importFile').click();
+            }
         }
 
         // 復元用の一時データ

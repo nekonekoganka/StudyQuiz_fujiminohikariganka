@@ -785,7 +785,7 @@
                 <a href="mypage.html" class="mypage-link">📊 学習記録</a>
                 <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
                 <a href="help.html" class="help-link">❓ 使い方</a>
-                <a href="mypage.html#settings" class="settings-link">⚙️ 設定</a>
+                <a href="settings.html" class="settings-link">⚙️ 設定</a>
             </div>
         </div>
 
@@ -1368,10 +1368,12 @@
             alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
         }
 
-        // 復元開始（クリップボードにコピーしてファイル選択）
+        // 復元開始（確認ダイアログを表示してからファイル選択）
         async function startRestore() {
-            await copySearchTextAndShowToast();
-            document.getElementById('restoreInput').click();
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('restoreInput').click();
+            }
         }
 
         // 復元用の一時データ

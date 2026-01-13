@@ -704,61 +704,116 @@ function getAutoBackupMessage() {
 }
 
 /**
- * 復元用：クリップボードにテキストをコピーしてトースト表示
+ * 復元用：クリップボードにコピーして確認ダイアログを表示
+ * @returns {Promise<boolean>} - ユーザーがファイル選択に進むかどうか
  */
-async function copySearchTextAndShowToast() {
+async function showRestoreGuideDialog() {
     const searchText = 'ひかりクイズデータ';
+    let clipboardSuccess = false;
+
     try {
         await navigator.clipboard.writeText(searchText);
-        showRestoreToast('📋 検索用テキストをコピーしました！\nファイル選択画面で貼り付けて検索できます');
+        clipboardSuccess = true;
     } catch (err) {
-        // クリップボードAPIが使えない場合は何もしない
         console.log('Clipboard API not available');
     }
-}
 
-/**
- * 復元用：トースト表示
- */
-function showRestoreToast(message) {
-    const existing = document.getElementById('restoreToast');
-    if (existing) existing.remove();
+    return new Promise((resolve) => {
+        // 既存のダイアログがあれば削除
+        const existing = document.getElementById('restoreGuideDialog');
+        if (existing) existing.remove();
 
-    const toast = document.createElement('div');
-    toast.id = 'restoreToast';
-    toast.innerHTML = `
-        <div style="
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.85);
-            color: white;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            z-index: 10001;
-            text-align: center;
-            white-space: pre-line;
-            max-width: 90%;
-            animation: fadeIn 0.3s ease;
-        ">
-            ${message}
-        </div>
-        <style>
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-                to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        const dialog = document.createElement('div');
+        dialog.id = 'restoreGuideDialog';
+        dialog.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.6);
+                z-index: 10002;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            ">
+                <div style="
+                    background: white;
+                    border-radius: 16px;
+                    padding: 24px;
+                    max-width: 320px;
+                    width: 100%;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                    text-align: center;
+                ">
+                    <div style="font-size: 40px; margin-bottom: 12px;">📋</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 16px;">
+                        ${clipboardSuccess ? '検索用テキストをコピーしました' : 'ファイルを選択してください'}
+                    </div>
+                    ${clipboardSuccess ? `
+                        <div style="
+                            background: #e3f2fd;
+                            border-radius: 8px;
+                            padding: 12px;
+                            margin-bottom: 16px;
+                            font-family: monospace;
+                            font-size: 15px;
+                            color: #1565c0;
+                            font-weight: bold;
+                        ">ひかりクイズデータ</div>
+                        <div style="
+                            color: #666;
+                            font-size: 14px;
+                            line-height: 1.6;
+                            margin-bottom: 20px;
+                        ">
+                            次の画面でファイルを探すとき、<br>
+                            <strong>検索欄に貼り付ける</strong>と<br>
+                            バックアップファイルが<br>
+                            見つけやすくなります。
+                        </div>
+                    ` : `
+                        <div style="
+                            color: #666;
+                            font-size: 14px;
+                            line-height: 1.6;
+                            margin-bottom: 20px;
+                        ">
+                            「ひかりクイズデータ」で始まる<br>
+                            JSONファイルを選択してください。
+                        </div>
+                    `}
+                    <button id="restoreGuideBtn" style="
+                        width: 100%;
+                        padding: 14px;
+                        border-radius: 10px;
+                        border: none;
+                        background: linear-gradient(135deg, #4caf50, #2e7d32);
+                        color: white;
+                        font-size: 15px;
+                        font-weight: bold;
+                        cursor: pointer;
+                    ">ファイルを選ぶ</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(dialog);
+
+        document.getElementById('restoreGuideBtn').addEventListener('click', () => {
+            dialog.remove();
+            resolve(true);
+        });
+
+        // 背景クリックでキャンセル
+        dialog.firstElementChild.addEventListener('click', (e) => {
+            if (e.target === dialog.firstElementChild) {
+                dialog.remove();
+                resolve(false);
             }
-        </style>
-    `;
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.transition = 'opacity 0.3s';
-        toast.style.opacity = '0';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+        });
+    });
 }
 
 /**
