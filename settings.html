@@ -345,8 +345,38 @@
             }
         }
 
+        /* PC版で文字サイズ設定を非表示 */
+        .top-nav {
+            display: none;
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
+            .top-nav {
+                display: block;
+                text-align: left;
+                margin-bottom: 16px;
+            }
+            .top-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #5c6bc0;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #f0f2ff;
+                transition: all 0.2s;
+            }
+            .top-nav-link:hover {
+                background: #e0e4ff;
+                color: #3949ab;
+            }
+            #fontSizeSetting {
+                display: none;
+            }
             .selector-button:hover {
                 border-color: #5c6bc0;
                 background: #f0f2ff;
@@ -369,6 +399,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="top-nav">
+            <a href="index.html" class="top-nav-link">← ホームに戻る</a>
+        </div>
+
         <div class="header">
             <h1>⚙️ 設定</h1>
             <div class="subtitle">アプリの設定を変更できます</div>
@@ -381,9 +415,9 @@
                 表示設定
             </div>
 
-            <div class="setting-item">
+            <div class="setting-item" id="fontSizeSetting">
                 <div class="setting-label">文字の大きさ</div>
-                <div class="setting-description">クイズ画面やボタンの文字サイズを変更します</div>
+                <div class="setting-description">クイズ画面やボタンの文字サイズを変更します（スマートフォン向け）</div>
                 <div class="button-selector" id="fontSizeSelector">
                     <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
                     <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
