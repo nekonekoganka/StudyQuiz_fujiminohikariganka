@@ -537,15 +537,31 @@ const SETTINGS_KEYS = {
     darkMode: 'hikari-quiz-darkmode',
     sound: 'hikari-quiz-sound',
     animation: 'hikari-quiz-animation',
-    dailyCount: 'hikari-quiz-dailycount'
+    dailyCount: 'hikari-quiz-dailycount',
+    autoBackupInterval: 'hikari-quiz-autobackup-interval'
 };
 
 /**
  * 自動バックアップ関連の定数
  */
-const AUTO_BACKUP_INTERVAL = 5; // 5回ごとにバックアップ
+const AUTO_BACKUP_INTERVAL_DEFAULT = 5; // デフォルト: 5回ごとにバックアップ
 const AUTO_BACKUP_COUNT_KEY = 'hikari_quiz_completion_count';
 const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+
+/**
+ * 自動バックアップ間隔を取得
+ */
+function getAutoBackupInterval() {
+    const saved = localStorage.getItem(SETTINGS_KEYS.autoBackupInterval);
+    return saved ? parseInt(saved) : AUTO_BACKUP_INTERVAL_DEFAULT;
+}
+
+/**
+ * 自動バックアップ間隔を設定
+ */
+function setAutoBackupInterval(interval) {
+    localStorage.setItem(SETTINGS_KEYS.autoBackupInterval, interval.toString());
+}
 
 /**
  * クイズ完了回数を取得
@@ -614,7 +630,7 @@ function showAutoBackupNotification(count) {
     notification.innerHTML = `
         <div style="
             position: fixed;
-            top: 20px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
             background: linear-gradient(135deg, #4caf50, #2e7d32);
@@ -625,15 +641,15 @@ function showAutoBackupNotification(count) {
             z-index: 10000;
             text-align: center;
             max-width: 90%;
-            animation: slideDown 0.3s ease;
+            animation: slideUp 0.3s ease;
         ">
             <div style="font-size: 24px; margin-bottom: 8px;">💾</div>
             <div style="font-weight: bold; margin-bottom: 4px;">${count}回目のクイズ完了！</div>
             <div style="font-size: 13px; opacity: 0.9;">学習データを自動バックアップしました</div>
         </div>
         <style>
-            @keyframes slideDown {
-                from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateX(-50%) translateY(20px); }
                 to { opacity: 1; transform: translateX(-50%) translateY(0); }
             }
         </style>
@@ -654,8 +670,9 @@ function showAutoBackupNotification(count) {
  */
 function onQuizComplete() {
     const count = incrementCompletionCount();
+    const interval = getAutoBackupInterval();
 
-    if (count % AUTO_BACKUP_INTERVAL === 0) {
+    if (count % interval === 0) {
         // 自動バックアップを実行
         performAutoBackup();
         return true;

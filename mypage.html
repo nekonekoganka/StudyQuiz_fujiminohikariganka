@@ -736,6 +736,17 @@
                         </div>
                     </div>
 
+                    <!-- 自動バックアップ間隔 -->
+                    <div class="setting-item">
+                        <div class="setting-label">自動バックアップ間隔</div>
+                        <div class="setting-description">クイズを指定回数完了するごとに、学習データが自動でダウンロードされます</div>
+                        <div class="button-selector" id="autoBackupSelector">
+                            <button class="selector-button" data-value="3" onclick="setAutoBackupIntervalSetting(3)">3回ごと</button>
+                            <button class="selector-button active" data-value="5" onclick="setAutoBackupIntervalSetting(5)">5回ごと</button>
+                            <button class="selector-button" data-value="10" onclick="setAutoBackupIntervalSetting(10)">10回ごと</button>
+                        </div>
+                    </div>
+
                     <!-- データバックアップ -->
                     <div class="setting-item">
                         <div class="setting-label">データバックアップ</div>
@@ -1052,10 +1063,28 @@
             updateDailyCountButtons(parseInt(saved));
         }
 
+        // ----- 自動バックアップ間隔 -----
+        function setAutoBackupIntervalSetting(interval) {
+            setAutoBackupInterval(interval);
+            updateAutoBackupButtons(interval);
+        }
+
+        function updateAutoBackupButtons(interval) {
+            document.querySelectorAll('#autoBackupSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === interval.toString());
+            });
+        }
+
+        function initAutoBackupInterval() {
+            const saved = getAutoBackupInterval();
+            updateAutoBackupButtons(saved);
+        }
+
         // ----- 初期化 -----
         function initSettings() {
             initFontSize();
             initDailyCount();
+            initAutoBackupInterval();
         }
 
         // 初期化
