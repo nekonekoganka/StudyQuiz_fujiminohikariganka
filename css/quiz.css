@@ -405,13 +405,51 @@ h1 {
 }
 
 @media (min-width: 768px) {
-    .shuffle-button:hover, .retry-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    /* PC版: カード風デザイン */
+    .result-buttons {
+        margin-top: 35px;
     }
+
+    .result-buttons-row {
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .shuffle-button, .retry-button {
+        min-width: 200px;
+        padding: 28px 32px;
+        font-size: 20px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .shuffle-button:hover, .retry-button:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .btn-sub {
+        font-size: 13px;
+        margin-top: 6px;
+    }
+
+    .result-buttons-row.secondary {
+        gap: 16px;
+        margin-top: 10px;
+    }
+
+    .record-button, .home-button-small {
+        min-width: 140px;
+        padding: 14px 24px;
+        font-size: 15px;
+        border-radius: 12px;
+        opacity: 0.9;
+    }
+
     .record-button:hover, .home-button-small:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        opacity: 1;
     }
 }
 
