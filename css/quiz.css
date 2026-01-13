@@ -125,6 +125,45 @@ h1 {
     font-weight: bold;
 }
 
+/* モード選択画面の間違い復習ボタン */
+.review-mode-button {
+    display: block;
+    width: 80%;
+    max-width: 400px;
+    margin: 20px auto 10px;
+    background: linear-gradient(135deg, #ff5722, #ff7043);
+    color: white;
+    border: none;
+    padding: 16px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+}
+
+.review-mode-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+}
+
+.review-mode-button .btn-sub {
+    display: block;
+    font-size: 12px;
+    font-weight: normal;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+    .review-mode-button {
+        width: 90%;
+        padding: 14px 24px;
+        font-size: 15px;
+    }
+}
+
 .top-link {
     display: block;
     text-align: center;
@@ -790,6 +829,10 @@ h1 {
     .progress-status {
         background: #222235;
         color: #d5d5d5;
+    }
+
+    .review-mode-button {
+        background: linear-gradient(135deg, #d84315, #e64a19);
     }
 
     .question-card {

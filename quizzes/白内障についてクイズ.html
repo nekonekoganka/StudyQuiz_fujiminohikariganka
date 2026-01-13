@@ -40,6 +40,11 @@
                 </div>
             </div>
 
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
                 <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
                 <strong>全問モード:</strong> 全10問を順番に出題
@@ -299,6 +304,18 @@
             }
             if (totalQuestionsCount) {
                 totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+        }
+
+            // 間違えた問題復習ボタンの表示制御
+            const reviewModeBtn = document.getElementById('reviewModeButton');
+            if (reviewModeBtn) {
+                if (incorrectList.length > 0) {
+                    reviewModeBtn.classList.remove('hidden');
+                    reviewModeBtn.innerHTML = `❌ 間違えた問題だけ復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewModeBtn.classList.add('hidden');
+                }
             }
         }
 
