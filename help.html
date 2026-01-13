@@ -634,8 +634,8 @@
                 <h4>📱 インストール方法</h4>
 
                 <div class="device-tabs">
-                    <button class="device-tab active" onclick="showDevice('iphone')">iPhone</button>
-                    <button class="device-tab" onclick="showDevice('android')">Android</button>
+                    <button class="device-tab active" onclick="showDevice('iphone', this)">iPhone</button>
+                    <button class="device-tab" onclick="showDevice('android', this)">Android</button>
                 </div>
 
                 <div id="iphone-content" class="device-content active">
@@ -699,12 +699,12 @@
 
     <script src="quizzes/quiz-config.js"></script>
     <script>
-        function showDevice(device) {
+        function showDevice(device, clickedTab) {
             // タブの切り替え
             document.querySelectorAll('.device-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            event.target.classList.add('active');
+            clickedTab.classList.add('active');
 
             // コンテンツの切り替え
             document.querySelectorAll('.device-content').forEach(content => {
@@ -713,16 +713,11 @@
             document.getElementById(device + '-content').classList.add('active');
         }
 
-        // バックアップ関連
-        const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+        // バックアップ関連（BACKUP_STORAGE_KEY, setLastBackupDateはquiz-config.jsで定義済み）
 
         function getLastBackupDate() {
             const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
             return dateStr ? new Date(dateStr) : null;
-        }
-
-        function setLastBackupDate() {
-            localStorage.setItem(BACKUP_STORAGE_KEY, new Date().toISOString());
         }
 
         function formatDate(date) {
