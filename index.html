@@ -1129,8 +1129,7 @@
             });
         }
 
-        // バックアップ関連の定数
-        const BACKUP_STORAGE_KEY = 'hikari_quiz_last_backup';
+        // バックアップ関連の定数（BACKUP_STORAGE_KEYはquiz-config.jsで定義済み）
         const REMINDER_DISMISS_KEY = 'hikari_quiz_reminder_dismissed';
         const BACKUP_REMINDER_DAYS = 7;
 
@@ -1140,10 +1139,7 @@
             return dateStr ? new Date(dateStr) : null;
         }
 
-        // 最終バックアップ日を保存
-        function setLastBackupDate() {
-            localStorage.setItem(BACKUP_STORAGE_KEY, new Date().toISOString());
-        }
+        // setLastBackupDate()はquiz-config.jsで定義済み
 
         // リマインダーを閉じた日を取得
         function getReminderDismissDate() {
