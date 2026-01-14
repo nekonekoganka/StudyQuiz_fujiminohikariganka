@@ -1209,7 +1209,7 @@
             const data = getQuizData();
             const progress = data.progress || {};
 
-            // 各クイズの重みを計算（弱点優先）
+            // 各クイズの重みを計算（未挑戦ジャンル優先）
             const weighted = [];
             RANDOM_QUIZ_LIST.forEach(quiz => {
                 // QUIZ_LISTから該当するクイズを探して、idとtotalQuestionsを取得
@@ -1237,9 +1237,12 @@
                 const unansweredCount = totalQ - incorrectCount - correctCount;
                 const isPerfect = quizProgress.isPerfect || false;
 
-                // 重み計算: (未挑戦 × 10) + (間違い × 5) + (未マスターなら +20)
-                // 間違いが多いクイズ・未挑戦が多いクイズが優先される
-                let weight = (unansweredCount * 10) + (incorrectCount * 5) + (isPerfect ? 0 : 20);
+                // 完全未挑戦かどうか（一度も回答していないジャンル）
+                const isCompletelyUntried = Object.keys(results).length === 0;
+
+                // 重み計算: (未挑戦 × 20) + (間違い × 5) + (完全未挑戦なら +50) + (未マスターなら +20)
+                // 未挑戦のジャンルを大幅に優先
+                let weight = (unansweredCount * 20) + (incorrectCount * 5) + (isCompletelyUntried ? 50 : 0) + (isPerfect ? 0 : 20);
 
                 // 最低でも重み1は保証（完全にゼロにはしない）
                 weight = Math.max(weight, 1);

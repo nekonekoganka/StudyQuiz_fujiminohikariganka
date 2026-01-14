@@ -531,7 +531,8 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
 
 /**
  * クイズジャンルを重み付けで選択
- * 重み = (未挑戦数 × 10) + (間違い数 × 5) + (未マスターなら +20)
+ * 重み = (未挑戦数 × 20) + (間違い数 × 5) + (完全未挑戦なら +50) + (未マスターなら +20)
+ * 未挑戦のジャンルを優先的に出題
  * @param {string} currentQuizFile - 現在のクイズファイル名（除外用）
  * @returns {string} - 選択されたクイズのファイル名
  */
@@ -571,8 +572,12 @@ function getWeightedRandomQuiz(currentQuizFile) {
         const unansweredCount = totalQ - incorrectCount - correctCount;
         const isPerfect = quizProgress.isPerfect || false;
 
-        // 重み計算: (未挑戦 × 10) + (間違い × 5) + (未マスターなら +20)
-        let weight = (unansweredCount * 10) + (incorrectCount * 5) + (isPerfect ? 0 : 20);
+        // 完全未挑戦かどうか（一度も回答していないジャンル）
+        const isCompletelyUntried = Object.keys(results).length === 0;
+
+        // 重み計算: (未挑戦 × 20) + (間違い × 5) + (完全未挑戦なら +50) + (未マスターなら +20)
+        // 未挑戦のジャンルを大幅に優先
+        let weight = (unansweredCount * 20) + (incorrectCount * 5) + (isCompletelyUntried ? 50 : 0) + (isPerfect ? 0 : 20);
 
         // 最低でも重み1は保証（完全にゼロにはしない）
         weight = Math.max(weight, 1);
