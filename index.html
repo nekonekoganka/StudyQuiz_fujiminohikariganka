@@ -1527,7 +1527,22 @@
             pendingRestoreData = null;
         }
 
+        // クイズカードの問題数をquiz-config.jsから動的に更新
+        function updateQuizCounts() {
+            document.querySelectorAll('.quiz-card[data-quiz-id]').forEach(card => {
+                const quizId = card.dataset.quizId;
+                const quizInfo = QUIZ_LIST.find(q => q.id === quizId);
+                if (quizInfo) {
+                    const countElement = card.querySelector('.quiz-count');
+                    if (countElement) {
+                        countElement.textContent = `全${quizInfo.totalQuestions}問`;
+                    }
+                }
+            });
+        }
+
         // ページ読み込み時に実行
+        updateQuizCounts();
         updateProgressDisplay();
         updateDailyButtonText();
         updateLastBackupDisplay();
