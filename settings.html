@@ -118,6 +118,38 @@
             color: white;
         }
 
+        /* 文字サイズプレビュー */
+        .font-preview {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f5f7ff;
+            border-radius: 12px;
+            border: 2px dashed #c5cae9;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .font-preview-label {
+            font-size: 11px;
+            color: #9fa8da;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .font-preview-text {
+            color: #3949ab;
+            font-weight: 500;
+            transition: font-size 0.3s ease;
+        }
+        .font-preview-text.small {
+            font-size: 14px;
+        }
+        .font-preview-text.normal {
+            font-size: 16px;
+        }
+        .font-preview-text.large {
+            font-size: 20px;
+        }
+
         .backup-buttons {
             display: flex;
             gap: 10px;
@@ -328,6 +360,16 @@
                 background: linear-gradient(135deg, #667eea, #5c6bc0);
                 color: white;
             }
+            .font-preview {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+            .font-preview-label {
+                color: #7a7a8a;
+            }
+            .font-preview-text {
+                color: #a0a0e0;
+            }
             .backup-button {
                 background: #2a2a3e;
                 border-color: #4caf50;
@@ -457,6 +499,11 @@
                     <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
                     <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
                 </div>
+                <!-- プレビューエリア -->
+                <div class="font-preview" id="fontPreview">
+                    <div class="font-preview-label">プレビュー</div>
+                    <div class="font-preview-text" id="fontPreviewText">この大きさで表示されます</div>
+                </div>
             </div>
         </div>
 
@@ -539,7 +586,16 @@
         function setFontSize(size) {
             localStorage.setItem(SETTINGS_KEYS.fontSize, size);
             updateFontSizeButtons(size);
+            updateFontPreview(size);
             applyFontSize();
+        }
+
+        function updateFontPreview(size) {
+            const preview = document.getElementById('fontPreviewText');
+            if (preview) {
+                preview.classList.remove('small', 'normal', 'large');
+                preview.classList.add(size);
+            }
         }
 
         function updateFontSizeButtons(size) {
@@ -551,6 +607,7 @@
         function initFontSize() {
             const saved = localStorage.getItem(SETTINGS_KEYS.fontSize) || 'normal';
             updateFontSizeButtons(saved);
+            updateFontPreview(saved);
         }
 
         // ----- 今日の問題数 -----
