@@ -300,6 +300,53 @@ const BADGE_LIST = [
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
+    },
+    // --- 追加バッジ（挑戦回数系） ---
+    {
+        id: 'regular-visitor',
+        name: '常連さん',
+        icon: '🏠',
+        description: '20回挑戦',
+        condition: '合計で20回以上クイズに挑戦する',
+        rarity: 'normal',
+        check: (progress, stats) => stats.totalAttempts >= 20
+    },
+    {
+        id: 'veteran',
+        name: 'ベテラン',
+        icon: '🎖️',
+        description: '50回挑戦',
+        condition: '合計で50回以上クイズに挑戦する',
+        rarity: 'normal',
+        check: (progress, stats) => stats.totalAttempts >= 50
+    },
+    {
+        id: 'ironman',
+        name: '鉄人',
+        icon: '💪',
+        description: '100回挑戦',
+        condition: '合計で100回以上クイズに挑戦する',
+        rarity: 'rare',
+        check: (progress, stats) => stats.totalAttempts >= 100
+    },
+    // --- 追加バッジ（回答数系） ---
+    {
+        id: 'three-hundred-answers',
+        name: '知識の泉',
+        icon: '💧',
+        description: '累計300問回答',
+        condition: '合計で300問以上回答する',
+        rarity: 'normal',
+        check: (progress, stats) => stats.totalAnswered >= 300
+    },
+    {
+        id: 'thousand-answers',
+        name: '千問の道',
+        icon: '🏅',
+        description: '累計1000問回答',
+        condition: '合計で1000問以上回答する',
+        rarity: 'legendary',
+        check: (progress, stats) => stats.totalAnswered >= 1000
     }
 ];
 
