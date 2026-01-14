@@ -19,7 +19,7 @@
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 全問モード（全28問）
+                📚 全問モード（全27問）
             </button>
 
             <div id="progressStatus" class="progress-status">
@@ -48,7 +48,7 @@
 
             <div class="mode-description">
                 <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
-                <strong>全問モード:</strong> 全28問を順番に出題
+                <strong>全問モード:</strong> 全27問を順番に出題
             </div>
         </div>
         
@@ -156,22 +156,7 @@
                 </div>
             </div>
 
-            <div class="question-card hidden" id="question7">
-                <div class="question-number">問題 7</div>
-                <div class="question-text">近用眼鏡の度数合わせで「クロスシリンダーテスト」を用いる主な目的は何ですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="false">乱視の度数を測定する</div>
-                    <div class="option" data-answer="true">調節力を測定し、適切な加入度を決定する</div>
-                    <div class="option" data-answer="false">両眼の視力バランスを調整する</div>
-                    <div class="option" data-answer="false">斜位の量を測定する</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>近見でのクロスシリンダーテストは、患者様の調節力を客観的に測定し、それに基づいて適切な加入度を決定するために行われます。格子状の視標を使用するのが特徴です。
-                </div>
-            </div>
-
-             <div class="question-card" id="question8">
+             <div class="question-card hidden" id="question7">
                 <div class="question-number">問題 8</div>
                 <div class="question-text">患者様が「近くだけでなく、少し先のデスクトップPCの画面も同じメガネで見たい」と希望した場合、どのような度数調整が考えられますか？</div>
                 <div class="options">
@@ -496,7 +481,7 @@
     <script src="quiz-config.js"></script>
     <script>
         const QUIZ_ID = 'megane-awase';
-        const TOTAL_QUESTIONS = 28;
+        const TOTAL_QUESTIONS = 27;
 
         // 全クイズ一覧（シャッフル機能用）
         const ALL_QUIZZES = [
@@ -520,7 +505,7 @@
         let questionList = [];
         let isDaily = false;
 
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27];
 
         // ページ読み込み時にモードボタンの状態を更新
         document.addEventListener('DOMContentLoaded', function() {

@@ -51,7 +51,7 @@ const QUIZ_LIST = [
         id: 'megane-awase',
         name: '老眼鏡合わせクイズ',
         file: '老眼鏡合わせ_クイズ.html',
-        totalQuestions: 28,
+        totalQuestions: 27,
         icon: '👓',
         category: 'staff',
         description: '老眼鏡合わせに関する基本知識をテストします',
