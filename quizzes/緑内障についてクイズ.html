@@ -653,8 +653,29 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            // 結果を記録（エラーでも結果画面は表示する）
+            let newBadges = [];
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
+                }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
+            }
+
             let title, message;
 
             if (isDaily) {
@@ -692,17 +713,26 @@
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
             const titleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
 
-            // 進捗情報を取得して表示
-            const progressHTML = generateResultProgressHTML();
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
 
             document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
 
             // バッジ獲得表示
-            const badgeArea = document.getElementById('badgeAchievement');
-            if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
-                badgeArea.innerHTML = renderBadgeAchievement(newBadges);
-            } else if (badgeArea) {
-                badgeArea.innerHTML = '';
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
             }
 
             document.querySelector('.quiz-container').classList.add('hidden');
@@ -731,18 +761,6 @@
 
             // トップへスクロール
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // マイページ用に結果を記録
-            let newBadges = [];
-            const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
-            if (result && result._newBadges) {
-                newBadges = result._newBadges;
-            }
         }
 
         function resetQuiz() {

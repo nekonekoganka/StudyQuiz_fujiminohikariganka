@@ -606,13 +606,17 @@
                 celebrateResult(isPerfect);
             }, 300);
 
-            // 結果を記録
+            // 結果を記録（エラーでも結果画面は表示する）
             let newBadges = [];
-            if (typeof recordQuizResult === 'function') {
-                const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
-                if (result && result._newBadges) {
-                    newBadges = result._newBadges;
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
                 }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
             }
 
             const percentage = Math.round((score / totalQuestions) * 100);
@@ -637,17 +641,26 @@
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
 
-            // 進捗情報を取得して表示
-            const progressHTML = generateResultProgressHTML();
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
 
             document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
 
             // バッジ獲得表示
-            const badgeArea = document.getElementById('badgeAchievement');
-            if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
-                badgeArea.innerHTML = renderBadgeAchievement(newBadges);
-            } else if (badgeArea) {
-                badgeArea.innerHTML = '';
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
             }
 
             document.getElementById('finalResult').classList.remove('hidden');
