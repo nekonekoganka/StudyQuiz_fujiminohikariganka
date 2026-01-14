@@ -635,6 +635,36 @@ h1 {
     font-weight: 600;
 }
 
+/* 解説用画像 */
+.explanation-image {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.explanation-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.explanation-image .image-caption {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+}
+
+@media (prefers-color-scheme: dark) {
+    .explanation-image img {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .explanation-image .image-caption {
+        color: #aaa;
+    }
+}
+
 .progress-fill {
     height: 100%;
     background: linear-gradient(135deg, #48c6ef, #6f86d6);
