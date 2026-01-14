@@ -795,12 +795,12 @@ function showAutoBackupNotification(count) {
     `;
     document.body.appendChild(notification);
 
-    // 3秒後に自動で消す
+    // 1秒後に自動で消す
     setTimeout(() => {
         notification.style.transition = 'opacity 0.3s';
         notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 300);
-    }, 3000);
+    }, 1000);
 }
 
 /**
