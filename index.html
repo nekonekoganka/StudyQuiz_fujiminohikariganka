@@ -1181,6 +1181,37 @@
             background: #e0e0e0;
             color: #333;
         }
+
+        /* 復元モーダル ダークモード */
+        @media (prefers-color-scheme: dark) {
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
+            }
+        }
     </style>
 
     <script src="quizzes/quiz-config.js"></script>
