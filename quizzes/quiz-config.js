@@ -446,13 +446,6 @@ function recordQuizResult(quizId, score, totalQuestions) {
 
     saveQuizData(data);
 
-    // 新規獲得バッジがあれば通知を表示（少し遅延させて結果画面の後に表示）
-    if (newlyEarnedBadges.length > 0) {
-        setTimeout(() => {
-            showBadgeNotification(newlyEarnedBadges);
-        }, 800);
-    }
-
     // クイズ完了回数をカウントし、自動バックアップをチェック
     const backupExecuted = onQuizComplete();
     data._backupExecuted = backupExecuted;
@@ -1189,6 +1182,44 @@ function showLegendaryBadgeModal(badges) {
             modal.remove();
         }
     });
+}
+
+/**
+ * バッジ獲得表示用のHTMLを生成（結果画面内に表示用）
+ * @param {Array} badges - 獲得したバッジの配列
+ * @returns {string} - 表示用HTML
+ */
+function renderBadgeAchievement(badges) {
+    if (!badges || badges.length === 0) return '';
+
+    // レア度の高い順にソート
+    const rarityOrder = { legendary: 3, rare: 2, normal: 1 };
+    const sortedBadges = [...badges].sort((a, b) =>
+        (rarityOrder[b.rarity] || 1) - (rarityOrder[a.rarity] || 1)
+    );
+
+    // 最もレア度の高いバッジでスタイルを決定
+    const highestRarity = sortedBadges[0].rarity || 'normal';
+
+    const badgeCount = badges.length;
+    const title = badgeCount > 1 ? `🎉 ${badgeCount}つのバッジ獲得！` : '🎉 バッジ獲得！';
+
+    const badgesHtml = sortedBadges.map(badge => `
+        <div class="badge-achievement-item ${badge.rarity || 'normal'}">
+            <span class="badge-achievement-icon">${badge.icon}</span>
+            <span class="badge-achievement-name">${badge.name}</span>
+        </div>
+    `).join('');
+
+    return `
+        <div class="badge-achievement ${highestRarity}">
+            <div class="badge-achievement-title">${title}</div>
+            <div class="badge-achievement-list">
+                ${badgesHtml}
+            </div>
+            <div class="badge-achievement-hint">📊 学習記録で全バッジを確認できます</div>
+        </div>
+    `;
 }
 
 /**

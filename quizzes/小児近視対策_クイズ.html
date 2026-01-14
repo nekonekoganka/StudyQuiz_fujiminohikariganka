@@ -542,8 +542,13 @@
                 celebrateResult(isPerfect);
             }, 300);
 
+            // 結果を記録
+            let newBadges = [];
             if (typeof recordQuizResult === 'function') {
-                recordQuizResult(QUIZ_ID, score, totalQuestions);
+                const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                if (result && result._newBadges) {
+                    newBadges = result._newBadges;
+                }
             }
 
             let title, message;
@@ -571,6 +576,14 @@
             const progressHTML = generateResultProgressHTML();
 
             document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
+
+            // バッジ獲得表示
+            const badgeArea = document.getElementById('badgeAchievement');
+            if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+            } else if (badgeArea) {
+                badgeArea.innerHTML = '';
+            }
 
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
@@ -762,6 +775,7 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
       <div class="result-buttons">
         <div class="result-buttons-row">
           <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">

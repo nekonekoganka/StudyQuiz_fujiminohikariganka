@@ -697,6 +697,14 @@
 
             document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
 
+            // バッジ獲得表示
+            const badgeArea = document.getElementById('badgeAchievement');
+            if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+            } else if (badgeArea) {
+                badgeArea.innerHTML = '';
+            }
+
             document.querySelector('.quiz-container').classList.add('hidden');
             document.getElementById('finalResult').classList.remove('hidden');
             document.querySelector('.shuffle-button').classList.remove('hidden');
@@ -730,7 +738,11 @@
             }, 300);
 
             // マイページ用に結果を記録
-            recordQuizResult(QUIZ_ID, score, totalQuestions);
+            let newBadges = [];
+            const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+            if (result && result._newBadges) {
+                newBadges = result._newBadges;
+            }
         }
 
         function resetQuiz() {
@@ -899,6 +911,7 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
       <div class="result-buttons">
         <div class="result-buttons-row primary">
           <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
