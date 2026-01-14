@@ -473,7 +473,7 @@ function shuffleArrayForConfig(array) {
 
 /**
  * 確率重み付け方式で問題を選択
- * 重み: 間違い=5, 未挑戦=10, 正解済み=1
+ * 重み: 未挑戦=20, 間違い=10, 正解済み=1
  * @param {string} quizId - クイズID
  * @param {number} totalQ - 総問題数
  * @param {number} count - 選択する問題数
@@ -494,12 +494,12 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
         !incorrect.includes(q) && !unanswered.includes(q)
     );
 
-    // 重み付きプールを作成（間違い:5, 未挑戦:10, 正解済み:1）
+    // 重み付きプールを作成（未挑戦:20, 間違い:10, 正解済み:1）
     const weighted = [];
-    incorrect.forEach(q => {
-        for (let i = 0; i < 5; i++) weighted.push(q);
-    });
     unanswered.forEach(q => {
+        for (let i = 0; i < 20; i++) weighted.push(q);
+    });
+    incorrect.forEach(q => {
         for (let i = 0; i < 10; i++) weighted.push(q);
     });
     correct.forEach(q => {
@@ -527,6 +527,60 @@ function getWeightedRandomQuestions(quizId, totalQ, count) {
 
     // 最終的な出題順をシャッフル
     return shuffleArrayForConfig(selected);
+}
+
+/**
+ * クイズジャンルを重み付けで選択
+ * 重み = (未挑戦数 × 10) + (間違い数 × 5) + (未マスターなら +20)
+ * @param {string} currentQuizFile - 現在のクイズファイル名（除外用）
+ * @returns {string} - 選択されたクイズのファイル名
+ */
+function getWeightedRandomQuiz(currentQuizFile) {
+    const data = getQuizData();
+    const progress = data.progress || {};
+
+    // 現在のクイズ以外のクイズリストを作成
+    const otherQuizzes = QUIZ_LIST.filter(q => q.file !== currentQuizFile);
+
+    if (otherQuizzes.length === 0) {
+        return null;
+    }
+
+    // 各クイズの重みを計算
+    const weighted = [];
+    otherQuizzes.forEach(quiz => {
+        const quizProgress = progress[quiz.id] || {};
+        const totalQ = quiz.totalQuestions;
+
+        // 未挑戦・間違い・正解の数を計算
+        const results = quizProgress.questionResults || {};
+        let incorrectCount = 0;
+        let correctCount = 0;
+        Object.values(results).forEach(isCorrect => {
+            if (isCorrect) {
+                correctCount++;
+            } else {
+                incorrectCount++;
+            }
+        });
+        const unansweredCount = totalQ - incorrectCount - correctCount;
+        const isPerfect = quizProgress.isPerfect || false;
+
+        // 重み計算: (未挑戦 × 10) + (間違い × 5) + (未マスターなら +20)
+        let weight = (unansweredCount * 10) + (incorrectCount * 5) + (isPerfect ? 0 : 20);
+
+        // 最低でも重み1は保証（完全にゼロにはしない）
+        weight = Math.max(weight, 1);
+
+        // 重みの分だけプールに追加
+        for (let i = 0; i < weight; i++) {
+            weighted.push(quiz.file);
+        }
+    });
+
+    // ランダムに1つ選ぶ
+    const randomIndex = Math.floor(Math.random() * weighted.length);
+    return weighted[randomIndex];
 }
 
 /**
