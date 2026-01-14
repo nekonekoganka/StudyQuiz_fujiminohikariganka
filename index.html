@@ -1206,10 +1206,56 @@
         ];
 
         function startRandomQuiz() {
-            const randomIndex = Math.floor(Math.random() * RANDOM_QUIZ_LIST.length);
-            const selectedQuiz = RANDOM_QUIZ_LIST[randomIndex];
+            const data = getQuizData();
+            const progress = data.progress || {};
+
+            // 各クイズの重みを計算（弱点優先）
+            const weighted = [];
+            RANDOM_QUIZ_LIST.forEach(quiz => {
+                // QUIZ_LISTから該当するクイズを探して、idとtotalQuestionsを取得
+                const quizInfo = QUIZ_LIST.find(q => q.file === quiz.file);
+                if (!quizInfo) {
+                    // 情報が見つからない場合は通常の重みで追加
+                    weighted.push(quiz.file);
+                    return;
+                }
+
+                const quizProgress = progress[quizInfo.id] || {};
+                const totalQ = quizInfo.totalQuestions;
+
+                // 未挑戦・間違い・正解の数を計算
+                const results = quizProgress.questionResults || {};
+                let incorrectCount = 0;
+                let correctCount = 0;
+                Object.values(results).forEach(isCorrect => {
+                    if (isCorrect) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                });
+                const unansweredCount = totalQ - incorrectCount - correctCount;
+                const isPerfect = quizProgress.isPerfect || false;
+
+                // 重み計算: (未挑戦 × 10) + (間違い × 5) + (未マスターなら +20)
+                // 間違いが多いクイズ・未挑戦が多いクイズが優先される
+                let weight = (unansweredCount * 10) + (incorrectCount * 5) + (isPerfect ? 0 : 20);
+
+                // 最低でも重み1は保証（完全にゼロにはしない）
+                weight = Math.max(weight, 1);
+
+                // 重みの分だけプールに追加
+                for (let i = 0; i < weight; i++) {
+                    weighted.push(quiz.file);
+                }
+            });
+
+            // ランダムに1つ選ぶ
+            const randomIndex = Math.floor(Math.random() * weighted.length);
+            const selectedFile = weighted[randomIndex];
+
             const dailyCount = getDailyQuestionCount();
-            window.location.href = `quizzes/${selectedQuiz.file}?mode=daily${dailyCount}`;
+            window.location.href = `quizzes/${selectedFile}?mode=daily${dailyCount}`;
         }
 
         // 今日の○問ボタンのテキストを更新
