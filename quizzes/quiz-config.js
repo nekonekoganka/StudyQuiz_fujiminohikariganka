@@ -539,8 +539,13 @@ function getWeightedRandomQuiz(currentQuizFile) {
     const data = getQuizData();
     const progress = data.progress || {};
 
-    // 現在のクイズ以外のクイズリストを作成
-    const otherQuizzes = QUIZ_LIST.filter(q => q.file !== currentQuizFile);
+    // ランダム選択から除外するクイズ（ローカルルール系）
+    const excludeFromRandom = ['innai-rule', 'ryokunaisho-kenshin'];
+
+    // 現在のクイズ・除外対象以外のクイズリストを作成
+    const otherQuizzes = QUIZ_LIST.filter(q =>
+        q.file !== currentQuizFile && !excludeFromRandom.includes(q.id)
+    );
 
     if (otherQuizzes.length === 0) {
         return null;
