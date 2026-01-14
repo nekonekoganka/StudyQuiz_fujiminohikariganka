@@ -997,10 +997,18 @@
 
         // シャッフル3問：別ジャンルのクイズへ
         function goToRandomQuiz() {
-            const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
-            const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+            // 重み付けでクイズを選択（未挑戦・間違いが多いクイズを優先）
+            const selectedQuiz = getWeightedRandomQuiz(CURRENT_QUIZ_FILE);
+            if (!selectedQuiz) {
+                // フォールバック: 従来のランダム選択
+                const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+                const dailyCount = getDailyQuestionCount();
+                window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+                return;
+            }
             const dailyCount = getDailyQuestionCount();
-            window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+            window.location.href = encodeURI(selectedQuiz) + `?mode=daily${dailyCount}`;
         }
 
         // もう3問：このクイズの今日の3問を再開
