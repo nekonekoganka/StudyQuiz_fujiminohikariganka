@@ -193,6 +193,10 @@ const QUIZ_LIST = [
 
 /**
  * バッジ定義
+ * rarity: 'normal'(通常), 'rare'(レア), 'legendary'(レジェンダリー)
+ * - normal: トースト通知（3秒で自動消去）
+ * - rare: モーダル表示
+ * - legendary: モーダル表示 + 特別エフェクト
  */
 const BADGE_LIST = [
     {
@@ -201,6 +205,7 @@ const BADGE_LIST = [
         icon: '🔰',
         description: 'クイズに初挑戦',
         condition: 'どれかのクイズに1回挑戦する',
+        rarity: 'normal',
         check: (progress, stats) => stats.totalAttempts >= 1
     },
     {
@@ -209,6 +214,7 @@ const BADGE_LIST = [
         icon: '🌱',
         description: '累計50問回答',
         condition: '合計で50問以上回答する',
+        rarity: 'normal',
         check: (progress, stats) => stats.totalAnswered >= 50
     },
     {
@@ -217,6 +223,7 @@ const BADGE_LIST = [
         icon: '📚',
         description: '全クイズに挑戦',
         condition: 'すべてのクイズに1回以上挑戦する',
+        rarity: 'rare',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
         }
@@ -227,6 +234,7 @@ const BADGE_LIST = [
         icon: '💯',
         description: '累計100問回答',
         condition: '合計で100問以上回答する',
+        rarity: 'normal',
         check: (progress, stats) => stats.totalAnswered >= 100
     },
     {
@@ -235,6 +243,7 @@ const BADGE_LIST = [
         icon: '🔥',
         description: '10回挑戦',
         condition: '合計で10回以上クイズに挑戦する',
+        rarity: 'normal',
         check: (progress, stats) => stats.totalAttempts >= 10
     },
     {
@@ -243,6 +252,7 @@ const BADGE_LIST = [
         icon: '🌸',
         description: '1つのクイズを累積で全問正解',
         condition: 'どれかのクイズで全問正解（累積）',
+        rarity: 'rare',
         check: (progress, stats) => {
             return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
@@ -253,6 +263,7 @@ const BADGE_LIST = [
         icon: '⭐',
         description: '3つのクイズを累積で全問正解',
         condition: '3つ以上のクイズで全問正解（累積）',
+        rarity: 'rare',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
             return perfectCount >= 3;
@@ -264,6 +275,7 @@ const BADGE_LIST = [
         icon: '📖',
         description: '累計200問回答',
         condition: '合計で200問以上回答する',
+        rarity: 'normal',
         check: (progress, stats) => stats.totalAnswered >= 200
     },
     {
@@ -272,6 +284,7 @@ const BADGE_LIST = [
         icon: '💎',
         description: '6つのクイズを累積で全問正解',
         condition: '6つ以上のクイズで全問正解（累積）',
+        rarity: 'rare',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
             return perfectCount >= 6;
@@ -283,6 +296,7 @@ const BADGE_LIST = [
         icon: '👑',
         description: '全クイズを累積で全問正解',
         condition: 'すべてのクイズで全問正解（累積）',
+        rarity: 'legendary',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
@@ -367,23 +381,35 @@ function recordQuizResult(quizId, score, totalQuestions) {
     // 累計回答数を更新
     data.totalAnswered += totalQuestions;
 
-    // バッジをチェック
+    // バッジをチェック（新規獲得バッジを検出）
     const stats = {
         totalAttempts: Object.values(data.progress).reduce((sum, p) => sum + p.attempts, 0),
         totalAnswered: data.totalAnswered
     };
 
+    const previousBadges = [...data.badges];
+    const newlyEarnedBadges = [];
+
     BADGE_LIST.forEach(badge => {
         if (!data.badges.includes(badge.id) && badge.check(data.progress, stats)) {
             data.badges.push(badge.id);
+            newlyEarnedBadges.push(badge);
         }
     });
 
     saveQuizData(data);
 
+    // 新規獲得バッジがあれば通知を表示（少し遅延させて結果画面の後に表示）
+    if (newlyEarnedBadges.length > 0) {
+        setTimeout(() => {
+            showBadgeNotification(newlyEarnedBadges);
+        }, 800);
+    }
+
     // クイズ完了回数をカウントし、自動バックアップをチェック
     const backupExecuted = onQuizComplete();
     data._backupExecuted = backupExecuted;
+    data._newBadges = newlyEarnedBadges;
 
     return data;
 }
@@ -735,6 +761,387 @@ function showAutoBackupNotification(count) {
         notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
+}
+
+/**
+ * バッジ獲得通知を表示
+ * @param {Array} newBadges - 新規獲得したバッジオブジェクトの配列
+ */
+function showBadgeNotification(newBadges) {
+    if (!newBadges || newBadges.length === 0) return;
+
+    // レア度の高い順にソート（legendary > rare > normal）
+    const rarityOrder = { legendary: 3, rare: 2, normal: 1 };
+    const sortedBadges = [...newBadges].sort((a, b) =>
+        (rarityOrder[b.rarity] || 1) - (rarityOrder[a.rarity] || 1)
+    );
+
+    // 最もレア度の高いバッジで表示タイプを決定
+    const highestRarity = sortedBadges[0].rarity || 'normal';
+
+    if (highestRarity === 'legendary') {
+        showLegendaryBadgeModal(sortedBadges);
+    } else if (highestRarity === 'rare') {
+        showRareBadgeModal(sortedBadges);
+    } else {
+        showNormalBadgeToast(sortedBadges);
+    }
+}
+
+/**
+ * 通常バッジのトースト通知
+ */
+function showNormalBadgeToast(badges) {
+    const existing = document.getElementById('badgeToast');
+    if (existing) existing.remove();
+
+    const badgeCount = badges.length;
+    const badgeIcons = badges.map(b => b.icon).join(' ');
+    const badgeNames = badges.map(b => b.name).join('、');
+
+    const toast = document.createElement('div');
+    toast.id = 'badgeToast';
+    toast.innerHTML = `
+        <div class="badge-toast">
+            <div class="badge-toast-header">
+                <span class="badge-toast-title">🎉 バッジ獲得！</span>
+            </div>
+            <div class="badge-toast-content">
+                <span class="badge-toast-icons">${badgeIcons}</span>
+                <span class="badge-toast-names">${badgeNames}</span>
+            </div>
+        </div>
+        <style>
+            .badge-toast {
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+                z-index: 10001;
+                text-align: center;
+                max-width: 90%;
+                animation: badgeSlideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            .badge-toast-header {
+                margin-bottom: 8px;
+            }
+            .badge-toast-title {
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .badge-toast-content {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .badge-toast-icons {
+                font-size: 28px;
+            }
+            .badge-toast-names {
+                font-size: 14px;
+                opacity: 0.95;
+            }
+            @keyframes badgeSlideUp {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(30px) scale(0.8);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0) scale(1);
+                }
+            }
+        </style>
+    `;
+    document.body.appendChild(toast);
+
+    // 4秒後に自動で消す
+    setTimeout(() => {
+        toast.style.transition = 'opacity 0.3s, transform 0.3s';
+        toast.style.opacity = '0';
+        toast.querySelector('.badge-toast').style.transform = 'translateX(-50%) translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+/**
+ * レアバッジのモーダル表示
+ */
+function showRareBadgeModal(badges) {
+    const existing = document.getElementById('badgeModal');
+    if (existing) existing.remove();
+
+    const badgeCount = badges.length;
+    const title = badgeCount > 1 ? `${badgeCount}つのバッジ獲得！` : 'バッジ獲得！';
+
+    const badgesHtml = badges.map(badge => `
+        <div class="badge-modal-item">
+            <div class="badge-modal-icon ${badge.rarity}">${badge.icon}</div>
+            <div class="badge-modal-name">${badge.name}</div>
+            <div class="badge-modal-condition">${badge.condition}</div>
+        </div>
+    `).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'badgeModal';
+    modal.innerHTML = `
+        <div class="badge-modal-overlay">
+            <div class="badge-modal-content rare">
+                <div class="badge-modal-header">
+                    <span class="badge-modal-celebration">🎉</span>
+                    <span class="badge-modal-title">${title}</span>
+                </div>
+                <div class="badge-modal-badges">
+                    ${badgesHtml}
+                </div>
+                <button class="badge-modal-close" onclick="this.closest('#badgeModal').remove()">閉じる</button>
+            </div>
+        </div>
+        <style>
+            .badge-modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10002;
+                animation: badgeModalFadeIn 0.3s ease;
+            }
+            .badge-modal-content {
+                background: linear-gradient(145deg, #1a1a2e, #16213e);
+                border-radius: 24px;
+                padding: 32px;
+                max-width: 90%;
+                width: 320px;
+                text-align: center;
+                animation: badgeModalPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                border: 2px solid rgba(255, 255, 255, 0.1);
+            }
+            .badge-modal-content.rare {
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.3);
+            }
+            .badge-modal-header {
+                margin-bottom: 24px;
+            }
+            .badge-modal-celebration {
+                font-size: 40px;
+                display: block;
+                margin-bottom: 8px;
+                animation: badgeBounce 0.6s ease infinite;
+            }
+            .badge-modal-title {
+                font-size: 24px;
+                font-weight: bold;
+                color: #fff;
+            }
+            .badge-modal-badges {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+            .badge-modal-item {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 16px;
+                padding: 16px;
+            }
+            .badge-modal-icon {
+                font-size: 48px;
+                margin-bottom: 8px;
+                animation: badgeIconPulse 1.5s ease infinite;
+            }
+            .badge-modal-icon.rare {
+                filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.8));
+            }
+            .badge-modal-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #fff;
+                margin-bottom: 4px;
+            }
+            .badge-modal-condition {
+                font-size: 13px;
+                color: rgba(255, 255, 255, 0.7);
+            }
+            .badge-modal-close {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 32px;
+                border-radius: 25px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .badge-modal-close:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            }
+            @keyframes badgeModalFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes badgeModalPopIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.5) translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
+            }
+            @keyframes badgeBounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            @keyframes badgeIconPulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+        </style>
+    `;
+    document.body.appendChild(modal);
+
+    // オーバーレイクリックでも閉じる
+    modal.querySelector('.badge-modal-overlay').addEventListener('click', (e) => {
+        if (e.target.classList.contains('badge-modal-overlay')) {
+            modal.remove();
+        }
+    });
+}
+
+/**
+ * レジェンダリーバッジのモーダル表示（特別エフェクト付き）
+ */
+function showLegendaryBadgeModal(badges) {
+    const existing = document.getElementById('badgeModal');
+    if (existing) existing.remove();
+
+    const badgeCount = badges.length;
+    const title = badgeCount > 1 ? `${badgeCount}つのバッジ獲得！` : 'バッジ獲得！';
+
+    const badgesHtml = badges.map(badge => `
+        <div class="badge-modal-item ${badge.rarity}">
+            <div class="badge-modal-icon ${badge.rarity}">${badge.icon}</div>
+            <div class="badge-modal-name">${badge.name}</div>
+            <div class="badge-modal-condition">${badge.condition}</div>
+            ${badge.rarity === 'legendary' ? '<div class="badge-modal-rarity">★ LEGENDARY ★</div>' : ''}
+        </div>
+    `).join('');
+
+    // 紙吹雪を生成
+    let confettiHtml = '';
+    for (let i = 0; i < 50; i++) {
+        const left = Math.random() * 100;
+        const delay = Math.random() * 3;
+        const duration = 2 + Math.random() * 2;
+        const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6bcb', '#c56cf0'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        confettiHtml += `<div class="confetti" style="left: ${left}%; animation-delay: ${delay}s; animation-duration: ${duration}s; background: ${color};"></div>`;
+    }
+
+    const modal = document.createElement('div');
+    modal.id = 'badgeModal';
+    modal.innerHTML = `
+        <div class="badge-modal-overlay legendary">
+            <div class="confetti-container">${confettiHtml}</div>
+            <div class="badge-modal-content legendary">
+                <div class="badge-modal-header">
+                    <span class="badge-modal-celebration">🏆</span>
+                    <span class="badge-modal-title legendary-title">${title}</span>
+                </div>
+                <div class="badge-modal-badges">
+                    ${badgesHtml}
+                </div>
+                <button class="badge-modal-close legendary" onclick="this.closest('#badgeModal').remove()">すごい！</button>
+            </div>
+        </div>
+        <style>
+            .badge-modal-overlay.legendary {
+                background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0.85));
+            }
+            .badge-modal-content.legendary {
+                background: linear-gradient(145deg, #1a1a2e, #2d1b4e);
+                box-shadow: 0 0 60px rgba(255, 215, 0, 0.4), 0 0 100px rgba(255, 215, 0, 0.2);
+                border: 2px solid rgba(255, 215, 0, 0.3);
+            }
+            .legendary-title {
+                background: linear-gradient(90deg, #ffd700, #ffec8b, #ffd700);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .badge-modal-item.legendary {
+                background: linear-gradient(145deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+                border: 1px solid rgba(255, 215, 0, 0.3);
+            }
+            .badge-modal-icon.legendary {
+                font-size: 64px;
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+                animation: legendaryPulse 1.5s ease infinite;
+            }
+            .badge-modal-rarity {
+                font-size: 12px;
+                color: #ffd700;
+                font-weight: bold;
+                margin-top: 8px;
+                letter-spacing: 2px;
+            }
+            .badge-modal-close.legendary {
+                background: linear-gradient(135deg, #ffd700, #ffb700);
+                color: #1a1a2e;
+            }
+            .confetti-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                overflow: hidden;
+            }
+            .confetti {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                top: -10px;
+                animation: confettiFall linear forwards;
+            }
+            @keyframes legendaryPulse {
+                0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+                50% { transform: scale(1.15); filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)); }
+            }
+            @keyframes confettiFall {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        </style>
+    `;
+    document.body.appendChild(modal);
+
+    // オーバーレイクリックでも閉じる
+    modal.querySelector('.badge-modal-overlay').addEventListener('click', (e) => {
+        if (e.target.classList.contains('badge-modal-overlay') || e.target.classList.contains('confetti-container')) {
+            modal.remove();
+        }
+    });
 }
 
 /**
