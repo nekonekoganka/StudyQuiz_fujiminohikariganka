@@ -128,10 +128,10 @@
             flex: 1;
             min-width: 120px;
             padding: 12px 16px;
-            border: 2px solid #5c6bc0;
+            border: 2px solid #4caf50;
             border-radius: 10px;
             background: white;
-            color: #5c6bc0;
+            color: #2e7d32;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
@@ -143,8 +143,8 @@
         }
 
         .backup-button.restore {
-            border-color: #26a69a;
-            color: #26a69a;
+            border-color: #2196f3;
+            color: #1565c0;
         }
 
         .last-backup-info {
@@ -330,6 +330,12 @@
             }
             .backup-button {
                 background: #2a2a3e;
+                border-color: #4caf50;
+                color: #81c784;
+            }
+            .backup-button.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
             }
             .last-backup-info {
                 color: #a0a0b0;
@@ -342,6 +348,34 @@
             }
             .footer {
                 border-top-color: #3a3a4e;
+            }
+            /* 復元モーダル ダークモード */
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
             }
         }
 

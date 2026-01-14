@@ -154,6 +154,49 @@
             margin: 0;
         }
 
+        /* データ保護セクション（警告スタイル） */
+        .tip-box.warning {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left-color: #ff9800;
+        }
+        .tip-box.warning h4 {
+            color: #e65100;
+        }
+        .tip-box.warning p {
+            color: #bf360c;
+        }
+
+        /* バックアップボタン */
+        .backup-buttons {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .backup-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #4caf50;
+            background: white;
+            color: #2e7d32;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+        .backup-btn.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+        .last-backup-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #bf360c;
+        }
+
         .badge-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -416,6 +459,31 @@
                 color: #a5d6a7;
             }
 
+            /* データ保護セクション（警告スタイル）ダークモード */
+            .tip-box.warning {
+                background: linear-gradient(135deg, #3d2f20, #4a3828);
+            }
+            .tip-box.warning h4 {
+                color: #ffb74d;
+            }
+            .tip-box.warning p {
+                color: #ffcc80;
+            }
+
+            /* バックアップボタン ダークモード */
+            .backup-btn {
+                background: #2a2a3e;
+                border-color: #4caf50;
+                color: #81c784;
+            }
+            .backup-btn.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+            .last-backup-info {
+                color: #ffcc80;
+            }
+
             .install-section {
                 background: linear-gradient(135deg, #3d2f20, #4a3828);
             }
@@ -479,15 +547,15 @@
                 <p>近視、白内障、緑内障など様々な眼科疾患や、コンタクトレンズ・メガネの処方知識、院内ルールまで幅広いクイズを用意しています。</p>
             </div>
 
-            <div class="tip-box" style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-left-color: #ff9800;">
-                <h4 style="color: #e65100;">⚠️ データ保護について</h4>
-                <p style="color: #bf360c;">学習データは端末のブラウザ内に保存されています。そのため「履歴とWebサイトデータを消去」などの操作をすると一緒に消えてしまいます。定期的なバックアップをおすすめします。</p>
-                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button onclick="downloadBackup()" style="padding: 10px 20px; border-radius: 20px; border: 2px solid #4caf50; background: white; color: #2e7d32; font-size: 13px; font-weight: 500; cursor: pointer;">📥 バックアップ</button>
-                    <button onclick="startRestore()" style="padding: 10px 20px; border-radius: 20px; border: 2px solid #2196f3; background: white; color: #1565c0; font-size: 13px; font-weight: 500; cursor: pointer;">📂 ファイルを選んで復元</button>
+            <div class="tip-box warning">
+                <h4>⚠️ データ保護について</h4>
+                <p>学習データは端末のブラウザ内に保存されています。そのため「履歴とWebサイトデータを消去」などの操作をすると一緒に消えてしまいます。定期的なバックアップをおすすめします。</p>
+                <div class="backup-buttons">
+                    <button class="backup-btn" onclick="downloadBackup()">📥 バックアップ</button>
+                    <button class="backup-btn restore" onclick="startRestore()">📂 ファイルを選んで復元</button>
                     <input type="file" id="restoreInput" accept=".json" onchange="handleRestoreFile(event)" style="display: none;">
                 </div>
-                <div id="lastBackupInfo" style="margin-top: 8px; font-size: 12px; color: #bf360c;">
+                <div class="last-backup-info">
                     最終バックアップ: <span id="lastBackupDate">確認中...</span>
                 </div>
             </div>
@@ -823,6 +891,37 @@
         .restore-modal-btn.close {
             background: #e0e0e0;
             color: #333;
+        }
+
+        /* 復元モーダル ダークモード */
+        @media (prefers-color-scheme: dark) {
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
+            }
         }
     </style>
 

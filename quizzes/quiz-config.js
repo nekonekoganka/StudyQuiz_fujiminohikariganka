@@ -1610,4 +1610,10 @@ function applyAllSettings() {
 }
 
 // ページ読み込み時に自動で適用
-document.addEventListener('DOMContentLoaded', applyAllSettings);
+// DOMが既に読み込まれている場合は即座に実行、そうでなければDOMContentLoadedを待つ
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyAllSettings);
+} else {
+    // DOMContentLoadedは既に発火済み
+    applyAllSettings();
+}
