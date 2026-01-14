@@ -1014,3 +1014,214 @@ body.small-font .feedback {
 body.small-font .mode-button {
     font-size: 13px;
 }
+
+/* ========================================
+   バッジ獲得表示（結果画面内）
+   ======================================== */
+.badge-achievement {
+    background: linear-gradient(135deg, #f0f4ff, #e8ecff);
+    border: 2px solid #667eea;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    animation: badgeAchievementFadeIn 0.6s ease;
+}
+
+.badge-achievement.rare {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    border-color: #9c27b0;
+    box-shadow: 0 4px 20px rgba(156, 39, 176, 0.2);
+}
+
+.badge-achievement.legendary {
+    background: linear-gradient(135deg, #fff8e1, #ffecb3);
+    border-color: #ffc107;
+    box-shadow: 0 4px 25px rgba(255, 193, 7, 0.3);
+}
+
+.badge-achievement-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #5c6bc0;
+    margin-bottom: 16px;
+}
+
+.badge-achievement.rare .badge-achievement-title {
+    color: #7b1fa2;
+}
+
+.badge-achievement.legendary .badge-achievement-title {
+    color: #f57f17;
+}
+
+.badge-achievement-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.badge-achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    padding: 10px 16px;
+    border-radius: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.badge-achievement-item.rare {
+    background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+    color: white;
+}
+
+.badge-achievement-item.legendary {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #3e2723;
+    animation: legendaryItemPulse 2s ease infinite;
+}
+
+.badge-achievement-icon {
+    font-size: 24px;
+}
+
+.badge-achievement-item.legendary .badge-achievement-icon {
+    animation: legendaryIconSpin 3s ease infinite;
+}
+
+.badge-achievement-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.badge-achievement-item.rare .badge-achievement-name {
+    color: white;
+}
+
+.badge-achievement-hint {
+    font-size: 12px;
+    color: #9fa8da;
+    margin-top: 8px;
+}
+
+.badge-achievement.rare .badge-achievement-hint {
+    color: #ba68c8;
+}
+
+.badge-achievement.legendary .badge-achievement-hint {
+    color: #ffb300;
+}
+
+@keyframes badgeAchievementFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes legendaryItemPulse {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(255, 193, 7, 0.6);
+    }
+}
+
+@keyframes legendaryIconSpin {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        transform: rotate(-5deg) scale(1.1);
+    }
+    75% {
+        transform: rotate(5deg) scale(1.1);
+    }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    .badge-achievement {
+        background: linear-gradient(135deg, #2a2a4e, #1e1e3e);
+        border-color: #667eea;
+    }
+
+    .badge-achievement.rare {
+        background: linear-gradient(135deg, #3d2a4e, #2e1e3e);
+        border-color: #ba68c8;
+    }
+
+    .badge-achievement.legendary {
+        background: linear-gradient(135deg, #3d3520, #2e2a18);
+        border-color: #ffc107;
+    }
+
+    .badge-achievement-title {
+        color: #9fa8da;
+    }
+
+    .badge-achievement.rare .badge-achievement-title {
+        color: #ce93d8;
+    }
+
+    .badge-achievement.legendary .badge-achievement-title {
+        color: #ffd54f;
+    }
+
+    .badge-achievement-item {
+        background: #3a3a5e;
+        color: #e0e0e0;
+    }
+
+    .badge-achievement-item.rare {
+        background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+    }
+
+    .badge-achievement-item.legendary {
+        background: linear-gradient(135deg, #ffa000, #ff8f00);
+    }
+
+    .badge-achievement-hint {
+        color: #7a7a9a;
+    }
+
+    .badge-achievement.rare .badge-achievement-hint {
+        color: #9575cd;
+    }
+
+    .badge-achievement.legendary .badge-achievement-hint {
+        color: #ffca28;
+    }
+}
+
+/* PC版でのバッジ表示調整 */
+@media (min-width: 768px) {
+    .badge-achievement {
+        padding: 24px 32px;
+        margin: 24px 0;
+    }
+
+    .badge-achievement-title {
+        font-size: 20px;
+    }
+
+    .badge-achievement-item {
+        padding: 12px 20px;
+    }
+
+    .badge-achievement-icon {
+        font-size: 28px;
+    }
+
+    .badge-achievement-name {
+        font-size: 16px;
+    }
+}
