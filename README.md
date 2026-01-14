@@ -233,6 +233,8 @@ for (let i = 1; i <= 10; i++) {  // ← 問題数に変更
 
 > **注意**: ループの上限値を更新し忘れると、新しい問題が常に表示されたままになるバグが発生します。
 
+> **✅ 自動更新**: トップページ（index.html）の問題数表示は `quiz-config.js` から自動的に取得されるため、手動更新は不要です。
+
 ---
 
 ## UI/UX仕様（統一ルール）
@@ -284,6 +286,40 @@ GitHub Pages で静的サイトとしてホスティングできます。
 ---
 
 ## 開発ログ・進捗
+
+### 2025年1月 トップページ問題数の動的表示
+
+#### 実装した機能
+
+| 項目 | 内容 |
+|------|------|
+| 問題数の自動更新 | トップページのクイズカードに表示される問題数が `quiz-config.js` から自動取得されるように |
+
+#### 技術詳細
+
+`index.html` に `updateQuizCounts()` 関数を追加。ページ読み込み時に `QUIZ_LIST` を参照し、各クイズカードの `data-quiz-id` 属性に基づいて問題数を自動更新します。
+
+```javascript
+function updateQuizCounts() {
+    document.querySelectorAll('.quiz-card[data-quiz-id]').forEach(card => {
+        const quizId = card.dataset.quizId;
+        const quizInfo = QUIZ_LIST.find(q => q.id === quizId);
+        if (quizInfo) {
+            const countElement = card.querySelector('.quiz-count');
+            if (countElement) {
+                countElement.textContent = `全${quizInfo.totalQuestions}問`;
+            }
+        }
+    });
+}
+```
+
+#### メリット
+
+- 問題数を変更した際、`quiz-config.js` の `totalQuestions` を更新するだけでOK
+- トップページの手動更新が不要になり、更新漏れを防止
+
+---
 
 ### 2025年1月 「今日の3問」弱点優先機能
 
