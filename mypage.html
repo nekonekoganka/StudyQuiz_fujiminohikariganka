@@ -331,6 +331,49 @@
             text-decoration: underline;
         }
 
+        /* バックアップセクション */
+        .backup-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed #c5cae9;
+        }
+        .backup-description {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .backup-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .backup-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 2px solid #4caf50;
+            background: white;
+            color: #2e7d32;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+        .backup-btn.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+        .last-backup-info {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #9fa8da;
+        }
+
         /* 設定アイテム */
         .setting-item {
             margin-bottom: 16px;
@@ -673,6 +716,26 @@
             .backup-button.restore:hover {
                 background: #3a4a3e;
             }
+
+            /* バックアップセクション ダークモード */
+            .backup-section {
+                border-top-color: #3a3a4e;
+            }
+            .backup-description {
+                color: #a0a0b0;
+            }
+            .backup-btn {
+                background: #2a2a3e;
+                border-color: #4caf50;
+                color: #81c784;
+            }
+            .backup-btn.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+            .last-backup-info {
+                color: #7a7a8a;
+            }
         }
     </style>
 </head>
@@ -727,6 +790,25 @@
             </div>
             <div id="badgeContainer" class="badge-container">
                 <!-- JSで動的生成 -->
+            </div>
+        </div>
+
+        <!-- バックアップセクション -->
+        <div class="section backup-section">
+            <div class="section-title">
+                <span>💾</span>
+                データ保護
+            </div>
+            <div class="backup-description">
+                学習データはブラウザに保存されています。端末変更時やデータ削除前にバックアップをおすすめします。
+            </div>
+            <div class="backup-buttons">
+                <button class="backup-btn" onclick="downloadBackup()">📥 バックアップ</button>
+                <button class="backup-btn restore" onclick="startRestore()">📂 復元</button>
+                <input type="file" id="restoreInput" accept=".json" onchange="handleRestoreFile(event)" style="display: none;">
+            </div>
+            <div class="last-backup-info">
+                最終バックアップ: <span id="lastBackupDate">確認中...</span>
             </div>
         </div>
 
@@ -1210,6 +1292,21 @@
         // 初期化
         renderPage();
         applyFontSize(); // quiz-config.jsからフォントサイズを適用
+
+        // 最終バックアップ日時を表示
+        function updateLastBackupInfo() {
+            const lastBackupDate = document.getElementById('lastBackupDate');
+            if (lastBackupDate) {
+                const lastBackup = localStorage.getItem('hikari_quiz_last_backup');
+                if (lastBackup) {
+                    const date = new Date(lastBackup);
+                    lastBackupDate.textContent = date.toLocaleDateString('ja-JP') + ' ' + date.toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'});
+                } else {
+                    lastBackupDate.textContent = 'まだバックアップしていません';
+                }
+            }
+        }
+        updateLastBackupInfo();
     </script>
 </body>
 </html>
