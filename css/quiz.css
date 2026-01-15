@@ -1363,3 +1363,176 @@ body.small-font .mode-button {
         font-size: 16px;
     }
 }
+
+/* ============================================
+   数値入力クイズ用スタイル
+   ============================================ */
+
+.numeric-input-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0;
+}
+
+.numeric-input {
+    width: 150px;
+    padding: 12px 16px;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: right;
+    border: 3px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.numeric-input:focus {
+    border-color: #6f86d6;
+    box-shadow: 0 0 10px rgba(111, 134, 214, 0.3);
+}
+
+.numeric-input::placeholder {
+    color: #ccc;
+    font-weight: normal;
+}
+
+.numeric-input-unit {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.submit-answer-button {
+    display: block;
+    width: 80%;
+    max-width: 300px;
+    margin: 20px auto;
+    padding: 14px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #48c6ef, #6f86d6);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(111, 134, 214, 0.3);
+}
+
+.submit-answer-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(111, 134, 214, 0.4);
+}
+
+.submit-answer-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.submit-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-top: 8px;
+}
+
+/* 数値入力の正解・不正解表示 */
+.numeric-result {
+    text-align: center;
+    padding: 16px;
+    border-radius: 10px;
+    margin: 16px 0;
+}
+
+.numeric-result.correct {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    border: 2px solid #28a745;
+}
+
+.numeric-result.incorrect {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    border: 2px solid #dc3545;
+}
+
+.numeric-result-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.numeric-result-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.numeric-result-detail {
+    font-size: 16px;
+    color: #555;
+}
+
+.numeric-result-detail .user-answer {
+    color: #dc3545;
+}
+
+.numeric-result-detail .correct-answer {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.answer-breakdown {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.answer-breakdown .points {
+    color: #6f86d6;
+    font-weight: bold;
+}
+
+.answer-breakdown .yen {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .numeric-input {
+        width: 120px;
+        padding: 10px 12px;
+        font-size: 20px;
+    }
+
+    .numeric-input-unit {
+        font-size: 20px;
+    }
+
+    .submit-answer-button {
+        width: 90%;
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .numeric-result-icon {
+        font-size: 30px;
+    }
+
+    .numeric-result-text {
+        font-size: 16px;
+    }
+
+    .numeric-result-detail {
+        font-size: 14px;
+    }
+
+    .answer-breakdown {
+        font-size: 16px;
+    }
+}
