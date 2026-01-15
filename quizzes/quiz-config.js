@@ -208,6 +208,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '視野計アイモの基本と特徴、検査配列について学べます',
         color: 'green'
+    },
+    {
+        id: 'siryoku',
+        name: '視力検査のコツクイズ',
+        file: '視力検査のコツ_クイズ.html',
+        totalQuestions: 8,
+        icon: '👁️',
+        category: 'staff',
+        description: '視力検査の基本とコツ、患者様への対応ポイントを学べます',
+        color: 'amber'
     }
 ];
 
