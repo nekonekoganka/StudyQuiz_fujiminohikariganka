@@ -200,10 +200,10 @@ const QUIZ_LIST = [
         color: 'teal'
     },
     {
-        id: 'imovifa',
-        name: 'アイモvifaクイズ',
-        file: 'アイモvifa_クイズ.html',
-        totalQuestions: 7,
+        id: 'imo_shinya',
+        name: 'アイモ（視野検査）クイズ',
+        file: 'アイモ_視野検査_クイズ.html',
+        totalQuestions: 6,
         icon: '👀',
         category: 'staff',
         description: '視野計アイモの基本と特徴、検査配列について学べます',
@@ -299,15 +299,39 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAnswered >= 200
     },
     {
-        id: 'half-perfect',
-        name: 'ハーフ満点',
-        icon: '💎',
-        description: '6つのクイズを累積で全問正解',
-        condition: '6つ以上のクイズで全問正解（累積）',
+        id: 'five-perfect',
+        name: '5冠達成',
+        icon: '🎯',
+        description: '5つのクイズを累積で全問正解',
+        condition: '5つ以上のクイズで全問正解（累積）',
         rarity: 'rare',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 6;
+            return perfectCount >= 5;
+        }
+    },
+    {
+        id: 'half-perfect',
+        name: 'ハーフ満点',
+        icon: '💎',
+        description: '10のクイズを累積で全問正解',
+        condition: '10以上のクイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= 10;
+        }
+    },
+    {
+        id: 'fifteen-perfect',
+        name: '15冠達成',
+        icon: '🏆',
+        description: '15のクイズを累積で全問正解',
+        condition: '15以上のクイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= 15;
         }
     },
     {

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>アイモvifaクイズ - スタッフ向け</title>
+    <title>アイモ（視野検査）クイズ - スタッフ向け</title>
     <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
-        <h1>👀 アイモvifaクイズ 👀</h1>
+        <h1>👀 アイモ（視野検査）クイズ 👀</h1>
         <div class="subtitle">眼科スタッフ向け - 視野計アイモの基本を学ぼう</div>
-        <div id="quizTitleHeader" class="quiz-title-header hidden">👀 アイモvifaクイズ</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👀 アイモ（視野検査）クイズ</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
@@ -18,7 +18,7 @@
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 全問モード（全7問）
+                📚 全問モード（全6問）
             </button>
 
             <div id="progressStatus" class="progress-status">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="progress-status-item">
                     <span>🆕 未挑戦の問題:</span>
-                    <span id="unansweredCount">7問</span>
+                    <span id="unansweredCount">6問</span>
                 </div>
                 <div class="progress-status-item">
                     <span>✅ 正解した問題:</span>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="progress-status-item">
                     <span>📊 全問題数:</span>
-                    <span id="totalQuestionsCount">7問</span>
+                    <span id="totalQuestionsCount">6問</span>
                 </div>
             </div>
 
@@ -47,14 +47,14 @@
 
             <div class="mode-description">
                 <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
-                <strong>全問モード:</strong> 全7問を順番に出題
+                <strong>全問モード:</strong> 全6問を順番に出題
             </div>
         </div>
 
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
                 <div class="status-row">
-                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">7</span></span>
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">6</span></span>
                     <span class="score-display">正解: <span id="score">0</span></span>
                 </div>
                 <div class="progress-bar">
@@ -115,21 +115,6 @@
 
             <div class="question-card hidden" id="question4">
                 <div class="question-number">問題 4</div>
-                <div class="question-text">アイモは設置場所を選ばないコンパクト設計ですが、その理由として正しいものはどれですか？</div>
-                <div class="options">
-                    <div class="option" data-answer="true">暗室が不要で、小さなスペースに設置できるから</div>
-                    <div class="option" data-answer="false">持ち運びができるハンディタイプだから</div>
-                    <div class="option" data-answer="false">壁に取り付けて使用するタイプだから</div>
-                    <div class="option" data-answer="false">検査中は折りたたんで収納できるから</div>
-                </div>
-                <div class="feedback"></div>
-                <div class="explanation hidden">
-                    <strong>解説：</strong>アイモは暗室が不要なため、専用の暗い部屋を用意する必要がありません。45cm×60cmのスペースがあれば設置可能なコンパクト設計で、明るい部屋や換気の良い場所など、設置場所を選びません。
-                </div>
-            </div>
-
-            <div class="question-card hidden" id="question5">
-                <div class="question-number">問題 5</div>
                 <div class="question-text">視野検査の配列「30-2」「24-2」「10-2」の違いについて、正しいものはどれですか？</div>
                 <div class="options">
                     <div class="option" data-answer="true">数字は測定範囲の広さを表し、10-2は中心部を細かく検査する</div>
@@ -146,8 +131,8 @@
                 </div>
             </div>
 
-            <div class="question-card hidden" id="question6">
-                <div class="question-number">問題 6</div>
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
                 <div class="question-text">アイモのオリジナル検査配列「24plus」の特徴として正しいものはどれですか？</div>
                 <div class="options">
                     <div class="option" data-answer="true">周辺部と中心部を一度の検査でまとめて検査できる</div>
@@ -161,8 +146,8 @@
                 </div>
             </div>
 
-            <div class="question-card hidden" id="question7">
-                <div class="question-number">問題 7</div>
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
                 <div class="question-text">アイモの「EXモード」の特徴として正しいものはどれですか？</div>
                 <div class="options">
                     <div class="option" data-answer="true">過去の検査データを参照して検査時間を短縮できる</div>
@@ -188,8 +173,8 @@
 
     <script src="quiz-config.js"></script>
     <script>
-        const QUIZ_ID = 'imovifa';
-        const TOTAL_QUESTIONS = 7;
+        const QUIZ_ID = 'imo_shinya';
+        const TOTAL_QUESTIONS = 6;
 
         // 全クイズ一覧（シャッフル機能用）
         const ALL_QUIZZES = [
@@ -205,17 +190,17 @@
             '近視についてのクイズ.html',
             '院内ルール確認クイズ.html',
             'OCT検査_クイズ.html',
-            'アイモvifa_クイズ.html'
+            'アイモ_視野検査_クイズ.html'
         ];
         const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
 
         let currentQuestion = 1;
         let score = 0;
-        let totalQuestions = 7;
+        let totalQuestions = 6;
         let questionList = [];
         let isDaily = false;
 
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7];
+        const allQuestions = [1, 2, 3, 4, 5, 6];
 
         // ページ読み込み時にモードボタンの状態を更新
         document.addEventListener('DOMContentLoaded', function() {
