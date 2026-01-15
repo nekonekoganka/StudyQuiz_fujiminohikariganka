@@ -228,6 +228,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '眼圧測定のコツと安全な検査のポイントを学べます',
         color: 'cyan'
+    },
+    {
+        id: 'monshin',
+        name: '眼科問診クイズ',
+        file: '眼科問診_クイズ.html',
+        totalQuestions: 6,
+        icon: '📋',
+        category: 'staff',
+        description: '眼科における問診のコツと注意点を学ぶクイズ',
+        color: 'blue'
     }
 ];
 
