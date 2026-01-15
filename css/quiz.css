@@ -489,7 +489,7 @@ h1 {
     }
 
     .btn-sub {
-        font-size: 13px;
+        font-size: 15px;
         margin-top: 6px;
     }
 
@@ -809,7 +809,7 @@ h1 {
     /* 進捗セクション */
     .result-progress-section {
         flex: 1;
-        max-width: 420px;
+        max-width: 550px;
         padding: 18px 22px;
         margin: 0;
     }
@@ -833,7 +833,7 @@ h1 {
     }
     .result-progress-stat {
         flex: 1;
-        padding: 8px 10px;
+        padding: 10px 14px;
         border-radius: 6px;
     }
 
