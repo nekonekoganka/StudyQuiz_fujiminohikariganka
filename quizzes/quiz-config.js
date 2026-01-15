@@ -270,6 +270,7 @@ const QUIZ_LIST = [
  * - legendary: モーダル表示 + 特別エフェクト
  */
 const BADGE_LIST = [
+    // --- 入門系 ---
     {
         id: 'first-try',
         name: 'はじめの一歩',
@@ -280,6 +281,18 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAttempts >= 1
     },
     {
+        id: 'first-perfect',
+        name: '満点デビュー',
+        icon: '🌸',
+        description: '初めて1つのクイズを全問正解',
+        condition: 'どれかのクイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    // --- 回答数系 ---
+    {
         id: 'fifty-answers',
         name: 'コツコツ学習',
         icon: '🌱',
@@ -287,17 +300,6 @@ const BADGE_LIST = [
         condition: '合計で50問以上回答する',
         rarity: 'normal',
         check: (progress, stats) => stats.totalAnswered >= 50
-    },
-    {
-        id: 'all-tried',
-        name: '全制覇',
-        icon: '📚',
-        description: '全クイズに挑戦',
-        condition: 'すべてのクイズに1回以上挑戦する',
-        rarity: 'rare',
-        check: (progress, stats) => {
-            return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
-        }
     },
     {
         id: 'hundred-answers',
@@ -309,38 +311,6 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAnswered >= 100
     },
     {
-        id: 'ten-attempts',
-        name: '熱心な挑戦者',
-        icon: '🔥',
-        description: '10回挑戦',
-        condition: '合計で10回以上クイズに挑戦する',
-        rarity: 'normal',
-        check: (progress, stats) => stats.totalAttempts >= 10
-    },
-    {
-        id: 'perfect-once',
-        name: '満点達成',
-        icon: '🌸',
-        description: '1つのクイズを累積で全問正解',
-        condition: 'どれかのクイズで全問正解（累積）',
-        rarity: 'rare',
-        check: (progress, stats) => {
-            return QUIZ_LIST.some(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
-        }
-    },
-    {
-        id: 'triple-perfect',
-        name: 'トリプル満点',
-        icon: '⭐',
-        description: '3つのクイズを累積で全問正解',
-        condition: '3つ以上のクイズで全問正解（累積）',
-        rarity: 'rare',
-        check: (progress, stats) => {
-            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 3;
-        }
-    },
-    {
         id: 'two-hundred-answers',
         name: '勉強家',
         icon: '📖',
@@ -350,98 +320,84 @@ const BADGE_LIST = [
         check: (progress, stats) => stats.totalAnswered >= 200
     },
     {
-        id: 'five-perfect',
-        name: '5冠達成',
-        icon: '🎯',
-        description: '5つのクイズを累積で全問正解',
-        condition: '5つ以上のクイズで全問正解（累積）',
+        id: 'three-hundred-answers',
+        name: '知識の泉',
+        icon: '💧',
+        description: '累計300問回答',
+        condition: '合計で300問以上回答する',
+        rarity: 'rare',
+        check: (progress, stats) => stats.totalAnswered >= 300
+    },
+    // --- ジャンル制覇系（％ベース） ---
+    {
+        id: 'all-tried',
+        name: 'チャレンジャー',
+        icon: '📚',
+        description: '全クイズに挑戦',
+        condition: 'すべてのクイズに1回以上挑戦する',
         rarity: 'rare',
         check: (progress, stats) => {
-            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 5;
+            return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].attempts >= 1);
         }
     },
     {
-        id: 'half-perfect',
-        name: 'ハーフ満点',
+        id: 'master-20',
+        name: 'ブロンズマスター',
+        icon: '🥉',
+        description: '20%のクイズを全問正解',
+        condition: 'クイズ総数の20%以上で全問正解（累積）',
+        rarity: 'normal',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= Math.ceil(QUIZ_LIST.length * 0.2);
+        }
+    },
+    {
+        id: 'master-40',
+        name: 'シルバーマスター',
+        icon: '🥈',
+        description: '40%のクイズを全問正解',
+        condition: 'クイズ総数の40%以上で全問正解（累積）',
+        rarity: 'normal',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= Math.ceil(QUIZ_LIST.length * 0.4);
+        }
+    },
+    {
+        id: 'master-60',
+        name: 'ゴールドマスター',
+        icon: '🥇',
+        description: '60%のクイズを全問正解',
+        condition: 'クイズ総数の60%以上で全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
+            return perfectCount >= Math.ceil(QUIZ_LIST.length * 0.6);
+        }
+    },
+    {
+        id: 'master-80',
+        name: 'プラチナマスター',
         icon: '💎',
-        description: '10のクイズを累積で全問正解',
-        condition: '10以上のクイズで全問正解（累積）',
+        description: '80%のクイズを全問正解',
+        condition: 'クイズ総数の80%以上で全問正解（累積）',
         rarity: 'rare',
         check: (progress, stats) => {
             const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 10;
-        }
-    },
-    {
-        id: 'fifteen-perfect',
-        name: '15冠達成',
-        icon: '🏆',
-        description: '15のクイズを累積で全問正解',
-        condition: '15以上のクイズで全問正解（累積）',
-        rarity: 'rare',
-        check: (progress, stats) => {
-            const perfectCount = QUIZ_LIST.filter(quiz => progress[quiz.id] && progress[quiz.id].isPerfect).length;
-            return perfectCount >= 15;
+            return perfectCount >= Math.ceil(QUIZ_LIST.length * 0.8);
         }
     },
     {
         id: 'quiz-master',
         name: 'クイズマスター',
         icon: '👑',
-        description: '全クイズを累積で全問正解',
+        description: '全クイズを全問正解',
         condition: 'すべてのクイズで全問正解（累積）',
         rarity: 'legendary',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
-    },
-    // --- 追加バッジ（挑戦回数系） ---
-    {
-        id: 'regular-visitor',
-        name: '常連さん',
-        icon: '🏠',
-        description: '20回挑戦',
-        condition: '合計で20回以上クイズに挑戦する',
-        rarity: 'normal',
-        check: (progress, stats) => stats.totalAttempts >= 20
-    },
-    {
-        id: 'veteran',
-        name: 'ベテラン',
-        icon: '🎖️',
-        description: '50回挑戦',
-        condition: '合計で50回以上クイズに挑戦する',
-        rarity: 'normal',
-        check: (progress, stats) => stats.totalAttempts >= 50
-    },
-    {
-        id: 'ironman',
-        name: '鉄人',
-        icon: '💪',
-        description: '100回挑戦',
-        condition: '合計で100回以上クイズに挑戦する',
-        rarity: 'rare',
-        check: (progress, stats) => stats.totalAttempts >= 100
-    },
-    // --- 追加バッジ（回答数系） ---
-    {
-        id: 'three-hundred-answers',
-        name: '知識の泉',
-        icon: '💧',
-        description: '累計300問回答',
-        condition: '合計で300問以上回答する',
-        rarity: 'normal',
-        check: (progress, stats) => stats.totalAnswered >= 300
-    },
-    {
-        id: 'thousand-answers',
-        name: '千問の道',
-        icon: '🏅',
-        description: '累計1000問回答',
-        condition: '合計で1000問以上回答する',
-        rarity: 'legendary',
-        check: (progress, stats) => stats.totalAnswered >= 1000
     }
 ];
 
