@@ -1536,3 +1536,72 @@ body.small-font .mode-button {
         font-size: 16px;
     }
 }
+
+/* 数値入力クイズ ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    .numeric-input {
+        background: #2a2a3e;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+
+    .numeric-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .numeric-input::placeholder {
+        color: #666;
+    }
+
+    .numeric-input-unit {
+        color: #e0e0e0;
+    }
+
+    .submit-answer-button {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .submit-hint {
+        color: #888;
+    }
+
+    .numeric-result.correct {
+        background: linear-gradient(135deg, #1e3a2f, #1a2e25);
+        border-color: #2e7d32;
+    }
+
+    .numeric-result.incorrect {
+        background: linear-gradient(135deg, #3a1e1e, #2e1a1a);
+        border-color: #c62828;
+    }
+
+    .numeric-result-text {
+        color: #e0e0e0;
+    }
+
+    .numeric-result-detail {
+        color: #bbb;
+    }
+
+    .numeric-result-detail .user-answer {
+        color: #ef5350;
+    }
+
+    .numeric-result-detail .correct-answer {
+        color: #66bb6a;
+    }
+
+    .answer-breakdown {
+        background: rgba(255, 255, 255, 0.1);
+        color: #e0e0e0;
+    }
+
+    .answer-breakdown .points {
+        color: #90caf9;
+    }
+
+    .answer-breakdown .yen {
+        color: #81c784;
+    }
+}
