@@ -773,31 +773,77 @@ h1 {
     font-weight: bold;
 }
 
-/* PC用：進捗セクションを大きく表示 */
+/* PC用：リザルト画面をコンパクトに（1画面に収める） */
 @media (min-width: 769px) {
+    /* 進捗セクション */
     .result-progress-section {
-        max-width: 680px;
-        padding: 30px;
+        max-width: 700px;
+        padding: 15px 20px;
+        margin: 15px auto 0;
     }
     .result-progress-title {
-        font-size: 25px;
-        margin-bottom: 20px;
+        font-size: 18px;
+        margin-bottom: 10px;
     }
     .result-progress-bar-container {
-        height: 20px;
-        margin-bottom: 20px;
+        height: 14px;
+        margin-bottom: 8px;
     }
     .result-progress-percentage {
-        font-size: 34px;
-        margin-bottom: 20px;
+        font-size: 24px;
+        margin-bottom: 10px;
     }
     .result-progress-stats {
-        font-size: 22px;
-        gap: 12px;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        font-size: 14px;
     }
     .result-progress-stat {
-        padding: 12px 18px;
-        border-radius: 10px;
+        flex: 1;
+        padding: 6px 8px;
+        border-radius: 6px;
+    }
+
+    /* リザルト画面全体をコンパクトに */
+    .final-score-card {
+        padding: 15px 25px 20px;
+    }
+    .result-title {
+        font-size: 22px;
+        margin-bottom: 3px;
+    }
+    .result-evaluation {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .final-score-highlight {
+        font-size: 24px;
+        margin: 8px 0;
+    }
+    .result-detail {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 5px;
+    }
+    .result-buttons {
+        margin-top: 12px;
+    }
+    .result-buttons-row {
+        margin-bottom: 6px;
+    }
+
+    /* バッジ獲得カードもコンパクトに */
+    .badge-achievement {
+        padding: 12px 15px;
+        margin: 12px auto;
+    }
+    .badge-achievement-title {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .badge-achievement-item {
+        padding: 6px 12px;
     }
 }
 
