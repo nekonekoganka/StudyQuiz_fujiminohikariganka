@@ -19,7 +19,7 @@
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 全問モード（全13問）
+                📚 全問モード（全16問）
             </button>
 
             <div id="progressStatus" class="progress-status">
@@ -48,7 +48,7 @@
 
             <div class="mode-description">
                 <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
-                <strong>全問モード:</strong> 全13問を順番に出題
+                <strong>全問モード:</strong> 全16問を順番に出題
             </div>
         </div>
 
@@ -271,6 +271,54 @@
                 </div>
             </div>
 
+            <!-- ========== 問題14 ========== -->
+            <div class="question-card hidden" id="question14" data-points="70" data-yen="700">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">調節検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(14)">回答する</button>
+                <div class="submit-hint">※Enterキーでも回答できます</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>調節検査は70点、つまり700円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題15 ========== -->
+            <div class="question-card hidden" id="question15" data-points="48" data-yen="480">
+                <div class="question-number">問題 15</div>
+                <div class="question-text">生体染色検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(15)">回答する</button>
+                <div class="submit-hint">※Enterキーでも回答できます</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>生体染色検査は48点、つまり480円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題16 ========== -->
+            <div class="question-card hidden" id="question16" data-points="250" data-yen="2500">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">診療情報提供料（Ⅰ）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(16)">回答する</button>
+                <div class="submit-hint">※Enterキーでも回答できます</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>診療情報提供料（Ⅰ）は250点、つまり2,500円です。
+                </div>
+            </div>
+
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
@@ -284,7 +332,7 @@
         // クイズ固有の設定
         // ============================================================
         const QUIZ_ID = 'hoken-tensuu';
-        const TOTAL_QUESTIONS = 13;
+        const TOTAL_QUESTIONS = 16;
 
         // ============================================================
         // 以下は変更不要（共通処理）
