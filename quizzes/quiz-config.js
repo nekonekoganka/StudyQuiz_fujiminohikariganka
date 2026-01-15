@@ -238,6 +238,17 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '眼科における問診のコツと注意点を学ぶクイズ',
         color: 'blue'
+    },
+    // === レセプト・保険点数系 ===
+    {
+        id: 'hoken-shinryo',
+        name: '眼科保険診療クイズ',
+        file: '眼科保険診療_クイズ.html',
+        totalQuestions: 8,
+        icon: '🏥',
+        category: 'staff',
+        description: '眼科外来で必要な保険診療のルールを学ぶクイズ',
+        color: 'blue'
     }
 ];
 
