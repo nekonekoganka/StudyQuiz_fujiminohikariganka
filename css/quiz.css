@@ -773,6 +773,34 @@ h1 {
     font-weight: bold;
 }
 
+/* PC用：進捗セクションを大きく表示 */
+@media (min-width: 769px) {
+    .result-progress-section {
+        max-width: 680px;
+        padding: 30px;
+    }
+    .result-progress-title {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+    .result-progress-bar-container {
+        height: 20px;
+        margin-bottom: 20px;
+    }
+    .result-progress-percentage {
+        font-size: 34px;
+        margin-bottom: 20px;
+    }
+    .result-progress-stats {
+        font-size: 22px;
+        gap: 12px;
+    }
+    .result-progress-stat {
+        padding: 12px 18px;
+        border-radius: 10px;
+    }
+}
+
 @media (max-width: 768px) {
     .result-title {
         font-size: 28px;
@@ -1053,7 +1081,8 @@ body.small-font .mode-button {
     border: 2px solid #667eea;
     border-radius: 16px;
     padding: 20px;
-    margin: 20px 0;
+    margin: 20px auto;
+    max-width: 500px;
     text-align: center;
     animation: badgeAchievementFadeIn 0.6s ease;
 }
