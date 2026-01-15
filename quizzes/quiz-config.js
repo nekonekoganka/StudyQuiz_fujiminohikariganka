@@ -198,6 +198,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: 'OCT検査の基本とコツ、患者様への説明ポイントを学べます',
         color: 'teal'
+    },
+    {
+        id: 'imovifa',
+        name: 'アイモvifaクイズ',
+        file: 'アイモvifa_クイズ.html',
+        totalQuestions: 7,
+        icon: '👀',
+        category: 'staff',
+        description: '視野計アイモの基本と特徴、検査配列について学べます',
+        color: 'green'
     }
 ];
 
