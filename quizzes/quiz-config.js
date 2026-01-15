@@ -188,6 +188,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '休診日、予約ルール、受付時間など、院内の基本ルールを確認できます',
         color: 'blue'
+    },
+    {
+        id: 'oct',
+        name: 'OCT検査クイズ',
+        file: 'OCT検査_クイズ.html',
+        totalQuestions: 7,
+        icon: '👁️',
+        category: 'staff',
+        description: 'OCT検査の基本とコツ、患者様への説明ポイントを学べます',
+        color: 'teal'
     }
 ];
 
