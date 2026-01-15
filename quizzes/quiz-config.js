@@ -249,6 +249,16 @@ const QUIZ_LIST = [
         category: 'staff',
         description: '眼科外来で必要な保険診療のルールを学ぶクイズ',
         color: 'blue'
+    },
+    {
+        id: 'hoken-tensuu',
+        name: '眼科保険点数クイズ',
+        file: '眼科保険点数_クイズ.html',
+        totalQuestions: 14,
+        icon: '💰',
+        category: 'staff',
+        description: '眼科で頻出の保険点数を円換算で学ぶクイズ（1点=10円）',
+        color: 'blue'
     }
 ];
 
