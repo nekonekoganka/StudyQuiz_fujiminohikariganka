@@ -80,21 +80,20 @@
 
             <div class="question-card hidden" id="question2">
                 <div class="question-number">問題 2</div>
-                <div class="question-text">令和7年度の緑内障検診対象者はどれでしょうか？</div>
+                <div class="question-text">令和<span class="fiscal-year">7</span>年度の緑内障検診対象者はどれでしょうか？</div>
                 <div class="options">
-                    <div class="option" data-answer="false">令和7年中に 46歳と 56歳に なる方</div>
-                    <div class="option" data-answer="true">令和7年度内に 46歳と 56歳に なる方</div>
-                    <div class="option" data-answer="false">令和7年度内に 45歳と 55歳に なる方</div>
-                    <div class="option" data-answer="false">令和7年中に 45歳と 55歳に なる方</div>
+                    <div class="option" data-answer="false">令和<span class="fiscal-year">7</span>年中に 46歳または56歳に なる方</div>
+                    <div class="option" data-answer="true">令和<span class="fiscal-year">7</span>年度中に 46歳または56歳に なる方</div>
+                    <div class="option" data-answer="false">令和<span class="fiscal-year">7</span>年度中に 45歳または55歳に なる方</div>
+                    <div class="option" data-answer="false">令和<span class="fiscal-year">7</span>年中に 45歳または55歳に なる方</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>対象者は「令和7年度中に46歳、56歳になる方」と明記されています。「令和7年中」ではなく「令和7年度内に」が正しい表現です。
+                    <strong>解説：</strong>対象者は「令和<span class="fiscal-year">7</span>年度中に46歳または56歳になる方」です。「年中」ではなく「年度中」が正しい表現です。
                     <div class="important-note">
                         <strong>受付での確認ポイント：</strong><br>
                         ・「年度」と「年中」の違いを正しく理解することが重要<br>
-                        ・46歳：昭和54年 4月2日 〜 昭和55年 4月1日 生まれ<br>
-                        ・56歳：昭和44年 4月2日 〜 昭和45年 4月1日 生まれ
+                        ・対象となる生年月日は受診券や市の案内で確認しましょう
                     </div>
                 </div>
             </div>
@@ -351,8 +350,29 @@
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
+        // 現在の令和年度を計算（4月始まり）
+        function getCurrentFiscalYear() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth(); // 0-11 (0=1月, 3=4月)
+            // 4月以降なら当年、3月以前なら前年を年度とする
+            const fiscalWesternYear = month >= 3 ? year : year - 1;
+            // 令和 = 西暦 - 2018
+            return fiscalWesternYear - 2018;
+        }
+
+        // 年度を動的に更新
+        function updateFiscalYearDisplay() {
+            const fiscalYear = getCurrentFiscalYear();
+            const spans = document.querySelectorAll('.fiscal-year');
+            spans.forEach(span => {
+                span.textContent = fiscalYear;
+            });
+        }
+
         // ページ読み込み時に学習状況を更新
         document.addEventListener('DOMContentLoaded', function() {
+            updateFiscalYearDisplay();
             updateProgressStatus();
         });
 
