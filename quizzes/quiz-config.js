@@ -1223,6 +1223,36 @@ function renderBadgeAchievement(badges) {
 }
 
 /**
+ * PC版：進捗セクションとバッジを横並びにする
+ * showFinalScore()の最後で呼び出す
+ */
+function arrangeResultCards() {
+    // PC画面のみ適用（769px以上）
+    if (window.innerWidth < 769) return;
+
+    const progressSection = document.querySelector('.result-progress-section');
+    const badgeSection = document.querySelector('.badge-achievement');
+
+    if (!progressSection) return;
+
+    // 既にラッパーがある場合はスキップ
+    if (progressSection.parentElement.classList.contains('result-cards-row')) return;
+
+    // ラッパーを作成
+    const wrapper = document.createElement('div');
+    wrapper.className = 'result-cards-row';
+
+    // 進捗セクションをラッパーに移動
+    progressSection.parentElement.insertBefore(wrapper, progressSection);
+    wrapper.appendChild(progressSection);
+
+    // バッジセクションがあればラッパーに移動
+    if (badgeSection) {
+        wrapper.appendChild(badgeSection);
+    }
+}
+
+/**
  * クイズ完了時に呼び出す（自動バックアップチェック）
  * @returns {boolean} - バックアップ通知が表示されたかどうか
  */
