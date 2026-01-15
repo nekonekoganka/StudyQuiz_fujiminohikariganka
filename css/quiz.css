@@ -836,6 +836,19 @@ h1 {
         padding: 10px 14px;
         border-radius: 6px;
     }
+    /* 進捗統計の色分け */
+    .result-progress-stat:nth-child(1) {
+        background: #e8f5e9; /* 正解：薄緑 */
+    }
+    .result-progress-stat:nth-child(2) {
+        background: #ffebee; /* 間違い：薄ピンク */
+    }
+    .result-progress-stat:nth-child(3) {
+        background: #e3f2fd; /* 未挑戦：薄青 */
+    }
+    .result-progress-stat:nth-child(4) {
+        background: #f3e5f5; /* 全問題：薄紫 */
+    }
 
     /* バッジ獲得カード */
     .badge-achievement {
