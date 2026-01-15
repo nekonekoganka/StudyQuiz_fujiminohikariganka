@@ -63,6 +63,27 @@
             font-weight: bold;
             color: white;
         }
+        /* 選択肢用の小さなカラーチップ */
+        .option-color-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .color-chip {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.2);
+            vertical-align: middle;
+        }
+        .color-chip-divider {
+            font-size: 10px;
+            color: #888;
+            margin: 0 1px;
+        }
         @media (prefers-color-scheme: dark) {
             .color-samples {
                 background: #2a2a3e;
@@ -80,6 +101,12 @@
             .design-bad {
                 background: #3d1b1b;
                 border-color: #f44336;
+            }
+            .color-chip {
+                border-color: rgba(255,255,255,0.2);
+            }
+            .color-chip-divider {
+                color: #aaa;
             }
         }
     </style>
@@ -162,10 +189,26 @@
                 <div class="question-number">問題 2</div>
                 <div class="question-text">色覚異常の人が見分けにくい色の組み合わせとして正しいものはどれですか？</div>
                 <div class="options">
-                    <div class="option" data-answer="true">黄緑と橙、ピンクと灰色、青と紫</div>
-                    <div class="option" data-answer="false">赤と青、黄と緑、白と黒</div>
-                    <div class="option" data-answer="false">青と黄色、白と赤、緑と紫</div>
-                    <div class="option" data-answer="false">黒と白、赤と黄、青と緑</div>
+                    <div class="option" data-answer="true">
+                        <span class="option-color-group"><span class="color-chip" style="background:#9ACD32"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFA500"></span></span>黄緑と橙、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFC0CB"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#808080"></span></span>ピンクと灰色、
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#800080"></span></span>青と紫
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#FF0000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#0000FF"></span></span>赤と青、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFF00"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#008000"></span></span>黄と緑、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFFFF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#000000"></span></span>白と黒
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFF00"></span></span>青と黄色、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFFFF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FF0000"></span></span>白と赤、
+                        <span class="option-color-group"><span class="color-chip" style="background:#008000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#800080"></span></span>緑と紫
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#000000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFFFF"></span></span>黒と白、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FF0000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFF00"></span></span>赤と黄、
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#008000"></span></span>青と緑
+                    </div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
