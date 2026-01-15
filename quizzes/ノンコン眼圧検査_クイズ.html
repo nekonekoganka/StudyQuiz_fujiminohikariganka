@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ノンコン眼圧検査クイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>💨 ノンコン眼圧検査クイズ 💨</h1>
+        <div class="subtitle">眼科スタッフ向け - 眼圧測定のコツを学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">💨 ノンコン眼圧検査クイズ</div>
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全11問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">11問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">11問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全11問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">11</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">患者さんから「眼圧検査って何？」と聞かれた場合、眼圧の説明として適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">目の硬さのこと</div>
+                    <div class="option" data-answer="false">目の大きさのこと</div>
+                    <div class="option" data-answer="false">目の透明度のこと</div>
+                    <div class="option" data-answer="false">目の屈折力のこと</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧とは目の硬さのことです。患者さんには「眼圧とは、目の硬さのことです」「この検査では目に風を当て、眼圧を測定します」と説明します。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">眼圧の正常範囲として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">10〜21mmHg</div>
+                    <div class="option" data-answer="false">5〜15mmHg</div>
+                    <div class="option" data-answer="false">15〜25mmHg</div>
+                    <div class="option" data-answer="false">20〜30mmHg</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧の正常値は10〜21mmHgですが、個人差があります。患者さんに聞かれた際には「眼圧の正常値は10〜21mmHgですが、個人差があります」と回答しましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">ノンコンで測定する際、風を当てる前に必ず行うべき声かけはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「風が当たります」</div>
+                    <div class="option" data-answer="false">「目を閉じてください」</div>
+                    <div class="option" data-answer="false">「息を止めてください」</div>
+                    <div class="option" data-answer="false">「下を向いてください」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>測定時には必ず「風が当たります」と声をかけ、患者さんに心の準備をさせてあげましょう。無言で風を当てることはできるだけ避けてください。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>眼瞼を挙上する際にも「眼瞼を触りますね」など、常に声かけを意識すると患者さんの安心感につながります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">ノンコン操作において、患者さんにお顔を乗せてもらう前に必ず行うべきことはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ジョイスティックを手前に引いておく</div>
+                    <div class="option" data-answer="false">ジョイスティックを前方に押し出しておく</div>
+                    <div class="option" data-answer="false">器械の電源を一度切る</div>
+                    <div class="option" data-answer="false">測定モードを変更する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>患者さんにお顔を乗せてもらう前に、必ずジョイスティックを手前に引いておきます。ノンコンは測定部分がやや突出しているため、器械が目に接触する危険を回避するためです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>測定眼を変更する際も、一度手前に引いてから左右に移動しましょう。本当に危険なので、ジョイスティックは必ず手前に引く癖を身につけてください！
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">眼瞼を挙上する際、<strong>適切ではない</strong>方法はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">指で眼球を圧迫しながら挙上する</div>
+                    <div class="option" data-answer="false">まつ毛のきわに近いところから挙上する</div>
+                    <div class="option" data-answer="false">眼窩の骨に沿わせるように挙上する</div>
+                    <div class="option" data-answer="false">眼球を圧迫しないように注意して挙上する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼瞼を挙上する際には、眼球を圧迫しないように注意してください。指で眼球を圧迫すると本来の眼圧よりも高く測定されてしまう可能性があります。まつ毛のきわに近いところから、眼窩の骨に沿わせるように挙上するのがポイントです。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">ノンコンの操作を片手で行う理由として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">必要な時に眼瞼をすぐに挙上できるようにするため</div>
+                    <div class="option" data-answer="false">検査時間を短縮するため</div>
+                    <div class="option" data-answer="false">器械の精度を上げるため</div>
+                    <div class="option" data-answer="false">患者さんの緊張をほぐすため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>必要な時に眼瞼をすぐに挙上できるよう、器械の操作は片手で行いましょう。両手での操作は機器の扱いに夢中になり、患者さんへの注意がおろそかになる可能性があります。また、うっかりジョイスティックを押しすぎてしまったときも、空いている手でブロックできます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">眼圧測定時に常に意識すべきこととして、最も重要なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">コンタクトレンズ装用の可能性</div>
+                    <div class="option" data-answer="false">患者さんの血圧</div>
+                    <div class="option" data-answer="false">室内の温度</div>
+                    <div class="option" data-answer="false">検査の順番</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧測定時は、コンタクトレンズ装用の可能性を常に意識しましょう。コンタクト装用下では正確な眼圧値が測定できないためです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>特にHCL（ハードコンタクト）の場合、ノンコンの風でレンズが外れたり、目の上でレンズが動いて角膜を傷付けてしまう可能性もあります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">HCL（ハードコンタクト）装用下でノンコンを使用した場合のリスクとして、<strong>適切ではない</strong>ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼圧が正常より低く測定される</div>
+                    <div class="option" data-answer="false">レンズが外れる可能性がある</div>
+                    <div class="option" data-answer="false">角膜を傷付ける可能性がある</div>
+                    <div class="option" data-answer="false">正確な眼圧値が測定できない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>HCL装用下でノンコンを使用すると、風でレンズが外れたり、目の上でレンズが動いて角膜を傷付けてしまう可能性があります。HCLによるケガやHCLの紛失は医療事故につながります。眼圧が低く測定されるというリスクは該当しません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">患者さんの閉瞼が強い場合、適切な対応はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">声かけしつつ、眼瞼を少し強めに挙上して素早く測定する</div>
+                    <div class="option" data-answer="false">時間をかけてゆっくり測定する</div>
+                    <div class="option" data-answer="false">閉瞼が弱くなるまで待つ</div>
+                    <div class="option" data-answer="false">測定を中止して次回に回す</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>閉瞼が強い場合は、「力を抜いて目を大きく開けてくださいね」と声かけしつつ、眼瞼を少し強めに挙上して測定しましょう。時間をかけるよりもできるだけ素早く測定した方が患者さんの負担は少なくなります。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>閉瞼が強く、かつ眼圧が高い場合は、眼瞼の挙上や閉瞼の影響が疑われます。「眼圧測定時、閉瞼が強めでした」とカルテに記載しておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">測定画面に「over」と表示された場合、適切な対応はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">高眼圧まで測定できるモードに切り替える</div>
+                    <div class="option" data-answer="false">器械の電源を入れ直す</div>
+                    <div class="option" data-answer="false">測定を中止する</div>
+                    <div class="option" data-answer="false">風の強さを弱くする</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「over」と表示される場合は、標準設定の測定範囲（30〜40mmHg）を超えている可能性が高いです。高眼圧まで測定できるモード（最大60mmHgまで測定可能）に切り替えましょう。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>経験を積むと、風が角膜に当たったときの音や振動が、通常より強いと感じられるようになります。モード切替方法は機種により異なるため、事前に確認しておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">一般的なノンコンの標準設定での測定範囲と、最大測定可能範囲の組み合わせとして正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">標準設定：30〜40mmHgまで、最大：60mmHgまで</div>
+                    <div class="option" data-answer="false">標準設定：10〜21mmHgまで、最大：30mmHgまで</div>
+                    <div class="option" data-answer="false">標準設定：50〜60mmHgまで、最大：80mmHgまで</div>
+                    <div class="option" data-answer="false">標準設定：20〜30mmHgまで、最大：40mmHgまで</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>一般的にノンコンは60mmHgまで測定可能ですが、標準設定では30〜40mmHgまでの測定範囲となっています。標準設定で「over」と表示される場合は、この測定範囲を超えている可能性が高いです。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        const QUIZ_ID = 'noncon-iatsu';
+        const TOTAL_QUESTIONS = 11;
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html',
+            'OCT検査_クイズ.html',
+            'アイモ_視野検査_クイズ.html',
+            '視力検査のコツ_クイズ.html',
+            'ノンコン眼圧検査_クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = 11;
+        let questionList = [];
+        let isDaily = false;
+
+        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+
+            // 間違えた問題復習ボタンの表示制御
+            const reviewModeBtn = document.getElementById('reviewModeButton');
+            if (reviewModeBtn) {
+                if (incorrectList.length > 0) {
+                    reviewModeBtn.classList.remove('hidden');
+                    reviewModeBtn.innerHTML = `❌ 間違えた問題だけ復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewModeBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode === 'review') {
+                // 間違えた問題のみを出題
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    // 間違えた問題がない場合はデイリーモードに戻す
+                    questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, getDailyQuestionCount());
+                }
+                totalQuestions = questionList.length;
+            } else if (mode.startsWith('daily')) {
+                isDaily = true;
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+            } else {
+                isDaily = false;
+                totalQuestions = TOTAL_QUESTIONS;
+                questionList = [...allQuestions];
+            }
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if (questionList.includes(i)) {
+                    if (i === questionList[0]) {
+                        questionElement.classList.remove('hidden');
+                    } else {
+                        questionElement.classList.add('hidden');
+                    }
+                } else {
+                    if(document.getElementById(`question${i}`)){
+                        document.getElementById(`question${i}`).style.display = 'none';
+                    }
+                }
+            }
+
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            shuffleOptions(questionList[0]);
+            updateProgress();
+        }
+
+        function getRandomQuestions(count) {
+            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function shuffleOptions(questionId) {
+            if (!questionId) return;
+            const container = document
+                .getElementById(`question${questionId}`)
+                .querySelector('.options');
+            if (!container) return;
+
+            for (let i = container.children.length; i >= 0; i--) {
+                const rand = Math.floor(Math.random() * i);
+                if (container.children[rand]) {
+                    container.appendChild(container.children[rand]);
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+        }
+
+        function selectAnswer(selectedOption) {
+            const currentQuestionId = questionList[currentQuestion];
+            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+            const options = currentQuestionElement.querySelectorAll('.option');
+            const feedback = currentQuestionElement.querySelector('.feedback');
+            const explanation = currentQuestionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+
+            const isCorrect = selectedOption.dataset.answer === 'true';
+            let correctAnswerText = '';
+
+            options.forEach(option => {
+                if (option.dataset.answer === 'true') {
+                    correctAnswerText = option.textContent;
+                }
+            });
+
+            options.forEach(option => {
+                option.classList.add('disabled');
+                if (option.dataset.answer === 'true') {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && option.dataset.answer === 'false') {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                feedback.textContent = '🎉 正解です！';
+                feedback.className = 'feedback correct';
+                score++;
+                flashCorrect(selectedOption);
+            } else {
+                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            // 問題ごとの結果を記録（復習・未挑戦モード用）
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+            }
+
+            feedback.style.display = 'block';
+            explanation.classList.remove('hidden');
+
+            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
+            setTimeout(() => {
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+
+            updateScore();
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+
+            shuffleOptions(nextQuestionId);
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            // 結果を記録（エラーでも結果画面は表示する）
+            let newBadges = [];
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
+                }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
+            }
+
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！眼圧検査の知識はバッチリです。\n安全で正確な測定ができますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！眼圧検査の基本をしっかり理解されています。\n間違えた箇所を復習し、さらに自信を持って検査を行いましょう。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '💪 これからが本番！ 💪';
+                message = `良い復習の機会になりましたね。\nノンコンの操作と患者さんへの配慮を意識して、スキルアップを目指しましょう！`;
+            } else {
+                title = '📚 もう一度復習！ 📚';
+                message = `基本をしっかり復習しましょう。\n安全な検査のために、操作のコツと注意点を覚えていきましょう。`;
+            }
+
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
+
+            // バッジ獲得表示
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
+            }
+
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            // ボタンのテキストを設定値に更新
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+
+            // 間違えた問題ボタンの表示制御
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const reviewBtn = document.getElementById('reviewIncorrectButton');
+            if (reviewBtn) {
+                if (incorrectList.length > 0) {
+                    reviewBtn.classList.remove('hidden');
+                    reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewBtn.classList.add('hidden');
+                }
+            }
+
+            // トップへスクロール
+            arrangeResultCards();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            score = 0;
+            updateScore();
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            if (isDaily) {
+                startQuiz('daily');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    const options = questionElement.querySelectorAll('.option');
+                    options.forEach(option => {
+                        option.classList.remove('correct', 'incorrect', 'disabled');
+                    });
+
+                    questionElement.querySelector('.feedback').style.display = 'none';
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = TOTAL_QUESTIONS;
+            questionList = [];
+            isDaily = false;
+
+            updateScore();
+            updateProgressStatus();
+
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // リザルト画面用の進捗HTML生成
+        function generateResultProgressHTML() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+            const progressPercent = Math.round((correctNum / TOTAL_QUESTIONS) * 100);
+            const isPerfect = correctNum === TOTAL_QUESTIONS;
+
+            return `
+                <div class="result-progress-section">
+                    <div class="result-progress-title">📊 このクイズの進捗</div>
+                    <div class="result-progress-bar-container">
+                        <div class="result-progress-bar-fill ${isPerfect ? 'perfect' : ''}" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="result-progress-percentage">${isPerfect ? '🌸 ' : ''}${progressPercent}%${isPerfect ? ' マスター！' : ''}</div>
+                    <div class="result-progress-stats">
+                        <div class="result-progress-stat">
+                            <span>✅ 正解</span>
+                            <span>${correctNum}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>❌ 間違い</span>
+                            <span>${incorrectList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>🆕 未挑戦</span>
+                            <span>${unansweredList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>📝 全問題</span>
+                            <span>${TOTAL_QUESTIONS}問</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // シャッフル3問：別ジャンルのクイズへ
+        function goToRandomQuiz() {
+            // 重み付けでクイズを選択（未挑戦・間違いが多いクイズを優先）
+            const selectedQuiz = getWeightedRandomQuiz(CURRENT_QUIZ_FILE);
+            if (!selectedQuiz) {
+                // フォールバック: 従来のランダム選択
+                const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+                const dailyCount = getDailyQuestionCount();
+                window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+                return;
+            }
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(selectedQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        // もう3問：このクイズの今日の3問を再開
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily`;
+        }
+
+        // 間違えた問題を復習
+        function reviewIncorrectQuestions() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            if (incorrectList.length === 0) return;
+
+            // 間違えた問題数をURLパラメータとして渡す
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
+                selectAnswer(e.target);
+            }
+        });
+    </script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
