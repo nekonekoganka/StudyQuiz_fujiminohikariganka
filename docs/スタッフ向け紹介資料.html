@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひかり眼科 学習クイズ - スタッフ向け紹介資料</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            color: #333;
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 12mm 15mm;
+            background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 30%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ヘッダー装飾 */
+        .header-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8mm;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* メインヘッダー */
+        .main-header {
+            text-align: center;
+            margin-bottom: 8mm;
+            padding-top: 2mm;
+        }
+
+        .app-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2mm 6mm;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 3mm;
+        }
+
+        .main-title {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 2mm;
+            letter-spacing: 0.05em;
+        }
+
+        .main-title .emoji {
+            font-size: 28pt;
+        }
+
+        .subtitle {
+            font-size: 11pt;
+            color: #5c6bc0;
+        }
+
+        /* 特徴セクション */
+        .features {
+            display: flex;
+            gap: 4mm;
+            margin-bottom: 8mm;
+        }
+
+        .feature-card {
+            flex: 1;
+            background: white;
+            border-radius: 4mm;
+            padding: 4mm;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+            border: 1px solid #e8eaf6;
+        }
+
+        .feature-icon {
+            font-size: 20pt;
+            margin-bottom: 2mm;
+        }
+
+        .feature-title {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 1mm;
+        }
+
+        .feature-desc {
+            font-size: 8pt;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* 2カラムレイアウト */
+        .two-column {
+            display: flex;
+            gap: 6mm;
+            margin-bottom: 6mm;
+        }
+
+        .column-left {
+            flex: 1.1;
+        }
+
+        .column-right {
+            flex: 0.9;
+        }
+
+        /* セクションタイトル */
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 3mm;
+            padding-bottom: 1.5mm;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }
+
+        /* クイズ一覧 */
+        .quiz-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2mm;
+        }
+
+        .quiz-item {
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+            background: #f8f9ff;
+            padding: 2mm 3mm;
+            border-radius: 2mm;
+            font-size: 8.5pt;
+        }
+
+        .quiz-item .icon {
+            font-size: 12pt;
+        }
+
+        .quiz-item .name {
+            color: #333;
+        }
+
+        /* スマホモックアップ */
+        .phone-mockup {
+            background: #1a1a2e;
+            border-radius: 8mm;
+            padding: 3mm;
+            width: 55mm;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .phone-screen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5mm;
+            padding: 4mm;
+            min-height: 85mm;
+        }
+
+        .phone-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3mm;
+        }
+
+        .phone-header .logo {
+            font-size: 14pt;
+            margin-bottom: 1mm;
+        }
+
+        .phone-header .title {
+            font-size: 9pt;
+            font-weight: bold;
+        }
+
+        .phone-card {
+            background: white;
+            border-radius: 3mm;
+            padding: 2.5mm;
+            margin-bottom: 2mm;
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }
+
+        .phone-card .card-icon {
+            font-size: 11pt;
+        }
+
+        .phone-card .card-text {
+            font-size: 7pt;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .phone-card .card-count {
+            font-size: 6pt;
+            color: #666;
+            margin-left: auto;
+        }
+
+        /* 使い方 */
+        .how-to-use {
+            background: white;
+            border-radius: 4mm;
+            padding: 4mm;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+            border: 1px solid #e8eaf6;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5mm;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 3mm;
+        }
+
+        .step-number {
+            width: 6mm;
+            height: 6mm;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8pt;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 9pt;
+            color: #333;
+        }
+
+        /* ポイント */
+        .points-section {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
+            border-radius: 4mm;
+            padding: 4mm;
+            margin-bottom: 6mm;
+            border: 1px solid #ffd54f;
+        }
+
+        .points-title {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #f57c00;
+            margin-bottom: 2mm;
+            display: flex;
+            align-items: center;
+            gap: 2mm;
+        }
+
+        .points-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2mm;
+        }
+
+        .point-item {
+            font-size: 8.5pt;
+            color: #333;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5mm;
+        }
+
+        .point-item::before {
+            content: "✓";
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        /* フッター */
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4mm;
+            padding: 5mm;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        .footer-left {
+            flex: 1;
+        }
+
+        .footer-message {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 1mm;
+        }
+
+        .footer-sub {
+            font-size: 8pt;
+            opacity: 0.9;
+        }
+
+        .qr-area {
+            background: white;
+            border-radius: 3mm;
+            padding: 3mm;
+            text-align: center;
+        }
+
+        .qr-placeholder {
+            width: 22mm;
+            height: 22mm;
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7pt;
+            color: #999;
+            margin-bottom: 1mm;
+        }
+
+        .qr-label {
+            font-size: 7pt;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* 印刷用調整 */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .page {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header-decoration"></div>
+
+        <!-- メインヘッダー -->
+        <div class="main-header">
+            <div class="app-badge">📱 スタッフ専用アプリ</div>
+            <div class="main-title">
+                <span class="emoji">👁️</span> ひかり眼科 学習クイズ
+            </div>
+            <div class="subtitle">スキマ時間で楽しく学べる！眼科知識クイズアプリ</div>
+        </div>
+
+        <!-- 特徴 -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">スマホで手軽に</div>
+                <div class="feature-desc">いつでもどこでも<br>スキマ時間に学習</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">全28種類のクイズ</div>
+                <div class="feature-desc">眼科の幅広い知識を<br>カバー</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">学習記録</div>
+                <div class="feature-desc">進捗がわかる<br>マイページ機能</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <div class="feature-title">バッジ獲得</div>
+                <div class="feature-desc">達成感のある<br>ゲーミフィケーション</div>
+            </div>
+        </div>
+
+        <!-- 2カラム -->
+        <div class="two-column">
+            <div class="column-left">
+                <!-- クイズ一覧 -->
+                <div class="section-title">📚 充実のクイズラインナップ</div>
+                <div class="quiz-list">
+                    <div class="quiz-item"><span class="icon">👁️</span><span class="name">緑内障クイズ</span></div>
+                    <div class="quiz-item"><span class="icon">🔬</span><span class="name">白内障クイズ</span></div>
+                    <div class="quiz-item"><span class="icon">👶</span><span class="name">弱視・斜視クイズ</span></div>
+                    <div class="quiz-item"><span class="icon">🩺</span><span class="name">糖尿病網膜症</span></div>
+                    <div class="quiz-item"><span class="icon">📋</span><span class="name">眼科問診クイズ</span></div>
+                    <div class="quiz-item"><span class="icon">💰</span><span class="name">保険点数クイズ</span></div>
+                    <div class="quiz-item"><span class="icon">👓</span><span class="name">メガネ合わせ</span></div>
+                    <div class="quiz-item"><span class="icon">🔵</span><span class="name">コンタクト処方</span></div>
+                    <div class="quiz-item"><span class="icon">📷</span><span class="name">OCT検査</span></div>
+                    <div class="quiz-item"><span class="icon">🎯</span><span class="name">視野検査</span></div>
+                    <div class="quiz-item"><span class="icon">💧</span><span class="name">流涙症</span></div>
+                    <div class="quiz-item"><span class="icon">🧒</span><span class="name">小児近視対策</span></div>
+                </div>
+                <div style="text-align: center; margin-top: 2mm; font-size: 8pt; color: #666;">
+                    ...ほか全28種類！
+                </div>
+
+                <!-- 使い方 -->
+                <div class="section-title" style="margin-top: 5mm;">🚀 使い方はカンタン！</div>
+                <div class="how-to-use">
+                    <div class="step-list">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-text">スマホでQRコードを読み取る or URLにアクセス</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-text">好きなクイズを選んでタップ</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-text">「今日の3問」または「全問モード」を選択</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-text">クイズに回答して解説を読む → 知識が身につく！</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column-right">
+                <!-- スマホモックアップ -->
+                <div class="section-title">📱 アプリ画面イメージ</div>
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div class="logo">👁️</div>
+                            <div class="title">ひかり眼科 学習クイズ</div>
+                        </div>
+                        <div class="phone-card">
+                            <span class="card-icon">👁️</span>
+                            <span class="card-text">緑内障クイズ</span>
+                            <span class="card-count">全13問</span>
+                        </div>
+                        <div class="phone-card">
+                            <span class="card-icon">🔬</span>
+                            <span class="card-text">白内障クイズ</span>
+                            <span class="card-count">全12問</span>
+                        </div>
+                        <div class="phone-card">
+                            <span class="card-icon">💰</span>
+                            <span class="card-text">保険点数クイズ</span>
+                            <span class="card-count">全16問</span>
+                        </div>
+                        <div class="phone-card">
+                            <span class="card-icon">📋</span>
+                            <span class="card-text">眼科問診クイズ</span>
+                            <span class="card-count">全15問</span>
+                        </div>
+                        <div class="phone-card">
+                            <span class="card-icon">🎲</span>
+                            <span class="card-text">ランダム出題</span>
+                            <span class="card-count"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ポイント -->
+        <div class="points-section">
+            <div class="points-title">⭐ おすすめポイント</div>
+            <div class="points-list">
+                <div class="point-item">1日3問だけでOK！無理なく続けられる</div>
+                <div class="point-item">間違えた問題を優先出題で効率学習</div>
+                <div class="point-item">丁寧な解説付きで理解が深まる</div>
+                <div class="point-item">ダークモード対応で目に優しい</div>
+            </div>
+        </div>
+
+        <!-- フッター -->
+        <div class="footer">
+            <div class="footer-left">
+                <div class="footer-message">🌟 今日から始めよう！</div>
+                <div class="footer-sub">毎日少しずつ、眼科のプロフェッショナルへ</div>
+            </div>
+            <div class="qr-area">
+                <div class="qr-placeholder">QRコード<br>ここに貼付</div>
+                <div class="qr-label">スマホで読み取り</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
