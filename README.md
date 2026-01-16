@@ -1,6 +1,6 @@
 # ひかり眼科 学習クイズ
 
-**[クイズに挑戦する](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/)**
+**[クイズに挑戦する](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/)** | **[スタッフ向け紹介資料（A4印刷用）](https://nekonekoganka.github.io/StudyQuiz_fujiminohikariganka/docs/スタッフ向け紹介資料.html)**
 
 ふじみ野ひかり眼科のスタッフ向け学習クイズアプリです。
 
