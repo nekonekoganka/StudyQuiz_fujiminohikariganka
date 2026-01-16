@@ -257,6 +257,29 @@
             font-weight: bold;
         }
 
+
+        /* スクリーンショット（フルワイド） */
+        .screenshots-section-full {
+            margin: 5mm 0;
+        }
+
+        .screenshots-full {
+            display: flex;
+            gap: 5mm;
+            justify-content: center;
+        }
+
+        .screenshot-container-full {
+            text-align: center;
+        }
+
+        .screenshot-container-full img {
+            width: 80mm;
+            height: auto;
+            border-radius: 4mm;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            border: 2px solid #e8eaf6;
+        }
         /* クイズジャンル一覧（コンパクト版） */
         .quiz-genres {
             display: grid;
@@ -429,24 +452,21 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 右カラム: スクショ＆クイズ一覧 -->
-            <div class="right-column">
-                <!-- スクリーンショット -->
-                <div class="screenshots-section">
-                    <div class="section-title">📱 アプリ画面</div>
-                    <div class="screenshots">
-                        <div class="screenshot-container">
-                            <img src="../images/screenshot_top.png" alt="トップ画面">
-                            <div class="screenshot-label">トップ画面</div>
-                        </div>
-                        <div class="screenshot-container">
-                            <img src="../images/screenshot_quiz.png" alt="クイズ画面">
-                            <div class="screenshot-label">クイズ画面</div>
-                        </div>
-                    </div>
+        <!-- スクリーンショット（中段・フルワイド） -->
+        <div class="screenshots-section-full">
+            <div class="section-title">📱 アプリ画面</div>
+            <div class="screenshots-full">
+                <div class="screenshot-container-full">
+                    <img src="../images/screenshot_top.png" alt="トップ画面">
+                    <div class="screenshot-label">トップ画面</div>
                 </div>
-
+                <div class="screenshot-container-full">
+                    <img src="../images/screenshot_quiz.png" alt="クイズ画面">
+                    <div class="screenshot-label">クイズ画面</div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
