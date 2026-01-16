@@ -1230,13 +1230,33 @@ body.small-font .mode-button {
     animation: legendaryIconSpin 3s ease infinite;
 }
 
+.badge-achievement-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .badge-achievement-name {
     font-size: 14px;
     font-weight: bold;
 }
 
+.badge-achievement-condition {
+    font-size: 11px;
+    color: #666;
+    font-weight: normal;
+}
+
 .badge-achievement-item.rare .badge-achievement-name {
     color: white;
+}
+
+.badge-achievement-item.rare .badge-achievement-condition {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.badge-achievement-item.legendary .badge-achievement-condition {
+    color: rgba(62, 39, 35, 0.8);
 }
 
 .badge-achievement-hint {
@@ -1337,6 +1357,18 @@ body.small-font .mode-button {
 
     .badge-achievement.legendary .badge-achievement-hint {
         color: #ffca28;
+    }
+
+    .badge-achievement-condition {
+        color: #9a9a9a;
+    }
+
+    .badge-achievement-item.rare .badge-achievement-condition {
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .badge-achievement-item.legendary .badge-achievement-condition {
+        color: rgba(62, 39, 35, 0.8);
     }
 }
 
