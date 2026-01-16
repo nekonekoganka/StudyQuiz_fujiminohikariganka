@@ -174,6 +174,39 @@ const QUIZ_LIST = [
         genre: 'adult-disease'
     },
     {
+        id: 'atopy_eye',
+        name: 'アトピーと目クイズ',
+        file: 'アトピー性皮膚炎と目_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️',
+        category: 'staff',
+        description: 'アトピー性皮膚炎に伴う眼合併症について学べます',
+        color: 'indigo',
+        genre: 'adult-disease'
+    },
+    {
+        id: 'uveitis',
+        name: 'ぶどう膜炎クイズ',
+        file: 'ぶどう膜炎_クイズ.html',
+        totalQuestions: 10,
+        icon: '👁️',
+        category: 'staff',
+        description: 'ぶどう膜炎の症状や原因疾患について学べます',
+        color: 'indigo',
+        genre: 'adult-disease'
+    },
+    {
+        id: 'floaters',
+        name: '飛蚊症クイズ',
+        file: '飛蚊症_クイズ.html',
+        totalQuestions: 9,
+        icon: '👁️',
+        category: 'staff',
+        description: '飛蚊症の原因や注意すべき症状について学べます',
+        color: 'indigo',
+        genre: 'adult-disease'
+    },
+    {
         id: 'color_vision',
         name: '色覚異常クイズ',
         file: '色覚異常_クイズ.html',
@@ -454,7 +487,7 @@ const BADGE_LIST = [
         name: '成人眼疾患マスター',
         icon: '🏥',
         description: '成人眼疾患系クイズを全制覇',
-        condition: '成人眼疾患系7クイズで全問正解（累積）',
+        condition: '成人眼疾患系10クイズで全問正解（累積）',
         rarity: 'rare',
         check: (progress, stats) => {
             const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'adult-disease');
