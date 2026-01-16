@@ -278,7 +278,7 @@ const QUIZ_LIST = [
         id: 'hoken-tensuu',
         name: '眼科保険点数クイズ',
         file: '眼科保険点数_クイズ.html',
-        totalQuestions: 14,
+        totalQuestions: 16,
         icon: '💰',
         category: 'staff',
         description: '眼科で頻出の保険点数を円換算で学ぶクイズ（1点=10円）',
