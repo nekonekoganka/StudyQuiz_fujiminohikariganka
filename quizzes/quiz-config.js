@@ -1258,7 +1258,10 @@ function renderBadgeAchievement(badges) {
     const badgesHtml = sortedBadges.map(badge => `
         <div class="badge-achievement-item ${badge.rarity || 'normal'}">
             <span class="badge-achievement-icon">${badge.icon}</span>
-            <span class="badge-achievement-name">${badge.name}</span>
+            <div class="badge-achievement-info">
+                <span class="badge-achievement-name">${badge.name}</span>
+                <span class="badge-achievement-condition">${badge.condition}</span>
+            </div>
         </div>
     `).join('');
 
