@@ -496,21 +496,6 @@ const BADGE_LIST = [
             const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'insurance');
             return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
         }
-    },
-    {
-        id: 'all-genre-master',
-        name: '完全制覇',
-        icon: '🌟',
-        description: '全ジャンルをマスター',
-        condition: '全6ジャンルで全問正解（累積）',
-        rarity: 'legendary',
-        check: (progress, stats) => {
-            const genres = ['megane-cl', 'pediatric', 'adult-disease', 'examination', 'rule', 'insurance'];
-            return genres.every(genre => {
-                const genreQuizzes = QUIZ_LIST.filter(q => q.genre === genre);
-                return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
-            });
-        }
     }
 ];
 
