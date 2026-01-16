@@ -532,6 +532,13 @@
             updateQuestionNumbers();
             document.getElementById('total').textContent = totalQuestions;
             updateProgress();
+
+            // 最初の問題の入力欄に自動フォーカス
+            const firstQuestionId = questionList[0];
+            const firstInput = document.getElementById(`question${firstQuestionId}`).querySelector('.numeric-input');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 150);
+            }
         }
 
         function updateQuestionNumbers() {
