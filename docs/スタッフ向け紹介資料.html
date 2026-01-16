@@ -279,56 +279,47 @@
             font-weight: bold;
         }
 
-        /* フッター */
-        .footer {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 4mm;
-            padding: 5mm;
+        /* QRコードセクション */
+        .qr-section {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            color: white;
-        }
-
-        .footer-left {
-            flex: 1;
-        }
-
-        .footer-message {
-            font-size: 14pt;
-            font-weight: bold;
-            margin-bottom: 1mm;
-        }
-
-        .footer-sub {
-            font-size: 8pt;
-            opacity: 0.9;
-        }
-
-        .qr-area {
-            background: white;
+            gap: 4mm;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 3mm;
-            padding: 3mm;
-            text-align: center;
+            padding: 3mm 4mm;
+        }
+
+        .qr-box {
+            background: white;
+            border-radius: 2mm;
+            padding: 2mm;
         }
 
         .qr-placeholder {
-            width: 22mm;
-            height: 22mm;
-            background: #f0f0f0;
-            border: 2px dashed #ccc;
+            width: 18mm;
+            height: 18mm;
+            background: #f8f8f8;
+            border: 1px dashed #ccc;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 7pt;
+            font-size: 6pt;
             color: #999;
+        }
+
+        .qr-text {
+            color: white;
+        }
+
+        .qr-message {
+            font-size: 10pt;
+            font-weight: bold;
             margin-bottom: 1mm;
         }
 
-        .qr-label {
+        .qr-sub {
             font-size: 7pt;
-            color: #333;
-            font-weight: bold;
+            opacity: 0.9;
         }
 
         /* 印刷用調整 */
@@ -443,7 +434,7 @@
             </div>
             <div class="bottom-right">
                 <!-- ポイント（右側） -->
-                <div class="points-section" style="margin-bottom: 0;">
+                <div class="points-section" style="margin-bottom: 4mm;">
                     <div class="points-title">⭐ おすすめポイント</div>
                     <div class="points-list" style="grid-template-columns: 1fr;">
                         <div class="point-item">1日3問だけでOK！</div>
@@ -452,20 +443,20 @@
                         <div class="point-item">ダークモード対応</div>
                     </div>
                 </div>
+                <!-- QRコード -->
+                <div class="qr-section">
+                    <div class="qr-box">
+                        <div class="qr-placeholder">QRコード<br>ここに貼付</div>
+                    </div>
+                    <div class="qr-text">
+                        <div class="qr-message">🌟 今日から始めよう！</div>
+                        <div class="qr-sub">スマホで読み取ってアクセス</div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- フッター -->
-        <div class="footer">
-            <div class="footer-left">
-                <div class="footer-message">🌟 今日から始めよう！</div>
-                <div class="footer-sub">毎日少しずつ、眼科のプロフェッショナルへ</div>
-            </div>
-            <div class="qr-area">
-                <div class="qr-placeholder">QRコード<br>ここに貼付</div>
-                <div class="qr-label">スマホで読み取り</div>
-            </div>
-        </div>
+
     </div>
 </body>
 </html>
