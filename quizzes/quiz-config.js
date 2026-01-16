@@ -15,7 +15,8 @@ const QUIZ_LIST = [
         icon: '💧',
         category: 'staff',
         description: 'コンタクトレンズの処方に関する基本知識をテストします',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'megane-cl'
     },
     {
         id: 'cl_complication',
@@ -25,7 +26,8 @@ const QUIZ_LIST = [
         icon: '👁️‍🗨️',
         category: 'staff',
         description: 'コンタクトレンズの眼合併症と対策について学べます',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'megane-cl'
     },
     {
         id: 'cl_makeup',
@@ -35,7 +37,8 @@ const QUIZ_LIST = [
         icon: '👁️‍🗨️',
         category: 'staff',
         description: 'コンタクトレンズとお化粧の順番やケア方法を学べます',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'megane-cl'
     },
     {
         id: 'enyo-megane',
@@ -45,7 +48,8 @@ const QUIZ_LIST = [
         icon: '🤓',
         category: 'staff',
         description: '大人の遠用メガネ処方の知識をテストします',
-        color: 'amber'
+        color: 'amber',
+        genre: 'megane-cl'
     },
     {
         id: 'megane-awase',
@@ -55,7 +59,8 @@ const QUIZ_LIST = [
         icon: '👓',
         category: 'staff',
         description: '老眼鏡合わせに関する基本知識をテストします',
-        color: 'amber'
+        color: 'amber',
+        genre: 'megane-cl'
     },
     // === 疾患系 ===
     {
@@ -66,7 +71,8 @@ const QUIZ_LIST = [
         icon: '👁️‍🗨️',
         category: 'staff',
         description: '近視の基礎知識と患者様への説明ポイントを学べます',
-        color: 'blue'
+        color: 'blue',
+        genre: 'adult-disease'
     },
     {
         id: 'kafunsho',
@@ -76,7 +82,8 @@ const QUIZ_LIST = [
         icon: '🤧',
         category: 'staff',
         description: '花粉症の症状や対処法についての知識を確認できます',
-        color: 'teal'
+        color: 'teal',
+        genre: 'adult-disease'
     },
     {
         id: 'hakunaisho',
@@ -86,7 +93,8 @@ const QUIZ_LIST = [
         icon: '📖',
         category: 'staff',
         description: '白内障の基礎知識と患者様への説明ポイントを学べます',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'adult-disease'
     },
     {
         id: 'ryokunaisho',
@@ -96,7 +104,8 @@ const QUIZ_LIST = [
         icon: '👁️',
         category: 'staff',
         description: '緑内障について正しく理解するためのクイズです',
-        color: 'green'
+        color: 'green',
+        genre: 'adult-disease'
     },
     {
         id: 'jakushi',
@@ -106,7 +115,8 @@ const QUIZ_LIST = [
         icon: '👀',
         category: 'staff',
         description: '弱視の基礎知識と保護者への説明ポイントを学べます',
-        color: 'purple'
+        color: 'purple',
+        genre: 'pediatric'
     },
     {
         id: 'shashi',
@@ -116,7 +126,8 @@ const QUIZ_LIST = [
         icon: '🧐',
         category: 'staff',
         description: '斜視の基礎知識と保護者への説明ポイントを学べます',
-        color: 'purple'
+        color: 'purple',
+        genre: 'pediatric'
     },
     {
         id: 'pediatric_myopia',
@@ -126,7 +137,8 @@ const QUIZ_LIST = [
         icon: '👁️',
         category: 'staff',
         description: '子どもの近視予防と保護者への説明ポイントを学べます',
-        color: 'purple'
+        color: 'purple',
+        genre: 'pediatric'
     },
     {
         id: 'diabetic_retinopathy',
@@ -136,7 +148,8 @@ const QUIZ_LIST = [
         icon: '🩺',
         category: 'staff',
         description: '糖尿病網膜症の基礎知識と患者様への説明ポイントを学べます',
-        color: 'indigo'
+        color: 'indigo',
+        genre: 'adult-disease'
     },
     {
         id: 'epiphora',
@@ -146,7 +159,8 @@ const QUIZ_LIST = [
         icon: '💧',
         category: 'staff',
         description: '流涙症の原因や涙道の仕組みについて学べます',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'adult-disease'
     },
     {
         id: 'macular_membrane',
@@ -156,7 +170,8 @@ const QUIZ_LIST = [
         icon: '👁️',
         category: 'staff',
         description: '黄斑前膜の症状や治療について学べます',
-        color: 'indigo'
+        color: 'indigo',
+        genre: 'adult-disease'
     },
     {
         id: 'color_vision',
@@ -166,7 +181,8 @@ const QUIZ_LIST = [
         icon: '🎨',
         category: 'staff',
         description: '色覚異常の頻度や遺伝、カラーユニバーサルデザインを学べます',
-        color: 'purple'
+        color: 'purple',
+        genre: 'pediatric'
     },
     // === ルール・検診系 ===
     {
@@ -177,7 +193,8 @@ const QUIZ_LIST = [
         icon: '🏥',
         category: 'staff',
         description: '自治体の緑内障検診制度についての知識を確認できます',
-        color: 'indigo'
+        color: 'indigo',
+        genre: 'rule'
     },
     {
         id: 'innai-rule',
@@ -187,7 +204,8 @@ const QUIZ_LIST = [
         icon: '🏥',
         category: 'staff',
         description: '休診日、予約ルール、受付時間など、院内の基本ルールを確認できます',
-        color: 'blue'
+        color: 'blue',
+        genre: 'rule'
     },
     {
         id: 'oct',
@@ -197,7 +215,8 @@ const QUIZ_LIST = [
         icon: '👁️',
         category: 'staff',
         description: 'OCT検査の基本とコツ、患者様への説明ポイントを学べます',
-        color: 'teal'
+        color: 'teal',
+        genre: 'examination'
     },
     {
         id: 'imo_shinya',
@@ -207,7 +226,8 @@ const QUIZ_LIST = [
         icon: '👀',
         category: 'staff',
         description: '視野計アイモの基本と特徴、検査配列について学べます',
-        color: 'green'
+        color: 'green',
+        genre: 'examination'
     },
     {
         id: 'siryoku',
@@ -217,7 +237,8 @@ const QUIZ_LIST = [
         icon: '👁️',
         category: 'staff',
         description: '視力検査の基本とコツ、患者様への対応ポイントを学べます',
-        color: 'amber'
+        color: 'amber',
+        genre: 'examination'
     },
     {
         id: 'noncon-iatsu',
@@ -227,7 +248,8 @@ const QUIZ_LIST = [
         icon: '💨',
         category: 'staff',
         description: '眼圧測定のコツと安全な検査のポイントを学べます',
-        color: 'cyan'
+        color: 'cyan',
+        genre: 'examination'
     },
     {
         id: 'monshin',
@@ -237,7 +259,8 @@ const QUIZ_LIST = [
         icon: '📋',
         category: 'staff',
         description: '眼科における問診のコツと注意点を学ぶクイズ',
-        color: 'blue'
+        color: 'blue',
+        genre: 'examination'
     },
     // === レセプト・保険点数系 ===
     {
@@ -248,7 +271,8 @@ const QUIZ_LIST = [
         icon: '🏥',
         category: 'staff',
         description: '眼科外来で必要な保険診療のルールを学ぶクイズ',
-        color: 'blue'
+        color: 'blue',
+        genre: 'insurance'
     },
     {
         id: 'hoken-tensuu',
@@ -258,7 +282,8 @@ const QUIZ_LIST = [
         icon: '💰',
         category: 'staff',
         description: '眼科で頻出の保険点数を円換算で学ぶクイズ（1点=10円）',
-        color: 'blue'
+        color: 'blue',
+        genre: 'insurance'
     }
 ];
 
@@ -397,6 +422,94 @@ const BADGE_LIST = [
         rarity: 'legendary',
         check: (progress, stats) => {
             return QUIZ_LIST.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    // --- ジャンルマスター系 ---
+    {
+        id: 'megane-cl-master',
+        name: 'メガネ・CLマスター',
+        icon: '👓',
+        description: 'メガネ・CL系クイズを全制覇',
+        condition: 'メガネ・CL系5クイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'megane-cl');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'pediatric-master',
+        name: '小児眼科マスター',
+        icon: '👶',
+        description: '小児眼科系クイズを全制覇',
+        condition: '小児眼科系4クイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'pediatric');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'adult-disease-master',
+        name: '成人眼疾患マスター',
+        icon: '🏥',
+        description: '成人眼疾患系クイズを全制覇',
+        condition: '成人眼疾患系7クイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'adult-disease');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'examination-master',
+        name: '検査マスター',
+        icon: '🔬',
+        description: '検査系クイズを全制覇',
+        condition: '検査系5クイズで全問正解（累積）',
+        rarity: 'rare',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'examination');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'rule-master',
+        name: 'ルールマスター',
+        icon: '📋',
+        description: 'ルール・検診系クイズを全制覇',
+        condition: 'ルール・検診系2クイズで全問正解（累積）',
+        rarity: 'normal',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'rule');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'insurance-master',
+        name: 'レセプトマスター',
+        icon: '💰',
+        description: '保険点数系クイズを全制覇',
+        condition: '保険点数系2クイズで全問正解（累積）',
+        rarity: 'normal',
+        check: (progress, stats) => {
+            const genreQuizzes = QUIZ_LIST.filter(q => q.genre === 'insurance');
+            return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+        }
+    },
+    {
+        id: 'all-genre-master',
+        name: '完全制覇',
+        icon: '🌟',
+        description: '全ジャンルをマスター',
+        condition: '全6ジャンルで全問正解（累積）',
+        rarity: 'legendary',
+        check: (progress, stats) => {
+            const genres = ['megane-cl', 'pediatric', 'adult-disease', 'examination', 'rule', 'insurance'];
+            return genres.every(genre => {
+                const genreQuizzes = QUIZ_LIST.filter(q => q.genre === genre);
+                return genreQuizzes.every(quiz => progress[quiz.id] && progress[quiz.id].isPerfect);
+            });
         }
     }
 ];
