@@ -4,570 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>コンタクトレンズ処方クイズ - スタッフ向け</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 12px;
-            padding-top: max(12px, env(safe-area-inset-top));
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
-            padding-left: max(12px, env(safe-area-inset-left));
-            padding-right: max(12px, env(safe-area-inset-right));
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            min-height: 100vh;
-        }
-        .quiz-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        @media (min-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .quiz-container {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            .quiz-container {
-                padding: 20px;
-            }
-        }
-        
-        h1 {
-            text-align: center;
-            color: #1a237e;
-            font-size: 28px;
-            margin-bottom: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-            }
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #283593;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .subtitle {
-                font-size: 16px;
-            }
-        }
-
-        .top-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-link a {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .top-link a:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-link a:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-        }
-
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #00c6fb, #005bea);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 198, 251, 0.3);
-        }
-        
-        .mode-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .mode-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(0, 198, 251, 0.4);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 18px 30px;
-                font-size: 17px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #1a237e;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .question-card {
-            background: #f7fcff;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #00c6fb;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e3f2fd;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #005bea;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1a237e;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
-            background: white;
-            border: 2px solid #e3f2fd;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:active {
-            transform: scale(0.98);
-            background: #e1f5fe;
-            border-color: #00c6fb;
-        }
-
-        @media (min-width: 768px) {
-            .option:hover {
-                border-color: #00c6fb;
-                background: #e1f5fe;
-                transform: translateY(-3px);
-                box-shadow: 0 6px 20px rgba(0, 198, 251, 0.25);
-            }
-        }
-
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #00c6fb, #005bea);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-
-        .top-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .mypage-button {
-            background: linear-gradient(135deg, #26a69a, #00897b);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-            .top-button, .mypage-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active, .top-button:active, .mypage-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 198, 251, 0.4);
-            }
-            .top-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-            .mypage-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
-            }
-        }
-
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e8eaf6;
-            color: #303f9f;
-            border: 2px solid #7986cb;
-        }
-        .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
-        }
-        
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #1a237e;
-            margin: 0;
-            padding: 12px;
-            background: #e3f2fd;
-            border-radius: 10px;
-            border: 2px solid #bbdefb;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #bbdefb;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #e3f2fd;
-            border-left: 5px solid #2196f3;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .staff-point {
-            background: #fff8e1;
-            border: 2px solid #ffab00;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #4e342e;
-            line-height: 1.4;
-            font-weight: 600;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #00c6fb, #005bea);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .final-score-card{
-            background:#f7fcff;
-            border:2px solid #005bea;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#1a237e;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #1a237e;
-        }
-
-        .result-evaluation {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .final-score-highlight {
-            color: #c62828;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
-        }
-
-        /* 正解エフェクト */
-        .celebrate-emoji {
-            position: fixed;
-            font-size: 40px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: celebrate 1s ease-out forwards;
-        }
-
-        @keyframes celebrate {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-60px) scale(1.2) rotate(15deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(0.8) rotate(-10deg);
-            }
-        }
-
-        .correct-flash {
-            animation: flashGreen 0.4s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
         <h1>💧 コンタクトレンズ処方クイズ 💧</h1>
         <div class="subtitle">スタッフ向け - 球面CL処方マスター</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">💧 コンタクトレンズ処方クイズ</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📋 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily10')">
-                📊 今日の10問
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全29問）
+                📚 全問モード（全29問）
             </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">29問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">29問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の5問:</strong> 全29問からランダムに5問を出題<br>
-                <strong>今日の10問:</strong> 全29問からランダムに10問を出題<br>
-                <strong>フルコース:</strong> 全29問を順番に出題
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全29問を順番に出題
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">28</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">29</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="question-card" id="question1">
+            <div class="question-card hidden" id="question1">
                 <div class="question-number">問題 1</div>
                 <div class="question-text">CL処方において、最初に行うことは何ですか？</div>
                 <div class="options">
@@ -582,7 +77,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question2">
+            <div class="question-card hidden" id="question2">
                 <div class="question-number">問題 2</div>
                 <div class="question-text">オートレフのK値（ケラト値）は何を測定していますか？</div>
                 <div class="options">
@@ -597,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question3">
+            <div class="question-card hidden" id="question3">
                 <div class="question-number">問題 3</div>
                 <div class="question-text">ソフトコンタクトレンズ（SCL）のベースカーブ（BC）を選ぶ際、K値に対してどう選ぶのが一般的ですか？</div>
                 <div class="options">
@@ -612,7 +107,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question4">
+            <div class="question-card hidden" id="question4">
                 <div class="question-number">問題 4</div>
                 <div class="question-text">ハードコンタクトレンズ（HCL）のBCを選ぶ際、K値に対してどう選ぶのが一般的ですか？</div>
                 <div class="options">
@@ -627,24 +122,24 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question5">
+            <div class="question-card hidden" id="question5">
                 <div class="question-number">問題 5</div>
                 <div class="question-text">メガネの度数からCLの度数を決定する際に、必ず行わなければならない計算は何ですか？</div>
                 <div class="options">
                     <div class="option" data-answer="false">球面等価換算</div>
-                    <div class="option" data-answer="true">頂間距離換算</div>
+                    <div class="option" data-answer="true">頂点間距離換算</div>
                     <div class="option" data-answer="false">瞳孔間距離の調整</div>
                     <div class="option" data-answer="false">加入度の計算</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>メガネは目から約12mm離れていますが、CLは角膜の上に直接乗ります。この距離の違いによる度数のズレを補正するのが「頂間距離換算」です。特に度数が強い場合は必須の計算です。
+                    <strong>解説：</strong>メガネは目から約12mm離れていますが、CLは角膜の上に直接乗ります。この距離の違いによる度数のズレを補正するのが「頂点間距離換算」です。特に度数が強い場合は必須の計算です。
                 </div>
             </div>
 
-            <div class="question-card" id="question6">
+            <div class="question-card hidden" id="question6">
                 <div class="question-number">問題 6</div>
-                <div class="question-text">頂間距離換算を行うと、強い近視（マイナス度数）の場合、CLの度数はメガネの度数と比べてどうなりますか？</div>
+                <div class="question-text">頂点間距離換算を行うと、強い近視（マイナス度数）の場合、CLの度数はメガネの度数と比べてどうなりますか？</div>
                 <div class="options">
                     <div class="option" data-answer="false">強くなる（マイナスの数字が大きくなる）</div>
                     <div class="option" data-answer="true">弱くなる（マイナスの数字が小さくなる）</div>
@@ -657,7 +152,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question7">
+            <div class="question-card hidden" id="question7">
                 <div class="question-number">問題 7</div>
                 <div class="question-text">SCLのフィッティングを評価する「瞬目テスト」で、理想的なレンズの動きはどれですか？</div>
                 <div class="options">
@@ -672,7 +167,7 @@
                 </div>
             </div>
 
-             <div class="question-card" id="question8">
+             <div class="question-card hidden" id="question8">
                 <div class="question-number">問題 8</div>
                 <div class="question-text">HCLと角膜の間にある涙の層がレンズとして働く効果を何と呼びますか？</div>
                 <div class="options">
@@ -687,7 +182,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question9">
+            <div class="question-card hidden" id="question9">
                 <div class="question-number">問題 9</div>
                 <div class="question-text">SCLの処方において、レンズの直径（DIA）が小さすぎるとどうなりますか？</div>
                 <div class="options">
@@ -702,7 +197,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question10">
+            <div class="question-card hidden" id="question10">
                 <div class="question-number">問題 10</div>
                 <div class="question-text">CLの過矯正（度数が強すぎること）が引き起こす主な問題は何ですか？</div>
                 <div class="options">
@@ -717,7 +212,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question11">
+            <div class="question-card hidden" id="question11">
                 <div class="question-number">問題 11</div>
                 <div class="question-text">「トライアルレンズ」を装用してもらう最大の目的は何ですか？</div>
                 <div class="options">
@@ -732,7 +227,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question12">
+            <div class="question-card hidden" id="question12">
                 <div class="question-number">問題 12</div>
                 <div class="question-text">ハードCLがソフトCLより優れている点は何ですか？</div>
                 <div class="options">
@@ -747,7 +242,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question13">
+            <div class="question-card hidden" id="question13">
                 <div class="question-number">問題 13</div>
                 <div class="question-text">CLの上から度数を微調整する「オーバーレフラクション」で、S+0.25Dを入れて視力が変わらない場合、何を意味しますか？</div>
                 <div class="options">
@@ -762,7 +257,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question14">
+            <div class="question-card hidden" id="question14">
                 <div class="question-number">問題 14</div>
                 <div class="question-text">ベースカーブ（BC）が角膜に対して「タイト（きつい）」な場合、どのような症状が出やすいですか？</div>
                 <div class="options">
@@ -777,7 +272,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question15">
+            <div class="question-card hidden" id="question15">
                 <div class="question-number">問題 15</div>
                 <div class="question-text">ベースカーブ（BC）が角膜に対して「ルーズ（ゆるい）」な場合、どのような症状が出やすいですか？</div>
                 <div class="options">
@@ -792,14 +287,14 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question16">
+            <div class="question-card hidden" id="question16">
                 <div class="question-number">問題 16</div>
                 <div class="question-text">初めてCLを使う患者様に、最も重要な指導事項は何ですか？</div>
                 <div class="options">
                     <div class="option" data-answer="false">レンズを安く買う方法</div>
                     <div class="option" data-answer="true">正しいレンズケアと、定期検査の重要性</div>
                     <div class="option" data-answer="false">レンズをつけたまま寝ても良いこと</div>
-                    <div class="option" data-answer="false">友達と貸し借りをしないこと</div>
+                    <div class="option" data-answer="false">レンズは左右を気にしなくていいこと</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
@@ -807,7 +302,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question17">
+            <div class="question-card hidden" id="question17">
                 <div class="question-number">問題 17</div>
                 <div class="question-text">HCLのフィッティングで、フルオレセイン（染色液）を使って観察する目的は何ですか？</div>
                 <div class="options">
@@ -822,7 +317,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question18">
+            <div class="question-card hidden" id="question18">
                 <div class="question-number">問題 18</div>
                 <div class="question-text">SCLの素材による分類で、「含水率」が高いレンズの特徴として正しいものはどれですか？</div>
                 <div class="options">
@@ -837,7 +332,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question19">
+            <div class="question-card hidden" id="question19">
                 <div class="question-number">問題 19</div>
                 <div class="question-text">「1日使い捨て（ワンデー）レンズ」の最大のメリットは何ですか？</div>
                 <div class="options">
@@ -852,7 +347,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question20">
+            <div class="question-card hidden" id="question20">
                 <div class="question-number">問題 20</div>
                 <div class="question-text">HCLの処方で、レンズの直径（DIA）を決定する主な要素は何ですか？</div>
                 <div class="options">
@@ -867,7 +362,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question21">
+            <div class="question-card hidden" id="question21">
                 <div class="question-number">問題 21</div>
                 <div class="question-text">CL装用者の定期検査で、スリット（細隙灯顕微鏡）で特に観察すべきことは何ですか？</div>
                 <div class="options">
@@ -882,7 +377,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question22">
+            <div class="question-card hidden" id="question22">
                 <div class="question-number">問題 22</div>
                 <div class="question-text">強い近視の患者様にSCLを処方する際、メガネの度数と比べてコンタクトの度数はどうなりますか？</div>
                 <div class="options">
@@ -894,10 +389,14 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>眼鏡は角膜から約12mm離れた位置で装用されるのに対し、SCLは角膜上に直接装用されます。この頂点間距離の違いにより、近視の場合はSCLの度数は眼鏡より弱くなります（例：眼鏡-6.00D → SCL-5.50D）。覚え方として、近視でも遠視でもSCLは眼鏡に対してプラス方向にシフトします。この差は±4.00D以上で顕著になり、強度近視ほど換算が必要です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/CL/CL_kinshinodosuukansannhyou.png" alt="近視のレンズ度数換算早見表">
+                        <span class="image-caption">近視のレンズ度数換算早見表（-3.75以下はコンタクトと同じ度数）</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="question-card" id="question23">
+            <div class="question-card hidden" id="question23">
                 <div class="question-number">問題 23</div>
                 <div class="question-text">患者が「CLは一度つけたら、外すまでずっと見え方は同じ」と考えている場合、なんと説明しますか？</div>
                 <div class="options">
@@ -912,7 +411,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question24">
+            <div class="question-card hidden" id="question24">
                 <div class="question-number">問題 24</div>
                 <div class="question-text">HCLの処方で、角膜乱視が-1.50Dある場合、涙液レンズによってどの程度矯正が期待できますか？</div>
                 <div class="options">
@@ -927,7 +426,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question25">
+            <div class="question-card hidden" id="question25">
                 <div class="question-number">問題 25</div>
                 <div class="question-text">SCLのフィッティングで「プッシュアップテスト」を行う目的は何ですか？</div>
                 <div class="options">
@@ -942,7 +441,7 @@
                 </div>
             </div>
             
-            <div class="question-card" id="question26">
+            <div class="question-card hidden" id="question26">
                 <div class="question-number">問題 26</div>
                 <div class="question-text">なぜCL処方には、眼科医の診察が法律で義務付けられているのですか？</div>
                 <div class="options">
@@ -957,7 +456,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question27">
+            <div class="question-card hidden" id="question27">
                 <div class="question-number">問題 27</div>
                 <div class="question-text">トライアルレンズで「S-3.00Dで1.0」の患者が、より強い「S-3.25Dで1.2」見えた場合、どちらを処方するのが原則ですか？</div>
                 <div class="options">
@@ -972,7 +471,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question28">
+            <div class="question-card hidden" id="question28">
                 <div class="question-number">問題 28</div>
                 <div class="question-text">レンズケースの衛生管理について、患者様にどう指導するのが最も適切ですか？</div>
                 <div class="options">
@@ -987,7 +486,7 @@
                 </div>
             </div>
 
-            <div class="question-card" id="question29">
+            <div class="question-card hidden" id="question29">
                 <div class="question-number">問題 29</div>
                 <div class="question-text">強い遠視の患者様にSCLを処方する際、メガネの度数と比べてコンタクトの度数はどうなりますか？</div>
                 <div class="options">
@@ -999,6 +498,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>眼鏡は角膜から約12mm離れた位置で装用されるのに対し、SCLは角膜上に直接装用されます。この頂点間距離の違いにより、遠視の場合はSCLの度数は眼鏡より強くなります（例：眼鏡+6.00D → SCL+6.50D）。覚え方として、近視でも遠視でもSCLは眼鏡に対してプラス方向にシフトします。この差は±4.00D以上で顕著になり、強度遠視ほど換算が必要です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/CL/CL_enshinodosuukannsann.png" alt="遠視の度数換算表">
+                        <span class="image-caption">遠視の度数換算表（メガネ→コンタクト、頂点間距離別）</span>
+                    </div>
                 </div>
             </div>
 
@@ -1012,6 +515,23 @@
     <script src="quiz-config.js"></script>
     <script>
         const QUIZ_ID = 'contact-basic';
+        const TOTAL_QUESTIONS = 29;
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
 
         let currentQuestion = 1;
         let score = 0;
@@ -1020,6 +540,72 @@
         let isDaily = false;
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+
+            // 間違えた問題復習ボタンの表示制御
+            const reviewModeBtn = document.getElementById('reviewModeButton');
+            if (reviewModeBtn) {
+                if (incorrectList.length > 0) {
+                    reviewModeBtn.classList.remove('hidden');
+                    reviewModeBtn.innerHTML = `❌ 間違えた問題だけ復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewModeBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         // 正解時フラッシュ効果
         function flashCorrect(element) {
@@ -1065,22 +651,29 @@
             document.querySelector('.subtitle').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily5') {
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode === 'review') {
+                // 間違えた問題のみを出題
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    // 間違えた問題がない場合はデイリーモードに戻す
+                    questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, getDailyQuestionCount());
+                }
+                totalQuestions = questionList.length;
+            } else if (mode.startsWith('daily')) {
                 isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily10') {
-                isDaily = true;
-                totalQuestions = 10;
-                questionList = getRandomQuestions(10);
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
             } else {
                 isDaily = false;
-                totalQuestions = 29;
+                totalQuestions = TOTAL_QUESTIONS;
                 questionList = [...allQuestions];
             }
 
-            for (let i = 1; i <= 29; i++) {
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionList.includes(i)) {
                     if (i === questionList[0]) {
@@ -1135,6 +728,7 @@
         function updateProgress() {
             const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
         }
 
         function selectAnswer(selectedOption) {
@@ -1172,6 +766,11 @@
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
+            }
+
+            // 問題ごとの結果を記録（復習・未挑戦モード用）
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
             }
 
             feedback.style.display = 'block';
@@ -1216,6 +815,26 @@
             document.querySelector('.quiz-container').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            // 結果を記録（エラーでも結果画面は表示する）
+            let newBadges = [];
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
+                }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
+            }
+
             let title, message;
 
             if (score === totalQuestions) {
@@ -1237,25 +856,54 @@
             const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
 
-            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
+
+            // バッジ獲得表示
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
+            }
 
             document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            // ボタンのテキストを設定値に更新
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
 
+            // 間違えた問題ボタンの表示制御
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const reviewBtn = document.getElementById('reviewIncorrectButton');
+            if (reviewBtn) {
+                if (incorrectList.length > 0) {
+                    reviewBtn.classList.remove('hidden');
+                    reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewBtn.classList.add('hidden');
+                }
+            }
+
             // トップへスクロール
+            arrangeResultCards();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // 結果発表エフェクト
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // マイページ用に結果を記録
-            recordQuizResult(QUIZ_ID, score, totalQuestions);
         }
 
         function resetQuiz() {
@@ -1264,7 +912,7 @@
             score = 0;
             updateScore();
 
-            for (let i = 1; i <= 29; i++) {
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement){
                     questionElement.style.display = '';
@@ -1282,17 +930,16 @@
 
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
 
             document.querySelector('.quiz-status').classList.remove('hidden');
 
-            if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 10) {
-                startQuiz('daily10');
+            if (isDaily) {
+                startQuiz('daily');
             } else {
                 startQuiz('full');
             }
@@ -1305,8 +952,9 @@
 
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
 
-            for (let i = 1; i <= 29; i++) {
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if(questionElement) {
                     questionElement.style.display = '';
@@ -1316,33 +964,103 @@
                     options.forEach(option => {
                         option.classList.remove('correct', 'incorrect', 'disabled');
                     });
-                    
+
                     questionElement.querySelector('.feedback').style.display = 'none';
                     questionElement.querySelector('.explanation').classList.add('hidden');
                 }
             }
-            
+
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
             score = 0;
-            totalQuestions = 29;
+            totalQuestions = TOTAL_QUESTIONS;
             questionList = [];
             isDaily = false;
-            
+
             updateScore();
-            
+            updateProgressStatus();
+
             document.getElementById('modeSelection').classList.remove('hidden');
         }
 
         function updateScore() {
             document.getElementById('score').textContent = score;
+        }
+
+        // リザルト画面用の進捗HTML生成
+        function generateResultProgressHTML() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+            const progressPercent = Math.round((correctNum / TOTAL_QUESTIONS) * 100);
+            const isPerfect = correctNum === TOTAL_QUESTIONS;
+
+            return `
+                <div class="result-progress-section">
+                    <div class="result-progress-title">📊 このクイズの進捗</div>
+                    <div class="result-progress-bar-container">
+                        <div class="result-progress-bar-fill ${isPerfect ? 'perfect' : ''}" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="result-progress-percentage">${isPerfect ? '🌸 ' : ''}${progressPercent}%${isPerfect ? ' マスター！' : ''}</div>
+                    <div class="result-progress-stats">
+                        <div class="result-progress-stat">
+                            <span>✅ 正解</span>
+                            <span>${correctNum}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>❌ 間違い</span>
+                            <span>${incorrectList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>🆕 未挑戦</span>
+                            <span>${unansweredList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>📝 全問題</span>
+                            <span>${TOTAL_QUESTIONS}問</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // シャッフル3問：別ジャンルのクイズへ
+        function goToRandomQuiz() {
+            // 重み付けでクイズを選択（未挑戦・間違いが多いクイズを優先）
+            const selectedQuiz = getWeightedRandomQuiz(CURRENT_QUIZ_FILE);
+            if (!selectedQuiz) {
+                // フォールバック: 従来のランダム選択
+                const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+                const dailyCount = getDailyQuestionCount();
+                window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+                return;
+            }
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(selectedQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        // もう3問：このクイズの今日の3問を再開
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily`;
+        }
+
+        // 間違えた問題を復習
+        function reviewIncorrectQuestions() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            if (incorrectList.length === 0) return;
+
+            // 間違えた問題数をURLパラメータとして渡す
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
         }
 
         document.addEventListener('click', function(e) {
@@ -1354,10 +1072,22 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 

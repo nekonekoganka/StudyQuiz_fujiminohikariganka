@@ -4,593 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>緑内障理解度クイズ - 患者・家族向け</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 12px;
-            padding-top: max(12px, env(safe-area-inset-top));
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
-            padding-left: max(12px, env(safe-area-inset-left));
-            padding-right: max(12px, env(safe-area-inset-right));
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-            min-height: 100vh;
-        }
-        .quiz-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        @media (min-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .quiz-container {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            .quiz-container {
-                padding: 20px;
-            }
-        }
-        
-        h1 {
-            text-align: center;
-            color: #1b5e20;
-            font-size: 28px;
-            margin-bottom: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-            }
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #2e7d32;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .subtitle {
-                font-size: 16px;
-            }
-        }
-
-        .top-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-link a {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .top-link a:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-link a:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-        }
-
-        .top-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .mypage-button {
-            background: linear-gradient(135deg, #26a69a, #00897b);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .top-button:active, .mypage-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-            .mypage-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
-            }
-        }
-
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.3);
-        }
-        
-        .mode-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .mode-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 18px 30px;
-                font-size: 17px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #1b5e20;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .question-card {
-            background: #f1f8e9;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #388e3c;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #c8e6c9;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #388e3c;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1b5e20;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
-            background: white;
-            border: 2px solid #c8e6c9;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:active {
-            transform: scale(0.98);
-            background: #e8f5e9;
-            border-color: #388e3c;
-        }
-
-        @media (min-width: 768px) {
-            .option:hover {
-                border-color: #388e3c;
-                background: #e8f5e9;
-                transform: translateY(-3px);
-                box-shadow: 0 6px 20px rgba(56, 142, 60, 0.25);
-            }
-        }
-
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #dc2626;
-            background: #fef2f2;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-        
-        @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-        
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
-            }
-        }
-
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 2px solid #4caf50;
-        }
-        .feedback.incorrect {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 2px solid #ef5350;
-        }
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #1b5e20;
-            margin: 0;
-            padding: 12px;
-            background: #e8f5e9;
-            border-radius: 10px;
-            border: 2px solid #c8e6c9;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #c8e6c9;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-        }
-        
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #e0f2f1;
-            border-left: 5px solid #009688;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .important-note {
-            background: #fff3e0;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #e65100;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .important-note {
-                padding: 12px;
-                font-size: 16px;
-            }
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .medical-note {
-            background: #e3f2fd;
-            border: 2px solid #2196f3;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #0d47a1;
-            line-height: 1.4;
-            font-weight: 600;
-        }
-    
-        .final-score-card{
-            background:#f1f8e9;
-            border:2px solid #388e3c;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#1b5e20;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #1b5e20;
-        }
-
-        .result-evaluation {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .final-score-highlight {
-            color: #dc2626;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
-        }
-
-        /* 正解エフェクト */
-        .celebrate-emoji {
-            position: fixed;
-            font-size: 40px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: celebrate 1s ease-out forwards;
-        }
-
-        @keyframes celebrate {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-60px) scale(1.2) rotate(15deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(0.8) rotate(-10deg);
-            }
-        }
-
-        .correct-flash {
-            animation: flashGreen 0.4s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
         <h1>👁️ 緑内障理解度クイズ 👁️</h1>
         <div class="subtitle">患者・家族向け - 病気への理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 緑内障理解度クイズ</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily7')">
-                📈 今日の7問
-            </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全17問）
+                📚 全問モード（全17問）
             </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">17問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">17問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全17問からランダムに3問を出題（約2分）<br>
-                <strong>今日の5問:</strong> 全17問からランダムに5問を出題（約3分）<br>
-                <strong>今日の7問:</strong> 全17問からランダムに7問を出題（約5分）<br>
-                <strong>フルコース:</strong> 全17問を順番に出題（約10分）
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全17問を順番に出題
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">17</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">17</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="question-card" id="question1">
+            <div class="question-card hidden" id="question1">
                 <div class="question-number">問題 1</div>
                 <div class="question-text">40歳以上の日本人で緑内障の患者さんの割合はどのくらいでしょうか？</div>
                 <div class="options">
@@ -710,6 +182,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>視野検査は、そのときの患者さんの気持ちや体調がよく反映される検査です。落ち込んでいたり、緊張してドキドキして検査を受けるとうまくいきません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/ryokunaisyou/ryokunaisyou_siyakennsanokekka.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：黒い部分が視野欠損を示している</span>
+                    </div>
                     <div class="medical-note">
                         <strong>検査のコツ：</strong>視野検査は正常な方でも見えない光を提示したりして検査するので、焦らず正直に受けるようにお願いします。眼を動かすと検査結果が良く出てしまいます。
                     </div>
@@ -746,6 +222,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>霞んだり、文字を読み飛ばしたりといった自覚症状が出ている場合は、中心に視野欠損が出ています。この様な自覚症状が出ている場合はピンチです。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/ryokunaisyou/ryokunaisyou_siyakennsanokekka.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：中心付近まで欠損が進むと自覚症状が出る</span>
+                    </div>
                     <div class="medical-note">
                         <strong>重要：</strong>緑内障の視野欠損は暗くなりません。霞んできてそのうち濃い明るい霧の中にいるように感じます。積極的に治療に参加して、何とか生涯、視野や視力を保てるようにしましょう。
                     </div>
@@ -857,6 +337,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>初期緑内障では、視野検査は半年に1回程度の頻度で行うのが一般的です。病気の進行を早期に発見し、治療効果を評価するために定期的な検査が重要です。進行が速い場合や治療変更時にはより頻繁に行うこともあります。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/ryokunaisyou/ryokunaisyou_siyakennsanokekka.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果：定期的な検査で進行の有無を確認する</span>
+                    </div>
                 </div>
             </div>
 
@@ -872,6 +356,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>視野検査は集中力を要し、見えない光もある正常な検査であることを事前に説明することが重要です。「頑張って見ようとする」と正確な結果が得られません。リラックスして正直に反応することを伝えましょう。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/ryokunaisyou/ryokunaisyou_siyakennsanokekka.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：正確な結果を得るためにリラックスして検査を受けることが大切</span>
+                    </div>
                 </div>
             </div>
 
@@ -885,6 +373,23 @@
     <script src="quiz-config.js"></script>
     <script>
         const QUIZ_ID = 'ryokunaisho';
+        const TOTAL_QUESTIONS = 17;
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
 
         let currentQuestion = 1;
         let score = 0;
@@ -893,6 +398,72 @@
         let isDaily = false;
 
         const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+        // ページ読み込み時に学習状況を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+
+            // 間違えた問題復習ボタンの表示制御
+            const reviewModeBtn = document.getElementById('reviewModeButton');
+            if (reviewModeBtn) {
+                if (incorrectList.length > 0) {
+                    reviewModeBtn.classList.remove('hidden');
+                    reviewModeBtn.innerHTML = `❌ 間違えた問題だけ復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewModeBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // 配列シャッフル
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
 
         function flashCorrect(element) {
             const card = element.closest('.question-card');
@@ -936,26 +507,29 @@
             document.querySelector('.subtitle').classList.add('hidden');
             document.getElementById('modeSelection').classList.add('hidden');
             document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily3') {
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode === 'review') {
+                // 間違えた問題のみを出題
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    // 間違えた問題がない場合はデイリーモードに戻す
+                    questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, getDailyQuestionCount());
+                }
+                totalQuestions = questionList.length;
+            } else if (mode.startsWith('daily')) {
                 isDaily = true;
-                totalQuestions = 3;
-                questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily7') {
-                isDaily = true;
-                totalQuestions = 7;
-                questionList = getRandomQuestions(7);
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
             } else {
                 isDaily = false;
-                totalQuestions = 17;
+                totalQuestions = TOTAL_QUESTIONS;
                 questionList = [...allQuestions];
             }
-            
-            for (let i = 1; i <= 17; i++) {
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionList.includes(i)) {
                     if (i === questionList[0]) {
@@ -1010,6 +584,7 @@
         function updateProgress() {
             const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
         }
 
         function selectAnswer(selectedOption) {
@@ -1047,6 +622,11 @@
             } else {
                 feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
                 feedback.className = 'feedback incorrect';
+            }
+
+            // 問題ごとの結果を記録（復習・未挑戦モード用）
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
             }
 
             feedback.style.display = 'block';
@@ -1089,8 +669,29 @@
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
             document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
 
             const percentage = Math.round((score / totalQuestions) * 100);
+
+            // 結果発表エフェクト（満点かどうかで演出を変える）
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            // 結果を記録（エラーでも結果画面は表示する）
+            let newBadges = [];
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
+                }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
+            }
+
             let title, message;
 
             if (isDaily) {
@@ -1128,24 +729,55 @@
             const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
             const titleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
 
-            document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML;
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
+
+            document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
+
+            // バッジ獲得表示
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
+            }
 
             document.querySelector('.quiz-container').classList.add('hidden');
             document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            // ボタンのテキストを設定値に更新
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
             document.querySelector('.top-link').classList.add('hidden');
 
+            // 間違えた問題ボタンの表示制御
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const reviewBtn = document.getElementById('reviewIncorrectButton');
+            if (reviewBtn) {
+                if (incorrectList.length > 0) {
+                    reviewBtn.classList.remove('hidden');
+                    reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewBtn.classList.add('hidden');
+                }
+            }
+
+            // トップへスクロール
+            arrangeResultCards();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // マイページ用に結果を記録
-            recordQuizResult(QUIZ_ID, score, totalQuestions);
         }
 
         function resetQuiz() {
@@ -1154,7 +786,7 @@
             score = 0;
             updateScore();
 
-            for (let i = 1; i <= 17; i++) {
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionElement) {
                     questionElement.style.display = '';
@@ -1172,19 +804,16 @@
 
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
 
             document.querySelector('.quiz-status').classList.remove('hidden');
 
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 7) {
-                startQuiz('daily7');
+            if (isDaily) {
+                startQuiz('daily');
             } else {
                 startQuiz('full');
             }
@@ -1197,8 +826,9 @@
 
             document.querySelector('h1').classList.remove('hidden');
             document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
 
-            for (let i = 1; i <= 17; i++) {
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
                 const questionElement = document.getElementById(`question${i}`);
                 if (questionElement) {
                     questionElement.style.display = '';
@@ -1216,25 +846,95 @@
 
             document.querySelector('.next-button').classList.add('hidden');
             document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
             document.querySelector('.top-link').classList.remove('hidden');
             document.querySelector('.quiz-status').classList.remove('hidden');
 
             currentQuestion = 1;
             score = 0;
-            totalQuestions = 17;
+            totalQuestions = TOTAL_QUESTIONS;
             questionList = [];
             isDaily = false;
 
             updateScore();
+            updateProgressStatus();
 
             document.getElementById('modeSelection').classList.remove('hidden');
         }
 
         function updateScore() {
             document.getElementById('score').textContent = score;
+        }
+
+        // シャッフル3問：別ジャンルのクイズへ
+        // リザルト画面用の進捗HTML生成
+        function generateResultProgressHTML() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+            const progressPercent = Math.round((correctNum / TOTAL_QUESTIONS) * 100);
+            const isPerfect = correctNum === TOTAL_QUESTIONS;
+
+            return `
+                <div class="result-progress-section">
+                    <div class="result-progress-title">📊 このクイズの進捗</div>
+                    <div class="result-progress-bar-container">
+                        <div class="result-progress-bar-fill ${isPerfect ? 'perfect' : ''}" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="result-progress-percentage">${isPerfect ? '🌸 ' : ''}${progressPercent}%${isPerfect ? ' マスター！' : ''}</div>
+                    <div class="result-progress-stats">
+                        <div class="result-progress-stat">
+                            <span>✅ 正解</span>
+                            <span>${correctNum}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>❌ 間違い</span>
+                            <span>${incorrectList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>🆕 未挑戦</span>
+                            <span>${unansweredList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>📝 全問題</span>
+                            <span>${TOTAL_QUESTIONS}問</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function goToRandomQuiz() {
+            // 重み付けでクイズを選択（未挑戦・間違いが多いクイズを優先）
+            const selectedQuiz = getWeightedRandomQuiz(CURRENT_QUIZ_FILE);
+            if (!selectedQuiz) {
+                // フォールバック: 従来のランダム選択
+                const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+                const dailyCount = getDailyQuestionCount();
+                window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+                return;
+            }
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(selectedQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        // もう3問：このクイズの今日の3問を再開
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily`;
+        }
+
+        // 間違えた問題を復習
+        function reviewIncorrectQuestions() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            if (incorrectList.length === 0) return;
+
+            // 間違えた問題数をURLパラメータとして渡す
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
         }
 
         document.addEventListener('click', function(e) {
@@ -1246,10 +946,22 @@
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 

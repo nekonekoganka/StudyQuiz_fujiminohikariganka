@@ -1,24 +1,40 @@
-# クイズHTML仕様書
+# クイズHTML仕様書（詳細版）
 
 このドキュメントは、新しいクイズHTMLファイルを追加する際の標準フォーマットを定義します。
 Claude Codeは新しいクイズファイルが追加された際、この仕様書に従って修正・統合を行います。
 
 ---
 
-## 1. 必須ファイル構成
+## 1. 概要
 
-```
-quizzes/
-├── quiz-config.js          # クイズ設定（共通）
-├── 新しいクイズ.html        # 新規追加するクイズ
-└── ...
-```
+### 技術構成
+
+| 項目 | 内容 |
+|------|------|
+| CSS | 外部ファイル `css/quiz.css`（インラインCSS不要） |
+| JavaScript | `quizzes/quiz-config.js` を読み込み |
+| データ保存 | LocalStorage（`hikari_quiz_data`） |
+
+### 出題モード
+
+| モード | 説明 |
+|--------|------|
+| 今日の3問 | 弱点優先で問題を選択（間違い→未挑戦→正解済み） |
+| 全問モード | 全問題を順番に出題 |
+| 復習モード | 間違えた問題のみ出題（条件付き表示） |
+
+### 弱点優先アルゴリズム
+
+問題選択時の重み付け：
+- **間違えた問題**: 重み 10
+- **未挑戦の問題**: 重み 20
+- **正解済み問題**: 重み 1
 
 ---
 
 ## 2. quiz-config.js への登録
 
-新しいクイズは `QUIZ_LIST` 配列に追加する必要があります。
+新しいクイズは `QUIZ_LIST` 配列に追加します。
 
 ```javascript
 {
@@ -33,37 +49,23 @@ quizzes/
 }
 ```
 
-### 利用可能なカラーテーマ
-- `blue` - 青系（院内ルール、近視など）
-- `cyan` - シアン系（コンタクトレンズ、白内障）
-- `teal` - ティール系（花粉症）
-- `green` - 緑系（緑内障理解度）
-- `amber` - 琥珀色系（老眼鏡合わせ、遠用メガネ）
-- `purple` - 紫系（斜視、弱視）
-- `indigo` - インディゴ系（緑内障検診）
+### カラーテーマ一覧
 
-### index.htmlに新しい色を追加する場合
-
-新しいカラーテーマを使用する場合は、`index.html`のCSS内に以下のスタイルを追加してください：
-
-```css
-.quiz-card.新色名::before {
-    background: linear-gradient(180deg, #開始色, #終了色);
-}
-```
-
-例（purple）:
-```css
-.quiz-card.purple::before {
-    background: linear-gradient(180deg, #ab47bc, #8e24aa);
-}
-```
+| 色名 | 用途例 | CSSクラス |
+|------|--------|-----------|
+| `blue` | 院内ルール、近視 | `.quiz-card.blue` |
+| `cyan` | コンタクトレンズ、白内障、流涙症 | `.quiz-card.cyan` |
+| `teal` | 花粉症 | `.quiz-card.teal` |
+| `green` | 緑内障 | `.quiz-card.green` |
+| `amber` | 老眼鏡、遠用メガネ | `.quiz-card.amber` |
+| `purple` | 斜視、弱視、小児近視、色覚異常 | `.quiz-card.purple` |
+| `indigo` | 検診、糖尿病網膜症、黄斑前膜 | `.quiz-card.indigo` |
 
 ---
 
 ## 3. HTMLファイル構造
 
-### 3.1 必須 `<head>` 要素
+### 3.1 基本構造
 
 ```html
 <!DOCTYPE html>
@@ -71,288 +73,420 @@ quizzes/
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>クイズ名 - スタッフ向け</title>
-    <style>
-        /* CSSスタイル（セクション4参照） */
-    </style>
+    <title>クイズ名 - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
-```
-
-### 3.2 必須 `<body>` 構造
-
-```html
 <body>
     <div class="quiz-container">
+        <!-- ヘッダー部分 -->
         <h1>絵文字 クイズ名 絵文字</h1>
-        <div class="subtitle">スタッフ向け - サブタイトル</div>
-
-        <!-- トップリンク（必須） -->
+        <div class="subtitle">眼科スタッフ向け - サブタイトル</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">絵文字 クイズ名</div>
         <div class="top-link"><a href="../index.html">← トップページへ</a></div>
 
         <!-- モード選択画面 -->
         <div id="modeSelection" class="mode-selection">
-            <!-- モード選択ボタン -->
+            <!-- モードボタン -->
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全N問）
+            </button>
+
+            <!-- 学習状況表示 -->
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">N問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">N問</span>
+                </div>
+            </div>
+
+            <!-- 復習ボタン（条件付き表示） -->
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全N問を順番に出題
+            </div>
         </div>
 
         <!-- クイズエリア -->
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <!-- スコア表示、プログレスバー -->
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">N</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
             </div>
 
-            <!-- 問題カード群 -->
-            <div class="question-card" id="question1">...</div>
-            <!-- ... -->
+            <!-- 問題カード -->
+            <div class="question-card" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">問題文</div>
+                <div class="options">
+                    <div class="option" data-answer="true">正解の選択肢</div>
+                    <div class="option" data-answer="false">不正解1</div>
+                    <div class="option" data-answer="false">不正解2</div>
+                    <div class="option" data-answer="false">不正解3</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>解説文
+                </div>
+            </div>
 
-            <!-- ナビゲーションボタン -->
+            <!-- 問題2以降（hiddenクラス付き） -->
+            <div class="question-card hidden" id="question2">...</div>
+
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
-                <button class="result-button hidden" onclick="showFinalScore()">結果発表へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
             </div>
         </div>
     </div>
 
-    <!-- quiz-config.js読み込み（必須） -->
+    <!-- quiz-config.js読み込み -->
     <script src="quiz-config.js"></script>
-
     <script>
-        // QUIZ_ID定義（必須）
-        const QUIZ_ID = 'unique-quiz-id';
-
-        // JavaScriptコード（セクション5参照）
+        // JavaScript（後述）
     </script>
 
     <!-- 結果表示カード（quiz-container の外に配置） -->
     <div id="finalResult" class="final-score-card hidden">
-        <div id="resultDetail" class="result-detail"></div>
-        <div class="buttons">
-            <!-- 重要: モード選択ボタンは必ず goHome() を使用する（resetQuiz()ではない） -->
-            <button class="home-button hidden" onclick="goHome()">🔄 モード選択</button>
-            <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-            <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="resultDetail" class="result-detail"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
         </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
     </div>
 </body>
 </html>
 ```
 
----
-
-## 4. 必須CSSスタイル
-
-### 4.1 トップリンク（必須）
-
-```css
-.top-link {
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.top-link a {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 12px 24px;
-    border-radius: 25px;
-    display: inline-block;
-    transition: all 0.3s ease;
-}
-
-.top-link a:active {
-    transform: scale(0.97);
-}
-
-@media (min-width: 768px) {
-    .top-link a:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-    }
-}
-```
-
-### 4.2 結果画面ボタン（必須）
-
-```css
-.home-button, .mypage-button, .top-button {
-    display: inline-block;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    margin: 5px;
-}
-
-.home-button {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
-}
-
-.mypage-button {
-    background: linear-gradient(135deg, #f093fb, #f5576c);
-    color: white;
-}
-
-.top-button {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
-}
-```
+**重要**: `#finalResult`は`.quiz-container`の**外**に配置
 
 ---
 
-## 5. 必須JavaScript関数
+## 4. 要素の表示/非表示ルール
 
-### 5.1 QUIZ_ID定義（必須）
+| 状態 | h1 | subtitle | quizTitleHeader | top-link | modeSelection | quizArea | quiz-container | finalResult |
+|------|-----|----------|-----------------|----------|---------------|----------|----------------|-------------|
+| 初期状態 | 表示 | 表示 | hidden | 表示 | 表示 | hidden | 表示 | hidden |
+| クイズ中 | hidden | hidden | 表示 | **表示** | hidden | 表示 | 表示 | hidden |
+| 結果画面 | hidden | hidden | hidden | hidden | hidden | hidden | **hidden** | 表示 |
+| ホーム後 | 表示 | 表示 | hidden | 表示 | 表示 | hidden | 表示 | hidden |
+
+---
+
+## 5. 結果画面のボタン構成
+
+| ボタン | クラス名 | 色 | 機能 |
+|--------|----------|-----|------|
+| シャッフルN問 | `.shuffle-button` | ピンク #e91e63 | 弱点優先で別ジャンルへ移動 |
+| もうN問 | `.retry-button` | ブルー #1976d2 | 同じクイズで再挑戦 |
+| 間違えた問題を復習 | `.review-incorrect-button` | オレンジ #ff5722 | 間違えた問題のみ出題（条件付き） |
+| 学習記録 | `.record-button` | ティール #00897b | マイページへ移動 |
+| ホーム | `.home-button-small` | パープル #5e35b1 | トップページへ移動 |
+
+---
+
+## 6. quiz-config.js の共通関数
+
+以下の関数が`quiz-config.js`で提供されています：
+
+| 関数名 | 説明 |
+|--------|------|
+| `getQuizData()` | LocalStorageからクイズデータを取得 |
+| `recordQuizResult(quizId, score, total)` | クイズ結果を記録 |
+| `recordQuestionResult(quizId, questionId, isCorrect)` | 問題ごとの正誤を記録 |
+| `getWeightedRandomQuestions(quizId, total, count)` | 弱点優先で問題を選択 |
+| `getWeightedRandomQuiz(currentFile)` | 弱点優先で次のクイズを選択 |
+| `getIncorrectQuestions(quizId)` | 間違えた問題のリストを取得 |
+| `getDailyQuestionCount()` | 設定された「今日のN問」の数を取得 |
+| `generateResultProgressHTML()` | 結果画面の進捗表示HTMLを生成 |
+
+---
+
+## 7. 必須JavaScript
+
+### 7.1 定数と変数
 
 ```javascript
-const QUIZ_ID = 'unique-quiz-id';  // quiz-config.js のIDと一致させる
+const QUIZ_ID = 'unique-quiz-id';  // quiz-config.jsのidと一致
+const TOTAL_QUESTIONS = 10;        // 総問題数
+
+let currentQuestion = 1;
+let score = 0;
+let totalQuestions = TOTAL_QUESTIONS;
+let questionList = [];
+let isDaily = false;
+
+const allQuestions = [1, 2, 3, ..., 10];  // 問題番号の配列
 ```
 
-### 5.2 startQuiz関数
+### 7.2 ページ読み込み時の処理
 
-クイズ開始時の要素表示/非表示を制御します。
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    updateProgressStatus();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+
+    // 今日の○問ボタンテキストを更新
+    const dailyCount = getDailyQuestionCount();
+    const dailyButton = document.querySelector('.mode-button');
+    if (dailyButton) {
+        dailyButton.innerHTML = `📋 今日の${dailyCount}問`;
+    }
+
+    // URLパラメータでモード自動開始
+    if (mode && mode.startsWith('daily')) {
+        startQuiz('daily');
+    }
+});
+```
+
+### 7.3 クイズ開始（startQuiz）
 
 ```javascript
 function startQuiz(mode) {
     document.querySelector('h1').classList.add('hidden');
     document.querySelector('.subtitle').classList.add('hidden');
-    // 注意: top-link は非表示にしない（クイズ中も表示する）
+    document.getElementById('quizTitleHeader').classList.remove('hidden');
     document.getElementById('modeSelection').classList.add('hidden');
     document.getElementById('quizArea').classList.remove('hidden');
 
-    // モード別処理...
+    score = 0;
+    updateScore();
+
+    if (mode === 'daily') {
+        isDaily = true;
+        totalQuestions = getDailyQuestionCount();
+        questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+    } else if (mode === 'review') {
+        isDaily = false;
+        const incorrectList = getIncorrectQuestions(QUIZ_ID);
+        questionList = incorrectList.length > 0 ? incorrectList : [...allQuestions];
+        totalQuestions = questionList.length;
+    } else {
+        isDaily = false;
+        totalQuestions = TOTAL_QUESTIONS;
+        questionList = [...allQuestions];
+    }
+
+    // 問題の表示制御
+    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        const questionElement = document.getElementById(`question${i}`);
+        if(questionElement) {
+            if (questionList.includes(i)) {
+                questionElement.style.display = '';
+                if (i === questionList[0]) {
+                    questionElement.classList.remove('hidden');
+                } else {
+                    questionElement.classList.add('hidden');
+                }
+            } else {
+                questionElement.style.display = 'none';
+            }
+        }
+    }
+
+    currentQuestion = 0;
+    updateQuestionNumbers();
+    document.getElementById('total').textContent = totalQuestions;
+    shuffleOptions(questionList[0]);
+    updateProgress();
 }
 ```
 
-**重要**: `top-link`はstartQuizで非表示にしません。クイズ中もトップページへ戻れるようにします。
+### 7.4 回答選択（selectAnswer）
 
-### 5.3 showFinalScore関数
+```javascript
+function selectAnswer(selectedOption) {
+    const currentQuestionId = questionList[currentQuestion];
+    const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+    const options = currentQuestionElement.querySelectorAll('.option');
+    const feedback = currentQuestionElement.querySelector('.feedback');
+    const explanation = currentQuestionElement.querySelector('.explanation');
 
-結果表示時の処理です。
+    const isCorrect = selectedOption.dataset.answer === 'true';
+    let correctAnswerText = '';
+
+    options.forEach(option => {
+        if (option.dataset.answer === 'true') {
+            correctAnswerText = option.textContent;
+        }
+    });
+
+    options.forEach(option => {
+        option.classList.add('disabled');
+        if (option.dataset.answer === 'true') {
+            option.classList.add('correct');
+        } else if (option === selectedOption && option.dataset.answer === 'false') {
+            option.classList.add('incorrect');
+        }
+    });
+
+    if (isCorrect) {
+        feedback.textContent = '🎉 正解です！';
+        feedback.className = 'feedback correct';
+        score++;
+        flashCorrect(selectedOption);
+    } else {
+        feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
+        feedback.className = 'feedback incorrect';
+    }
+
+    // 問題ごとの結果を記録（必須）
+    if (typeof recordQuestionResult === 'function') {
+        recordQuestionResult(QUIZ_ID, currentQuestionId, isCorrect);
+    }
+
+    feedback.style.display = 'block';
+    explanation.classList.remove('hidden');
+
+    if (currentQuestion < totalQuestions - 1) {
+        document.querySelector('.next-button').classList.remove('hidden');
+    } else {
+        document.querySelector('.result-button').classList.remove('hidden');
+    }
+
+    updateScore();
+
+    // スクロール（block: 'start'を使用）
+    feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+```
+
+### 7.5 結果表示（showFinalScore）
 
 ```javascript
 function showFinalScore() {
-    // 問題を非表示
     questionList.forEach(questionId => {
         const qElem = document.getElementById(`question${questionId}`);
         if(qElem) qElem.classList.add('hidden');
     });
-
     document.querySelector('.next-button').classList.add('hidden');
     document.querySelector('.result-button').classList.add('hidden');
     document.querySelector('.quiz-status').classList.add('hidden');
-
-    // 重要: quizAreaとquiz-containerを非表示にする
     document.getElementById('quizArea').classList.add('hidden');
     document.querySelector('.quiz-container').classList.add('hidden');
 
     const percentage = Math.round((score / totalQuestions) * 100);
+
+    // 結果発表エフェクト
+    const isPerfect = score === totalQuestions;
+    setTimeout(() => celebrateResult(isPerfect), 300);
 
     // 結果を記録（必須）
     if (typeof recordQuizResult === 'function') {
         recordQuizResult(QUIZ_ID, score, totalQuestions);
     }
 
-    // 評価メッセージ生成
+    // 評価メッセージ
     let title, message;
     if (score === totalQuestions) {
-        title = '完璧です！';
-        message = '全問正解！';
+        title = '🏆 完璧です！ 🏆';
+        message = '全問正解！素晴らしいです。';
     } else if (score >= totalQuestions * 0.8) {
-        title = '素晴らしい！';
+        title = '🌟 素晴らしい！ 🌟';
         message = '高得点です！';
     } else if (score >= totalQuestions * 0.5) {
-        title = 'あと一歩！';
-        message = '基本知識は身についています。';
+        title = '👍 よくできました！ 👍';
+        message = '基本的な知識は身についています。';
     } else {
-        title = '要復習！';
-        message = '良い学習の機会になりましたね。';
+        title = '💪 これからが本番！ 💪';
+        message = '良い復習の機会になりましたね。';
     }
 
-    // 結果HTMLを生成（resultTitleを含める）
-    const resultTitleHTML = `<div class="result-title">結果発表</div>`;
+    const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
     const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
     const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
     const messageHTML = `<div>${message}</div>`;
+    const progressHTML = generateResultProgressHTML();
 
-    document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
+    document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
 
-    // 結果画面を表示
     document.getElementById('finalResult').classList.remove('hidden');
-    document.querySelector('.home-button').classList.remove('hidden');
-    document.querySelector('.mypage-button').classList.remove('hidden');
-    document.querySelector('.top-button').classList.remove('hidden');
+    document.querySelector('.shuffle-button').classList.remove('hidden');
+
+    // ボタンテキストを設定値に更新
+    const dailyCount = getDailyQuestionCount();
+    document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+    document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+
+    document.querySelector('.retry-button').classList.remove('hidden');
+    document.querySelector('.record-button').classList.remove('hidden');
+    document.querySelector('.home-button-small').classList.remove('hidden');
     document.querySelector('.top-link').classList.add('hidden');
 
-    // トップへスクロール
+    // 間違えた問題ボタンの表示制御
+    const incorrectList = getIncorrectQuestions(QUIZ_ID);
+    const reviewBtn = document.getElementById('reviewIncorrectButton');
+    if (reviewBtn) {
+        if (incorrectList.length > 0) {
+            reviewBtn.classList.remove('hidden');
+            reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+        } else {
+            reviewBtn.classList.add('hidden');
+        }
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 ```
 
-### 5.4 resetQuiz関数
-
-モード選択に戻る処理です。
-
-```javascript
-function resetQuiz() {
-    document.getElementById('finalResult').classList.add('hidden');
-    document.querySelector('.quiz-container').classList.remove('hidden');  // 必須
-    document.querySelector('.top-link').classList.remove('hidden');        // 必須
-
-    score = 0;
-    updateScore();
-
-    // 全問題をリセット
-    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
-        const questionElement = document.getElementById(`question${i}`);
-        if(questionElement){
-            questionElement.style.display = '';
-            questionElement.classList.add('hidden');
-
-            const options = questionElement.querySelectorAll('.option');
-            options.forEach(option => {
-                option.classList.remove('correct', 'incorrect', 'disabled');
-            });
-
-            questionElement.querySelector('.feedback').style.display = 'none';
-            questionElement.querySelector('.explanation').classList.add('hidden');
-        }
-    }
-
-    document.querySelector('.next-button').classList.add('hidden');
-    document.querySelector('.result-button').classList.add('hidden');
-    document.querySelector('.home-button').classList.add('hidden');
-    document.querySelector('.mypage-button').classList.add('hidden');
-    document.querySelector('.top-button').classList.add('hidden');
-    document.querySelector('.quiz-status').classList.remove('hidden');
-
-    // 適切なモードで再開
-    startQuiz(previousMode);
-}
-```
-
-### 5.5 goHome関数
-
-トップページ（モード選択画面）に戻る処理です。
+### 7.6 モード選択に戻る（goHome）
 
 ```javascript
 function goHome() {
     document.getElementById('finalResult').classList.add('hidden');
     document.getElementById('quizArea').classList.add('hidden');
-    document.querySelector('.quiz-container').classList.remove('hidden');  // 必須
-    document.querySelector('.top-link').classList.remove('hidden');        // 必須
+    document.querySelector('.quiz-container').classList.remove('hidden');
+    document.querySelector('.top-link').classList.remove('hidden');
 
     document.querySelector('h1').classList.remove('hidden');
     document.querySelector('.subtitle').classList.remove('hidden');
+    document.getElementById('quizTitleHeader').classList.add('hidden');
 
-    // 全問題をリセット
     for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
         const questionElement = document.getElementById(`question${i}`);
         if(questionElement) {
@@ -371,9 +505,10 @@ function goHome() {
 
     document.querySelector('.next-button').classList.add('hidden');
     document.querySelector('.result-button').classList.add('hidden');
-    document.querySelector('.home-button').classList.add('hidden');
-    document.querySelector('.mypage-button').classList.add('hidden');
-    document.querySelector('.top-button').classList.add('hidden');
+    document.querySelector('.shuffle-button').classList.add('hidden');
+    document.querySelector('.retry-button').classList.add('hidden');
+    document.querySelector('.record-button').classList.add('hidden');
+    document.querySelector('.home-button-small').classList.add('hidden');
     document.querySelector('.quiz-status').classList.remove('hidden');
 
     currentQuestion = 1;
@@ -383,139 +518,226 @@ function goHome() {
     isDaily = false;
 
     updateScore();
+    updateProgressStatus();
 
     document.getElementById('modeSelection').classList.remove('hidden');
 }
 ```
 
-### 5.6 スクロール動作（回答後）
-
-回答選択後、フィードバックが画面上部に表示されるようにスクロールします。
+### 7.7 その他の必須関数
 
 ```javascript
-function selectAnswer(selectedOption) {
-    // ... 回答処理 ...
+// 選択肢シャッフル
+function shuffleOptions(questionId) {
+    if (!questionId) return;
+    const container = document.getElementById(`question${questionId}`).querySelector('.options');
+    if (!container) return;
+    for (let i = container.children.length; i >= 0; i--) {
+        const rand = Math.floor(Math.random() * i);
+        if (container.children[rand]) {
+            container.appendChild(container.children[rand]);
+        }
+    }
+}
 
-    // フィードバック表示後のスクロール
-    feedbackElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// 進捗更新
+function updateProgress() {
+    const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+    document.getElementById('currentQ').textContent = currentQuestion + 1;
+}
+
+// スコア更新
+function updateScore() {
+    document.getElementById('score').textContent = score;
+}
+
+// 問題番号更新
+function updateQuestionNumbers() {
+    questionList.forEach((questionId, index) => {
+        const questionElement = document.getElementById(`question${questionId}`);
+        if(questionElement) {
+            const questionNumber = questionElement.querySelector('.question-number');
+            questionNumber.textContent = `問題 ${index + 1}`;
+        }
+    });
+}
+
+// 次の問題へ
+function nextQuestion() {
+    const currentQuestionId = questionList[currentQuestion];
+    document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+    currentQuestion++;
+    const nextQuestionId = questionList[currentQuestion];
+    shuffleOptions(nextQuestionId);
+    document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+    document.querySelector('.next-button').classList.add('hidden');
+    updateProgress();
+}
+
+// 正解フラッシュ効果
+function flashCorrect(element) {
+    const card = element.closest('.question-card');
+    if (card) {
+        card.classList.add('correct-flash');
+        setTimeout(() => card.classList.remove('correct-flash'), 400);
+    }
+}
+
+// 結果発表エフェクト
+function celebrateResult(isPerfect) {
+    if (navigator.vibrate) {
+        navigator.vibrate(isPerfect ? [100, 50, 100, 50, 100] : [50, 30, 50]);
+    }
+    const emojis = isPerfect
+        ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+        : ['🎉', '⭐', '✨', '👏', '🎊'];
+    const count = isPerfect ? 15 : 8;
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 3;
+
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const emoji = document.createElement('div');
+            emoji.className = 'celebrate-emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+            emoji.style.top = (centerY + Math.random() * 50) + 'px';
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 1000);
+        }, i * 100);
+    }
+}
+
+// 学習状況表示の更新
+function updateProgressStatus() {
+    const data = getQuizData();
+    const progress = data.progress || {};
+    const quizProgress = progress[QUIZ_ID] || {};
+    const results = quizProgress.questionResults || {};
+
+    let incorrectCount = 0;
+    let correctCount = 0;
+    Object.values(results).forEach(isCorrect => {
+        if (isCorrect) correctCount++;
+        else incorrectCount++;
+    });
+    const unansweredCount = TOTAL_QUESTIONS - incorrectCount - correctCount;
+
+    document.getElementById('incorrectCount').textContent = incorrectCount + '問';
+    document.getElementById('unansweredCount').textContent = unansweredCount + '問';
+    document.getElementById('correctCount').textContent = correctCount + '問';
+    document.getElementById('totalQuestionsCount').textContent = TOTAL_QUESTIONS + '問';
+
+    const reviewBtn = document.getElementById('reviewModeButton');
+    if (reviewBtn) {
+        if (incorrectCount > 0) {
+            reviewBtn.classList.remove('hidden');
+            reviewBtn.innerHTML = `❌ 間違えた問題だけ復習（${incorrectCount}問）<span class="btn-sub">苦手を克服しよう</span>`;
+        } else {
+            reviewBtn.classList.add('hidden');
+        }
+    }
+}
+
+// 別ジャンルへ移動（弱点優先）
+function goToRandomQuiz() {
+    const nextQuiz = getWeightedRandomQuiz(decodeURIComponent(location.pathname.split('/').pop()));
+    if (nextQuiz) {
+        const dailyCount = getDailyQuestionCount();
+        window.location.href = nextQuiz + '?mode=daily' + dailyCount;
+    }
+}
+
+// 同じクイズで再挑戦
+function restartThisQuiz() {
+    const dailyCount = getDailyQuestionCount();
+    window.location.href = window.location.pathname + '?mode=daily' + dailyCount;
+}
+
+// 間違えた問題を復習
+function reviewIncorrectQuestions() {
+    goHome();
+    setTimeout(() => startQuiz('review'), 100);
 }
 ```
-
-**重要**: `block: 'center'`ではなく`block: 'start'`を使用します。
-
----
-
-## 6. 要素の表示/非表示ルール
-
-| 状態 | h1 | subtitle | top-link | modeSelection | quizArea | quiz-container | finalResult |
-|------|-----|----------|----------|---------------|----------|----------------|-------------|
-| 初期状態 | 表示 | 表示 | 表示 | 表示 | hidden | 表示 | hidden |
-| クイズ中 | hidden | hidden | **表示** | hidden | 表示 | 表示 | hidden |
-| 結果画面 | hidden | hidden | hidden | hidden | hidden | **hidden** | 表示 |
-| リセット後 | hidden | hidden | 表示 | hidden | 表示 | 表示 | hidden |
-| ホーム後 | 表示 | 表示 | 表示 | 表示 | hidden | 表示 | hidden |
-
----
-
-## 7. index.html への追加
-
-トップページにクイズカードを追加します。
-
-```html
-<a href="quizzes/クイズファイル名.html" class="quiz-card カラー">
-    <div class="quiz-icon">絵文字</div>
-    <div class="quiz-content">
-        <div class="quiz-title">クイズ名</div>
-        <div class="quiz-description">クイズの説明</div>
-        <div class="quiz-meta">
-            <span class="quiz-tag tag-staff">スタッフ向け</span>
-            <!-- または -->
-            <span class="quiz-tag tag-patient">患者様向け</span>
-        </div>
-    </div>
-    <span class="arrow">→</span>
-</a>
-```
-
-### 配置場所
-- **スタッフ向け**: `section-title`「スタッフ向けクイズ」の直下の`quiz-list`内
-- **患者様向け**: `section-title`「患者様・ご家族向けクイズ」の直下の`quiz-list`内
 
 ---
 
 ## 8. チェックリスト
 
-新しいクイズを追加する際は、以下を確認してください：
-
 ### quiz-config.js
-- [ ] `QUIZ_LIST`に新しいエントリを追加
+- [ ] `QUIZ_LIST`にエントリを追加
 - [ ] `id`が一意であること
 - [ ] `totalQuestions`が正しいこと
 - [ ] `file`がファイル名と一致
 
 ### HTMLファイル
-- [ ] `<title>`が適切に設定されている
-- [ ] `<h1>`にクイズ名が設定されている
-- [ ] `.top-link`のHTMLとCSSが存在する
-- [ ] `quiz-config.js`の`<script>`読み込みがある
-- [ ] `QUIZ_ID`が定義されている
-- [ ] `recordQuizResult()`の呼び出しがある
-- [ ] `finalResult`が`quiz-container`の**外**に配置されている
-- [ ] 結果ボタン（モード選択、学習記録、ホーム）が存在する
-- [ ] **モード選択ボタンが `onclick="goHome()"` になっている**（`resetQuiz()`ではない）
+- [ ] `<link rel="stylesheet" href="../css/quiz.css">`がある
+- [ ] `<script src="quiz-config.js">`の読み込みがある
+- [ ] `QUIZ_ID`と`TOTAL_QUESTIONS`が正しく設定されている
+- [ ] `allQuestions`配列が問題数と一致している
+- [ ] `#finalResult`が`quiz-container`の**外**に配置されている
+- [ ] 問題1は`hidden`なし、問題2以降は`hidden`クラスあり
+- [ ] 選択肢に`onclick="selectAnswer(this)"`がある
 
 ### JavaScript関数
 - [ ] `startQuiz`: top-linkを非表示にしていない
 - [ ] `showFinalScore`: quizAreaとquiz-containerを非表示にする
 - [ ] `showFinalScore`: top-linkを非表示にする
-- [ ] `resetQuiz`: quiz-containerとtop-linkを表示に戻す
 - [ ] `goHome`: quiz-containerとtop-linkを表示に戻す
 - [ ] スクロール: `block: 'start'`を使用
 
-### index.html
-- [ ] 適切なセクションにクイズカードを追加
-- [ ] カラーテーマが設定されている
-- [ ] カテゴリタグが正しい
-
-### ループ処理
-- [ ] 全てのforループが総問題数と一致（問題追加時は要注意）
+### 動作確認
+- [ ] 今日の3問モードで動作する
+- [ ] 全問モードで動作する
+- [ ] 結果が正しく記録される（LocalStorage）
+- [ ] マイページに進捗が表示される
 
 ---
 
 ## 9. よくある問題と解決方法
 
-### 問題: クイズ中にトップリンクが表示されない
+### クイズ中にトップリンクが表示されない
 **原因**: `startQuiz`で`top-link`を`hidden`にしている
 **解決**: `startQuiz`から`top-link`を非表示にするコードを削除
 
-### 問題: 結果画面に余分なカードが表示される
+### 結果画面に余分なカードが表示される
 **原因**: `showFinalScore`で`quiz-container`を非表示にしていない
-**解決**: `showFinalScore`に以下を追加：
-```javascript
-document.getElementById('quizArea').classList.add('hidden');
-document.querySelector('.quiz-container').classList.add('hidden');
-```
+**解決**: `document.querySelector('.quiz-container').classList.add('hidden');`を追加
 
-### 問題: モード選択に戻ると画面が崩れる
-**原因**: `resetQuiz`/`goHome`で`quiz-container`を表示に戻していない
-**解決**: 両関数に以下を追加：
-```javascript
-document.querySelector('.quiz-container').classList.remove('hidden');
-```
+### モード選択に戻ると画面が崩れる
+**原因**: `goHome`で`quiz-container`を表示に戻していない
+**解決**: `document.querySelector('.quiz-container').classList.remove('hidden');`を追加
 
-### 問題: 新しく追加した問題が常に表示される
+### 新しい問題が常に表示される
 **原因**: forループの上限が古い問題数のまま
-**解決**: 全てのforループを新しい総問題数に更新
+**解決**: 全てのforループを新しい`TOTAL_QUESTIONS`に更新
 
-### 問題: 「モード選択」ボタンを押しても同じモードでやり直しになる
-**原因**: 結果画面のモード選択ボタンで `resetQuiz()` を呼び出している
-**解決**: `onclick="resetQuiz()"` を `onclick="goHome()"` に変更
+---
 
-> **重要**: `resetQuiz()` と `goHome()` の違い
-> - `resetQuiz()`: 同じモードでクイズをやり直す（モード選択画面には戻らない）
-> - `goHome()`: モード選択画面（今日の5問、全問モードなど）に戻る
->
-> 結果画面の「モード選択」ボタンは必ず `goHome()` を使用してください。
+## 10. 現在のクイズ一覧
+
+| ID | クイズ名 | 問題数 | 色 |
+|----|---------|--------|-----|
+| contact-basic | CL処方クイズ | 29問 | cyan |
+| cl_complication | CL合併症クイズ | 10問 | cyan |
+| cl_makeup | CLの種類と使い方クイズ | 10問 | cyan |
+| enyo-megane | 遠用メガネのクイズ | 28問 | amber |
+| megane-awase | 老眼鏡合わせクイズ | 28問 | amber |
+| kinshi | 近視クイズ | 10問 | blue |
+| kafunsho | 花粉症クイズ | 16問 | teal |
+| hakunaisho | 白内障クイズ | 10問 | cyan |
+| ryokunaisho | 緑内障クイズ | 17問 | green |
+| jakushi | 弱視クイズ | 15問 | purple |
+| shashi | 斜視クイズ | 10問 | purple |
+| pediatric_myopia | 小児近視対策クイズ | 10問 | purple |
+| diabetic_retinopathy | 糖尿病網膜症クイズ | 10問 | indigo |
+| epiphora | 流涙症クイズ | 8問 | cyan |
+| macular_membrane | 黄斑前膜クイズ | 8問 | indigo |
+| color_vision | 色覚異常クイズ | 9問 | purple |
+| ryokunaisho-kenshin | 検診の制度クイズ | 14問 | indigo |
+| innai-rule | 院内ルール確認クイズ | 15問 | blue |
 
 ---
 
@@ -524,25 +746,9 @@ document.querySelector('.quiz-container').classList.remove('hidden');
 | 日付 | 内容 |
 |------|------|
 | 2024-01 | 初版作成（老眼鏡合わせクイズを基に標準化） |
-| 2025-01 | 近視クイズ・斜視クイズを追加、purpleカラーテーマを追加 |
-| 2025-01 | index.htmlへの新色追加方法を追記 |
-| 2025-01 | 遠用メガネ・弱視・白内障・緑内障検診クイズを追加、indigoカラーテーマを追加 |
-| 2025-01 | **重要**: モード選択ボタンのバグ修正。`resetQuiz()`→`goHome()`に修正、仕様書にも反映 |
-
----
-
-## 現在のクイズ一覧
-
-| ID | クイズ名 | 問題数 | カテゴリ | 色 |
-|----|---------|--------|----------|-----|
-| innai-rule | 院内ルール確認クイズ | 15問 | staff | blue |
-| contact-basic | コンタクトレンズ処方クイズ | 29問 | staff | cyan |
-| kafunsho | 花粉症クイズ | 16問 | staff | teal |
-| ryokunaisho | 緑内障理解度クイズ | 17問 | patient | green |
-| megane-awase | 老眼鏡合わせクイズ | 28問 | staff | amber |
-| kinshi | 近視クイズ | 10問 | staff | blue |
-| shashi | 斜視クイズ | 10問 | staff | purple |
-| enyo-megane | 遠用メガネ度数決定クイズ | 28問 | staff | amber |
-| jakushi | 弱視クイズ | 15問 | staff | purple |
-| hakunaisho | 白内障クイズ | 10問 | staff | cyan |
-| ryokunaisho-kenshin | 緑内障検診クイズ | 14問 | staff | indigo |
+| 2025-01 | 外部CSSファイル化（css/quiz.css） |
+| 2025-01 | 結果画面ボタン構成を刷新（シャッフル/リトライ/復習/記録/ホーム） |
+| 2025-01 | 弱点優先の重み付け選択を実装 |
+| 2025-01 | モードを2モード（今日の3問、全問）に簡略化 |
+| 2025-01 | 学習状況表示（間違い/未挑戦/正解/全問題）を追加 |
+| 2025-01 | クイズ一覧を18クイズに更新 |

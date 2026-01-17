@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>眼科保険点数クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>💰 眼科保険点数クイズ 💰</h1>
+        <div class="subtitle">眼科スタッフ向け - 保険点数を覚えよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">💰 眼科保険点数クイズ</div>
+
+        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全16問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">14問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">14問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全16問を順番に出題<br>
+                <span style="color: #6f86d6;">※±5%の誤差まで正解！だいたいの金額感覚を身につけよう</span>
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">14</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1" data-points="291" data-yen="2910">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">初診料は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(1)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>初診料は291点、つまり2,910円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2" data-points="75" data-yen="750">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">再診料は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(2)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>再診料は75点、つまり750円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3" data-points="69" data-yen="690">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">屈折検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(3)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>屈折検査は69点、つまり690円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4" data-points="84" data-yen="840">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">角膜曲率半径計測の検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(4)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>角膜曲率半径計測は84点、つまり840円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5" data-points="69" data-yen="690">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">矯正視力検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(5)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>矯正視力検査は69点、つまり690円です。屈折検査と同じ点数です。
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6" data-points="82" data-yen="820">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">精密眼圧検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(6)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>精密眼圧検査は82点、つまり820円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7" data-points="112" data-yen="1120">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">精密眼底検査（両側）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(7)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>精密眼底検査（両側）は112点、つまり1,120円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8" data-points="110" data-yen="1100">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">細隙燈顕微鏡検査（前眼部及び後眼部）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(8)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>細隙燈顕微鏡検査（前眼部及び後眼部）は110点、つまり1,100円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9" data-points="48" data-yen="480">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">細隙燈顕微鏡検査（前眼部）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(9)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>細隙燈顕微鏡検査（前眼部）は48点、つまり480円です。後眼部も見る場合は110点になります。
+                </div>
+            </div>
+
+            <!-- ========== 問題10 ========== -->
+            <div class="question-card hidden" id="question10" data-points="580" data-yen="5800">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">静的量的視野検査（両眼）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(10)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>静的量的視野検査は片眼290点なので、両眼では580点、つまり5,800円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題11 ========== -->
+            <div class="question-card hidden" id="question11" data-points="58" data-yen="580">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">眼底カメラ撮影の検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(11)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼底カメラ撮影は58点、つまり580円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題12 ========== -->
+            <div class="question-card hidden" id="question12" data-points="190" data-yen="1900">
+                <div class="question-number">問題 12</div>
+                <div class="question-text">眼底三次元画像解析（OCT）の検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(12)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼底三次元画像解析（OCT）は190点、つまり1,900円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題13 ========== -->
+            <div class="question-card hidden" id="question13" data-points="200" data-yen="2000">
+                <div class="question-number">問題 13</div>
+                <div class="question-text">コンタクトレンズ検査料1は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(13)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>コンタクトレンズ検査料1は200点、つまり2,000円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題14 ========== -->
+            <div class="question-card hidden" id="question14" data-points="70" data-yen="700">
+                <div class="question-number">問題 14</div>
+                <div class="question-text">調節検査は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(14)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>調節検査は70点、つまり700円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題15 ========== -->
+            <div class="question-card hidden" id="question15" data-points="48" data-yen="480">
+                <div class="question-number">問題 15</div>
+                <div class="question-text">生体染色検査（フルオ）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(15)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>生体染色検査（フルオ）は48点、つまり480円です。
+                </div>
+            </div>
+
+            <!-- ========== 問題16 ========== -->
+            <div class="question-card hidden" id="question16" data-points="250" data-yen="2500">
+                <div class="question-number">問題 16</div>
+                <div class="question-text">診療情報提供料（Ⅰ）は、何円ですか？</div>
+                <div class="numeric-input-area">
+                    <input type="text" inputmode="numeric" class="numeric-input" placeholder="金額" maxlength="6">
+                    <span class="numeric-input-unit">円</span>
+                </div>
+                <button class="submit-answer-button" onclick="submitNumericAnswer(16)">回答する</button>
+                <div class="submit-hint">※±5%の誤差まで正解（Enterキーで回答）</div>
+                <div class="numeric-result hidden"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>診療情報提供料（Ⅰ）は250点、つまり2,500円です。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // ============================================================
+        // クイズ固有の設定
+        // ============================================================
+        const QUIZ_ID = 'hoken-tensuu';
+        const TOTAL_QUESTIONS = 16;
+
+        // ============================================================
+        // 以下は変更不要（共通処理）
+        // ============================================================
+
+        // 全クイズ一覧（シャッフル機能用）
+        const ALL_QUIZZES = [
+            'コンタクト処方の基本クイズ.html',
+            '大人の遠く用メガネ合わせクイズ.html',
+            '弱視クイズ.html',
+            '斜視クイズ.html',
+            '白内障についてクイズ.html',
+            '緑内障についてクイズ.html',
+            '老眼鏡合わせ_クイズ.html',
+            '自治体の緑内障検診の制度のクイズ.html',
+            '花粉症についてのクイズ.html',
+            '近視についてのクイズ.html',
+            '院内ルール確認クイズ.html',
+            '小児近視対策_クイズ.html',
+            'CL合併症_クイズ.html',
+            '糖尿病網膜症_クイズ.html',
+            '流涙症_クイズ.html',
+            '黄斑前膜_クイズ.html',
+            'アトピー性皮膚炎と目_クイズ.html',
+            'ぶどう膜炎_クイズ.html',
+            '飛蚊症_クイズ.html',
+            '眼科保険診療_クイズ.html',
+            '眼科保険点数_クイズ.html'
+        ];
+        const CURRENT_QUIZ_FILE = decodeURIComponent(location.pathname.split('/').pop());
+
+        let currentQuestion = 1;
+        let score = 0;
+        let totalQuestions = TOTAL_QUESTIONS;
+        let questionList = [];
+        let isDaily = false;
+
+        // 問題番号の配列を生成
+        const allQuestions = Array.from({length: TOTAL_QUESTIONS}, (_, i) => i + 1);
+
+        // ページ読み込み時にモードボタンの状態を更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgressStatus();
+
+            // URLパラメータをチェック
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+
+            // 今日の○問ボタンテキストを更新
+            const dailyCount = getDailyQuestionCount();
+            const dailyBtn = document.querySelector('.mode-button');
+            if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
+                dailyBtn.textContent = `📋 今日の${dailyCount}問`;
+            }
+
+            // Enterキーでの回答をサポート
+            document.querySelectorAll('.numeric-input').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const questionCard = this.closest('.question-card');
+                        const questionId = parseInt(questionCard.id.replace('question', ''));
+                        submitNumericAnswer(questionId);
+                    }
+                });
+                // 数字のみ入力を許可
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            });
+
+            // モードが指定されていたら自動開始
+            if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
+                startQuiz(mode);
+            }
+        });
+
+        // 学習状況の表示を更新
+        function updateProgressStatus() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+
+            const incorrectCount = document.getElementById('incorrectCount');
+            const unansweredCount = document.getElementById('unansweredCount');
+            const correctCount = document.getElementById('correctCount');
+            const totalQuestionsCount = document.getElementById('totalQuestionsCount');
+
+            if (incorrectCount) {
+                incorrectCount.textContent = `${incorrectList.length}問`;
+            }
+            if (unansweredCount) {
+                unansweredCount.textContent = `${unansweredList.length}問`;
+            }
+            if (correctCount) {
+                correctCount.textContent = `${correctNum}問`;
+            }
+            if (totalQuestionsCount) {
+                totalQuestionsCount.textContent = `${TOTAL_QUESTIONS}問`;
+            }
+
+            // 間違えた問題復習ボタンの表示制御
+            const reviewModeBtn = document.getElementById('reviewModeButton');
+            if (reviewModeBtn) {
+                if (incorrectList.length > 0) {
+                    reviewModeBtn.classList.remove('hidden');
+                    reviewModeBtn.innerHTML = `❌ 間違えた問題だけ復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewModeBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        // 正解時フラッシュ効果
+        function flashCorrect(element) {
+            const card = element.closest('.question-card');
+            if (card) {
+                card.classList.add('correct-flash');
+                setTimeout(() => card.classList.remove('correct-flash'), 400);
+            }
+        }
+
+        // 結果発表エフェクト
+        function celebrateResult(isPerfect) {
+            if (navigator.vibrate) {
+                if (isPerfect) {
+                    navigator.vibrate([100, 50, 100, 50, 100]);
+                } else {
+                    navigator.vibrate([50, 30, 50]);
+                }
+            }
+
+            const emojis = isPerfect
+                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
+                : ['🎉', '⭐', '✨', '👏', '🎊'];
+            const count = isPerfect ? 15 : 8;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 3;
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'celebrate-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
+                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
+                    document.body.appendChild(emoji);
+
+                    setTimeout(() => emoji.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function startQuiz(mode) {
+            document.querySelector('h1').classList.add('hidden');
+            document.querySelector('.subtitle').classList.add('hidden');
+            document.getElementById('modeSelection').classList.add('hidden');
+            document.getElementById('quizArea').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.remove('hidden');
+
+            if (mode === 'review') {
+                // 間違えた問題のみを出題
+                isDaily = false;
+                questionList = getIncorrectQuestions(QUIZ_ID);
+                if (questionList.length === 0) {
+                    // 間違えた問題がない場合はデイリーモードに戻す
+                    questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, getDailyQuestionCount());
+                }
+                totalQuestions = questionList.length;
+            } else if (mode.startsWith('daily')) {
+                isDaily = true;
+                const countFromUrl = parseInt(mode.replace('daily', ''));
+                totalQuestions = countFromUrl || getDailyQuestionCount();
+                questionList = getWeightedRandomQuestions(QUIZ_ID, TOTAL_QUESTIONS, totalQuestions);
+            } else {
+                isDaily = false;
+                totalQuestions = TOTAL_QUESTIONS;
+                questionList = [...allQuestions];
+            }
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    if (questionList.includes(i)) {
+                        if (i === questionList[0]) {
+                            questionElement.classList.remove('hidden');
+                        } else {
+                            questionElement.classList.add('hidden');
+                        }
+                    } else {
+                        questionElement.style.display = 'none';
+                    }
+                }
+            }
+
+            currentQuestion = 0;
+            updateQuestionNumbers();
+            document.getElementById('total').textContent = totalQuestions;
+            updateProgress();
+
+            // 最初の問題の入力欄に自動フォーカス
+            const firstQuestionId = questionList[0];
+            const firstInput = document.getElementById(`question${firstQuestionId}`).querySelector('.numeric-input');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 150);
+            }
+        }
+
+        function updateQuestionNumbers() {
+            questionList.forEach((questionId, index) => {
+                const questionElement = document.getElementById(`question${questionId}`);
+                if(questionElement) {
+                    const questionNumber = questionElement.querySelector('.question-number');
+                    questionNumber.textContent = `問題 ${index + 1}`;
+                }
+            });
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+        }
+
+        // 数値入力の回答処理（±5%許容）
+        function submitNumericAnswer(questionId) {
+            const questionElement = document.getElementById(`question${questionId}`);
+            const input = questionElement.querySelector('.numeric-input');
+            const submitBtn = questionElement.querySelector('.submit-answer-button');
+            const submitHint = questionElement.querySelector('.submit-hint');
+            const resultArea = questionElement.querySelector('.numeric-result');
+            const explanation = questionElement.querySelector('.explanation');
+            const nextButton = document.querySelector('.next-button');
+            const resultButton = document.querySelector('.result-button');
+
+            // 入力値を取得
+            const userAnswer = parseInt(input.value) || 0;
+            const correctYen = parseInt(questionElement.dataset.yen);
+            const points = parseInt(questionElement.dataset.points);
+
+            // 入力を無効化
+            input.disabled = true;
+            submitBtn.disabled = true;
+
+            // ヒントを非表示（スマホ画面スペース確保）
+            if (submitHint) {
+                submitHint.style.display = 'none';
+            }
+
+            // ±5%の許容範囲を計算
+            const tolerance = correctYen * 0.05;
+            const minAccept = correctYen - tolerance;
+            const maxAccept = correctYen + tolerance;
+
+            const isPerfect = userAnswer === correctYen;
+            const isWithinRange = userAnswer >= minAccept && userAnswer <= maxAccept;
+            const isCorrect = isPerfect || isWithinRange;
+
+            // 結果表示を作成
+            let resultHTML = '';
+            if (isPerfect) {
+                // 完全一致：特別に褒める
+                resultHTML = `
+                    <div class="numeric-result-icon">🎯</div>
+                    <div class="numeric-result-text">完璧！ピッタリ正解！</div>
+                    <div class="answer-breakdown">
+                        <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+                    </div>
+                `;
+                resultArea.className = 'numeric-result correct perfect';
+                score++;
+                flashCorrect(input);
+            } else if (isWithinRange) {
+                // ±5%以内：正解
+                resultHTML = `
+                    <div class="numeric-result-icon">⭕</div>
+                    <div class="numeric-result-text">だいたい合ってる！</div>
+                    <div class="numeric-result-detail">
+                        あなたの回答: ${userAnswer.toLocaleString()}円
+                    </div>
+                    <div class="answer-breakdown">
+                        正解: <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+                    </div>
+                `;
+                resultArea.className = 'numeric-result correct';
+                score++;
+                flashCorrect(input);
+            } else {
+                // 不正解
+                resultHTML = `
+                    <div class="numeric-result-icon">❌</div>
+                    <div class="numeric-result-text">不正解</div>
+                    <div class="numeric-result-detail">
+                        あなたの回答: <span class="user-answer">${userAnswer.toLocaleString()}円</span>
+                    </div>
+                    <div class="answer-breakdown">
+                        正解: <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+                    </div>
+                `;
+                resultArea.className = 'numeric-result incorrect';
+            }
+
+            resultArea.innerHTML = resultHTML;
+            resultArea.classList.remove('hidden');
+
+            // 結果を記録
+            if (typeof recordQuestionResult === 'function') {
+                recordQuestionResult(QUIZ_ID, questionId, isCorrect);
+            }
+
+            explanation.classList.remove('hidden');
+
+            if (currentQuestion < totalQuestions - 1) {
+                nextButton.classList.remove('hidden');
+            } else {
+                resultButton.classList.remove('hidden');
+            }
+
+            updateScore();
+            resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function nextQuestion() {
+            const currentQuestionId = questionList[currentQuestion];
+            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
+
+            currentQuestion++;
+            const nextQuestionId = questionList[currentQuestion];
+
+            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
+            document.querySelector('.next-button').classList.add('hidden');
+            updateProgress();
+
+            // 次の問題の入力欄にフォーカス
+            const nextInput = document.getElementById(`question${nextQuestionId}`).querySelector('.numeric-input');
+            if (nextInput) {
+                setTimeout(() => nextInput.focus(), 100);
+            }
+        }
+
+        function showFinalScore() {
+            questionList.forEach(questionId => {
+                const qElem = document.getElementById(`question${questionId}`);
+                if(qElem) qElem.classList.add('hidden');
+            });
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.add('hidden');
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            const isPerfect = score === totalQuestions;
+            setTimeout(() => {
+                celebrateResult(isPerfect);
+            }, 300);
+
+            // 結果を記録（エラーでも結果画面は表示する）
+            let newBadges = [];
+            try {
+                if (typeof recordQuizResult === 'function') {
+                    const result = recordQuizResult(QUIZ_ID, score, totalQuestions);
+                    if (result && result._newBadges) {
+                        newBadges = result._newBadges;
+                    }
+                }
+            } catch (e) {
+                console.error('結果記録中にエラー:', e);
+            }
+
+            let title, message;
+
+            if (score === totalQuestions) {
+                title = '🏆 完璧です！ 🏆';
+                message = `全問正解！素晴らしい知識です。\n保険点数をしっかり覚えていますね。`;
+            } else if (score >= totalQuestions * 0.8) {
+                title = '🌟 素晴らしい！ 🌟';
+                message = `高得点です！保険点数の重要項目をしっかり覚えています。\n間違えた点数を復習すれば完璧ですよ。`;
+            } else if (score >= totalQuestions * 0.5) {
+                title = '👍 よくできました！ 👍';
+                message = `基本的な点数は覚えていますね。\n解説を読み直して、知識を固めましょう。`;
+            } else {
+                title = '💪 これからが本番！ 💪';
+                message = `良い復習の機会になりましたね。\n保険点数を覚えて、日々の業務に活かしていきましょう！`;
+            }
+
+            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
+            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
+            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
+            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
+
+            // 進捗情報を取得して表示（エラー時は空文字）
+            let progressHTML = '';
+            try {
+                progressHTML = generateResultProgressHTML();
+            } catch (e) {
+                console.error('進捗HTML生成エラー:', e);
+            }
+
+            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML + progressHTML;
+
+            // バッジ獲得表示
+            try {
+                const badgeArea = document.getElementById('badgeAchievement');
+                if (badgeArea && newBadges.length > 0 && typeof renderBadgeAchievement === 'function') {
+                    badgeArea.innerHTML = renderBadgeAchievement(newBadges);
+                } else if (badgeArea) {
+                    badgeArea.innerHTML = '';
+                }
+            } catch (e) {
+                console.error('バッジ表示エラー:', e);
+            }
+
+            document.getElementById('finalResult').classList.remove('hidden');
+            document.querySelector('.shuffle-button').classList.remove('hidden');
+            const dailyCount = getDailyQuestionCount();
+            document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
+            document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
+            document.querySelector('.retry-button').classList.remove('hidden');
+            document.querySelector('.record-button').classList.remove('hidden');
+            document.querySelector('.home-button-small').classList.remove('hidden');
+            document.querySelector('.top-link').classList.add('hidden');
+
+            // 間違えた問題ボタンの表示制御
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const reviewBtn = document.getElementById('reviewIncorrectButton');
+            if (reviewBtn) {
+                if (incorrectList.length > 0) {
+                    reviewBtn.classList.remove('hidden');
+                    reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+                } else {
+                    reviewBtn.classList.add('hidden');
+                }
+            }
+
+            // トップへスクロール
+            arrangeResultCards();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+            score = 0;
+            updateScore();
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement){
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    // 数値入力をリセット
+                    const input = questionElement.querySelector('.numeric-input');
+                    if (input) {
+                        input.value = '';
+                        input.disabled = false;
+                    }
+                    const submitBtn = questionElement.querySelector('.submit-answer-button');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                    }
+                    const resultArea = questionElement.querySelector('.numeric-result');
+                    if (resultArea) {
+                        resultArea.classList.add('hidden');
+                        resultArea.innerHTML = '';
+                    }
+
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            if (isDaily) {
+                startQuiz('daily');
+            } else {
+                startQuiz('full');
+            }
+        }
+
+        function goHome() {
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('quizArea').classList.add('hidden');
+            document.querySelector('.quiz-container').classList.remove('hidden');
+            document.querySelector('.top-link').classList.remove('hidden');
+
+            document.querySelector('h1').classList.remove('hidden');
+            document.querySelector('.subtitle').classList.remove('hidden');
+            document.getElementById('quizTitleHeader').classList.add('hidden');
+
+            for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+                const questionElement = document.getElementById(`question${i}`);
+                if(questionElement) {
+                    questionElement.style.display = '';
+                    questionElement.classList.add('hidden');
+
+                    // 数値入力をリセット
+                    const input = questionElement.querySelector('.numeric-input');
+                    if (input) {
+                        input.value = '';
+                        input.disabled = false;
+                    }
+                    const submitBtn = questionElement.querySelector('.submit-answer-button');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                    }
+                    const resultArea = questionElement.querySelector('.numeric-result');
+                    if (resultArea) {
+                        resultArea.classList.add('hidden');
+                        resultArea.innerHTML = '';
+                    }
+
+                    questionElement.querySelector('.explanation').classList.add('hidden');
+                }
+            }
+
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+            document.querySelector('.shuffle-button').classList.add('hidden');
+            document.querySelector('.retry-button').classList.add('hidden');
+            document.querySelector('.record-button').classList.add('hidden');
+            document.querySelector('.home-button-small').classList.add('hidden');
+            document.querySelector('.quiz-status').classList.remove('hidden');
+
+            currentQuestion = 1;
+            score = 0;
+            totalQuestions = TOTAL_QUESTIONS;
+            questionList = [];
+            isDaily = false;
+
+            updateScore();
+            updateProgressStatus();
+
+            document.getElementById('modeSelection').classList.remove('hidden');
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        // リザルト画面用の進捗HTML生成
+        function generateResultProgressHTML() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            const unansweredList = getUnansweredQuestions(QUIZ_ID, TOTAL_QUESTIONS);
+            const correctNum = TOTAL_QUESTIONS - incorrectList.length - unansweredList.length;
+            const progressPercent = Math.round((correctNum / TOTAL_QUESTIONS) * 100);
+            const isPerfect = correctNum === TOTAL_QUESTIONS;
+
+            return `
+                <div class="result-progress-section">
+                    <div class="result-progress-title">📊 このクイズの進捗</div>
+                    <div class="result-progress-bar-container">
+                        <div class="result-progress-bar-fill ${isPerfect ? 'perfect' : ''}" style="width: ${progressPercent}%"></div>
+                    </div>
+                    <div class="result-progress-percentage">${isPerfect ? '🌸 ' : ''}${progressPercent}%${isPerfect ? ' マスター！' : ''}</div>
+                    <div class="result-progress-stats">
+                        <div class="result-progress-stat">
+                            <span>✅ 正解</span>
+                            <span>${correctNum}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>❌ 間違い</span>
+                            <span>${incorrectList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>🆕 未挑戦</span>
+                            <span>${unansweredList.length}問</span>
+                        </div>
+                        <div class="result-progress-stat">
+                            <span>📝 全問題</span>
+                            <span>${TOTAL_QUESTIONS}問</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function goToRandomQuiz() {
+            // 重み付けでクイズを選択（未挑戦・間違いが多いクイズを優先）
+            const selectedQuiz = getWeightedRandomQuiz(CURRENT_QUIZ_FILE);
+            if (!selectedQuiz) {
+                // フォールバック: 従来のランダム選択
+                const otherQuizzes = ALL_QUIZZES.filter(q => q !== CURRENT_QUIZ_FILE);
+                const randomQuiz = otherQuizzes[Math.floor(Math.random() * otherQuizzes.length)];
+                const dailyCount = getDailyQuestionCount();
+                window.location.href = encodeURI(randomQuiz) + `?mode=daily${dailyCount}`;
+                return;
+            }
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(selectedQuiz) + `?mode=daily${dailyCount}`;
+        }
+
+        function restartThisQuiz() {
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=daily`;
+        }
+
+        // 間違えた問題を復習
+        function reviewIncorrectQuestions() {
+            const incorrectList = getIncorrectQuestions(QUIZ_ID);
+            if (incorrectList.length === 0) return;
+
+            // 間違えた問題数をURLパラメータとして渡す
+            window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
+        }
+    </script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
