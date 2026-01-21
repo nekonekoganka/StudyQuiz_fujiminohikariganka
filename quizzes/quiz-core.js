@@ -563,26 +563,34 @@ function showFinalScore() {
     }
 
     document.getElementById('finalResult').classList.remove('hidden');
-    document.querySelector('.shuffle-button').classList.remove('hidden');
-    // ボタンのテキストを設定値に更新
-    const dailyCount = getDailyQuestionCount();
-    document.getElementById('shuffleButton').innerHTML = '🎲 シャッフル' + dailyCount + '問<span class="btn-sub">別ジャンル</span>';
-    document.getElementById('retryButton').innerHTML = '🔄 もう' + dailyCount + '問<span class="btn-sub">同ジャンル</span>';
-    document.querySelector('.retry-button').classList.remove('hidden');
-    document.querySelector('.record-button').classList.remove('hidden');
-    document.querySelector('.home-button-small').classList.remove('hidden');
     document.querySelector('.top-link').classList.add('hidden');
 
-    // 間違えた問題ボタンの表示制御
+    // スコアに応じた推奨アクションを設定
+    const dailyCount = getDailyQuestionCount();
     const incorrectList = getIncorrectQuestions(QUIZ_ID);
+    setupRecommendedAction(score, totalQuestions, incorrectList.length, dailyCount);
+
+    // その他のボタンを表示
+    document.querySelector('.shuffle-button').classList.remove('hidden');
+    document.getElementById('shuffleButton').innerHTML = '🎲 別ジャンル<span class="btn-sub">' + dailyCount + '問</span>';
+    document.getElementById('retryButton').innerHTML = '🔄 同ジャンル<span class="btn-sub">' + dailyCount + '問</span>';
+    document.querySelector('.retry-button').classList.remove('hidden');
+
+    // 間違えた問題ボタンの表示制御
     const reviewBtn = document.getElementById('reviewIncorrectButton');
     if (reviewBtn) {
         if (incorrectList.length > 0) {
             reviewBtn.classList.remove('hidden');
-            reviewBtn.innerHTML = `❌ 間違えた問題を復習<span class="btn-sub">${incorrectList.length}問</span>`;
+            reviewBtn.innerHTML = `❌ 復習<span class="btn-sub">${incorrectList.length}問</span>`;
         } else {
             reviewBtn.classList.add('hidden');
         }
+    }
+
+    // 振り返りボタン
+    const reviewAllBtn = document.getElementById('reviewAllButton');
+    if (reviewAllBtn) {
+        reviewAllBtn.innerHTML = '📖 振り返る<span class="btn-sub">解説確認</span>';
     }
 
     // トップへスクロール
@@ -718,6 +726,43 @@ function generateResultProgressHTML() {
             </div>
         </div>
     `;
+}
+
+// スコアに応じた推奨アクションを設定
+function setupRecommendedAction(score, totalQuestions, incorrectCount, dailyCount) {
+    const recommendedBtn = document.getElementById('recommendedAction');
+    if (!recommendedBtn) return;
+
+    const percentage = Math.round((score / totalQuestions) * 100);
+
+    // 推奨アクションを決定
+    let actionText, actionSub, actionFunc;
+
+    if (percentage === 100) {
+        // 全問正解 → 別ジャンルへ挑戦
+        actionText = '🎲 別のジャンルに挑戦！';
+        actionSub = `${dailyCount}問ランダム出題`;
+        actionFunc = 'goToRandomQuiz()';
+    } else if (incorrectCount > 0 && percentage >= 50) {
+        // 間違いあり（50%以上） → 間違えた問題を復習
+        actionText = '❌ 間違えた問題を復習';
+        actionSub = `${incorrectCount}問を集中復習`;
+        actionFunc = 'reviewIncorrectQuestions()';
+    } else if (percentage < 50) {
+        // 低スコア → もう一度同じクイズ
+        actionText = '🔄 もう一度挑戦';
+        actionSub = `同じジャンルで${dailyCount}問`;
+        actionFunc = 'restartThisQuiz()';
+    } else {
+        // その他（間違いなし、50%以上80%未満など） → 別ジャンル
+        actionText = '🎲 次のクイズへ';
+        actionSub = `${dailyCount}問ランダム出題`;
+        actionFunc = 'goToRandomQuiz()';
+    }
+
+    recommendedBtn.innerHTML = `${actionText}<span class="btn-sub">${actionSub}</span>`;
+    recommendedBtn.setAttribute('onclick', actionFunc);
+    recommendedBtn.classList.remove('hidden');
 }
 
 // シャッフル：別ジャンルのクイズへ

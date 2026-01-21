@@ -395,15 +395,48 @@ h1 {
     color: white;
 }
 
-/* 結果画面ボタン */
+/* 結果画面ボタン - 新デザイン */
 .result-buttons {
     margin-top: 25px;
 }
 
+/* おすすめアクション（メイン推奨ボタン） */
+.recommended-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 30px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+    text-decoration: none;
+}
+
+.recommended-action:active {
+    transform: scale(0.97);
+}
+
+.recommended-action .btn-sub {
+    font-size: 13px;
+    font-weight: normal;
+    opacity: 0.9;
+    margin-top: 4px;
+}
+
+/* その他の選択肢ボタン（コンパクト） */
 .result-buttons-row {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 12px;
     flex-wrap: wrap;
 }
@@ -412,62 +445,97 @@ h1 {
     margin-bottom: 0;
 }
 
+.action-button-secondary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    text-decoration: none;
+}
+
+.action-button-secondary:active {
+    transform: scale(0.97);
+}
+
+.action-button-secondary .btn-sub {
+    font-size: 10px;
+    font-weight: normal;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* 旧ボタンスタイル（互換性のため維持） */
 .shuffle-button, .retry-button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    color: white;
+    color: #555;
+    background: #f5f5f5;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 120px;
     text-decoration: none;
 }
 
 .shuffle-button {
-    background: #e91e63;
+    background: #f5f5f5;
 }
 
 .retry-button {
-    background: #1976d2;
+    background: #f5f5f5;
 }
 
 .btn-sub {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: normal;
-    opacity: 0.9;
-    margin-top: 3px;
+    opacity: 0.8;
+    margin-top: 2px;
 }
 
-.record-button, .home-button-small {
+/* ナビゲーションリンク（テキストリンク化） */
+.result-nav-links {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.result-nav-link {
+    display: inline-flex;
     align-items: center;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    transition: all 0.3s ease;
-    min-width: 140px;
+    gap: 4px;
+    font-size: 14px;
+    color: #666;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 
-.record-button {
-    background: #00897b;
+.result-nav-link:hover {
+    color: #1976d2;
 }
 
-.home-button-small {
-    background: #5e35b1;
+/* 旧ボタン非表示（新デザインでは使用しない） */
+.record-button, .home-button-small {
+    display: none;
 }
 
-.shuffle-button:active, .retry-button:active, .record-button:active, .home-button-small:active, .review-incorrect-button:active {
+.shuffle-button:active, .retry-button:active, .review-incorrect-button:active {
     transform: scale(0.97);
 }
 
@@ -476,20 +544,20 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    color: white;
+    color: #555;
+    background: #f5f5f5;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 120px;
     text-decoration: none;
-    background: #ff5722;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
+    width: auto;
+    max-width: none;
+    margin: 0;
 }
 
 /* 問題を振り返るボタン */
@@ -497,17 +565,17 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px 20px;
-    border-radius: 15px;
-    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
-    color: white;
+    color: #555;
+    background: #f5f5f5;
     transition: all 0.3s ease;
-    min-width: 140px;
+    min-width: 120px;
     text-decoration: none;
-    background: #F9A825;
 }
 
 .review-all-button:active {
@@ -533,81 +601,98 @@ h1 {
 }
 
 @media (min-width: 768px) {
-    /* PC版: カード風デザイン */
+    /* PC版: 新デザイン */
     .result-buttons {
-        margin-top: 35px;
+        margin-top: 30px;
     }
 
-    .result-buttons-row {
-        gap: 20px;
+    /* おすすめアクション（PC版） */
+    .recommended-action {
+        max-width: 400px;
+        padding: 24px 40px;
+        font-size: 20px;
+        border-radius: 18px;
         margin-bottom: 20px;
     }
 
-    .shuffle-button, .retry-button {
-        min-width: 200px;
-        padding: 28px 32px;
-        font-size: 20px;
-        border-radius: 20px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    .recommended-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(25, 118, 210, 0.4);
     }
 
-    .shuffle-button:hover, .retry-button:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-    }
-
-    .btn-sub {
-        font-size: 15px;
+    .recommended-action .btn-sub {
+        font-size: 14px;
         margin-top: 6px;
     }
 
-    .result-buttons-row.secondary {
-        gap: 16px;
-        margin-top: 10px;
+    .result-buttons-row {
+        gap: 12px;
+        margin-bottom: 16px;
     }
 
-    .record-button, .home-button-small {
+    .shuffle-button, .retry-button, .review-incorrect-button, .review-all-button, .action-button-secondary {
         min-width: 140px;
-        padding: 14px 24px;
+        padding: 14px 20px;
         font-size: 15px;
-        border-radius: 12px;
-        opacity: 0.9;
     }
 
-    .record-button:hover, .home-button-small:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        opacity: 1;
+    .shuffle-button:hover, .retry-button:hover, .review-incorrect-button:hover, .review-all-button:hover, .action-button-secondary:hover {
+        transform: translateY(-2px);
+        border-color: #1976d2;
+        color: #1976d2;
     }
 
-    .review-incorrect-button {
-        max-width: 320px;
-        padding: 18px 24px;
-        font-size: 17px;
-        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
+    .btn-sub {
+        font-size: 11px;
+        margin-top: 3px;
     }
 
-    .review-incorrect-button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(255, 87, 34, 0.4);
+    .result-buttons-row.secondary {
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    /* ナビゲーションリンク（PC版） */
+    .result-nav-links {
+        gap: 32px;
+        margin-top: 24px;
+    }
+
+    .result-nav-link {
+        font-size: 15px;
+    }
+
+    .result-nav-link:hover {
+        text-decoration: underline;
     }
 }
 
 @media (max-width: 768px) {
-    .shuffle-button, .retry-button {
-        min-width: 130px;
-        padding: 12px 16px;
-        font-size: 15px;
-    }
-    .record-button, .home-button-small {
-        min-width: 130px;
-        padding: 12px 16px;
-        font-size: 15px;
-    }
-    .review-incorrect-button {
-        padding: 12px 16px;
-        font-size: 15px;
+    /* スマホ版: 新デザイン */
+    .recommended-action {
+        padding: 16px 24px;
+        font-size: 16px;
         max-width: 280px;
+    }
+
+    .recommended-action .btn-sub {
+        font-size: 12px;
+    }
+
+    .shuffle-button, .retry-button, .review-incorrect-button, .review-all-button, .action-button-secondary {
+        min-width: 110px;
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .result-nav-links {
+        gap: 20px;
+        margin-top: 16px;
+        padding-top: 12px;
+    }
+
+    .result-nav-link {
+        font-size: 13px;
     }
 }
 
@@ -1157,6 +1242,35 @@ h1 {
     .quiz-title-header {
         background: linear-gradient(135deg, #222235, #2e2e42);
         color: #f5f5f5;
+    }
+
+    /* 新ボタンデザイン - ダークモード */
+    .recommended-action {
+        background: linear-gradient(135deg, #1565c0, #0d47a1);
+        box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+    }
+
+    .shuffle-button, .retry-button, .review-incorrect-button, .review-all-button, .action-button-secondary {
+        background: #2e2e42;
+        border-color: #4a4a5e;
+        color: #d5d5d5;
+    }
+
+    .shuffle-button:hover, .retry-button:hover, .review-incorrect-button:hover, .review-all-button:hover, .action-button-secondary:hover {
+        border-color: #5ad0f5;
+        color: #5ad0f5;
+    }
+
+    .result-nav-links {
+        border-top-color: #3a3a4e;
+    }
+
+    .result-nav-link {
+        color: #9a9a9a;
+    }
+
+    .result-nav-link:hover {
+        color: #5ad0f5;
     }
 }
 
