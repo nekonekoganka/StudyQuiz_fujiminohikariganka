@@ -492,6 +492,46 @@ h1 {
     margin: 0 auto;
 }
 
+/* 問題を振り返るボタン */
+.review-all-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    text-decoration: none;
+    background: #00897b;
+}
+
+.review-all-button:active {
+    transform: scale(0.97);
+}
+
+/* 結果に戻るボタン */
+.back-to-result-button {
+    background: #5e35b1;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.back-to-result-button:active {
+    transform: scale(0.97);
+}
+
 @media (min-width: 768px) {
     /* PC版: カード風デザイン */
     .result-buttons {

@@ -326,6 +326,7 @@
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
             </div>
         </div>
     </div>
@@ -356,6 +357,10 @@
           <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
             ❌ 間違えた問題を復習
             <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
           </button>
         </div>
         <div class="result-buttons-row secondary">
