@@ -6,6 +6,35 @@
  * - QUIZ_ID: クイズの一意識別子
  * - TOTAL_QUESTIONS: 総問題数
  * - QUIZ_TITLE: クイズのタイトル（結果メッセージ用、オプション）
+ *
+ * ============================================================
+ * 【重要】クイズの種類について
+ * ============================================================
+ *
+ * このファイルは2種類のクイズ形式をサポートしています：
+ *
+ * 1. 選択式クイズ（大多数のクイズ）
+ *    - HTMLに .option クラスの選択肢がある
+ *    - selectAnswer() 関数で回答処理
+ *    - 例：白内障クイズ、緑内障クイズなど
+ *
+ * 2. 数値入力式クイズ（特殊）
+ *    - HTMLに .numeric-input クラスの入力欄がある
+ *    - submitNumericAnswer() 関数で回答処理
+ *    - data-points, data-yen 属性が必要
+ *    - ±5%の誤差まで正解として判定
+ *    - 例：眼科保険点数クイズ
+ *
+ * 【修正時の注意】
+ * 回答処理やナビゲーションボタンの表示ロジックを修正する際は、
+ * 両方のクイズ形式に影響がないか必ず確認してください。
+ * 特に以下の関数は両形式で使用されます：
+ * - nextQuestion()
+ * - prevQuestion()
+ * - updateNavigationButtons()
+ * - showFinalScore()
+ *
+ * ============================================================
  */
 
 // グローバル状態変数
@@ -74,6 +103,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (dailyBtn && dailyBtn.textContent.includes('今日の')) {
         dailyBtn.textContent = `📋 今日の${dailyCount}問`;
     }
+
+    // 数値入力クイズ用のイベントリスナー設定
+    // ※眼科保険点数クイズなど、数値入力式のクイズで使用
+    const numericInputs = document.querySelectorAll('.numeric-input');
+    numericInputs.forEach(input => {
+        // Enterキーで回答
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const questionCard = this.closest('.question-card');
+                const questionId = parseInt(questionCard.id.replace('question', ''));
+                submitNumericAnswer(questionId);
+            }
+        });
+        // 数字のみ入力を許可
+        input.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
 
     // モードが指定されていたら自動開始
     if (mode && (mode.startsWith('daily') || mode === 'full' || mode === 'review')) {
@@ -804,3 +851,123 @@ document.addEventListener('click', function(e) {
         selectAnswer(e.target);
     }
 });
+
+// ============================================================
+// 数値入力クイズ専用機能
+// ※眼科保険点数クイズなど、選択式ではなく数値を入力するタイプのクイズ用
+// ※通常の選択式クイズとは異なる仕様のため、修正時は注意が必要
+// ============================================================
+
+/**
+ * 数値入力の回答を判定して結果を表示
+ * @param {number} questionId - 問題番号
+ *
+ * 【重要】このクイズタイプの特徴:
+ * - HTML要素に data-points（点数）と data-yen（円）属性が必要
+ * - ±5%の誤差まで正解として判定
+ * - 選択式の selectAnswer() とは別の処理フロー
+ */
+function submitNumericAnswer(questionId) {
+    const questionElement = document.getElementById(`question${questionId}`);
+    const input = questionElement.querySelector('.numeric-input');
+    const submitBtn = questionElement.querySelector('.submit-answer-button');
+    const submitHint = questionElement.querySelector('.submit-hint');
+    const resultArea = questionElement.querySelector('.numeric-result');
+    const explanation = questionElement.querySelector('.explanation');
+    const nextButton = document.querySelector('.next-button');
+    const resultButton = document.querySelector('.result-button');
+
+    // 入力値を取得
+    const userAnswer = parseInt(input.value) || 0;
+    const correctYen = parseInt(questionElement.dataset.yen);
+    const points = parseInt(questionElement.dataset.points);
+
+    // 入力を無効化
+    input.disabled = true;
+    submitBtn.disabled = true;
+
+    // ヒントを非表示（スマホ画面スペース確保）
+    if (submitHint) {
+        submitHint.style.display = 'none';
+    }
+
+    // ±5%の許容範囲を計算
+    const tolerance = correctYen * 0.05;
+    const minAccept = correctYen - tolerance;
+    const maxAccept = correctYen + tolerance;
+
+    const isPerfect = userAnswer === correctYen;
+    const isWithinRange = userAnswer >= minAccept && userAnswer <= maxAccept;
+    const isCorrect = isPerfect || isWithinRange;
+
+    // 結果表示を作成
+    let resultHTML = '';
+    if (isPerfect) {
+        // 完全一致：特別に褒める
+        resultHTML = `
+            <div class="numeric-result-icon">🎯</div>
+            <div class="numeric-result-text">完璧！ピッタリ正解！</div>
+            <div class="answer-breakdown">
+                <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+            </div>
+        `;
+        resultArea.className = 'numeric-result correct perfect';
+        score++;
+        flashCorrect(input);
+    } else if (isWithinRange) {
+        // ±5%以内：正解
+        resultHTML = `
+            <div class="numeric-result-icon">⭕</div>
+            <div class="numeric-result-text">だいたい合ってる！</div>
+            <div class="numeric-result-detail">
+                あなたの回答: ${userAnswer.toLocaleString()}円
+            </div>
+            <div class="answer-breakdown">
+                正解: <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+            </div>
+        `;
+        resultArea.className = 'numeric-result correct';
+        score++;
+        flashCorrect(input);
+    } else {
+        // 不正解
+        resultHTML = `
+            <div class="numeric-result-icon">❌</div>
+            <div class="numeric-result-text">不正解</div>
+            <div class="numeric-result-detail">
+                あなたの回答: <span class="user-answer">${userAnswer.toLocaleString()}円</span>
+            </div>
+            <div class="answer-breakdown">
+                正解: <span class="points">${points}点</span> = <span class="yen">${correctYen.toLocaleString()}円</span>
+            </div>
+        `;
+        resultArea.className = 'numeric-result incorrect';
+    }
+
+    resultArea.innerHTML = resultHTML;
+    resultArea.classList.remove('hidden');
+
+    // 結果を記録
+    if (typeof recordQuestionResult === 'function') {
+        recordQuestionResult(QUIZ_ID, questionId, isCorrect);
+    }
+
+    explanation.classList.remove('hidden');
+
+    // ナビゲーションボタンの表示（レビューモード対応）
+    if (currentQuestion < totalQuestions - 1) {
+        nextButton.classList.remove('hidden');
+        resultButton.classList.add('hidden');
+    } else {
+        nextButton.classList.add('hidden');
+        // 振り返りモードでは結果発表ボタンは非表示
+        if (isReviewMode) {
+            resultButton.classList.add('hidden');
+        } else {
+            resultButton.classList.remove('hidden');
+        }
+    }
+
+    updateScore();
+    resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
