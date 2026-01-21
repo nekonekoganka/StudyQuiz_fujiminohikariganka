@@ -342,7 +342,12 @@ function nextQuestion() {
             document.querySelector('.result-button').classList.add('hidden');
         } else {
             document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.remove('hidden');
+            // 振り返りモードでは結果発表ボタンは非表示
+            if (isReviewMode) {
+                document.querySelector('.result-button').classList.add('hidden');
+            } else {
+                document.querySelector('.result-button').classList.remove('hidden');
+            }
         }
     } else {
         // 未回答の場合、両方非表示
@@ -377,7 +382,12 @@ function prevQuestion() {
             document.querySelector('.result-button').classList.add('hidden');
         } else {
             document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.remove('hidden');
+            // 振り返りモードでは結果発表ボタンは非表示
+            if (isReviewMode) {
+                document.querySelector('.result-button').classList.add('hidden');
+            } else {
+                document.querySelector('.result-button').classList.remove('hidden');
+            }
         }
     } else {
         // 未回答の場合、両方非表示
