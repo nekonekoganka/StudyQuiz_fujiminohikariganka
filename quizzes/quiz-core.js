@@ -327,9 +327,28 @@ function nextQuestion() {
     currentQuestion++;
     const nextQuestionId = questionList[currentQuestion];
 
+    const nextQuestionElement = document.getElementById(`question${nextQuestionId}`);
     shuffleOptions(nextQuestionId);
-    document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
-    document.querySelector('.next-button').classList.add('hidden');
+    nextQuestionElement.classList.remove('hidden');
+
+    // 移動先の問題が回答済みかどうかを確認
+    const isAnswered = nextQuestionElement.querySelector('.option.disabled') !== null;
+
+    if (isAnswered) {
+        // 回答済みの場合、適切なボタンを表示
+        if (currentQuestion < totalQuestions - 1) {
+            document.querySelector('.next-button').classList.remove('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+        } else {
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.remove('hidden');
+        }
+    } else {
+        // 未回答の場合、両方非表示
+        document.querySelector('.next-button').classList.add('hidden');
+        document.querySelector('.result-button').classList.add('hidden');
+    }
+
     updateProgress();
     updatePrevButtonVisibility();
 }
