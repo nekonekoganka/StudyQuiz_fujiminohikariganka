@@ -265,22 +265,29 @@
       <div id="resultDetail" class="result-detail"></div>
       <div id="badgeAchievement"></div>
       <div class="result-buttons">
-        <!-- おすすめアクション -->
-        <button id="recommendedAction" class="recommended-action hidden" onclick="">
-          読み込み中...
-          <span class="btn-sub"></span>
-        </button>
-        <!-- その他の選択肢 -->
         <div class="result-buttons-row">
-          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 別ジャンル<span class="btn-sub">3問</span></button>
-          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 同ジャンル<span class="btn-sub">3問</span></button>
-          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">❌ 復習<span class="btn-sub">0問</span></button>
-          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">📖 振り返る<span class="btn-sub">解説確認</span></button>
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
         </div>
-        <!-- ナビゲーションリンク -->
-        <div class="result-nav-links">
-          <a href="../mypage.html" class="result-nav-link">📊 学習記録</a>
-          <a href="../index.html" class="result-nav-link">🏠 ホーム</a>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
         </div>
       </div>
     </div>
