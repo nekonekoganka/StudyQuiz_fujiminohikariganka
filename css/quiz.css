@@ -173,19 +173,21 @@ h1 {
     margin-bottom: 20px;
 }
 
-.top-link a {
+.home-link {
     background: #5e35b1;
     color: white;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
-    padding: 12px 24px;
-    border-radius: 25px;
-    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.3s ease;
 }
 
-.top-link a:active {
+.home-link:active {
     transform: scale(0.97);
 }
 
@@ -193,11 +195,14 @@ h1 {
     background: #7e57c2;
     color: white;
     border: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
-    padding: 12px 24px;
-    border-radius: 25px;
+    padding: 12px 20px;
+    border-radius: 15px;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     transition: all 0.3s ease;
 }
 
@@ -206,7 +211,7 @@ h1 {
 }
 
 @media (min-width: 768px) {
-    .top-link a:hover,
+    .home-link:hover,
     .prev-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);

@@ -344,17 +344,32 @@ function prevQuestion() {
     currentQuestion--;
     const prevQuestionId = questionList[currentQuestion];
 
-    document.getElementById(`question${prevQuestionId}`).classList.remove('hidden');
+    const prevQuestionElement = document.getElementById(`question${prevQuestionId}`);
+    prevQuestionElement.classList.remove('hidden');
 
-    // 「次の問題」「結果発表」ボタンを非表示
-    document.querySelector('.next-button').classList.add('hidden');
-    document.querySelector('.result-button').classList.add('hidden');
+    // 戻った問題が回答済みかどうかを確認
+    const isAnswered = prevQuestionElement.querySelector('.option.disabled') !== null;
+
+    if (isAnswered) {
+        // 回答済みの場合、適切なボタンを表示
+        if (currentQuestion < totalQuestions - 1) {
+            document.querySelector('.next-button').classList.remove('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+        } else {
+            document.querySelector('.next-button').classList.add('hidden');
+            document.querySelector('.result-button').classList.remove('hidden');
+        }
+    } else {
+        // 未回答の場合、両方非表示
+        document.querySelector('.next-button').classList.add('hidden');
+        document.querySelector('.result-button').classList.add('hidden');
+    }
 
     updateProgress();
     updatePrevButtonVisibility();
 
     // 前の問題の上部にスクロール
-    document.getElementById(`question${prevQuestionId}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    prevQuestionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // 「前の問題へ」ボタンの表示制御
