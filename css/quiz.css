@@ -672,6 +672,15 @@ h1 {
 .buttons {
     text-align: center;
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 振り返りモード時：結果に戻るボタンを左側に配置 */
+.buttons .back-to-result-button {
+    order: -1;
 }
 
 .explanation {
