@@ -165,8 +165,11 @@ h1 {
 }
 
 .top-link {
-    display: block;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 }
 
@@ -186,8 +189,25 @@ h1 {
     transform: scale(0.97);
 }
 
+.prev-button {
+    background: #7e57c2;
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.prev-button:active {
+    transform: scale(0.97);
+}
+
 @media (min-width: 768px) {
-    .top-link a:hover {
+    .top-link a:hover,
+    .prev-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
     }
