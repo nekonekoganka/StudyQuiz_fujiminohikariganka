@@ -14,6 +14,7 @@ let score = 0;
 let totalQuestions = 10;
 let questionList = [];
 let isDaily = false;
+let isReviewMode = false;
 
 // 全クイズ一覧（シャッフル機能用）
 const ALL_QUIZZES = [
@@ -689,6 +690,102 @@ function reviewIncorrectQuestions() {
     if (incorrectList.length === 0) return;
 
     window.location.href = encodeURI(CURRENT_QUIZ_FILE) + `?mode=review`;
+}
+
+// 問題を振り返る（結果画面から）
+function reviewAllQuestions() {
+    isReviewMode = true;
+
+    // 結果画面を非表示
+    document.getElementById('finalResult').classList.add('hidden');
+
+    // クイズコンテナとクイズエリアを表示
+    document.querySelector('.quiz-container').classList.remove('hidden');
+    document.getElementById('quizArea').classList.remove('hidden');
+    document.querySelector('.quiz-status').classList.remove('hidden');
+    document.querySelector('.top-link').classList.remove('hidden');
+
+    // 最初の問題から振り返り
+    currentQuestion = 0;
+
+    // 全問題を非表示にしてから最初の問題を表示
+    for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+        const questionElement = document.getElementById(`question${i}`);
+        if (questionElement) {
+            if (questionList.includes(i)) {
+                questionElement.style.display = '';
+                questionElement.classList.add('hidden');
+            }
+        }
+    }
+
+    const firstQuestionId = questionList[0];
+    document.getElementById(`question${firstQuestionId}`).classList.remove('hidden');
+
+    // ボタンの表示を更新
+    updateProgress();
+    updatePrevButtonVisibility();
+    updateNavigationButtons();
+
+    // 「結果に戻る」ボタンを表示
+    const backToResultBtn = document.getElementById('backToResultButton');
+    if (backToResultBtn) {
+        backToResultBtn.classList.remove('hidden');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 結果画面に戻る
+function backToResult() {
+    isReviewMode = false;
+
+    // クイズエリアを非表示
+    document.getElementById('quizArea').classList.add('hidden');
+    document.querySelector('.quiz-container').classList.add('hidden');
+    document.querySelector('.top-link').classList.add('hidden');
+
+    // 問題を非表示
+    questionList.forEach(questionId => {
+        const qElem = document.getElementById(`question${questionId}`);
+        if (qElem) qElem.classList.add('hidden');
+    });
+
+    // 結果画面を表示
+    document.getElementById('finalResult').classList.remove('hidden');
+
+    // 「結果に戻る」ボタンを非表示
+    const backToResultBtn = document.getElementById('backToResultButton');
+    if (backToResultBtn) {
+        backToResultBtn.classList.add('hidden');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ナビゲーションボタンの表示を更新（振り返りモード対応）
+function updateNavigationButtons() {
+    const currentQuestionId = questionList[currentQuestion];
+    const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+    const isAnswered = currentQuestionElement.querySelector('.option.disabled') !== null;
+
+    if (isAnswered) {
+        if (currentQuestion < totalQuestions - 1) {
+            document.querySelector('.next-button').classList.remove('hidden');
+            document.querySelector('.result-button').classList.add('hidden');
+        } else {
+            document.querySelector('.next-button').classList.add('hidden');
+            // 振り返りモードでは結果発表ボタンは非表示（結果に戻るボタンを使う）
+            if (isReviewMode) {
+                document.querySelector('.result-button').classList.add('hidden');
+            } else {
+                document.querySelector('.result-button').classList.remove('hidden');
+            }
+        }
+    } else {
+        document.querySelector('.next-button').classList.add('hidden');
+        document.querySelector('.result-button').classList.add('hidden');
+    }
 }
 
 // クリックイベントリスナー
