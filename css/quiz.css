@@ -487,9 +487,7 @@ h1 {
     min-width: 140px;
     text-decoration: none;
     background: #ff5722;
-    width: 100%;
     max-width: 300px;
-    margin: 0 auto;
 }
 
 /* 問題を振り返るボタン */
