@@ -884,7 +884,7 @@ h1 {
     /* 進捗セクション */
     .result-progress-section {
         width: 100%;
-        max-width: 600px;
+        max-width: 750px;
         padding: 18px 22px;
         margin: 0 auto;
     }
@@ -910,6 +910,7 @@ h1 {
         flex: 1;
         padding: 10px 14px;
         border-radius: 6px;
+        white-space: nowrap;
     }
     /* 進捗統計の色分け */
     .result-progress-stat:nth-child(1) {
