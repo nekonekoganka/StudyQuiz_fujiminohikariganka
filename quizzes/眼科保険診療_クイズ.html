@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>眼科保険診療クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🏥 眼科保険診療クイズ 🏥</h1>
+        <div class="subtitle">眼科スタッフ向け - 保険診療の基礎知識を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🏥 眼科保険診療クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">8</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">次のうち、保険診療で算定でき<strong>ない</strong>ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">レーシック手術</div>
+                    <div class="option" data-answer="false">弱視の視能訓練</div>
+                    <div class="option" data-answer="false">角膜形状解析検査</div>
+                    <div class="option" data-answer="false">屈折検査</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>レーシック手術、オルソケラトロジー、低濃度アトロピン点眼による近視治療等は保険診療ではなく、それらに関わる検査や投薬等すべてが自費診療となります。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">低濃度アトロピン点眼による近視治療について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">すべて自費診療となる</div>
+                    <div class="option" data-answer="false">保険診療で算定できる</div>
+                    <div class="option" data-answer="false">検査のみ保険算定可能</div>
+                    <div class="option" data-answer="false">点眼薬のみ保険適用</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>低濃度アトロピン点眼による近視治療は保険診療ではないため、それに関わる検査や投薬等すべてが自費診療となります。オルソケラトロジーも同様です。
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">コンタクトレンズ装用目的の患者で、眼科学的検査を算定できる場合として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">算定要件を診療録に記載した特定疾患の患者</div>
+                    <div class="option" data-answer="false">すべてのCL処方患者</div>
+                    <div class="option" data-answer="false">CL装用歴1年以上の患者</div>
+                    <div class="option" data-answer="false">初診の患者のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>CL装用目的の患者のうち、一定の基準を満たす網膜硝子体疾患・視神経疾患、緑内障・高眼圧症、円錐角膜や高度不正乱視等の患者で、算定要件を診療録に記載した場合に限り眼科学的検査の算定が認められます。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>CL処方患者でも特定疾患があれば検査算定できる場合があります。カルテ記載が必須です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">傷病名の記載について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">原則として右眼・左眼・両眼を区別して記載する</div>
+                    <div class="option" data-answer="false">左右の区別は記載しなくてよい</div>
+                    <div class="option" data-answer="false">両眼の場合のみ区別して記載する</div>
+                    <div class="option" data-answer="false">手術の場合のみ区別する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>傷病名は原則として、右眼、左眼、両眼を区別して記載します。また、必要に応じて慢性・急性の区別も記載します。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">疑い病名について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">診断がついたら疑い病名は中止とし確定病名を記載する</div>
+                    <div class="option" data-answer="false">確定診断がついても疑い病名のまま継続してよい</div>
+                    <div class="option" data-answer="false">疑い病名でも処方は可能</div>
+                    <div class="option" data-answer="false">疑い病名は3ヶ月後に自動的に確定病名となる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>疑い病名は、診断がついたら中止とし、確定病名を記載します。疑い病名では処方はできません。また、傷病名の診療開始年月日と終了年月日を記載し、転帰（治癒・死亡・中止）も忘れずに記載します。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>疑い病名のままでは処方できません。診断確定後は速やかに病名を更新しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">屈折検査と矯正視力検査の同時算定ができるのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼鏡処方箋交付時</div>
+                    <div class="option" data-answer="false">すべての診察時</div>
+                    <div class="option" data-answer="false">矯正視力が0.7未満の場合のみ</div>
+                    <div class="option" data-answer="false">自覚症状がある場合のみ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>屈折検査と矯正視力検査の同時算定ができるのは、①屈折異常の疑いがあり初めて検査を行った場合、②眼鏡処方箋交付時、③屈折状態が変わる眼内手術後の初回診察時です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>同時算定できる条件を覚えておきましょう。眼鏡処方箋交付時は同時算定OKです。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">6歳未満の弱視患者に対する小児矯正視力検査加算について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">3月に1回に限り算定可能</div>
+                    <div class="option" data-answer="false">毎回算定可能</div>
+                    <div class="option" data-answer="false">初診時のみ算定可能</div>
+                    <div class="option" data-answer="false">眼鏡処方箋交付時のみ算定可能</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>小児矯正視力検査加算は、6歳未満の「弱視」または「不同視」の患者に対し、眼鏡処方箋の交付を行わずに矯正視力検査を実施した場合に、3月に1回に限り算定できます。
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">投薬について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">処方薬は適応病名を確認し、疑い病名では処方できない</div>
+                    <div class="option" data-answer="false">疑い病名でも処方は可能</div>
+                    <div class="option" data-answer="false">アレルギー性結膜炎の病名だけで抗菌剤点眼液を処方できる</div>
+                    <div class="option" data-answer="false">適応病名がなくても医学的に効果があれば処方可能</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>処方薬は適応病名を確認して処方します。疑い病名では処方はできません。また、アレルギー性結膜炎の病名だけでは抗菌剤点眼液の投与は認められていません。医学的に効能・効果が認められていても保険診療上適応とされていない薬剤もあります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>アレルギー性結膜炎に抗菌剤を処方する場合は、感染性結膜炎等の病名追加が必要です。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'hoken-shinryo';
+        const TOTAL_QUESTIONS = 8;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

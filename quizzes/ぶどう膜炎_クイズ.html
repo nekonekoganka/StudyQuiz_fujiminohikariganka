@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ぶどう膜炎クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🍇 ぶどう膜炎クイズ 🍇</h1>
+        <div class="subtitle">眼科スタッフ向け - ぶどう膜炎の基礎と患者対応を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🍇 ぶどう膜炎クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全10問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">10問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全10問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">ぶどう膜を構成する3つの組織の組み合わせとして正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">虹彩・毛様体・脈絡膜</div>
+                    <div class="option" data-answer="false">角膜・虹彩・水晶体</div>
+                    <div class="option" data-answer="false">網膜・脈絡膜・強膜</div>
+                    <div class="option" data-answer="false">結膜・角膜・虹彩</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ぶどう膜は、瞳孔の大きさを調整する虹彩、水晶体の厚さを変えてピントを調節する毛様体、血流が豊富で網膜に栄養を届ける脈絡膜の3つの組織から成ります。色が果物の葡萄に似ているため、ぶどう膜と呼ばれています。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者さんへの説明時「目の中にある、ぶどうのような色をした膜に炎症が起きる病気です」と伝えると分かりやすいです。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">ぶどう膜炎を疑う患者さんの訴えとして適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">目がかゆい</div>
+                    <div class="option" data-answer="false">目が赤い</div>
+                    <div class="option" data-answer="false">まぶしい</div>
+                    <div class="option" data-answer="false">霧がかったように見える</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ぶどう膜炎の症状には、目が赤い、目が痛い、まぶしい、視力が落ちた、霧がかったように見える、ゆがんで見えるなどがあります。「目がかゆい」はアレルギー性結膜炎などで多い症状で、ぶどう膜炎の典型的な症状ではありません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>問診でこれらの症状を聴取したら、ぶどう膜炎の可能性を考慮しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">日本のぶどう膜炎の原因疾患で最も多い非感染性疾患はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">サルコイドーシス</div>
+                    <div class="option" data-answer="false">ベーチェット病</div>
+                    <div class="option" data-answer="false">原田病</div>
+                    <div class="option" data-answer="false">関節リウマチ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>日本のぶどう膜炎の原因疾患調査では、非感染性であるサルコイドーシスが10%程度と最も多く、次いで原田病が多いです。これらの病気は眼だけでなく全身に症状が出ることがあります。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">ぶどう膜炎の主な合併症として正しい組み合わせはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">白内障と緑内障</div>
+                    <div class="option" data-answer="false">網膜剥離と黄斑変性</div>
+                    <div class="option" data-answer="false">角膜潰瘍と結膜炎</div>
+                    <div class="option" data-answer="false">翼状片とドライアイ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ぶどう膜炎の主な合併症は白内障と緑内障です。長期のステロイド治療や繰り返す炎症が原因で、若い方でも白内障が発症することがあります。緑内障も炎症やステロイド薬の副作用で起こります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>ぶどう膜炎の患者さんは眼圧測定や白内障の有無を定期的に確認することが重要です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">ベーチェット病が疑われる患者さんの問診で確認すべき全身症状として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">手足のしびれ</div>
+                    <div class="option" data-answer="false">繰り返す口内炎</div>
+                    <div class="option" data-answer="false">皮膚の発疹</div>
+                    <div class="option" data-answer="false">外陰部の潰瘍</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ベーチェット病では、口腔粘膜の再発性アフタ性潰瘍（口内炎）、皮疹、外陰部潰瘍、関節炎などの全身症状が現れます。手足のしびれはベーチェット病の典型的な症状ではありません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>問診で「繰り返す口内炎はありませんか？」と確認することが診断の手がかりになります。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">サルコイドーシスが疑われる場合に重要な検査として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">頭部MRI検査</div>
+                    <div class="option" data-answer="false">胸部X線検査</div>
+                    <div class="option" data-answer="false">血液検査</div>
+                    <div class="option" data-answer="false">心電図検査</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>サルコイドーシスの診断では、胸部X線写真でのリンパ節腫大、血液検査や心電図検査での異常が重要な所見です。頭部MRI検査は通常、サルコイドーシスの初期診断には含まれません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>ぶどう膜炎の患者さんで胸部X線検査がオーダーされた場合、サルコイドーシスの可能性を考慮していることがあります。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">サルコイドーシスの好発年齢と性差について正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">20代と50代以降にピークがあり、50代以降は女性に多い</div>
+                    <div class="option" data-answer="false">10代に多く、男女差はない</div>
+                    <div class="option" data-answer="false">40代に多く、男性に多い</div>
+                    <div class="option" data-answer="false">高齢者に多く、女性に多い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>サルコイドーシスは20代と50代以降に発症のピークを持ち、特に50代以降は女性に多いことが知られています。眼にぶどう膜炎が現れる頻度は日本人では60〜70%と高いです。
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">原田病の前駆症状として問診で確認すべき内容として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">繰り返す下痢</div>
+                    <div class="option" data-answer="false">発熱</div>
+                    <div class="option" data-answer="false">頭痛</div>
+                    <div class="option" data-answer="false">髪の毛をさわるとぴりぴりする</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>原田病では、発熱、頭痛、髪の毛をさわるとぴりぴりした感じがするといった前駆症状のあとに視力が低下することが多いです。繰り返す下痢は原田病の典型的な前駆症状ではありません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「最近、頭痛や発熱はありませんでしたか？」「頭皮がピリピリしませんでしたか？」と問診で確認しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">原田病の特徴として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">東洋人に多く、白人には少ない</div>
+                    <div class="option" data-answer="false">白人に多く、東洋人には少ない</div>
+                    <div class="option" data-answer="false">人種差はない</div>
+                    <div class="option" data-answer="false">アフリカ系に最も多い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>原田病は20〜40代に発症が多く、日本人を含む東洋人に多く、白人には少ないという特徴を持つ病気です。皮膚や毛髪の白化、耳鳴りや難聴などの症状を伴うこともあります。
+                </div>
+            </div>
+
+            <!-- ========== 問題10 ========== -->
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">ぶどう膜炎でステロイド治療中の患者さんへの対応として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">副作用の心配があるので自己判断で減量・中止を勧める</div>
+                    <div class="option" data-answer="false">定期的な眼圧測定を行う</div>
+                    <div class="option" data-answer="false">白内障の進行に注意して観察する</div>
+                    <div class="option" data-answer="false">医師の指示通りに点眼を続けるよう説明する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ステロイド薬は副作用の心配がありますが、ぶどう膜炎には効果が高いことが多いです。自己判断での減量・中止は症状悪化につながるため、医師の指示を守って使用するよう患者さんに説明しましょう。定期的な眼圧測定や白内障の観察も重要です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者さんには「お薬は効果がありますので、先生の指示通りに続けてくださいね」と声かけしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'uveitis';
+        const TOTAL_QUESTIONS = 10;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

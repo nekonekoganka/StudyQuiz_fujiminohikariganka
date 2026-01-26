@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ノンコン眼圧検査クイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>💨 ノンコン眼圧検査クイズ 💨</h1>
+        <div class="subtitle">眼科スタッフ向け - 眼圧測定のコツを学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">💨 ノンコン眼圧検査クイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全11問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">11問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">11問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全11問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">11</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">患者さんから「眼圧検査って何？」と聞かれた場合、眼圧の説明として適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">目の硬さのこと</div>
+                    <div class="option" data-answer="false">目の大きさのこと</div>
+                    <div class="option" data-answer="false">目の透明度のこと</div>
+                    <div class="option" data-answer="false">目の屈折力のこと</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧とは目の硬さのことです。患者さんには「眼圧とは、目の硬さのことです」「この検査では目に風を当て、眼圧を測定します」と説明します。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">眼圧の正常範囲として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">10〜21mmHg</div>
+                    <div class="option" data-answer="false">5〜15mmHg</div>
+                    <div class="option" data-answer="false">15〜25mmHg</div>
+                    <div class="option" data-answer="false">20〜30mmHg</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧の正常値は10〜21mmHgですが、個人差があります。患者さんに聞かれた際には「眼圧の正常値は10〜21mmHgですが、個人差があります」と回答しましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">ノンコンで測定する際、風を当てる前に必ず行うべき声かけはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「風が当たります」</div>
+                    <div class="option" data-answer="false">「目を閉じてください」</div>
+                    <div class="option" data-answer="false">「息を止めてください」</div>
+                    <div class="option" data-answer="false">「下を向いてください」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>測定時には必ず「風が当たります」と声をかけ、患者さんに心の準備をさせてあげましょう。無言で風を当てることはできるだけ避けてください。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>眼瞼を挙上する際にも「眼瞼を触りますね」など、常に声かけを意識すると患者さんの安心感につながります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">ノンコン操作において、患者さんにお顔を乗せてもらう前に必ず行うべきことはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ジョイスティックを手前に引いておく</div>
+                    <div class="option" data-answer="false">ジョイスティックを前方に押し出しておく</div>
+                    <div class="option" data-answer="false">器械の電源を一度切る</div>
+                    <div class="option" data-answer="false">測定モードを変更する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>患者さんにお顔を乗せてもらう前に、必ずジョイスティックを手前に引いておきます。ノンコンは測定部分がやや突出しているため、器械が目に接触する危険を回避するためです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>測定眼を変更する際も、一度手前に引いてから左右に移動しましょう。本当に危険なので、ジョイスティックは必ず手前に引く癖を身につけてください！
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">眼瞼を挙上する際、<strong>「適切ではない」</strong>方法はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">指で眼球を圧迫しながら挙上する</div>
+                    <div class="option" data-answer="false">まつ毛のきわに近いところから挙上する</div>
+                    <div class="option" data-answer="false">眼窩の骨に沿わせるように挙上する</div>
+                    <div class="option" data-answer="false">眼球を圧迫しないように注意して挙上する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼瞼を挙上する際には、眼球を圧迫しないように注意してください。指で眼球を圧迫すると本来の眼圧よりも高く測定されてしまう可能性があります。まつ毛のきわに近いところから、眼窩の骨に沿わせるように挙上するのがポイントです。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">ノンコンの操作を片手で行う理由として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">必要な時に眼瞼をすぐに挙上できるようにするため</div>
+                    <div class="option" data-answer="false">検査時間を短縮するため</div>
+                    <div class="option" data-answer="false">器械の精度を上げるため</div>
+                    <div class="option" data-answer="false">患者さんの緊張をほぐすため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>必要な時に眼瞼をすぐに挙上できるよう、器械の操作は片手で行いましょう。両手での操作は機器の扱いに夢中になり、患者さんへの注意がおろそかになる可能性があります。また、うっかりジョイスティックを押しすぎてしまったときも、空いている手でブロックできます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">眼圧測定時に常に意識すべきこととして、最も重要なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">コンタクトレンズ装用の可能性</div>
+                    <div class="option" data-answer="false">患者さんの血圧</div>
+                    <div class="option" data-answer="false">室内の温度</div>
+                    <div class="option" data-answer="false">検査の順番</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼圧測定時は、コンタクトレンズ装用の可能性を常に意識しましょう。コンタクト装用下では正確な眼圧値が測定できないためです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>特にHCL（ハードコンタクト）の場合、ノンコンの風でレンズが外れたり、目の上でレンズが動いて角膜を傷付けてしまう可能性もあります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">HCL（ハードコンタクト）装用下でノンコンを使用した場合のリスクとして、<strong>「適切ではない」</strong>ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼圧が正常より低く測定される</div>
+                    <div class="option" data-answer="false">レンズが外れる可能性がある</div>
+                    <div class="option" data-answer="false">角膜を傷付ける可能性がある</div>
+                    <div class="option" data-answer="false">正確な眼圧値が測定できない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>HCL装用下でノンコンを使用すると、風でレンズが外れたり、目の上でレンズが動いて角膜を傷付けてしまう可能性があります。HCLによるケガやHCLの紛失は医療事故につながります。眼圧が低く測定されるというリスクは該当しません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">患者さんの閉瞼が強い場合、適切な対応はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">声かけしつつ、眼瞼を少し強めに挙上して素早く測定する</div>
+                    <div class="option" data-answer="false">時間をかけてゆっくり測定する</div>
+                    <div class="option" data-answer="false">閉瞼が弱くなるまで待つ</div>
+                    <div class="option" data-answer="false">測定を中止して次回に回す</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>閉瞼が強い場合は、「力を抜いて目を大きく開けてくださいね」と声かけしつつ、眼瞼を少し強めに挙上して測定しましょう。時間をかけるよりもできるだけ素早く測定した方が患者さんの負担は少なくなります。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>閉瞼が強く、かつ眼圧が高い場合は、眼瞼の挙上や閉瞼の影響が疑われます。「眼圧測定時、閉瞼が強めでした」とカルテに記載しておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">測定画面に「over」と表示された場合、適切な対応はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">高眼圧まで測定できるモードに切り替える</div>
+                    <div class="option" data-answer="false">器械の電源を入れ直す</div>
+                    <div class="option" data-answer="false">測定を中止する</div>
+                    <div class="option" data-answer="false">風の強さを弱くする</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「over」と表示される場合は、標準設定の測定範囲（30〜40mmHg）を超えている可能性が高いです。高眼圧まで測定できるモード（最大60mmHgまで測定可能）に切り替えましょう。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>経験を積むと、風が角膜に当たったときの音や振動が、通常より強いと感じられるようになります。モード切替方法は機種により異なるため、事前に確認しておきましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question11">
+                <div class="question-number">問題 11</div>
+                <div class="question-text">ノンコンで「over」と表示された場合、標準設定では何mmHgを超えていますか？また、設定変更で最大何mmHgまで測定可能ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">標準上限：40mmHg、最大測定：60mmHg</div>
+                    <div class="option" data-answer="false">標準上限：21mmHg、最大測定：30mmHg</div>
+                    <div class="option" data-answer="false">標準上限：60mmHg、最大測定：80mmHg</div>
+                    <div class="option" data-answer="false">標準上限：30mmHg、最大測定：40mmHg</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>一般的なノンコンは標準設定では40mmHgまで測定可能です。これを超えると「over」と表示されます。高眼圧モードなど設定を変更すると、最大60mmHgまで測定できます。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'noncon-iatsu';
+        const TOTAL_QUESTIONS = 11;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

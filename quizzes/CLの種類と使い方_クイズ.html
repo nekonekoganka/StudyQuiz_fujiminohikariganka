@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLの種類と使い方クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️‍🗨️ CLの種類と使い方クイズ 👁️‍🗨️</h1>
+        <div class="subtitle">眼科スタッフ向け - コンタクトレンズと目のお化粧</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️‍🗨️ CLの種類と使い方クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全10問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">10問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全10問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">ハードコンタクトレンズとソフトコンタクトレンズの特徴について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ハードCLは視力矯正効果が高いが、慣れるのに時間がかかる</div>
+                    <div class="option" data-answer="false">ソフトCLはハードCLより視力矯正効果が高い</div>
+                    <div class="option" data-answer="false">ハードCLは角膜の直径より大きい</div>
+                    <div class="option" data-answer="false">ソフトCLは水を含まない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ハードCLは角膜の直径より小さく水を含まず、視力矯正効果が高いですが、初期装用感が良くないため慣れるのに時間がかかります。ソフトCLは角膜の直径より大きく水を含み、柔らかいので装用感が良く慣れやすいですが、ハードCLほどの視力矯正効果は得られません。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">マイボーム腺について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">涙が乾かないよう脂質を分泌し、出口がアイメイクで塞がれるとドライアイの原因になる</div>
+                    <div class="option" data-answer="false">涙を分泌する腺で、上まぶたのみにある</div>
+                    <div class="option" data-answer="false">角膜に酸素を供給する役割がある</div>
+                    <div class="option" data-answer="false">まつ毛の成長を促進する腺である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>マイボーム腺は上まぶたに約25個、下まぶたに約20個あり、目の表面の涙が乾かないよう脂質を分泌しています。まつ毛の内側にアイラインやアイシャドウを入れると、この出口が塞がれて涙が蒸発しやすくなり、ドライアイの原因になります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「アイメイクはまつ毛の外側にして、マスカラもまつ毛の根元には塗らないようにしましょう」と患者様に伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">コンタクトレンズ装用時の涙液交換について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ハードCLはまばたきのたびにレンズ下の涙が交換され、酸素が供給される</div>
+                    <div class="option" data-answer="false">ソフトCLはハードCLより涙液交換が多い</div>
+                    <div class="option" data-answer="false">ハードCLは角膜にすっぽりかぶせるため涙液交換が少ない</div>
+                    <div class="option" data-answer="false">涙液交換は酸素供給と関係がない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>ハードCLは固いので涙の上に浮かび、まばたきのたびにレンズと角膜の隙間の涙が交換され酸素が供給されます。ソフトCLは柔らかく角膜にすっぽりかぶせて装用するため、レンズ下の涙液交換はハードCLより少なくなります。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">ドライアイとコンタクトレンズ装用について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">CL装用者はドライアイになりやすく、レンズも微生物に汚染されやすい</div>
+                    <div class="option" data-answer="false">CL装用者はドライアイになりにくい</div>
+                    <div class="option" data-answer="false">ドライアイでも角膜に傷はつきにくい</div>
+                    <div class="option" data-answer="false">ソフトCLは痛みを感じやすいので異物に気づきやすい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>CL装用者はドライアイになりやすく、レンズそのものが微生物に汚染されやすいという二重の悪条件にさらされています。また、ソフトCLをしていると痛みが和らいで異物に気づかないこともあり、感染症のリスクが高まります。
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">お化粧とコンタクトレンズ装用の順番について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">コンタクトレンズを先に付けてから、お化粧をする</div>
+                    <div class="option" data-answer="false">お化粧が終わってからコンタクトレンズを付ける</div>
+                    <div class="option" data-answer="false">順番は特に関係ない</div>
+                    <div class="option" data-answer="false">ファンデーションの後、アイメイクの前にCLを付ける</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>化粧終了後の手は油分などで汚れており、石けんでしっかり洗わないと落ちにくいです。汚れた手でCLに触れるとレンズを汚してしまうため、CLを先に付けてからお化粧をする方が良いです（コンタクトレンズファースト）。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「コンタクトレンズを付けてからお化粧を」と患者様に伝えましょう。ただし、マスカラやアイラインを塗る時に誤ってCLに化粧品を付けないよう注意も必要です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">クレンジングとコンタクトレンズの順番について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">コンタクトレンズをはずしてから、クレンジングをする</div>
+                    <div class="option" data-answer="false">コンタクトレンズを付けたままクレンジングしてよい</div>
+                    <div class="option" data-answer="false">クレンジング後にCLを付けてから洗顔する</div>
+                    <div class="option" data-answer="false">クレンジングオイルはCLに影響しない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>CLを付けたままクレンジングすると、クレンジング剤が目に入りレンズを汚す可能性があります。また、一部のソフトCLではクレンジングオイルによってレンズが変形することも報告されています。CLをはずしてからクレンジングしましょう。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">化粧品でコンタクトレンズが汚れた場合の対処として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">専用クリーナーでこすり洗いし、落ちなければ捨てる</div>
+                    <div class="option" data-answer="false">水道水で洗えば問題ない</div>
+                    <div class="option" data-answer="false">汚れていても装用を続けてよい</div>
+                    <div class="option" data-answer="false">乾燥させれば汚れは自然に落ちる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>化粧品の油分とCLの素材が反応して、洗っても落ちなくなることがあります。汚れたCLをそのまま使用すると、眼にキズをつけたり、アレルギーや感染症を引き起こすこともあります。専用クリーナーで落ちなければ、もったいなくても捨てましょう。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「汚れたレンズをそのまま使って病気になる方が、もっともったいないですよ」と患者様に伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">コンタクトレンズのこすり洗いについて正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">表も裏も20回から30回こすり洗いする</div>
+                    <div class="option" data-answer="false">表だけ5回程度こすれば十分</div>
+                    <div class="option" data-answer="false">こすり洗いは不要で、つけ置きだけでよい</div>
+                    <div class="option" data-answer="false">こすり洗い後のすすぎは不要</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>レンズのこすり洗いは、表も裏も20回から30回行いましょう。こすり洗いが終わったら必ずすすぎを行い、レンズを目に入れる前にもすすぎを行いましょう。ソフトCLでは水道水は使用できません。
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">コンタクトレンズケースの管理について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">毎日洗浄・乾燥させ、3ヵ月以内に新しいものに交換する</div>
+                    <div class="option" data-answer="false">1年に1回交換すれば十分</div>
+                    <div class="option" data-answer="false">レンズケースは洗浄不要</div>
+                    <div class="option" data-answer="false">乾燥させる必要はない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>レンズケースは毎日洗浄して、しっかり乾燥させましょう。レンズケースは3ヵ月以内に新しいものに交換しましょう。コンタクトレンズだけでなく、レンズケースのケアも大切です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「レンズケースも3ヵ月ごとに交換してくださいね」と患者様に定期的に伝えましょう。ケースの汚れが感染症の原因になることもあります。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題10 ========== -->
+            <div class="question-card hidden" id="question10">
+                <div class="question-number">問題 10</div>
+                <div class="question-text">カラーコンタクトレンズと定期検診について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">厚生労働省の承認を受けたレンズを使用し、定期検査・診察を受ける</div>
+                    <div class="option" data-answer="false">度数がなければ医療機器ではないので検診不要</div>
+                    <div class="option" data-answer="false">一度診察を受ければ、その後の検診は不要</div>
+                    <div class="option" data-answer="false">無診察のネット購入したレンズでも問題ない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>カラーCLは度数の有無にかかわらず高度管理医療機器です。厚生労働省の承認を受けたレンズを、眼科専門医の診察を受けた上で処方してもらい、定期的に検査を受けましょう。目の状態は常に変化しており、調子が良くても怖い病気が隠れていることがあります。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'cl_makeup';
+        const TOTAL_QUESTIONS = 10;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

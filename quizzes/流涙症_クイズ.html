@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流涙症クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>💧 流涙症クイズ 💧</h1>
+        <div class="subtitle">眼科スタッフ向け - 流涙症の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">💧 流涙症クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">8</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">涙の働きとして正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼圧を調整する</div>
+                    <div class="option" data-answer="false">目の表面を乾燥から守る</div>
+                    <div class="option" data-answer="false">目に栄養や酸素を届ける</div>
+                    <div class="option" data-answer="false">細菌などから目を守る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>涙の働きは、目の表面を乾燥から守る、目に栄養や酸素を届ける、ゴミやほこりを洗い流す、細菌などから目を守ることです。涙には水分のほか、電解質、タンパク質や糖分などの栄養素、抗菌物質も含まれています。眼圧調整は房水の役割です。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">涙の通り道として正しい順序はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">涙腺→目の表面→涙点→涙小管→涙嚢→鼻涙管→鼻腔</div>
+                    <div class="option" data-answer="false">涙腺→涙点→目の表面→涙嚢→鼻涙管→鼻腔</div>
+                    <div class="option" data-answer="false">涙点→涙腺→目の表面→涙嚢→鼻涙管→鼻腔</div>
+                    <div class="option" data-answer="false">涙腺→目の表面→涙嚢→涙点→鼻涙管→鼻腔</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>涙は上瞼の外側にある涙腺から分泌され、目の表面を潤した後、瞬きのたびに上下瞼の内側にある涙点から涙道（涙小管→総涙小管→涙嚢→鼻涙管）を通って、最終的に鼻腔に流れ出します。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/流涙症/涙腺の解剖図.png" alt="涙腺と涙道の解剖図">
+                        <span class="image-caption">涙腺と涙道の解剖図：涙腺→目の表面→涙点→涙小管→涙嚢→鼻涙管→鼻腔の流れ</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">流涙症の原因として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">涙が急にたくさん分泌するか、涙道が詰まること</div>
+                    <div class="option" data-answer="false">涙の分泌が減少すること</div>
+                    <div class="option" data-answer="false">眼圧が上昇すること</div>
+                    <div class="option" data-answer="false">角膜が混濁すること</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>流涙症は、川の流れに例えると、大雨が降ったり（涙が急にたくさん分泌）、川がせき止められる（涙道が詰まる）ことで氾濫するように、涙があふれる状態です。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">涙が多く出る原因として正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">緑内障</div>
+                    <div class="option" data-answer="false">結膜炎</div>
+                    <div class="option" data-answer="false">花粉症</div>
+                    <div class="option" data-answer="false">逆まつげ</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>目には異物が入ると涙を出して排除する働きがあります。結膜炎、花粉症、逆まつげなどの刺激により涙の分泌が増加します。緑内障は眼圧上昇による視神経障害であり、流涙の直接的な原因ではありません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「涙が出る」と訴える患者様には、逆まつげや結膜炎など目の表面の異常がないか確認することが大切です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">涙の流れが悪くなる原因として、高齢者に多い疾患はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">結膜弛緩症</div>
+                    <div class="option" data-answer="false">先天鼻涙管閉塞</div>
+                    <div class="option" data-answer="false">麦粒腫</div>
+                    <div class="option" data-answer="false">翼状片</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>皮膚と同じように、加齢とともに結膜（白目）に皺ができる結膜弛緩症は、高齢者に多く見られます。目の表面も涙の流れ道となっているため、結膜弛緩症でも涙の流れが悪くなり、流涙症状を起こします。
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">流涙症の症状として正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼圧が上昇する</div>
+                    <div class="option" data-answer="false">涙がこぼれて視界がぼやける</div>
+                    <div class="option" data-answer="false">メガネのレンズが曇る</div>
+                    <div class="option" data-answer="false">目の周りの皮膚がただれる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>流涙症の症状には、涙がこぼれる、視界がぼやける、メガネが曇る、皮膚がただれる、目やにが出る（涙嚢炎）などがあります。眼圧上昇は流涙症とは関係ありません。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">先天鼻涙管閉塞の赤ちゃんについて正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">1歳頃までに90%近くが自然治癒する</div>
+                    <div class="option" data-answer="false">生後すぐに手術が必要</div>
+                    <div class="option" data-answer="false">自然治癒することはない</div>
+                    <div class="option" data-answer="false">成人になるまで治療できない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>先天鼻涙管閉塞は、涙道が開通しないまま生まれてくることが原因ですが、成長とともに自然に治ることが多く、1歳頃までに90%近くが自然治癒するといわれています。治るまでは、ブジーという細い針金を涙道に通して開放する治療をすることもあります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>赤ちゃんの目がウルウルして心配する保護者には、「多くは自然に治ります」と説明しつつ、経過観察の重要性を伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">抗がん剤による涙道閉塞について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">涙点や涙小管など細い管の部分が閉塞しやすく、一度閉塞すると開放が難しい</div>
+                    <div class="option" data-answer="false">抗がん剤を中止すれば必ず治る</div>
+                    <div class="option" data-answer="false">涙嚢のみが閉塞する</div>
+                    <div class="option" data-answer="false">流涙症状が出ても様子を見てよい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>抗がん剤（特にS-1など）は細胞の増殖を抑えるため、涙道の細胞の増殖も抑えられ涙道閉塞を起こすことがあります。涙点や涙小管といった細い管の部分が閉塞しやすく、一度閉塞すると開放が難しいのが特徴です。抗がん剤を飲み始めて流涙症状が出た場合には、早めに眼科を受診することが重要です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>抗がん剤治療中の患者様から涙目の訴えがあった場合は、早めの対応が必要です。「抗がん剤の影響かもしれないので、早めに診察を受けましょう」と伝えてください。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'epiphora';
+        const TOTAL_QUESTIONS = 8;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

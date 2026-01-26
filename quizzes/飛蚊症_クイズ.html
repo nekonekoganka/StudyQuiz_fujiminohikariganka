@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飛蚊症クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🦟 飛蚊症クイズ 🦟</h1>
+        <div class="subtitle">眼科スタッフ向け - 飛蚊症の基礎と患者対応を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🦟 飛蚊症クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全9問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">9問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">9問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全9問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">9</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">飛蚊症の原因として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">硝子体に濁りができ、その影が網膜にうつる</div>
+                    <div class="option" data-answer="false">角膜に傷ができ、光が乱反射する</div>
+                    <div class="option" data-answer="false">水晶体が濁り、光が遮られる</div>
+                    <div class="option" data-answer="false">網膜に穴があき、光を感じにくくなる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>飛蚊症は、本来透明なはずの硝子体に何らかの原因で濁りができ、その影が網膜にうつることで目の前に見えるようになります。濁りは実際には目の中にあるため、目を動かすと一緒に動きます。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者さんへの説明：「目の中のゼリー状の部分に濁りができて、その影が見えている状態です」と伝えると分かりやすいです。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">飛蚊症の見え方として患者さんが訴える内容に含まれない<strong>「のは」</strong>どれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">視野の一部が欠けて見える</div>
+                    <div class="option" data-answer="false">蚊が飛んでいるように見える</div>
+                    <div class="option" data-answer="false">糸くずのようなものが見える</div>
+                    <div class="option" data-answer="false">輪のようなものが見える</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>飛蚊症では、蚊、水玉、ハエ、黒いスス、糸くず、お玉じゃくし、輪などが見えます。「視野の一部が欠けて見える」は網膜剥離などの症状であり、飛蚊症の典型的な訴えではありません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/飛蚊症/飛蚊症の見え方.png" alt="飛蚊症の見え方">
+                        <span class="image-caption">飛蚊症の見え方：糸くず状、虫状、カエルの卵状、ゴマ粒状、たばこの煙状など様々なパターン</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>問診では「どんな形のものが見えますか？」と具体的に聴取しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">後部硝子体剥離の好発年齢として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">60代前半</div>
+                    <div class="option" data-answer="false">30代前半</div>
+                    <div class="option" data-answer="false">40代後半</div>
+                    <div class="option" data-answer="false">70代後半</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>後部硝子体剥離は60代前半に好発します。ただし中等度以上の近視の場合には10年位早くおこります。後部硝子体剥離は突然の飛蚊症の原因として最も多いものです。
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">後部硝子体剥離が通常より早くおこる条件として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">遠視がある場合</div>
+                    <div class="option" data-answer="false">中等度以上の近視がある場合</div>
+                    <div class="option" data-answer="false">白内障の手術を受けた場合</div>
+                    <div class="option" data-answer="false">高齢者の場合</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>中等度以上の近視の場合には後部硝子体剥離は10年位早くおこります。また白内障の手術を受けた場合には1年以内に出現することもあります。遠視は後部硝子体剥離を早める要因ではありません。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>近視が強い患者さんや白内障術後の患者さんが飛蚊症を訴えた場合は、より注意が必要です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">後部硝子体剥離に伴って網膜裂孔が発生する割合として正しいのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">6〜19%</div>
+                    <div class="option" data-answer="false">1〜2%</div>
+                    <div class="option" data-answer="false">30〜40%</div>
+                    <div class="option" data-answer="false">50%以上</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>後部硝子体剥離の6〜19%に網膜裂孔がおこります。網膜裂孔は放置すると網膜剥離になるため、後部硝子体剥離が疑われる場合は眼底検査で網膜裂孔の有無をチェックすることが大切です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>飛蚊症の患者さんには散瞳して精密眼底検査を行う必要性を説明しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">緊急性が高い飛蚊症の特徴として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">いつからか分からないが、明るい日に気づいた</div>
+                    <div class="option" data-answer="false">突然発症した</div>
+                    <div class="option" data-answer="false">ゴミクズや糸クズなど形がはっきりしている</div>
+                    <div class="option" data-answer="false">大きく、色が濃い</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>後部硝子体剥離による飛蚊症は突然おこり、形がはっきりしていて大型で色が濃いのが特徴です。「いつからか分からない」「明るい日に白い壁を見て気づいた」という場合は生まれつきのものや離水によるもので、緊急性は低いことが多いです。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>問診で「いつから？」「急に？」を必ず確認しましょう。突然発症は要注意です。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">飛蚊症の問診で確認すべき重要な随伴症状はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">ピカピカ光るものが見えたかどうか</div>
+                    <div class="option" data-answer="false">目がかゆいかどうか</div>
+                    <div class="option" data-answer="false">涙が出るかどうか</div>
+                    <div class="option" data-answer="false">目やにが出るかどうか</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>飛蚊症になる前か後に「ピカピカ光るものが見えた」場合には、後部硝子体剥離がおこったと考えて間違いありません。これは光視症と呼ばれ、網膜裂孔のリスクを示唆する重要な症状です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>問診で「チカチカ光るものは見えませんでしたか？」と必ず確認しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">網膜裂孔を放置した場合に進展する疾患はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">網膜剥離</div>
+                    <div class="option" data-answer="false">白内障</div>
+                    <div class="option" data-answer="false">緑内障</div>
+                    <div class="option" data-answer="false">黄斑変性</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>網膜裂孔は放置すると、裂孔から液体状になった硝子体が網膜の後に入り込んで網膜剥離になります。網膜剥離は入院・手術が必要な重大な病気です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>飛蚊症を訴える患者さんには、早めの眼底検査の重要性を説明しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">飛蚊症を訴える患者さんへの対応として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">精密眼底検査を受けるよう説明する</div>
+                    <div class="option" data-answer="false">加齢現象なので心配ないと説明する</div>
+                    <div class="option" data-answer="false">様子を見て悪化したら受診するよう伝える</div>
+                    <div class="option" data-answer="false">点眼薬で治療できると説明する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>飛蚊症を自覚したら眼科を受診し、精密検査を受け、放置しておいてよいものかどうかを診てもらうことが大切です。特に60歳前後に突然飛蚊症を自覚した場合には、なるべく早く眼科医を訪ね、後部硝子体剥離や網膜裂孔の有無をチェックしてもらうことが重要です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者さんには「散瞳して目の奥を詳しく調べる必要があります」と説明し、精密眼底検査を促しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'floaters';
+        const TOTAL_QUESTIONS = 9;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

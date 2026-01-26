@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>使い方ガイド - ひかり眼科 学習クイズ</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/app/icon-180.png">
+    <meta name="theme-color" content="#667eea">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 12px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 28px 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 120px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            color: #1a237e;
+            font-size: 24px;
+            margin: 0 0 14px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            color: #5c6bc0;
+            font-size: 15px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 0 0 16px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 22px;
+        }
+
+        .content-box {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .content-box h3 {
+            color: #1a237e;
+            font-size: 16px;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-box p {
+            color: #333;
+            font-size: 14px;
+            margin: 0 0 12px 0;
+        }
+
+        .content-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-box ul {
+            color: #333;
+            font-size: 14px;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .content-box li {
+            margin-bottom: 8px;
+        }
+
+        .content-box li:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            background: linear-gradient(transparent 60%, #fff59d 60%);
+            font-weight: bold;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 4px solid #4caf50;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .tip-box h4 {
+            color: #2e7d32;
+            font-size: 14px;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tip-box p {
+            color: #1b5e20;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* データ保護セクション（警告スタイル） */
+        .tip-box.warning {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left-color: #ff9800;
+        }
+        .tip-box.warning h4 {
+            color: #e65100;
+        }
+        .tip-box.warning p {
+            color: #bf360c;
+        }
+
+        /* バックアップボタン */
+        .backup-buttons {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .backup-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 2px solid #4caf50;
+            background: white;
+            color: #2e7d32;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+        .backup-btn.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+        .last-backup-info {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #bf360c;
+        }
+
+        .badge-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .badge-item {
+            background: white;
+            border: 2px solid #e8eaf6;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .badge-icon {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .badge-name {
+            font-size: 12px;
+            color: #1a237e;
+            font-weight: bold;
+        }
+
+        .badge-desc {
+            font-size: 10px;
+            color: #5c6bc0;
+            margin-top: 4px;
+        }
+
+        .step-list {
+            counter-reset: step;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .step-content h4 {
+            color: #1a237e;
+            font-size: 15px;
+            margin: 0 0 6px 0;
+        }
+
+        .step-content p {
+            color: #555;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .home-link:active {
+            transform: scale(0.95);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 2px solid #e8eaf6;
+        }
+
+        .footer-text {
+            color: #9fa8da;
+            font-size: 13px;
+        }
+
+        .install-section {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .install-section h4 {
+            color: #e65100;
+            font-size: 15px;
+            margin: 0 0 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .install-steps {
+            font-size: 13px;
+            color: #bf360c;
+        }
+
+        .install-steps strong {
+            color: #e65100;
+        }
+
+        .device-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .device-tab {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255,255,255,0.5);
+            color: #e65100;
+        }
+
+        .device-tab.active {
+            background: #e65100;
+            color: white;
+        }
+
+        .device-content {
+            display: none;
+        }
+
+        .device-content.active {
+            display: block;
+        }
+
+        /* PC版上部ナビ */
+        .top-nav {
+            display: none;
+        }
+
+        /* タブレット・PC向け */
+        @media (min-width: 768px) {
+            .top-nav {
+                display: block;
+                text-align: left;
+                margin-bottom: 16px;
+            }
+            .top-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #5c6bc0;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #f0f2ff;
+                transition: all 0.2s;
+            }
+            .top-nav-link:hover {
+                background: #e0e4ff;
+                color: #3949ab;
+            }
+
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .home-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            }
+        }
+
+        /* ダークモード */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+
+            .container {
+                background: #1e1e2e;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            }
+
+            h1, .section-title, .content-box h3, .step-content h4 {
+                color: #e0e0e0;
+            }
+
+            .subtitle {
+                color: #b0b0b0;
+            }
+
+            .content-box {
+                background: #2a2a3e;
+            }
+
+            .content-box p, .content-box ul, .step-content p {
+                color: #c0c0c0;
+            }
+
+            .badge-item {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+
+            .badge-name {
+                color: #e0e0e0;
+            }
+
+            .badge-desc {
+                color: #a0a0b0;
+            }
+
+            .tip-box {
+                background: linear-gradient(135deg, #1b3d1f, #244728);
+            }
+
+            .tip-box h4 {
+                color: #81c784;
+            }
+
+            .tip-box p {
+                color: #a5d6a7;
+            }
+
+            /* データ保護セクション（警告スタイル）ダークモード */
+            .tip-box.warning {
+                background: linear-gradient(135deg, #3d2f20, #4a3828);
+            }
+            .tip-box.warning h4 {
+                color: #ffb74d;
+            }
+            .tip-box.warning p {
+                color: #ffcc80;
+            }
+
+            /* バックアップボタン ダークモード */
+            .backup-btn {
+                background: #2a2a3e;
+                border-color: #4caf50;
+                color: #81c784;
+            }
+            .backup-btn.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+            .last-backup-info {
+                color: #ffcc80;
+            }
+
+            .install-section {
+                background: linear-gradient(135deg, #3d2f20, #4a3828);
+            }
+
+            .install-section h4 {
+                color: #ffb74d;
+            }
+
+            .install-steps {
+                color: #ffcc80;
+            }
+
+            .install-steps strong {
+                color: #ffb74d;
+            }
+
+            .device-tab {
+                background: rgba(0,0,0,0.3);
+                color: #ffb74d;
+            }
+
+            .device-tab.active {
+                background: #e65100;
+                color: white;
+            }
+
+            .footer {
+                border-top-color: #3a3a4e;
+            }
+
+            .footer-text {
+                color: #707080;
+            }
+
+            .highlight {
+                background: linear-gradient(transparent 60%, #5d4e15 60%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a href="index.html" class="top-nav-link">← ホームに戻る</a>
+        </div>
+
+        <div class="header">
+            <img src="images/app/ふじみ野ぴかぴかり眼科_ロゴ.png" alt="ふじみ野ひかり眼科ロゴ" class="logo-icon">
+            <h1>使い方ガイド</h1>
+            <div class="subtitle">ひかり眼科 学習クイズの使い方</div>
+        </div>
+
+        <!-- このアプリについて -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📱</span>
+                このアプリについて
+            </h2>
+            <div class="content-box">
+                <p>「ひかり眼科 学習クイズ」は、眼科スタッフの皆さんが<span class="highlight">楽しく眼科知識を学べる</span>クイズアプリです。</p>
+                <p>近視、白内障、緑内障など様々な眼科疾患や、コンタクトレンズ・メガネの処方知識、院内ルールまで幅広いクイズを用意しています。</p>
+            </div>
+
+            <div class="tip-box warning">
+                <h4>⚠️ データ保護について</h4>
+                <p>学習データは端末のブラウザ内に保存されています。そのため「履歴とWebサイトデータを消去」などの操作をすると一緒に消えてしまいます。定期的なバックアップをおすすめします。</p>
+                <div class="backup-buttons">
+                    <button class="backup-btn" onclick="downloadBackup()">📥 バックアップ</button>
+                    <button class="backup-btn restore" onclick="startRestore()">📂 ファイルを選んで復元</button>
+                    <input type="file" id="restoreInput" accept=".json" onchange="handleRestoreFile(event)" style="display: none;">
+                </div>
+                <div class="last-backup-info">
+                    最終バックアップ: <span id="lastBackupDate">確認中...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 基本の使い方 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📖</span>
+                基本の使い方
+            </h2>
+
+            <div class="step-list">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>トップページでクイズを選ぶ</h4>
+                        <p>カテゴリ（メガネ・コンタクト / 眼の疾患 / 院内ルール）からクイズを選びます。</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>出題モードを選ぶ</h4>
+                        <p>「今日の○問」は苦手な問題を優先出題。「全問モード」は全問題を順番に出題します。</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>問題に回答する</h4>
+                        <p>選択肢をタップして回答します。正解・不正解の後に解説が表示されます。</p>
+                    </div>
+                </div>
+
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>結果を確認</h4>
+                        <p>クイズ終了後、スコアと達成度が表示されます。満点を目指しましょう！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 出題モードについて -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                出題モードについて
+            </h2>
+
+            <div class="content-box">
+                <h3>📋 今日の○問モード</h3>
+                <p>効率的に復習できるモードです。以下の優先順位で問題が出題されます：</p>
+                <ul>
+                    <li><strong>間違えた問題</strong>を最優先で出題</li>
+                    <li>次に<strong>未挑戦の問題</strong>を出題</li>
+                    <li>最後に<strong>正解済みの問題</strong>を出題</li>
+                </ul>
+            </div>
+
+            <div class="content-box">
+                <h3>📚 全問モード</h3>
+                <p>クイズの全問題を最初から順番に出題します。じっくり学習したい時におすすめです。</p>
+            </div>
+
+            <div class="content-box">
+                <h3>🎲 今日の○問ボタン（トップページ）</h3>
+                <p>ランダムなクイズから○問出題されます。毎日の隙間時間にサクッと学習できます。問題数は「学習記録」ページの設定で変更できます。</p>
+            </div>
+        </div>
+
+        <!-- 学習記録について -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📊</span>
+                学習記録について
+            </h2>
+
+            <div class="content-box">
+                <p>「学習記録」ページでは以下の情報を確認できます：</p>
+                <ul>
+                    <li><strong>統計</strong>：総回答数、クイズ挑戦回数、獲得バッジ数</li>
+                    <li><strong>バッジ</strong>：学習の成果として獲得できる実績バッジ</li>
+                    <li><strong>進捗</strong>：各クイズの最高スコアと達成状況</li>
+                    <li><strong>設定</strong>：文字サイズ、効果音、問題数などの設定</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <h4>💾 データのバックアップ</h4>
+                <p>学習記録ページの「設定」から学習データをバックアップ（ダウンロード）・復元できます。端末を変更する際にご利用ください。</p>
+            </div>
+        </div>
+
+        <!-- バッジ一覧 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏆</span>
+                獲得できるバッジ
+            </h2>
+
+            <div class="content-box">
+                <p>学習を続けると様々なバッジを獲得できます。全部集めてみましょう！</p>
+
+                <div class="badge-list">
+                    <div class="badge-item">
+                        <div class="badge-icon">🔰</div>
+                        <div class="badge-name">はじめの一歩</div>
+                        <div class="badge-desc">クイズに1回挑戦</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">🌱</div>
+                        <div class="badge-name">コツコツ学習</div>
+                        <div class="badge-desc">累計50問回答</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">🔥</div>
+                        <div class="badge-name">熱心な挑戦者</div>
+                        <div class="badge-desc">合計10回挑戦</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">💯</div>
+                        <div class="badge-name">100問突破</div>
+                        <div class="badge-desc">累計100問回答</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">📚</div>
+                        <div class="badge-name">全制覇</div>
+                        <div class="badge-desc">全クイズに挑戦</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">🌸</div>
+                        <div class="badge-name">満点達成</div>
+                        <div class="badge-desc">1つのクイズで満点</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">⭐</div>
+                        <div class="badge-name">トリプル満点</div>
+                        <div class="badge-desc">3つのクイズで満点</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">📖</div>
+                        <div class="badge-name">勉強家</div>
+                        <div class="badge-desc">累計200問回答</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">💎</div>
+                        <div class="badge-name">ハーフ満点</div>
+                        <div class="badge-desc">6つのクイズで満点</div>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-icon">👑</div>
+                        <div class="badge-name">クイズマスター</div>
+                        <div class="badge-desc">全クイズで満点</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- スマホにアプリとして追加 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📲</span>
+                ホーム画面に追加する方法
+            </h2>
+
+            <div class="content-box">
+                <p>このアプリはスマートフォンの<span class="highlight">ホーム画面に追加</span>することで、アプリのように使えます。</p>
+            </div>
+
+            <div class="install-section">
+                <h4>📱 インストール方法</h4>
+
+                <div class="device-tabs">
+                    <button class="device-tab active" onclick="showDevice('iphone', this)">iPhone</button>
+                    <button class="device-tab" onclick="showDevice('android', this)">Android</button>
+                </div>
+
+                <div id="iphone-content" class="device-content active">
+                    <div class="install-steps">
+                        <p><strong>Safari</strong>でこのページを開いている場合：</p>
+                        <p>1. 画面下の「共有」ボタン（□に↑）をタップ</p>
+                        <p>2. 「ホーム画面に追加」を選択</p>
+                        <p>3. 「追加」をタップして完了！</p>
+                    </div>
+                </div>
+
+                <div id="android-content" class="device-content">
+                    <div class="install-steps">
+                        <p><strong>Chrome</strong>でこのページを開いている場合：</p>
+                        <p>1. 画面右上の「︙」メニューをタップ</p>
+                        <p>2. 「ホーム画面に追加」または「アプリをインストール」を選択</p>
+                        <p>3. 「追加」をタップして完了！</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <h4>✨ メリット</h4>
+                <p>ホーム画面から直接起動でき、ブラウザのアドレスバーなしでフルスクリーン表示されます。専用アイコンで見つけやすくなります！</p>
+            </div>
+        </div>
+
+        <!-- よくある質問 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">❓</span>
+                よくある質問
+            </h2>
+
+            <div class="content-box">
+                <h3>Q. 学習データが消えてしまった</h3>
+                <p>ブラウザのデータ（キャッシュ・Cookie）を削除すると学習データも消えてしまいます。定期的に「学習記録」→「設定」からバックアップをおすすめします。</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Q. 別の端末でも使いたい</h3>
+                <p>「学習記録」→「設定」→「データをバックアップ」でデータをダウンロードし、新しい端末で「データを復元」から読み込めます。</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Q. 文字が小さくて読みにくい</h3>
+                <p>「学習記録」→「設定」→「フォントサイズ」で「大」を選択すると、文字が大きく表示されます。</p>
+            </div>
+
+            <div class="content-box">
+                <h3>Q. 今日の問題数を変更したい</h3>
+                <p>「学習記録」→「設定」→「今日の問題数」で3問・5問・7問から選択できます。</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="index.html" class="home-link">🏠 トップページへ</a>
+            <div class="footer-text" style="margin-top: 20px;">ふじみ野ひかり眼科</div>
+        </div>
+    </div>
+
+    <!-- 復元プレビューモーダル -->
+    <div id="restorePreviewModal" class="restore-modal" style="display: none;">
+        <div class="restore-modal-content">
+            <div id="restorePreviewContent"></div>
+        </div>
+    </div>
+
+    <style>
+        .restore-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .restore-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .restore-preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .restore-preview-title.success { color: #2e7d32; }
+        .restore-preview-title.error { color: #c62828; }
+        .restore-preview-info {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .restore-preview-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .restore-preview-row:last-child { border-bottom: none; }
+        .restore-preview-label { color: #666; }
+        .restore-preview-value { font-weight: bold; color: #333; }
+        .restore-warning {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .restore-error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .restore-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .restore-modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .restore-modal-btn.primary {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        .restore-modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .restore-modal-btn.close {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* 復元モーダル ダークモード */
+        @media (prefers-color-scheme: dark) {
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
+            }
+        }
+    </style>
+
+    <script src="quizzes/quiz-config.js"></script>
+    <script>
+        function showDevice(device, clickedTab) {
+            // タブの切り替え
+            document.querySelectorAll('.device-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            clickedTab.classList.add('active');
+
+            // コンテンツの切り替え
+            document.querySelectorAll('.device-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(device + '-content').classList.add('active');
+        }
+
+        // バックアップ関連（BACKUP_STORAGE_KEY, setLastBackupDateはquiz-config.jsで定義済み）
+
+        function getLastBackupDate() {
+            const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        function formatDate(date) {
+            if (!date) return 'なし';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+
+        function updateLastBackupDisplay() {
+            const el = document.getElementById('lastBackupDate');
+            if (el) {
+                el.textContent = formatDate(getLastBackupDate());
+            }
+        }
+
+        function downloadBackup() {
+            const data = getQuizData();
+            data.backupDate = new Date().toISOString();
+            data.appVersion = '1.0';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = generateBackupFileName();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            setLastBackupDate();
+            updateLastBackupDisplay();
+
+            alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
+        }
+
+        // 復元開始（確認ダイアログを表示してからファイル選択）
+        async function startRestore() {
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('restoreInput').click();
+            }
+        }
+
+        // 復元用の一時データ
+        let pendingRestoreData = null;
+
+        function handleRestoreFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const validation = validateBackupData(data);
+
+                    if (validation.valid) {
+                        pendingRestoreData = data;
+                        showRestorePreview(data);
+                    } else {
+                        showRestoreError(validation.error);
+                    }
+                } catch (error) {
+                    showRestoreError('invalid_format');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // 復元プレビューを表示
+        function showRestorePreview(data) {
+            const info = getBackupPreviewInfo(data);
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            content.innerHTML = `
+                <div class="restore-preview-title success">✅ バックアップファイルを確認</div>
+                <div class="restore-preview-info">
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📅 バックアップ日</span>
+                        <span class="restore-preview-value">${formatBackupDate(info.backupDate)}</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📝 累計回答数</span>
+                        <span class="restore-preview-value">${info.totalAnswered}回</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🌸 満点クイズ</span>
+                        <span class="restore-preview-value">${info.perfectCount}個</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🏅 獲得バッジ</span>
+                        <span class="restore-preview-value">${info.badgeCount}個</span>
+                    </div>
+                </div>
+                <div class="restore-warning">⚠️ 現在のデータは上書きされます</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn secondary" onclick="closeRestoreModal()">キャンセル</button>
+                    <button class="restore-modal-btn primary" onclick="executeRestore()">復元する</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // エラー表示
+        function showRestoreError(errorType) {
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            let message = '';
+            if (errorType === 'invalid_format') {
+                message = 'このファイルはバックアップファイルではありません。<br><br>「ひかりクイズデータ_」で始まるJSONファイルを選択してください。';
+            } else if (errorType === 'no_quiz_data') {
+                message = '学習データが含まれていません。<br><br>正しいバックアップファイルを選択してください。';
+            }
+
+            content.innerHTML = `
+                <div class="restore-preview-title error">❌ ファイルを読み込めません</div>
+                <div class="restore-error-message">${message}</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn close" onclick="closeRestoreModal()">閉じる</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // 復元実行
+        function executeRestore() {
+            if (!pendingRestoreData) return;
+
+            delete pendingRestoreData.backupDate;
+            delete pendingRestoreData.appVersion;
+            saveQuizData(pendingRestoreData);
+            setLastBackupDate();
+
+            closeRestoreModal();
+            alert('✅ データを復元しました！\nページを再読み込みします。');
+            location.reload();
+        }
+
+        // モーダルを閉じる
+        function closeRestoreModal() {
+            document.getElementById('restorePreviewModal').style.display = 'none';
+            pendingRestoreData = null;
+        }
+
+        // ページ読み込み時
+        updateLastBackupDisplay();
+    </script>
+</body>
+</html>

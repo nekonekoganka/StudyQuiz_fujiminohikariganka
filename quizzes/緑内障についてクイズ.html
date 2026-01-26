@@ -4,593 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>緑内障理解度クイズ - 患者・家族向け</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 12px;
-            padding-top: max(12px, env(safe-area-inset-top));
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
-            padding-left: max(12px, env(safe-area-inset-left));
-            padding-right: max(12px, env(safe-area-inset-right));
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-            min-height: 100vh;
-        }
-        .quiz-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        @media (min-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .quiz-container {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            .quiz-container {
-                padding: 20px;
-            }
-        }
-        
-        h1 {
-            text-align: center;
-            color: #1b5e20;
-            font-size: 28px;
-            margin-bottom: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-            }
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #2e7d32;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .subtitle {
-                font-size: 16px;
-            }
-        }
-
-        .top-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-link a {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .top-link a:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-link a:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-        }
-
-        .top-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .mypage-button {
-            background: linear-gradient(135deg, #26a69a, #00897b);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .top-button:active, .mypage-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-            .mypage-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
-            }
-        }
-
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(56, 142, 60, 0.3);
-        }
-        
-        .mode-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .mode-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 18px 30px;
-                font-size: 17px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #1b5e20;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .question-card {
-            background: #f1f8e9;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #388e3c;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #c8e6c9;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #388e3c;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1b5e20;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
-            background: white;
-            border: 2px solid #c8e6c9;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:active {
-            transform: scale(0.98);
-            background: #e8f5e9;
-            border-color: #388e3c;
-        }
-
-        @media (min-width: 768px) {
-            .option:hover {
-                border-color: #388e3c;
-                background: #e8f5e9;
-                transform: translateY(-3px);
-                box-shadow: 0 6px 20px rgba(56, 142, 60, 0.25);
-            }
-        }
-
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #dc2626;
-            background: #fef2f2;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-        
-        @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-        
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
-            }
-        }
-
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 2px solid #4caf50;
-        }
-        .feedback.incorrect {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 2px solid #ef5350;
-        }
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #1b5e20;
-            margin: 0;
-            padding: 12px;
-            background: #e8f5e9;
-            border-radius: 10px;
-            border: 2px solid #c8e6c9;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #c8e6c9;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-        }
-        
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #e0f2f1;
-            border-left: 5px solid #009688;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .important-note {
-            background: #fff3e0;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #e65100;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .important-note {
-                padding: 12px;
-                font-size: 16px;
-            }
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #388e3c, #2e7d32);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .medical-note {
-            background: #e3f2fd;
-            border: 2px solid #2196f3;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #0d47a1;
-            line-height: 1.4;
-            font-weight: 600;
-        }
-    
-        .final-score-card{
-            background:#f1f8e9;
-            border:2px solid #388e3c;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#1b5e20;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #1b5e20;
-        }
-
-        .result-evaluation {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .final-score-highlight {
-            color: #dc2626;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
-        }
-
-        /* 正解エフェクト */
-        .celebrate-emoji {
-            position: fixed;
-            font-size: 40px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: celebrate 1s ease-out forwards;
-        }
-
-        @keyframes celebrate {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-60px) scale(1.2) rotate(15deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(0.8) rotate(-10deg);
-            }
-        }
-
-        .correct-flash {
-            animation: flashGreen 0.4s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
         <h1>👁️ 緑内障理解度クイズ 👁️</h1>
         <div class="subtitle">患者・家族向け - 病気への理解を深めよう</div>
-        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 緑内障理解度クイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily7')">
-                📈 今日の7問
-            </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全17問）
+                📚 全問モード（全17問）
             </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">17問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">17問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全17問からランダムに3問を出題（約2分）<br>
-                <strong>今日の5問:</strong> 全17問からランダムに5問を出題（約3分）<br>
-                <strong>今日の7問:</strong> 全17問からランダムに7問を出題（約5分）<br>
-                <strong>フルコース:</strong> 全17問を順番に出題（約10分）
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全17問を順番に出題
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">17</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">17</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="question-card" id="question1">
+            <div class="question-card hidden" id="question1">
                 <div class="question-number">問題 1</div>
                 <div class="question-text">40歳以上の日本人で緑内障の患者さんの割合はどのくらいでしょうか？</div>
                 <div class="options">
@@ -602,6 +77,18 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>緑内障は非常に多い病気で、40歳以上では5%、つまり20人に1人もいます。60歳以上では10人に1人と言われています。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/眼底疾患の説明図.png" alt="視覚障害原因の統計">
+                        <span class="image-caption">視覚障害原因の統計：緑内障が40.7%で第1位</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/緑内障の眼底写真.png" alt="緑内障の眼底写真">
+                        <span class="image-caption">緑内障の眼底写真：視神経乳頭陥凹拡大と神経繊維層欠損が見られる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/正常な眼底写真.png" alt="正常な眼底写真">
+                        <span class="image-caption">正常な眼底写真：比較のため</span>
+                    </div>
                     <div class="important-note">
                         <strong>大切なポイント：</strong>これほど多くの方が患っている病気ですが、早期発見・適切な治療により、ほとんどの方が生涯にわたって視力と視野を保つことができます。
                     </div>
@@ -656,6 +143,22 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>緑内障は早期発見には眼科に行かないと分からないことが多く、診断されても早期や中期では自覚症状がないために、治療をやめてしまう方が多いのが問題です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/緑内障の眼底写真.png" alt="緑内障の眼底写真">
+                        <span class="image-caption">緑内障の眼底写真：自覚症状がなくても眼底検査で異常がわかる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/正常な眼底写真.png" alt="正常な眼底写真">
+                        <span class="image-caption">正常な眼底写真：緑内障と比較すると視神経乳頭の違いがわかる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障_視野は両目で補うから気づきづらい.png" alt="緑内障の視野欠損は両目で補い合うため気づきにくい">
+                        <span class="image-caption">視野欠損は両目で補い合うため、自分では気づきにくい</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/正常と緑内障の視野_見え方の比較.png" alt="正常な見え方と緑内障の見え方の比較">
+                        <span class="image-caption">正常な見え方と緑内障の見え方の比較</span>
+                    </div>
                     <div class="medical-note">
                         <strong>重要なメッセージ：</strong>自覚症状がないのはまだ余裕があるということです。自覚がないうちに見つかった人は、早く見つかってラッキーだったと思ってください。
                     </div>
@@ -710,6 +213,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>視野検査は、そのときの患者さんの気持ちや体調がよく反映される検査です。落ち込んでいたり、緊張してドキドキして検査を受けるとうまくいきません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障の視野検査結果.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：黒い部分が視野欠損を示している</span>
+                    </div>
                     <div class="medical-note">
                         <strong>検査のコツ：</strong>視野検査は正常な方でも見えない光を提示したりして検査するので、焦らず正直に受けるようにお願いします。眼を動かすと検査結果が良く出てしまいます。
                     </div>
@@ -746,6 +253,18 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>霞んだり、文字を読み飛ばしたりといった自覚症状が出ている場合は、中心に視野欠損が出ています。この様な自覚症状が出ている場合はピンチです。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障の視野検査結果.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：中心付近まで欠損が進むと自覚症状が出る</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障_運転時の見え方.png" alt="緑内障患者の運転時の見え方">
+                        <span class="image-caption">緑内障患者の運転時の見え方：周辺視野の欠損で危険が見えにくくなる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障の見え方_特に運転時の正常との比較.png" alt="運転時の正常な見え方と緑内障の見え方の比較">
+                        <span class="image-caption">運転時の見え方比較：正常（左）と緑内障（右）</span>
+                    </div>
                     <div class="medical-note">
                         <strong>重要：</strong>緑内障の視野欠損は暗くなりません。霞んできてそのうち濃い明るい霧の中にいるように感じます。積極的に治療に参加して、何とか生涯、視野や視力を保てるようにしましょう。
                     </div>
@@ -812,6 +331,17 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>OCT検査では、視神経線維層の厚みを数値で測定できます。初期緑内障では視野に異常が出る前に、すでに視神経が薄くなっていることがあります。この検査により、より早期の診断と経過観察が可能になります。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/正常と異常のOCT比較.png" alt="正常眼と緑内障眼のOCT画像比較">
+                        <span class="image-caption">OCT画像の比較：正常眼（左）と緑内障眼（右）。緑内障では赤色で示される神経繊維層の菲薄化が見られる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障のOCT異常あり.png" alt="緑内障のOCT詳細データ">
+                        <span class="image-caption">緑内障患者のOCT詳細データ：GChartで赤色（異常）の部分が多く、神経繊維層の菲薄化が数値で確認できる</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「このカラーマップで緑色は正常範囲、黄色や赤色は神経繊維層が薄くなっている部分です」と説明すると、検査結果を視覚的に理解していただけます。
+                    </div>
                 </div>
             </div>
 
@@ -857,6 +387,10 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>初期緑内障では、視野検査は半年に1回程度の頻度で行うのが一般的です。病気の進行を早期に発見し、治療効果を評価するために定期的な検査が重要です。進行が速い場合や治療変更時にはより頻繁に行うこともあります。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障の視野検査結果.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果：定期的な検査で進行の有無を確認する</span>
+                    </div>
                 </div>
             </div>
 
@@ -872,384 +406,51 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>視野検査は集中力を要し、見えない光もある正常な検査であることを事前に説明することが重要です。「頑張って見ようとする」と正確な結果が得られません。リラックスして正直に反応することを伝えましょう。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/緑内障/緑内障の視野検査結果.png" alt="緑内障の視野検査結果">
+                        <span class="image-caption">視野検査の結果例：正確な結果を得るためにリラックスして検査を受けることが大切</span>
+                    </div>
                 </div>
             </div>
 
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
             </div>
         </div>
     </div>
 
     <script src="quiz-config.js"></script>
     <script>
+        // クイズ固有の設定
         const QUIZ_ID = 'ryokunaisho';
-
-        let currentQuestion = 1;
-        let score = 0;
-        let totalQuestions = 17;
-        let questionList = [];
-        let isDaily = false;
-
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-
-        function flashCorrect(element) {
-            const card = element.closest('.question-card');
-            if (card) {
-                card.classList.add('correct-flash');
-                setTimeout(() => card.classList.remove('correct-flash'), 400);
-            }
-        }
-
-        function celebrateResult(isPerfect) {
-            if (navigator.vibrate) {
-                if (isPerfect) {
-                    navigator.vibrate([100, 50, 100, 50, 100]);
-                } else {
-                    navigator.vibrate([50, 30, 50]);
-                }
-            }
-
-            const emojis = isPerfect
-                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
-                : ['🎉', '⭐', '✨', '👏', '🎊'];
-            const count = isPerfect ? 15 : 8;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 3;
-
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const emoji = document.createElement('div');
-                    emoji.className = 'celebrate-emoji';
-                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
-                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
-                    document.body.appendChild(emoji);
-                    setTimeout(() => emoji.remove(), 1000);
-                }, i * 100);
-            }
-        }
-
-        function startQuiz(mode) {
-            document.querySelector('h1').classList.add('hidden');
-            document.querySelector('.subtitle').classList.add('hidden');
-            document.getElementById('modeSelection').classList.add('hidden');
-            document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily3') {
-                isDaily = true;
-                totalQuestions = 3;
-                questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily7') {
-                isDaily = true;
-                totalQuestions = 7;
-                questionList = getRandomQuestions(7);
-            } else {
-                isDaily = false;
-                totalQuestions = 17;
-                questionList = [...allQuestions];
-            }
-            
-            for (let i = 1; i <= 17; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionList.includes(i)) {
-                    if (i === questionList[0]) {
-                        questionElement.classList.remove('hidden');
-                    } else {
-                        questionElement.classList.add('hidden');
-                    }
-                } else {
-                    if(document.getElementById(`question${i}`)){
-                       document.getElementById(`question${i}`).style.display = 'none';
-                    }
-                }
-            }
-            
-            currentQuestion = 0;
-            updateQuestionNumbers();
-            document.getElementById('total').textContent = totalQuestions;
-            shuffleOptions(questionList[0]);
-            updateProgress();
-        }
-
-        function getRandomQuestions(count) {
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
-        }
-
-        function updateQuestionNumbers() {
-            questionList.forEach((questionId, index) => {
-                const questionElement = document.getElementById(`question${questionId}`);
-                if (questionElement) {
-                    const questionNumber = questionElement.querySelector('.question-number');
-                    questionNumber.textContent = `問題 ${index + 1}`;
-                }
-            });
-        }
-
-        function shuffleOptions(questionId) {
-            if (!questionId) return;
-            const container = document
-                .getElementById(`question${questionId}`)
-                .querySelector('.options');
-            if (!container) return;
-            
-            for (let i = container.children.length; i >= 0; i--) {
-                const rand = Math.floor(Math.random() * i);
-                if (container.children[rand]) {
-                    container.appendChild(container.children[rand]);
-                }
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function selectAnswer(selectedOption) {
-            const currentQuestionId = questionList[currentQuestion];
-            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
-            const options = currentQuestionElement.querySelectorAll('.option');
-            const feedback = currentQuestionElement.querySelector('.feedback');
-            const explanation = currentQuestionElement.querySelector('.explanation');
-            const nextButton = document.querySelector('.next-button');
-            const resultButton = document.querySelector('.result-button');
-            
-            const isCorrect = selectedOption.dataset.answer === 'true';
-            let correctAnswerText = '';
-            
-            options.forEach(option => {
-                if (option.dataset.answer === 'true') {
-                    correctAnswerText = option.textContent;
-                }
-            });
-            
-            options.forEach(option => {
-                option.classList.add('disabled');
-                if (option.dataset.answer === 'true') {
-                    option.classList.add('correct');
-                } else if (option === selectedOption && option.dataset.answer === 'false') {
-                    option.classList.add('incorrect');
-                }
-            });
-
-            if (isCorrect) {
-                feedback.textContent = '🎉 正解です！';
-                feedback.className = 'feedback correct';
-                score++;
-                flashCorrect(selectedOption);
-            } else {
-                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
-                feedback.className = 'feedback incorrect';
-            }
-
-            feedback.style.display = 'block';
-            explanation.classList.remove('hidden');
-
-            if (currentQuestion < totalQuestions - 1) {
-                nextButton.classList.remove('hidden');
-            } else {
-                resultButton.classList.remove('hidden');
-            }
-
-            updateScore();
-
-            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
-            setTimeout(() => {
-                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
-
-        function nextQuestion() {
-            const currentQuestionId = questionList[currentQuestion];
-            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
-            
-            currentQuestion++;
-            const nextQuestionId = questionList[currentQuestion];
-            
-            shuffleOptions(nextQuestionId);
-            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
-            document.querySelector('.next-button').classList.add('hidden');
-            updateProgress();
-        }
-
-        function showFinalScore() {
-            questionList.forEach(questionId => {
-                const qElem = document.getElementById(`question${questionId}`);
-                if (qElem) {
-                    qElem.classList.add('hidden');
-                }
-            });
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.add('hidden');
-
-            const percentage = Math.round((score / totalQuestions) * 100);
-            let title, message;
-
-            if (isDaily) {
-                if (score === totalQuestions) {
-                    title = '🎉 素晴らしい！ 🎉';
-                    message = `${totalQuestions}問全問正解！緑内障について とてもよく理解されています。\nこの知識を活かして、安心して治療に取り組んでください。`;
-                } else if (score >= Math.ceil(totalQuestions * 0.8)) {
-                    title = '👍 よく理解されています！ 👍';
-                    message = `基本的なポイントは よく押さえられています。\n間違えた箇所を確認して、さらに理解を深めましょう。`;
-                } else {
-                    title = '📖 学習を続けましょう！ 📖';
-                    message = `緑内障について 理解を深める良い機会になりました。\n病気のことをよく知ることで、より安心して治療に取り組めます。`;
-                }
-            } else {
-                if (score === totalQuestions) {
-                    title = '🏆 完璧な理解度！ 🏆';
-                    message = `全問正解！緑内障について 非常によく理解されています。\nこの知識があれば、自信を持って治療に取り組むことができます。\n定期的な通院と点眼治療を続けて、生涯にわたって視機能を保っていきましょう。`;
-                } else if (score >= totalQuestions * 0.9) {
-                    title = '🌟 優秀な理解度！ 🌟';
-                    message = `とても良い結果です！緑内障の重要ポイントを しっかりと理解されています。\n少し復習すれば、さらに完璧な知識になります。\n安心して医師と治療計画を立てていってください。`;
-                } else if (score >= totalQuestions * 0.8) {
-                    title = '📚 良い理解度です！ 📚';
-                    message = `基本的な知識は しっかりと身についています。\n間違えた部分を見直すことで、より深い理解が得られます。\n病気について知ることは、治療成功への第一歩です。`;
-                } else if (score >= totalQuestions * 0.7) {
-                    title = '🌱 理解が深まりました！ 🌱';
-                    message = `緑内障について 基本的なことは理解できています。\n不安な点や分からないことは、遠慮なく医師に相談しましょう。\n正しい知識を持つことで、より良い治療が受けられます。`;
-                } else {
-                    title = '💪 学習のスタートです！ 💪';
-                    message = `緑内障について 学ぶ良いきっかけになりました。\n病気を理解することは とても大切です。分からないことは医師や看護師に積極的に質問しましょう。\n正しい知識があれば、安心して治療に取り組むことができます。`;
-                }
-            }
-            
-            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
-            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
-            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-            const titleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
-
-            document.getElementById('resultDetail').innerHTML = titleHTML + evaluationHTML + scoreHTML + messageHTML;
-
-            document.querySelector('.quiz-container').classList.add('hidden');
-            document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
-            document.querySelector('.top-link').classList.add('hidden');
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // マイページ用に結果を記録
-            recordQuizResult(QUIZ_ID, score, totalQuestions);
-        }
-
-        function resetQuiz() {
-            document.querySelector('.quiz-container').classList.remove('hidden');
-            document.getElementById('finalResult').classList.add('hidden');
-            score = 0;
-            updateScore();
-
-            for (let i = 1; i <= 17; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionElement) {
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 7) {
-                startQuiz('daily7');
-            } else {
-                startQuiz('full');
-            }
-        }
-
-        function goHome() {
-            document.querySelector('.quiz-container').classList.remove('hidden');
-            document.getElementById('finalResult').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-
-            document.querySelector('h1').classList.remove('hidden');
-            document.querySelector('.subtitle').classList.remove('hidden');
-
-            for (let i = 1; i <= 17; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionElement) {
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            currentQuestion = 1;
-            score = 0;
-            totalQuestions = 17;
-            questionList = [];
-            isDaily = false;
-
-            updateScore();
-
-            document.getElementById('modeSelection').classList.remove('hidden');
-        }
-
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
-                selectAnswer(e.target);
-            }
-        });
+        const TOTAL_QUESTIONS = 17;
     </script>
+    <script src="quiz-core.js"></script>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 

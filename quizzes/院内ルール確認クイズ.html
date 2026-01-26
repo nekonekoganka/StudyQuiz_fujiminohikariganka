@@ -4,563 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>院内ルール確認クイズ - スタッフ向け</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
-            margin: 0;
-            padding: 12px;
-            padding-top: max(12px, env(safe-area-inset-top));
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
-            padding-left: max(12px, env(safe-area-inset-left));
-            padding-right: max(12px, env(safe-area-inset-right));
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh;
-        }
-        .quiz-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        @media (min-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            .quiz-container {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            .quiz-container {
-                padding: 20px;
-            }
-        }
-        
-        h1 {
-            text-align: center;
-            color: #1a237e;
-            font-size: 28px;
-            margin-bottom: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-            }
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #283593;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .subtitle {
-                font-size: 16px;
-            }
-        }
-
-        .top-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-link a {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 25px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .top-link a:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-link a:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-        }
-
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(248, 155, 41, 0.3);
-        }
-        
-        .mode-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .mode-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 18px 30px;
-                font-size: 17px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #1a237e;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .question-card {
-            background: #fdfefe;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #ff8f00;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e8eaf6;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #ff8f00;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #1a237e;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
-            background: white;
-            border: 2px solid #e8eaf6;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:active {
-            transform: scale(0.98);
-            background: #fff8e1;
-            border-color: #ff8f00;
-        }
-
-        @media (min-width: 768px) {
-            .option:hover {
-                border-color: #ff8f00;
-                background: #fff8e1;
-                transform: translateY(-3px);
-                box-shadow: 0 6px 20px rgba(255, 143, 0, 0.25);
-            }
-        }
-
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .reset-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-
-        .top-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .mypage-button {
-            background: linear-gradient(135deg, #26a69a, #00897b);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        @media (max-width: 768px) {
-            .next-button, .reset-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-            .top-button, .mypage-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-
-        .next-button:active, .reset-button:active, .home-button:active, .result-button:active, .top-button:active, .mypage-button:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .next-button:hover, .reset-button:hover, .home-button:hover, .result-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(248, 155, 41, 0.4);
-            }
-            .top-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-            .mypage-button:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(38, 166, 154, 0.4);
-            }
-        }
-
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 2px solid #64b5f6;
-        }
-        .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
-        }
-        
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #1a237e;
-            margin: 0;
-            padding: 12px;
-            background: #f1f3f9;
-            border-radius: 10px;
-            border: 2px solid #e8eaf6;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e8eaf6;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #e8eaf6;
-            border-left: 5px solid #3f51b5;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            line-height: 1.5;
-            color: #1a237e;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #f89b29, #ff7e5f);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .final-score-card{
-            background:#fdfefe;
-            border:2px solid #1a237e;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#1a237e;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #1a237e;
-        }
-
-        .result-evaluation {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .final-score-highlight {
-            color: #c62828;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
-        }
-
-        /* 正解エフェクト */
-        .celebrate-emoji {
-            position: fixed;
-            font-size: 40px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: celebrate 1s ease-out forwards;
-        }
-
-        @keyframes celebrate {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-60px) scale(1.2) rotate(15deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(0.8) rotate(-10deg);
-            }
-        }
-
-        .correct-flash {
-            animation: flashGreen 0.4s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
         <h1>🏥 院内ルール確認クイズ 🏥</h1>
         <div class="subtitle">スタッフ向け - 円滑な患者様対応のために</div>
-        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🏥 院内ルール確認クイズ</div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
-            <button class="mode-button" onclick="startQuiz('daily7')">
-                📈 今日の7問
-            </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全15問）
+                📚 全問モード（全15問）
             </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">15問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">15問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全15問からランダムに3問を出題<br>
-                <strong>今日の5問:</strong> 全15問からランダムに5問を出題<br>
-                <strong>今日の7問:</strong> 全15問からランダムに7問を出題<br>
-                <strong>フルコース:</strong> 全15問を順番に出題
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全15問を順番に出題
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">15</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">15</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="question-card" id="question1">
+            <div class="question-card hidden" id="question1">
                 <div class="question-number">問題 1</div>
                 <div class="question-text">当院の 休診日は 何曜日ですか？</div>
                 <div class="options">
@@ -701,12 +207,12 @@
                 <div class="options">
                     <div class="option" data-answer="false">無料です</div>
                     <div class="option" data-answer="false">500円（現金のみ）</div>
-                    <div class="option" data-answer="true">1,000円（現金のみ）</div>
+                    <div class="option" data-answer="true">1,000円（クレジットカード可）</div>
                     <div class="option" data-answer="false">2,000円（クレジットカード可）</div>
                 </div>
                 <div class="feedback"></div>
                 <div class="explanation hidden">
-                    <strong>解説：</strong>緑内障検診の自己負担金は1,000円（現金のみ）と記載されています。
+                    <strong>解説：</strong>緑内障検診の自己負担金は1,000円（クレジットカード可）です。
                 </div>
             </div>
 
@@ -788,368 +294,41 @@
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
             </div>
         </div>
     </div>
 
     <script src="quiz-config.js"></script>
     <script>
+        // クイズ固有の設定
         const QUIZ_ID = 'innai-rule';
-
-        let currentQuestion = 1;
-        let score = 0;
-        let totalQuestions = 15;
-        let questionList = [];
-        let isDaily = false;
-
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
-        // 正解時フラッシュ効果
-        function flashCorrect(element) {
-            const card = element.closest('.question-card');
-            if (card) {
-                card.classList.add('correct-flash');
-                setTimeout(() => card.classList.remove('correct-flash'), 400);
-            }
-        }
-
-        // 結果発表エフェクト
-        function celebrateResult(isPerfect) {
-            // 振動フィードバック（スマホのみ）
-            if (navigator.vibrate) {
-                if (isPerfect) {
-                    navigator.vibrate([100, 50, 100, 50, 100]);
-                } else {
-                    navigator.vibrate([50, 30, 50]);
-                }
-            }
-
-            // 絵文字を飛ばす
-            const emojis = isPerfect
-                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
-                : ['🎉', '⭐', '✨', '👏', '🎊'];
-            const count = isPerfect ? 15 : 8;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 3;
-
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const emoji = document.createElement('div');
-                    emoji.className = 'celebrate-emoji';
-                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
-                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
-                    document.body.appendChild(emoji);
-
-                    setTimeout(() => emoji.remove(), 1000);
-                }, i * 100);
-            }
-        }
-
-        function startQuiz(mode) {
-            document.querySelector('h1').classList.add('hidden');
-            document.querySelector('.subtitle').classList.add('hidden');
-            document.getElementById('modeSelection').classList.add('hidden');
-            document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily3') {
-                isDaily = true;
-                totalQuestions = 3;
-                questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else if (mode === 'daily7') {
-                isDaily = true;
-                totalQuestions = 7;
-                questionList = getRandomQuestions(7);
-            } else {
-                isDaily = false;
-                totalQuestions = 15;
-                questionList = [...allQuestions];
-            }
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionList.includes(i)) {
-                    if (i === questionList[0]) {
-                        questionElement.classList.remove('hidden');
-                    } else {
-                        questionElement.classList.add('hidden');
-                    }
-                } else {
-                    if(document.getElementById(`question${i}`)){
-                        document.getElementById(`question${i}`).style.display = 'none';
-                    }
-                }
-            }
-            
-            currentQuestion = 0;
-            updateQuestionNumbers();
-            document.getElementById('total').textContent = totalQuestions;
-            shuffleOptions(questionList[0]);
-            updateProgress();
-        }
-
-        function getRandomQuestions(count) {
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
-        }
-
-        function updateQuestionNumbers() {
-            questionList.forEach((questionId, index) => {
-                const questionElement = document.getElementById(`question${questionId}`);
-                if(questionElement) {
-                    const questionNumber = questionElement.querySelector('.question-number');
-                    questionNumber.textContent = `問題 ${index + 1}`;
-                }
-            });
-        }
-
-        function shuffleOptions(questionId) {
-            if (!questionId) return;
-            const container = document
-                .getElementById(`question${questionId}`)
-                .querySelector('.options');
-            if (!container) return;
-            
-            for (let i = container.children.length; i >= 0; i--) {
-                const rand = Math.floor(Math.random() * i);
-                if (container.children[rand]) {
-                    container.appendChild(container.children[rand]);
-                }
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function selectAnswer(selectedOption) {
-            const currentQuestionId = questionList[currentQuestion];
-            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
-            const options = currentQuestionElement.querySelectorAll('.option');
-            const feedback = currentQuestionElement.querySelector('.feedback');
-            const explanation = currentQuestionElement.querySelector('.explanation');
-            const nextButton = document.querySelector('.next-button');
-            const resultButton = document.querySelector('.result-button');
-            
-            const isCorrect = selectedOption.dataset.answer === 'true';
-            let correctAnswerText = '';
-            
-            options.forEach(option => {
-                if (option.dataset.answer === 'true') {
-                    correctAnswerText = option.textContent;
-                }
-            });
-            
-            options.forEach(option => {
-                option.classList.add('disabled');
-                if (option.dataset.answer === 'true') {
-                    option.classList.add('correct');
-                } else if (option === selectedOption && option.dataset.answer === 'false') {
-                    option.classList.add('incorrect');
-                }
-            });
-
-            if (isCorrect) {
-                feedback.textContent = '🎉 正解です！';
-                feedback.className = 'feedback correct';
-                score++;
-                flashCorrect(selectedOption);
-            } else {
-                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
-                feedback.className = 'feedback incorrect';
-            }
-            
-            feedback.style.display = 'block';
-            explanation.classList.remove('hidden');
-
-            // スマホ用：回答後にフィードバックが画面上部に来るようスクロール
-            setTimeout(() => {
-                feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-
-            if (currentQuestion < totalQuestions - 1) {
-                nextButton.classList.remove('hidden');
-            } else {
-                resultButton.classList.remove('hidden');
-            }
-            
-            updateScore();
-        }
-
-        function nextQuestion() {
-            const currentQuestionId = questionList[currentQuestion];
-            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
-            
-            currentQuestion++;
-            const nextQuestionId = questionList[currentQuestion];
-            
-            shuffleOptions(nextQuestionId);
-            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
-            document.querySelector('.next-button').classList.add('hidden');
-            updateProgress();
-        }
-
-        function showFinalScore() {
-            questionList.forEach(questionId => {
-                const qElem = document.getElementById(`question${questionId}`);
-                if(qElem) qElem.classList.add('hidden');
-            });
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.add('hidden');
-
-            const percentage = Math.round((score / totalQuestions) * 100);
-            let title, message;
-
-            if (score === totalQuestions) {
-                title = '🏆 完璧です！ 🏆';
-                message = `全問正解！院内ルールを完全に把握していますね。\n自信を持って、日々の業務と患者様対応をお願いします。`;
-            } else if (score >= totalQuestions * 0.8) {
-                title = '🌟 素晴らしい！ 🌟';
-                message = `高得点です！重要なルールはしっかり理解できています。\n間違えた箇所を再確認し、全ての患者様に正確な案内ができるよう目指しましょう。`;
-            } else if (score >= totalQuestions * 0.5) {
-                title = '👍 あと一歩！ 👍';
-                message = `基本的なルールは身についています。\n患者様からの質問が多い項目や、間違いやすい受付時間などを中心に復習しましょう。`;
-            } else {
-                title = '💪 要復習！ 💪';
-                message = `今回は良い復習の機会になりましたね。\n院内マニュアルをもう一度読み返し、正確な知識を身につけましょう。正しい案内が患者様の信頼に繋がります。`;
-            }
-
-            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
-            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
-            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
-            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-
-            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
-
-            document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
-            document.querySelector('.top-link').classList.add('hidden');
-
-            // トップへスクロール
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // 結果発表エフェクト（満点かどうかで演出を変える）
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // マイページ用に結果を記録
-            recordQuizResult(QUIZ_ID, score, totalQuestions);
-        }
-
-        function resetQuiz() {
-            document.getElementById('finalResult').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.remove('hidden');
-            score = 0;
-            updateScore();
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement){
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-                
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-                    
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else if (totalQuestions === 7) {
-                startQuiz('daily7');
-            } else {
-                startQuiz('full');
-            }
-        }
-
-        function goHome() {
-            document.getElementById('finalResult').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.remove('hidden');
-
-            document.querySelector('h1').classList.remove('hidden');
-            document.querySelector('.subtitle').classList.remove('hidden');
-            
-            for (let i = 1; i <= 15; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement) {
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-                
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-                    
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            currentQuestion = 1;
-            score = 0;
-            totalQuestions = 15;
-            questionList = [];
-            isDaily = false;
-            
-            updateScore();
-            
-            document.getElementById('modeSelection').classList.remove('hidden');
-        }
-
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
-                selectAnswer(e.target);
-            }
-        });
+        const TOTAL_QUESTIONS = 15;
     </script>
+    <script src="quiz-core.js"></script>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">モード選択に戻る</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>アイモ（視野検査）クイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👀 アイモ（視野検査）クイズ 👀</h1>
+        <div class="subtitle">眼科スタッフ向け - 視野計アイモの基本を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👀 アイモ（視野検査）クイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">6</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">視野計アイモの大きな特徴の一つは「両眼開放」で検査ができることです。これはどういう意味ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">アイパッチで片目を隠さなくても検査ができる</div>
+                    <div class="option" data-answer="false">両目を同時に検査して結果を合算する</div>
+                    <div class="option" data-answer="false">目を大きく開けないと検査ができない</div>
+                    <div class="option" data-answer="false">両目を交互に素早く切り替えて検査する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アイモは両眼を開いたまま視野検査ができます。従来の視野計ではアイパッチで片目を隠す必要がありましたが、アイモではその必要がありません。これにより、より自然な状態でリラックスして検査を受けられます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「この検査はアイパッチで目を隠さなくても大丈夫ですよ」と伝えると安心されます。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">アイモで検査を受けた患者さんから「ラク」と好評な理由として、当てはまらないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">検査時間が必ず1分以内で終わるから</div>
+                    <div class="option" data-answer="false">アイパッチで片目を隠さなくてよいから</div>
+                    <div class="option" data-answer="false">両眼を開いたまま自然な状態で検査できるから</div>
+                    <div class="option" data-answer="false">リラックスした姿勢で検査できるから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アイモが「ラク」と言われる理由は、アイパッチ不要で両眼開放のまま、リラックスした姿勢で検査できるからです。検査時間は検査モードや患者さんの状態により異なるため、「必ず1分以内」ではありません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">アイモは「暗室不要」で検査ができますが、その理由として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">覗き込む構造で外部からの光を遮断できるから</div>
+                    <div class="option" data-answer="false">明るい光を使って検査するから</div>
+                    <div class="option" data-answer="false">患者さんがサングラスをかけて検査するから</div>
+                    <div class="option" data-answer="false">部屋の照明を自動で暗くする機能があるから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アイモは覗き込むタイプの視野計で、機械の中に暗室を再現しています。そのため、外部からの光を遮断でき、暗い部屋を用意しなくても検査が可能です。換気の良い明るい部屋でも検査ができます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「覗き込んでいただくと中が暗くなりますので、お部屋は明るいままで大丈夫ですよ」
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">視野検査の配列「30-2」「24-2」「10-2」の違いについて、正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">数字は測定範囲の広さを表し、10-2は中心部を細かく検査する</div>
+                    <div class="option" data-answer="false">数字は検査時間（分）を表している</div>
+                    <div class="option" data-answer="false">数字が大きいほど中心部を詳しく検査する</div>
+                    <div class="option" data-answer="false">どれも同じ範囲を検査し、精度だけが異なる</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>30-2や24-2は視野の周辺部まで広く検査する配列、10-2は中心10度以内を細かく検査する配列です。数字は測定範囲の広さ（角度）を表しており、目的に応じて使い分けます。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/アイモ視野計/アイモ視野計の検査結果の読み方.png" alt="アイモ視野計の検査結果の読み方">
+                        <span class="image-caption">アイモ視野計の検査結果の読み方</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>ざっくり覚えると：30-2・24-2＝広い範囲、10-2＝中心部を細かく、とイメージしましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">アイモのオリジナル検査配列「24plus」の特徴として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">周辺部と中心部を一度の検査でまとめて検査できる</div>
+                    <div class="option" data-answer="false">24-2の検査点を半分に減らして時間短縮できる</div>
+                    <div class="option" data-answer="false">24回連続で検査を繰り返して精度を上げる</div>
+                    <div class="option" data-answer="false">24歳以下の若い患者さん専用の検査配列である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「24plus」は、24-2をベースに10-2の検査点の一部を追加した配列です。これにより、周辺部と中心部を一度の検査でまとめて検査できます。スクリーニングから経過観察まで効率的な検査が可能です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/アイモ視野計/アイモ視野計の24plusの説明.png" alt="アイモ視野計の24plus配列の説明">
+                        <span class="image-caption">24plusは周辺部（24-2）と中心部（10-2）を一度に検査できる配列</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">アイモの「EXモード」の特徴として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">過去の検査データを参照して検査時間を短縮できる</div>
+                    <div class="option" data-answer="false">初めて検査を受ける患者さん専用のモードである</div>
+                    <div class="option" data-answer="false">検査の難易度を上げて、より詳しく調べるモードである</div>
+                    <div class="option" data-answer="false">緊急時に使用する特別なモードである</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>EXモードは、患者さんの過去の検査データを参照することで、検査時間を大幅に短縮できるモードです。正確性は保ったまま患者さんの負担を軽減できます。前回の検査結果の信頼性が低い場合は、再度しっかり検査し直すので正確性も変わりません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/アイモ視野計/アイモ視野計_exモードの説明.png" alt="アイモ視野計のEXモードの説明">
+                        <span class="image-caption">EXモード：過去の検査データを参照して検査時間を短縮</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>2回目以降の検査の患者様には「前回のデータがあるので、少し短い時間で検査できますよ」と伝えられます。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">アイモに搭載されているオリジナルプログラム「AIZE（アイズ）」の特徴として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">隣接する検査点の結果を相互に反映させて精度向上と時間短縮を両立</div>
+                    <div class="option" data-answer="false">1つの検査点を複数回測定して平均値を算出する</div>
+                    <div class="option" data-answer="false">検査点の数を減らして時間を短縮する</div>
+                    <div class="option" data-answer="false">患者さんの年齢に応じて検査難易度を自動調整する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>AIZE（Ambient Interactive ZEST）は、各検査点での応答結果を隣接する検査点に反映させることで、検査精度を高めながら検査時間を短縮するアイモ独自のプログラムです。ベイズ推定・最尤法により網膜感度閾値を効率的に探索します。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/アイモ視野計/アイモ視野計_aizeの説明.png" alt="アイモ視野計のAIZE技術の説明">
+                        <span class="image-caption">AIZE：隣接する検査点と相互作用しながら精度と速度を両立</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「最新の技術で、短い時間でも正確な検査ができるようになっています」と伝えると良いでしょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">アイモの「AIZE-Rapid」モードが通常のAIZEよりもさらに検査時間を短縮できる理由として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">偽陰性・偽陽性・固視状態を検査中に推定し、視標呈示回数を減らせるから</div>
+                    <div class="option" data-answer="false">検査する視野の範囲を狭くしているから</div>
+                    <div class="option" data-answer="false">光の明るさを強くして見えやすくしているから</div>
+                    <div class="option" data-answer="false">患者さんのボタン反応を予測して自動で進めるから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>AIZE-Rapidは、検査中に偽陰性（見えているのに押さない）・偽陽性（見えていないのに押す）・固視状態を推定することで、閾値決定までに必要な視標呈示回数を減らし、さらなる時間短縮を実現しています。検査範囲や精度は維持したままです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>検査に慣れている患者様や、体力的に長時間の検査が難しい患者様には、AIZE-Rapidモードが適している場合があります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'imo_shinya';
+        const TOTAL_QUESTIONS = 8;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

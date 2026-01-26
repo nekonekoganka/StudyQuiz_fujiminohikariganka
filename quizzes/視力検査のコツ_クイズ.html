@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>視力検査のコツクイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ 視力検査のコツクイズ 👁️</h1>
+        <div class="subtitle">眼科スタッフ向け - 視力検査のコツと患者対応を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 視力検査のコツクイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">8</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">患者さんから「視力検査って何を調べているの？」と聞かれました。説明として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">どのくらいまで見えるかという視力と、一番よく見える度数を調べています</div>
+                    <div class="option" data-answer="false">目の病気があるかどうかを調べています</div>
+                    <div class="option" data-answer="false">眼圧が正常かどうかを調べています</div>
+                    <div class="option" data-answer="false">目の奥の写真を撮って異常がないか調べています</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>視力検査では「どのくらいまで見えるか（視力）」と「一番よく見える度数（屈折）」を調べています。視力と度数は全く別のものであることも、必要に応じて説明しましょう。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「視力と度数は全く別のものなんですよ」と伝えると理解が深まります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">患者さんから「この前も視力検査したのに、またやるの？」と言われました。対応として適切<strong>「ではない」</strong>ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「決まりなので必ずやらないといけないんです」と答える</div>
+                    <div class="option" data-answer="false">「これから行う検査を正確に行うために、本日の視力を測らせてください」と説明する</div>
+                    <div class="option" data-answer="false">「前回から変わりないか確認させてください」と説明する</div>
+                    <div class="option" data-answer="false">「先生が目の状態を詳しく診察するために必要です」と説明する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「決まりだから」という説明では患者さんは納得しにくいです。視野検査など他の検査の前準備、手術前後の評価、定期検診など、目的に応じて必要な理由を説明しましょう。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>説明しても協力が得られない場合は、無理強いせず医師に確認しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">視力検査中に患者さんから「私の病気は進行している？治る？」と聞かれました。対応として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「病気や治療に関することは診察で先生に聞いてみてくださいね」と伝える</div>
+                    <div class="option" data-answer="false">視力の数値から判断して「少し進行しているようです」と伝える</div>
+                    <div class="option" data-answer="false">「大丈夫ですよ、心配いりません」と安心させる</div>
+                    <div class="option" data-answer="false">「カルテを見る限り、治療すれば治ると思います」と伝える</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>病気や治療についての言及はトラブルの原因となります。「検査の人には大丈夫って言われた！」と診察室でトラブルになりかねません。病気や治療に関する質問は医師に確認するよう案内しましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">視力検査の前にカルテで確認しておくべき情報として、適切<strong>「ではない」</strong>ものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">患者さんの住所や連絡先</div>
+                    <div class="option" data-answer="false">疾患名や眼底所見</div>
+                    <div class="option" data-answer="false">視野の状態</div>
+                    <div class="option" data-answer="false">前回の視力や屈折値</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>検査前には疾患名、眼底所見、視野の状態、前回の視力・屈折値などを確認しておきましょう。黄斑部が障害されていたり視野が狭くなっている場合は、視標の提示方法や声かけにも配慮が必要です。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">視力検査中に患者さんが無意識に目を細めています。対応として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「目を細めると正確な視力が測れないので、目を大きく開けてお答えください」と声かけする</div>
+                    <div class="option" data-answer="false">目を細めた状態のまま検査を続ける</div>
+                    <div class="option" data-answer="false">何も言わずに検査を中止する</div>
+                    <div class="option" data-answer="false">目を細めている分、視力値を下げて記録する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>目を細めると正確な視力が測れません。「わかるところまででいいので、目を大きく開けてください」と声かけしましょう。声かけしても改善しない場合は、その旨をカルテに記載してください。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>近視になり始めたお子さんに多く見られます。眼鏡を作るかどうかの判断基準にもなります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">検眼枠が鼻眼鏡のようにずり落ちてしまう患者さんがいます。対処法として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">お顔に合った検眼枠を選び、それでもずれる場合は患者さんの手で支えてもらう</div>
+                    <div class="option" data-answer="false">ずり落ちた状態のまま検査を続ける</div>
+                    <div class="option" data-answer="false">検眼枠を使わずに裸眼視力だけ測定する</div>
+                    <div class="option" data-answer="false">テープで検眼枠を顔に固定する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>頂点間距離がずれると検査結果に影響します。特に屈折異常が強いほど、わずかなズレでも影響が大きくなります。お顔に合った検眼枠を選び、どうしてもずり落ちる場合は患者さんの手で支えてもらいましょう。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/メガネ/頂点間距離の度数換算表.png" alt="頂点間距離による度数換算表">
+                        <span class="image-caption">頂点間距離による度数換算表（近視・遠視）</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">レンズを当てるたびに「どちらもよく見える」と答える患者さんがいます。対応として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「Cの切れ目がよりハッキリ見えるのはどちらですか？」と具体的に聞く</div>
+                    <div class="option" data-answer="false">「よく見える」と言われた方のレンズを選ぶ</div>
+                    <div class="option" data-answer="false">患者さんの回答を信じて検査を終了する</div>
+                    <div class="option" data-answer="false">「どちらかを選んでください」と強く言う</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>「どちらがよく見えますか？」という質問だと、レンズを重ねていない方が明るくて見やすいと答える場合があります。「Cの切れ目がよりハッキリ見えるのは1枚目と2枚目、どちらですか？」など、具体的な質問に変えましょう。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>「レンズを多く重ねるほどよく見える」と思い込んでいる患者様もいます。常に具体的な聞き方を意識しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">矯正しても前回より視力が出ない場合、対応として適切なものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">度数調整などで確認し、それでも出なければ「視力が出ない」という結果も重要な情報として報告する</div>
+                    <div class="option" data-answer="false">視力が出るまで何度でも粘って検査を続ける</div>
+                    <div class="option" data-answer="false">前回と同じ視力値をカルテに記載する</div>
+                    <div class="option" data-answer="false">患者さんに「集中してください」と注意する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>度数調整などの確認は必須ですが、粘って時間をかけすぎないよう注意しましょう。「視力が出ない」という結果も診察において重要な情報です。検査結果に自信がない場合は、可能であれば他のスタッフに再検査をお願いしましょう。
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'siryoku';
+        const TOTAL_QUESTIONS = 8;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

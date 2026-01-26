@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>設定 - ひかり眼科 学習クイズ</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/app/icon-180.png">
+    <meta name="theme-color" content="#667eea">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 12px;
+            padding-top: max(12px, env(safe-area-inset-top));
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 28px 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            color: #1a237e;
+            font-size: 24px;
+            margin: 0 0 8px 0;
+        }
+
+        .subtitle {
+            color: #5c6bc0;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a237e;
+            margin: 0 0 16px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-item {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .setting-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .setting-description {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .button-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .selector-button {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .selector-button:active {
+            transform: scale(0.95);
+        }
+
+        .selector-button.active {
+            border-color: #5c6bc0;
+            background: linear-gradient(135deg, #667eea, #5c6bc0);
+            color: white;
+        }
+
+        /* 文字サイズプレビュー */
+        .font-preview {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f5f7ff;
+            border-radius: 12px;
+            border: 2px dashed #c5cae9;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .font-preview-label {
+            font-size: 11px;
+            color: #9fa8da;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .font-preview-text {
+            color: #3949ab;
+            font-weight: 500;
+            transition: font-size 0.3s ease;
+        }
+        .font-preview-text.small {
+            font-size: 14px;
+        }
+        .font-preview-text.normal {
+            font-size: 16px;
+        }
+        .font-preview-text.large {
+            font-size: 20px;
+        }
+
+        .backup-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .backup-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 16px;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            background: white;
+            color: #2e7d32;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .backup-button:active {
+            transform: scale(0.95);
+        }
+
+        .backup-button.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+
+        .last-backup-info {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .danger-zone {
+            background: #fff5f5;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+        }
+
+        .danger-zone .section-title {
+            color: #c62828;
+            border-bottom-color: #ffcdd2;
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ef5350;
+            border-radius: 10px;
+            background: white;
+            color: #c62828;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset-button:active {
+            transform: scale(0.95);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 2px solid #e8eaf6;
+        }
+
+        .home-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #5c6bc0);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .home-link:active {
+            transform: scale(0.95);
+        }
+
+        /* 復元プレビューモーダル */
+        .restore-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .restore-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .restore-preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .restore-preview-title.success { color: #2e7d32; }
+        .restore-preview-title.error { color: #c62828; }
+        .restore-preview-info {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .restore-preview-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .restore-preview-row:last-child { border-bottom: none; }
+        .restore-preview-label { color: #666; }
+        .restore-preview-value { font-weight: bold; color: #333; }
+        .restore-warning {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .restore-error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .restore-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .restore-modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .restore-modal-btn.primary {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        .restore-modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .restore-modal-btn.close {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* ダークモード */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+            .container {
+                background: #1e1e2e;
+            }
+            h1 {
+                color: #e0e0e0;
+            }
+            .subtitle {
+                color: #a0a0b0;
+            }
+            .section-title {
+                color: #e0e0e0;
+                border-bottom-color: #3a3a4e;
+            }
+            .setting-item {
+                background: #2a2a3e;
+            }
+            .setting-label {
+                color: #e0e0e0;
+            }
+            .setting-description {
+                color: #a0a0b0;
+            }
+            .selector-button {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+                color: #a0a0b0;
+            }
+            .selector-button.active {
+                background: linear-gradient(135deg, #667eea, #5c6bc0);
+                color: white;
+            }
+            .font-preview {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+            .font-preview-label {
+                color: #7a7a8a;
+            }
+            .font-preview-text {
+                color: #a0a0e0;
+            }
+            .backup-button {
+                background: #2a2a3e;
+                border-color: #4caf50;
+                color: #81c784;
+            }
+            .backup-button.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+            .last-backup-info {
+                color: #a0a0b0;
+            }
+            .danger-zone {
+                background: #2e1a1a;
+            }
+            .reset-button {
+                background: #2a2a3e;
+            }
+            .footer {
+                border-top-color: #3a3a4e;
+            }
+            /* 復元モーダル ダークモード */
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
+            }
+        }
+
+        /* PC版で文字サイズ設定を非表示 */
+        .top-nav {
+            display: none;
+        }
+
+        /* タブレット・PC向け */
+        @media (min-width: 768px) {
+            .top-nav {
+                display: block;
+                text-align: left;
+                margin-bottom: 16px;
+            }
+            .top-nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #5c6bc0;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #f0f2ff;
+                transition: all 0.2s;
+            }
+            .top-nav-link:hover {
+                background: #e0e4ff;
+                color: #3949ab;
+            }
+            #displaySettingsSection {
+                display: none;
+            }
+            .selector-button:hover {
+                border-color: #5c6bc0;
+                background: #f0f2ff;
+            }
+            .selector-button.active:hover {
+                background: linear-gradient(135deg, #667eea, #5c6bc0);
+            }
+            .backup-button:hover {
+                background: #f0f2ff;
+            }
+            .reset-button:hover {
+                background: #ffebee;
+            }
+            .home-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a href="index.html" class="top-nav-link">← ホームに戻る</a>
+        </div>
+
+        <div class="header">
+            <h1>⚙️ 設定</h1>
+            <div class="subtitle">アプリの設定を変更できます</div>
+        </div>
+
+        <!-- 表示設定 -->
+        <div class="section" id="displaySettingsSection">
+            <div class="section-title">
+                <span>🎨</span>
+                表示設定
+            </div>
+
+            <div class="setting-item" id="fontSizeSetting">
+                <div class="setting-label">文字の大きさ</div>
+                <div class="setting-description">クイズ画面やボタンの文字サイズを変更します（スマートフォン向け）</div>
+                <div class="button-selector" id="fontSizeSelector">
+                    <button class="selector-button" data-value="small" onclick="setFontSize('small')">小さめ</button>
+                    <button class="selector-button active" data-value="normal" onclick="setFontSize('normal')">ふつう</button>
+                    <button class="selector-button" data-value="large" onclick="setFontSize('large')">大きめ</button>
+                </div>
+                <!-- プレビューエリア -->
+                <div class="font-preview" id="fontPreview">
+                    <div class="font-preview-label">プレビュー</div>
+                    <div class="font-preview-text" id="fontPreviewText">この大きさで表示されます</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- クイズ設定 -->
+        <div class="section">
+            <div class="section-title">
+                <span>📝</span>
+                クイズ設定
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-label">今日の問題数</div>
+                <div class="setting-description">「今日の○問」モードで出題される問題数を設定します</div>
+                <div class="button-selector" id="dailyCountSelector">
+                    <button class="selector-button active" data-value="3" onclick="setDailyCount(3)">3問</button>
+                    <button class="selector-button" data-value="5" onclick="setDailyCount(5)">5問</button>
+                    <button class="selector-button" data-value="7" onclick="setDailyCount(7)">7問</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- バックアップ設定 -->
+        <div class="section">
+            <div class="section-title">
+                <span>💾</span>
+                データ保護
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-label">自動バックアップ間隔</div>
+                <div class="setting-description">クイズを指定回数完了するごとに、バックアップを促すポップアップが表示されます</div>
+                <div class="button-selector" id="autoBackupSelector">
+                    <button class="selector-button" data-value="3" onclick="setAutoBackupInterval(3); updateAutoBackupButtons(3)">3回ごと</button>
+                    <button class="selector-button active" data-value="5" onclick="setAutoBackupInterval(5); updateAutoBackupButtons(5)">5回ごと</button>
+                    <button class="selector-button" data-value="10" onclick="setAutoBackupInterval(10); updateAutoBackupButtons(10)">10回ごと</button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-label">手動バックアップ</div>
+                <div class="setting-description">学習データをファイルに保存・復元できます。端末変更時やブラウザデータ削除前にご利用ください。</div>
+                <div class="backup-buttons">
+                    <button class="backup-button" onclick="downloadBackup()">💾 バックアップ</button>
+                    <button class="backup-button restore" onclick="startRestore()">📂 ファイルを選んで復元</button>
+                    <input type="file" id="restoreInput" accept=".json" style="display: none;" onchange="handleRestoreFile(event)">
+                </div>
+                <div class="last-backup-info">
+                    最終バックアップ: <span id="lastBackupDate">確認中...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 危険ゾーン -->
+        <div class="danger-zone">
+            <div class="section-title">
+                <span>⚠️</span>
+                データリセット
+            </div>
+            <div class="setting-item" style="background: transparent; padding: 0;">
+                <div class="setting-description">すべての学習データを削除します。この操作は取り消せません。</div>
+                <button class="reset-button" onclick="confirmReset()">🗑️ 学習データをリセット</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="index.html" class="home-link">🏠 トップページへ</a>
+        </div>
+    </div>
+
+    <!-- 復元プレビューモーダル -->
+    <div id="restorePreviewModal" class="restore-modal" style="display: none;">
+        <div class="restore-modal-content">
+            <div id="restorePreviewContent"></div>
+        </div>
+    </div>
+
+    <script src="quizzes/quiz-config.js"></script>
+    <script>
+        // ----- フォントサイズ -----
+        function setFontSize(size) {
+            localStorage.setItem(SETTINGS_KEYS.fontSize, size);
+            updateFontSizeButtons(size);
+            updateFontPreview(size);
+            applyFontSize();
+        }
+
+        function updateFontPreview(size) {
+            const preview = document.getElementById('fontPreviewText');
+            if (preview) {
+                preview.classList.remove('small', 'normal', 'large');
+                preview.classList.add(size);
+            }
+        }
+
+        function updateFontSizeButtons(size) {
+            document.querySelectorAll('#fontSizeSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === size);
+            });
+        }
+
+        function initFontSize() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.fontSize) || 'normal';
+            updateFontSizeButtons(saved);
+            updateFontPreview(saved);
+        }
+
+        // ----- 今日の問題数 -----
+        function setDailyCount(count) {
+            localStorage.setItem(SETTINGS_KEYS.dailyCount, count.toString());
+            updateDailyCountButtons(count);
+        }
+
+        function updateDailyCountButtons(count) {
+            document.querySelectorAll('#dailyCountSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === count.toString());
+            });
+        }
+
+        function initDailyCount() {
+            const saved = localStorage.getItem(SETTINGS_KEYS.dailyCount) || '3';
+            updateDailyCountButtons(parseInt(saved));
+        }
+
+        // ----- 自動バックアップ間隔 -----
+        function updateAutoBackupButtons(interval) {
+            document.querySelectorAll('#autoBackupSelector .selector-button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.value === interval.toString());
+            });
+        }
+
+        function initAutoBackupInterval() {
+            const saved = getAutoBackupInterval();
+            updateAutoBackupButtons(saved);
+        }
+
+        // ----- バックアップ関連 -----
+        function getLastBackupDate() {
+            const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        function formatDate(date) {
+            if (!date) return 'なし';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+
+        function updateLastBackupDisplay() {
+            const el = document.getElementById('lastBackupDate');
+            if (el) {
+                el.textContent = formatDate(getLastBackupDate());
+            }
+        }
+
+        function downloadBackup() {
+            const data = getQuizData();
+            data.backupDate = new Date().toISOString();
+            data.appVersion = '1.0';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = generateBackupFileName();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            setLastBackupDate();
+            updateLastBackupDisplay();
+
+            alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
+        }
+
+        // 復元開始（確認ダイアログを表示してからファイル選択）
+        async function startRestore() {
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('restoreInput').click();
+            }
+        }
+
+        // 復元用の一時データ
+        let pendingRestoreData = null;
+
+        function handleRestoreFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const validation = validateBackupData(data);
+
+                    if (validation.valid) {
+                        pendingRestoreData = data;
+                        showRestorePreview(data);
+                    } else {
+                        showRestoreError(validation.error);
+                    }
+                } catch (error) {
+                    showRestoreError('invalid_format');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function showRestorePreview(data) {
+            const info = getBackupPreviewInfo(data);
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            content.innerHTML = `
+                <div class="restore-preview-title success">✅ バックアップファイルを確認</div>
+                <div class="restore-preview-info">
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📅 バックアップ日</span>
+                        <span class="restore-preview-value">${formatBackupDate(info.backupDate)}</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📝 累計回答数</span>
+                        <span class="restore-preview-value">${info.totalAnswered}回</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🌸 満点クイズ</span>
+                        <span class="restore-preview-value">${info.perfectCount}個</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🏅 獲得バッジ</span>
+                        <span class="restore-preview-value">${info.badgeCount}個</span>
+                    </div>
+                </div>
+                <div class="restore-warning">⚠️ 現在のデータは上書きされます</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn secondary" onclick="closeRestoreModal()">キャンセル</button>
+                    <button class="restore-modal-btn primary" onclick="executeRestore()">復元する</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function showRestoreError(errorType) {
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            let message = '';
+            if (errorType === 'invalid_format') {
+                message = 'このファイルはバックアップファイルではありません。<br><br>「ひかりクイズデータ_」で始まるJSONファイルを選択してください。';
+            } else if (errorType === 'no_quiz_data') {
+                message = '学習データが含まれていません。<br><br>正しいバックアップファイルを選択してください。';
+            }
+
+            content.innerHTML = `
+                <div class="restore-preview-title error">❌ ファイルを読み込めません</div>
+                <div class="restore-error-message">${message}</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn close" onclick="closeRestoreModal()">閉じる</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function executeRestore() {
+            if (!pendingRestoreData) return;
+
+            delete pendingRestoreData.backupDate;
+            delete pendingRestoreData.appVersion;
+            saveQuizData(pendingRestoreData);
+            setLastBackupDate();
+
+            closeRestoreModal();
+            alert('✅ データを復元しました！\nページを再読み込みします。');
+            location.reload();
+        }
+
+        function closeRestoreModal() {
+            document.getElementById('restorePreviewModal').style.display = 'none';
+            pendingRestoreData = null;
+        }
+
+        // ----- データリセット -----
+        function confirmReset() {
+            if (confirm('⚠️ 本当にすべての学習データを削除しますか？\n\nこの操作は取り消せません。')) {
+                if (confirm('最終確認: 本当に削除してよろしいですか？')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    alert('学習データを削除しました。\nページを再読み込みします。');
+                    location.reload();
+                }
+            }
+        }
+
+        // ----- 初期化 -----
+        function initSettings() {
+            initFontSize();
+            initDailyCount();
+            initAutoBackupInterval();
+            updateLastBackupDisplay();
+        }
+
+        applyFontSize();
+        initSettings();
+    </script>
+</body>
+</html>

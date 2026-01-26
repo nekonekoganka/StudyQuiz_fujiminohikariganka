@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黄斑前膜クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ 黄斑前膜クイズ 👁️</h1>
+        <div class="subtitle">眼科スタッフ向け - 黄斑前膜の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ 黄斑前膜クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全8問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">8問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">8問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全8問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">8</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">黄斑前膜は40歳以上のおよそ何人に1人がなるといわれていますか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">20人に1人</div>
+                    <div class="option" data-answer="false">50人に1人</div>
+                    <div class="option" data-answer="false">100人に1人</div>
+                    <div class="option" data-answer="false">200人に1人</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜は網膜の病気の中では最も多い病気のひとつで、40歳以上のおよそ20人に1人がなるといわれています。中でも50歳から70歳ぐらいの女性に多い傾向があります。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜の眼底写真.png" alt="黄斑前膜の眼底写真">
+                        <span class="image-caption">黄斑前膜の眼底写真：黄斑部に膜が張り、網膜にしわが寄っている様子</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜のOCT.png" alt="黄斑前膜のOCT画像">
+                        <span class="image-caption">黄斑前膜のOCT画像：網膜表面に膜が張っている様子が確認できる</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「黄斑前膜は珍しい病気ではありません。40歳以上の方の約5%（20人に1人）に見られます」と伝えると、患者様も安心されます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">黄斑前膜と加齢黄斑変性の違いについて正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑前膜は新生血管が生えないため、基本的に失明には至らない</div>
+                    <div class="option" data-answer="false">黄斑前膜は新生血管が生えるため、失明することがある</div>
+                    <div class="option" data-answer="false">加齢黄斑変性は新生血管が生えないため、失明しない</div>
+                    <div class="option" data-answer="false">両者は同じ病気の別名である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>加齢黄斑変性は網膜の裏側から新生血管が生えて起き、激しい出血や萎縮で失明することもあります。一方、黄斑前膜では新生血管が生えないため、出血や萎縮が起きることは少なく、基本的には失明には至らない比較的良性の病気です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/加齢黄斑変性のOCT.png" alt="加齢黄斑変性のOCT画像">
+                        <span class="image-caption">加齢黄斑変性のOCT画像：網膜の下に新生血管による変化が見られる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/眼底/黄斑変性症の眼底写真.png" alt="加齢黄斑変性の眼底写真">
+                        <span class="image-caption">加齢黄斑変性の眼底写真：脈絡膜新生血管と黄斑下出血が見られる</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者様には「黄斑前膜は基本的に失明に至らない比較的良性の病気です」と説明すると安心されます。ただし、見え方が悪くなり生活に支障をきたすこともあることも伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">特発性黄斑前膜の主な原因として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">後部硝子体剥離</div>
+                    <div class="option" data-answer="false">白内障</div>
+                    <div class="option" data-answer="false">緑内障</div>
+                    <div class="option" data-answer="false">角膜混濁</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>特発性黄斑前膜は、加齢性の生理現象である「後部硝子体剥離」が主な原因です。後部硝子体剥離が起きる際、硝子体と黄斑の癒着が強いと、黄斑にわずかに残った硝子体を基にして黄斑前膜が後に生じてきます。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜のOCT.png" alt="黄斑前膜のOCT画像">
+                        <span class="image-caption">黄斑前膜のOCT画像：網膜表面に膜が張っている様子</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">黄斑前膜の症状として正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">飛蚊症（蚊が飛んで見える）</div>
+                    <div class="option" data-answer="false">歪視（ゆがんで見える）</div>
+                    <div class="option" data-answer="false">大視症（大きく見える）</div>
+                    <div class="option" data-answer="false">霧視（かすんで見える）</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜の症状には、歪視（ゆがみ）、大視症（大きく見える）、霧視（かすんで見える）などがあります。飛蚊症は後部硝子体剥離の症状であり、黄斑前膜自体の症状ではありません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜の眼底写真.png" alt="黄斑前膜の眼底写真">
+                        <span class="image-caption">黄斑前膜の眼底写真：黄斑部に膜が張ることで網膜にしわができ、歪視や大視症の原因となる</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜のOCT.png" alt="黄斑前膜のOCT画像">
+                        <span class="image-caption">黄斑前膜のOCT画像：網膜表面の膜が網膜を引っ張り、しわを作っている様子</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「飛蚊症（黒い点や糸くずが見える症状）は黄斑前膜とは別の症状です。黄斑前膜では、ものがゆがんで見えたり、大きく見えたりする症状が特徴的です」と説明すると、症状の違いを理解していただけます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">黄斑前膜のセルフチェックに使用するアムスラーチャートの使い方として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">老眼鏡をかけたまま30cmほど離れ、片方の目のみで中心の点を見る</div>
+                    <div class="option" data-answer="false">裸眼で1m離れ、両目で全体を見る</div>
+                    <div class="option" data-answer="false">遠用眼鏡をかけて50cm離れ、両目で見る</div>
+                    <div class="option" data-answer="false">裸眼で10cm離れ、片方の目のみで見る</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>アムスラーチャートは老眼鏡をかけたまま30cmほど離れ、中心の黒い丸い点を片方の目のみで見ます。格子状の直線が波線になって見えたり、ゆがんで見える部分があれば、黄斑の病気である可能性が高くなります。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「時々、片方の目を手で隠して、もう片方の目の見え方を確認してみましょう」と患者様にセルフチェックの重要性を伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">黄斑前膜と老眼の関係について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑前膜は40歳以降に起き、老眼と勘違いして放置されることがある</div>
+                    <div class="option" data-answer="false">黄斑前膜は20歳代に多く発症する</div>
+                    <div class="option" data-answer="false">老眼があると黄斑前膜にはならない</div>
+                    <div class="option" data-answer="false">黄斑前膜の症状は老眼鏡で改善する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜が起きるのは通常40歳以降のため、老眼を感じはじめる年代と重なります。初期症状は軽度のことが多く、「老眼がひどくなったかな」と勘違いして放置され、しばらくしてから黄斑前膜が見つかることもあるので注意が必要です。
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">黄斑前膜の治療について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">治療は手術のみで、点眼や内服薬では治らない</div>
+                    <div class="option" data-answer="false">点眼薬で完治する</div>
+                    <div class="option" data-answer="false">内服薬で進行を止められる</div>
+                    <div class="option" data-answer="false">レーザー治療が第一選択である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑前膜の治療は手術（硝子体手術）のみになります。視力が良好で自覚症状も少なく、日常生活に支障のない方は経過観察で良いこともありますが、薬物治療では治りません。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜のOCT.png" alt="黄斑前膜のOCT画像">
+                        <span class="image-caption">黄斑前膜のOCT画像：手術で膜を剥がすことで網膜のしわが改善する</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑前膜の眼底写真.png" alt="黄斑前膜の眼底写真">
+                        <span class="image-caption">黄斑前膜の眼底写真：黄斑部にしわが見られる</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>「進行がゆっくりなので、すぐに手術しなくても経過観察という選択肢もあります。担当医とよく相談しましょう」と伝えると患者様の不安が軽減されます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">黄斑前膜の類縁疾患である黄斑円孔について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">黄斑の中心窩に穴が開き、視力0.1未満になることもある</div>
+                    <div class="option" data-answer="false">黄斑前膜より視力低下が軽度である</div>
+                    <div class="option" data-answer="false">手術後にうつむき姿勢は不要である</div>
+                    <div class="option" data-answer="false">穴の直径は通常5mm以上である</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>黄斑円孔は黄斑の真ん中の中心窩に穴（直径0.5mm未満）が開く病気です。中心窩は視力に最も関わる部分であるため、視力低下は黄斑前膜よりひどくなり、視力0.1未満になることもあります。手術では目の中に空気やガスを入れるため、術後数日間うつむき姿勢が必要です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/黄斑/黄斑円孔のOCT.png" alt="黄斑円孔のOCT画像">
+                        <span class="image-caption">黄斑円孔のOCT画像：中心窩に穴が開いている様子</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'macular_membrane';
+        const TOTAL_QUESTIONS = 8;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

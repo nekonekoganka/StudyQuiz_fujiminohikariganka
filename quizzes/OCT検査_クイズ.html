@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>OCT検査クイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>👁️ OCT検査クイズ 👁️</h1>
+        <div class="subtitle">眼科スタッフ向け - OCT検査の基本とコツを学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">👁️ OCT検査クイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全7問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">7問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">7問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全7問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">7</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">OCT（光干渉断層計）検査は、目のどの部分をどのように撮影する検査ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">網膜の断面（断層像）を撮影する</div>
+                    <div class="option" data-answer="false">角膜の表面を撮影する</div>
+                    <div class="option" data-answer="false">水晶体の混濁度を測定する</div>
+                    <div class="option" data-answer="false">眼圧の変動を記録する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>OCTは目の奥にある網膜の断面（断層像）を撮影する検査です。患者さんには「目の奥に網膜という膜があるのですが、その断面の写真を撮影する検査です」と説明できます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「目の奥の網膜の断面を撮影する検査です」とシンプルに伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">眼底写真とOCTの違いについて、患者さんに説明する際の適切な表現はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼底写真は眼の奥の写真、OCTはMRIのように断層像を撮影する</div>
+                    <div class="option" data-answer="false">眼底写真は白黒、OCTはカラーで撮影する</div>
+                    <div class="option" data-answer="false">眼底写真は静止画、OCTは動画で撮影する</div>
+                    <div class="option" data-answer="false">眼底写真は片眼ずつ、OCTは両眼同時に撮影する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>眼底写真は眼の奥を正面から撮影した「写真」であるのに対し、OCTはMRIのように網膜の「断層像（輪切りの画像）」を撮影します。この違いを理解しておくと、患者さんへの説明がスムーズになります。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">OCT撮影時に、ほぼすべての患者さんに対して眼瞼挙上を行う理由として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">眼瞼の影響を受けず、鮮明な画像を撮影できるため</div>
+                    <div class="option" data-answer="false">患者さんの緊張をほぐすため</div>
+                    <div class="option" data-answer="false">検査時間を短縮するため</div>
+                    <div class="option" data-answer="false">眼圧への影響を避けるため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>OCT撮影時は基本的にほぼすべての患者さんに対して眼瞼挙上を行います。器械によっては撮影時にまぶしさを感じるものもあり、挙上した方がより確実に眼瞼の影響を受けず、鮮明な画像を撮影できます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>ずっと挙上したままだと患者様が瞬きできないため、適度に緩めながら声かけで瞬きを促すなど配慮しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">OCT撮影に時間がかかることが予想される場合、どのような対応が適切ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">あらかじめ患者さんに時間がかかることを伝えておく</div>
+                    <div class="option" data-answer="false">何も言わずに黙々と撮影を続ける</div>
+                    <div class="option" data-answer="false">撮影を途中で中止して次回に回す</div>
+                    <div class="option" data-answer="false">撮影後に時間がかかった理由を説明する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>撮影に時間がかかることが予想される場合は、「今日はいつもより多めに撮影するので、少しお時間がかかります」などとあらかじめ伝えておきましょう。何も知らされないまま時間がかかると、患者さんが「なにか異常があるのでは」と不安に感じてしまいます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への声かけ例：「今日はいつもより多めに撮影するので、少しお時間がかかります」
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">低視力のため内部固視灯が見えない患者さんに対して、黄斑部を撮影する際の声かけとして適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">「まっすぐだと思う場所を見ていてください」</div>
+                    <div class="option" data-answer="false">「少しだけ右側を見てください」</div>
+                    <div class="option" data-answer="false">「目を閉じていてください」</div>
+                    <div class="option" data-answer="false">「天井を見上げてください」</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>低視力で固視灯が見えない場合、黄斑部撮影時は「まっすぐだと思う場所を見ていてください」と声かけで固視を誘導します。disc（視神経乳頭）撮影時は「少しだけ右（左）側を見てください」と誘導します。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>片眼の視力が良好であれば、外部固視灯やペンライトを使うと固視誘導の微調整がしやすくなります。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">白内障が進行していて網膜像が鮮明に描出されない場合、どのような対処法が適切ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">瞳孔の中心から少し位置をずらして混濁が少ない部分を探す</div>
+                    <div class="option" data-answer="false">散瞳薬を追加で点眼して再度撮影する</div>
+                    <div class="option" data-answer="false">撮影を中止して白内障手術後に改めて撮影する</div>
+                    <div class="option" data-answer="false">OCTの光量を最大にして撮影する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>白内障が進行している場合は、瞳孔の中心から少し位置をずらしながら、混濁が少ない部分（網膜像が少しでも鮮明に見える場所）を探すように撮影します。この方法は眼底カメラ撮影時にも応用できます。どの場所でも混濁が強い場合は「混濁が強く、これ以上は撮影できず」とカルテに記載します。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">車いすで高さが足りない、姿勢の保持が困難など撮影が困難な場合、どこまで撮影すればよいですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">かろうじて黄斑部分が測定できればOKとする</div>
+                    <div class="option" data-answer="false">必ず全ての撮影モードを完了させる</div>
+                    <div class="option" data-answer="false">撮影を一切行わずに次回に延期する</div>
+                    <div class="option" data-answer="false">別のスタッフに必ず交代してもらう</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>姿勢の保持が困難、認知症などで固視不良、眼振があるなど撮影が困難な場合は、かろうじて黄斑部分が測定できればOKとし、検査状態や測定困難である理由をカルテに記載しましょう。例：「姿勢の保持が難しいため、これ以上は撮影できず」
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'oct';
+        const TOTAL_QUESTIONS = 7;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

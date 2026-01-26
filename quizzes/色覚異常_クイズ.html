@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>色覚異常クイズ - 眼科スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+    <style>
+        /* 色見本用のスタイル */
+        .color-samples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .color-pair {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .color-pair-label {
+            font-size: 12px;
+            color: #666;
+        }
+        .design-example {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .design-good {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+        }
+        .design-bad {
+            background: #ffebee;
+            border: 2px solid #f44336;
+        }
+        .design-label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .design-sample {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .design-box {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+        /* 選択肢用の小さなカラーチップ */
+        .option-color-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .color-chip {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            border: 1px solid rgba(0,0,0,0.2);
+            vertical-align: middle;
+        }
+        .color-chip-divider {
+            font-size: 10px;
+            color: #888;
+            margin: 0 1px;
+        }
+        @media (prefers-color-scheme: dark) {
+            .color-samples {
+                background: #2a2a3e;
+            }
+            .color-pair {
+                background: #1e1e2e;
+            }
+            .color-pair-label {
+                color: #a0a0b0;
+            }
+            .design-good {
+                background: #1b3d1f;
+                border-color: #4caf50;
+            }
+            .design-bad {
+                background: #3d1b1b;
+                border-color: #f44336;
+            }
+            .color-chip {
+                border-color: rgba(255,255,255,0.2);
+            }
+            .color-chip-divider {
+                color: #aaa;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>🎨 色覚異常クイズ 🎨</h1>
+        <div class="subtitle">眼科スタッフ向け - 色覚異常の理解を深めよう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🎨 色覚異常クイズ</div>
+
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全9問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">9問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">9問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全9問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">9</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <!-- ========== 問題1 ========== -->
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">色覚異常の頻度について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">男性は20人に1人、女性は500人に1人</div>
+                    <div class="option" data-answer="false">男性は100人に1人、女性は100人に1人</div>
+                    <div class="option" data-answer="false">男性は500人に1人、女性は20人に1人</div>
+                    <div class="option" data-answer="false">男性も女性も1000人に1人</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>日本人では男性の20人に1人、女性では500人に1人の割合で色覚異常の人がいます。例えば男女半々の40人のクラスだと、色覚異常の男子が1人いる計算になります。
+                </div>
+            </div>
+
+            <!-- ========== 問題2 ========== -->
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">色覚異常の人が見分けにくい色の組み合わせとして正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">
+                        <span class="option-color-group"><span class="color-chip" style="background:#9ACD32"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFA500"></span></span>黄緑と橙、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFC0CB"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#808080"></span></span>ピンクと灰色、
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#800080"></span></span>青と紫
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#FF0000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#0000FF"></span></span>赤と青、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFF00"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#008000"></span></span>黄と緑、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFFFF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#000000"></span></span>白と黒
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFF00"></span></span>青と黄色、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FFFFFF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FF0000"></span></span>白と赤、
+                        <span class="option-color-group"><span class="color-chip" style="background:#008000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#800080"></span></span>緑と紫
+                    </div>
+                    <div class="option" data-answer="false">
+                        <span class="option-color-group"><span class="color-chip" style="background:#000000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFFFF"></span></span>黒と白、
+                        <span class="option-color-group"><span class="color-chip" style="background:#FF0000"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#FFFF00"></span></span>赤と黄、
+                        <span class="option-color-group"><span class="color-chip" style="background:#0000FF"></span><span class="color-chip-divider">≒</span><span class="color-chip" style="background:#008000"></span></span>青と緑
+                    </div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>色覚異常の人は、黄緑と橙、緑と茶や灰色、青と紫、ピンクと灰色などを混同しやすいです。ただし、青系の色と黄色系の色を混同することはありません。
+                    <div class="color-samples">
+                        <div class="color-pair">
+                            <div class="color-box" style="background: #9ACD32;"></div>
+                            <span>≒</span>
+                            <div class="color-box" style="background: #FFA500;"></div>
+                            <span class="color-pair-label">黄緑と橙</span>
+                        </div>
+                        <div class="color-pair">
+                            <div class="color-box" style="background: #FFC0CB;"></div>
+                            <span>≒</span>
+                            <div class="color-box" style="background: #808080;"></div>
+                            <span class="color-pair-label">ピンクと灰色</span>
+                        </div>
+                        <div class="color-pair">
+                            <div class="color-box" style="background: #0000FF;"></div>
+                            <span>≒</span>
+                            <div class="color-box" style="background: #800080;"></div>
+                            <span class="color-pair-label">青と紫</span>
+                        </div>
+                        <div class="color-pair">
+                            <div class="color-box" style="background: #008000;"></div>
+                            <span>≒</span>
+                            <div class="color-box" style="background: #8B4513;"></div>
+                            <span class="color-pair-label">緑と茶</span>
+                        </div>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>患者様や保護者から「どんな色が見分けにくいの？」と聞かれたら、具体例を挙げて説明しましょう。
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/色覚/色の輪.png" alt="色覚異常を有する人の見え方（色相環）">
+                        <span class="image-caption">正常色覚と色覚異常の色の見え方の違い（赤〜黄〜緑が同系色に見える）</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題3 ========== -->
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">1型色覚の人の「赤」の見え方について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">赤が正常な人の10分の1くらいの明るさに見え、暗く感じる</div>
+                    <div class="option" data-answer="false">赤が正常な人より明るく見える</div>
+                    <div class="option" data-answer="false">赤が青に見える</div>
+                    <div class="option" data-answer="false">赤は正常な人と同じように見える</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>1型色覚の人は赤い光や赤い物体を、正常な人の10分の1くらいの明るさにしか感じません。「赤」は危険信号として使われることが多いため、1型色覚の人は危険信号が見にくいことを自覚することが大切です。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>1型色覚の方には「赤が暗く見えるので、信号やブレーキランプに特に注意してください」と伝えましょう。2型色覚では赤が暗く見えることはありません。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題4 ========== -->
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">色覚異常の人の日常生活での注意点として正しくないものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">青と黄色の区別に特に注意が必要</div>
+                    <div class="option" data-answer="false">悪条件下では赤信号と黄信号を間違えることがある</div>
+                    <div class="option" data-answer="false">焼き肉の焼け具合が分かりにくいことがある</div>
+                    <div class="option" data-answer="false">くすんだ色の靴下には目印をつけておくとよい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>色覚異常の人は青と黄色の区別は問題ありません。注意が必要なのは、雨や夕暮れ時に赤信号と黄信号を間違えたり、焼き肉の焼け具合が分かりにくいことなどです。服選びでは一緒に見てあげることも大切です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/色覚/焼肉の見え方.png" alt="色覚異常の人の焼肉の見え方">
+                        <span class="image-caption">色覚異常の人には焼けた肉と生肉の区別がつきにくい場合があります</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題5 ========== -->
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">色覚異常の遺伝について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">X染色体に遺伝子があり、主に母親から息子へ伝わる</div>
+                    <div class="option" data-answer="false">Y染色体に遺伝子があり、父親から息子へ伝わる</div>
+                    <div class="option" data-answer="false">遺伝ではなく、生活習慣が原因</div>
+                    <div class="option" data-answer="false">常染色体に遺伝子があり、男女同じ確率で遺伝する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>色覚異常の遺伝子はX染色体にあります。男性はX染色体を1本しか持たないため、それが異常であれば色覚異常になります。女性は2本のX染色体を持つため、両方が異常でなければ色覚異常にはなりません。
+                </div>
+            </div>
+
+            <!-- ========== 問題6 ========== -->
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">色覚異常の保因者について正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">女性の10人に1人が保因者である</div>
+                    <div class="option" data-answer="false">女性の100人に1人が保因者である</div>
+                    <div class="option" data-answer="false">男性にも保因者がいる</div>
+                    <div class="option" data-answer="false">保因者は必ず色覚異常の症状がある</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>色覚異常の保因者は女性の10人に1人の割合です。保因者の女性は自身は色覚正常ですが、息子に色覚異常が遺伝する可能性があります。40人のクラスだと保因者の女子が2人いる計算になります。男性は保因者にはなれず、発症するかしないかのどちらかです。
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>保護者（特にお母さん）が負い目を感じすぎないよう、「女性の10人に1人は保因者で、珍しいことではありません」と伝えましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題7 ========== -->
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">重症色覚異常（2色覚）の人には難しいと思われる業務はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">航空機パイロット、警察官、看護師、カメラマン</div>
+                    <div class="option" data-answer="false">医師、歯科医師、薬剤師、教諭</div>
+                    <div class="option" data-answer="false">一般事務、建築家、電気工事士</div>
+                    <div class="option" data-answer="false">色覚異常があっても全ての業務に支障はない</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>重症色覚異常（2色覚）の人には、航空機パイロット、警察官、看護師、救急救命士、カメラマン、食品の鮮度判定業務などは難しいとされています。ただし、医師や薬剤師、教諭などは少ない努力で遂行可能です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/色覚/色覚と仕事.png" alt="色覚の異常の程度による業務への支障の目安">
+                        <span class="image-caption">色覚異常の程度別・業務への支障の目安（日本眼科医会）</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>進路相談では「できない仕事」より「工夫すればできる仕事がたくさんある」という前向きな伝え方を心がけましょう。
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題8 ========== -->
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">重症色覚異常（2色覚）でも少ない努力で遂行可能な業務はどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">医師、歯科医師、薬剤師、教諭</div>
+                    <div class="option" data-answer="false">航空機パイロット、鉄道運転士</div>
+                    <div class="option" data-answer="false">映像機器の色調整、染色業</div>
+                    <div class="option" data-answer="false">色覚異常があると全ての業務が困難</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>医師、歯科医師、薬剤師、教諭、理髪師、芸術家、建築家、電気工事士などは、色以外の情報がすべて付加されている業務であり、重症色覚異常でも少ない努力で遂行可能とされています。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/色覚/色覚と仕事.png" alt="色覚の異常の程度による業務への支障の目安">
+                        <span class="image-caption">色覚異常の程度別・業務への支障の目安（日本眼科医会）</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== 問題9 ========== -->
+            <div class="question-card hidden" id="question9">
+                <div class="question-number">問題 9</div>
+                <div class="question-text">カラーユニバーサルデザインについて正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">青と黄色の組み合わせや、明るさに差をつけたデザインが有効</div>
+                    <div class="option" data-answer="false">赤と緑の組み合わせが最も見やすい</div>
+                    <div class="option" data-answer="false">色覚異常の人専用のデザインである</div>
+                    <div class="option" data-answer="false">文字の色だけを変えればよい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>カラーユニバーサルデザインは、青と黄色の組み合わせ、明るさや鮮やかさに差をつけること、白や黒で縁取りをつけること、形を変えることなどが有効です。色覚正常者にも見やすく、高齢者にも優しいデザインです。
+                    <div class="design-example design-good">
+                        <div class="design-label">✅ 良い例：青と黄色の組み合わせ</div>
+                        <div class="design-sample">
+                            <div class="design-box" style="background: #0000FF;">情報A</div>
+                            <div class="design-box" style="background: #FFD700; color: #333;">情報B</div>
+                        </div>
+                    </div>
+                    <div class="design-example design-bad">
+                        <div class="design-label">❌ 悪い例：赤と緑の組み合わせ</div>
+                        <div class="design-sample">
+                            <div class="design-box" style="background: #FF0000;">情報A</div>
+                            <div class="design-box" style="background: #008000;">情報B</div>
+                        </div>
+                    </div>
+                    <div class="staff-point">
+                        <strong>患者様への説明ポイント：</strong>院内の掲示物や案内表示も、赤と緑の組み合わせを避け、青と黄色や明暗の差をつけると、色覚異常の患者様にも見やすくなります。
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/色覚/見分けにくい色.png" alt="色覚異常の人が混同しやすい色の一覧">
+                        <span class="image-caption">色覚異常の人が混同しやすい色の組み合わせ（日本眼科医会）</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'color_vision';
+        const TOTAL_QUESTIONS = 9;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">
+            🎲 別のクイズへ
+            <span class="btn-sub">ランダム選択</span>
+          </button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">
+            🔄 もう一度
+            <span class="btn-sub">同じクイズ</span>
+          </button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 学習記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

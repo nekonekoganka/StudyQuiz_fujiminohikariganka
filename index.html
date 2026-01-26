@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="学習クイズ">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/app/icon-180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="images/app/icon-192.png">
     <title>ひかり眼科 学習クイズ</title>
     <style>
         * {
@@ -41,14 +48,9 @@
         }
 
         .logo-icon {
-            font-size: 56px;
+            width: 168px;
+            height: auto;
             margin-bottom: 12px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
         }
 
         h1 {
@@ -66,10 +68,8 @@
             line-height: 1.5;
         }
 
-        .subtitle-decoration {
-            color: #9fa8da;
-            font-size: 14px;
-            letter-spacing: 3px;
+        .header-content {
+            text-align: center;
         }
 
         .section-title {
@@ -202,11 +202,40 @@
             color: #2e7d32;
         }
 
+        .quiz-count {
+            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
         .arrow {
             font-size: 22px;
             color: #c5cae9;
             margin-left: 12px;
             flex-shrink: 0;
+        }
+
+        /* 進捗状態による背景色 */
+        .quiz-card.tried {
+            background: linear-gradient(135deg, #fffde7 0%, #fff9c4 100%);
+            border-color: #fff59d;
+        }
+
+        .quiz-card.perfect {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-color: #f48fb1;
+        }
+
+        /* 進捗バッジ */
+        .progress-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 20px;
+            z-index: 1;
         }
 
         .footer {
@@ -250,6 +279,62 @@
             transform: scale(0.95);
         }
 
+        .random-quiz-button {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .random-quiz-button:active {
+            transform: scale(0.95);
+        }
+
+        .help-link {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #5c6bc0, #3949ab);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .help-link:active {
+            transform: scale(0.95);
+        }
+
+        .settings-link {
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 10px;
+            background: linear-gradient(135deg, #78909c, #546e7a);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .settings-link:active {
+            transform: scale(0.95);
+        }
+
         /* タブレット・PC向け */
         @media (min-width: 768px) {
             body {
@@ -260,8 +345,21 @@
                 padding: 40px;
             }
 
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: left;
+                gap: 30px;
+            }
+
             .logo-icon {
-                font-size: 60px;
+                width: 210px;
+                flex-shrink: 0;
+            }
+
+            .header-content {
+                text-align: left;
             }
 
             h1 {
@@ -335,154 +433,772 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(38, 166, 154, 0.4);
             }
+
+            .random-quiz-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(238, 90, 36, 0.4);
+            }
+
+            .help-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(92, 107, 192, 0.4);
+            }
+
+            .settings-link:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(120, 144, 156, 0.4);
+            }
+        }
+
+        /* ダークモード */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+
+            .container {
+                background: #1e1e2e;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            }
+
+            h1 {
+                color: #e0e0e0;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+
+            .subtitle {
+                color: #b0b0b0;
+            }
+
+            .quiz-card {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+            }
+
+            .quiz-card:hover {
+                border-color: #5a5a6e;
+            }
+
+            .quiz-card.tried {
+                background: linear-gradient(135deg, #3d3520 0%, #4a4025 100%);
+                border-color: #6d6030;
+            }
+
+            .quiz-card.perfect {
+                background: linear-gradient(135deg, #3d2035 0%, #4a2540 100%);
+                border-color: #6d3050;
+            }
+
+            .quiz-title {
+                color: #e0e0e0;
+            }
+
+            .quiz-description {
+                color: #a0a0b0;
+            }
+
+            .tag-staff {
+                background: #1b2a3d;
+                color: #7ab3e0;
+            }
+
+            .quiz-count {
+                background: #2d1f3d;
+                color: #ce93d8;
+            }
+
+            .arrow {
+                color: #5a5a6e;
+            }
+
+            .footer {
+                border-top-color: #3a3a4e;
+            }
+
+            .footer-text {
+                color: #707080;
+            }
+
+            .footer-name {
+                color: #a0a0b0;
+            }
+
+            .mypage-link {
+                background: linear-gradient(135deg, #26a69a, #00897b);
+                color: white;
+            }
+
+            .random-quiz-button {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                color: white;
+            }
+
+            .help-link {
+                background: linear-gradient(135deg, #5c6bc0, #3949ab);
+                color: white;
+            }
+
+            .settings-link {
+                background: linear-gradient(135deg, #78909c, #546e7a);
+                color: white;
+            }
+
+            .section-title {
+                color: #e0e0e0;
+                border-bottom-color: #3a3a4e;
+            }
+        }
+
+        /* 大きい文字モード */
+        body.large-font .quiz-title {
+            font-size: 18px;
+        }
+
+        body.large-font .quiz-description {
+            font-size: 14px;
+        }
+
+        body.large-font .quiz-tag {
+            font-size: 12px;
+        }
+
+        body.large-font .subtitle {
+            font-size: 15px;
+        }
+
+        body.large-font .mypage-link,
+        body.large-font .random-quiz-button,
+        body.large-font .help-link,
+        body.large-font .settings-link {
+            font-size: 14px;
+        }
+
+        @media (min-width: 768px) {
+            body.large-font .quiz-title {
+                font-size: 20px;
+            }
+
+            body.large-font .quiz-description {
+                font-size: 15px;
+            }
+        }
+
+        /* 小さめ文字モード */
+        body.small-font .quiz-title {
+            font-size: 14px;
+        }
+
+        body.small-font .quiz-description {
+            font-size: 11px;
+        }
+
+        body.small-font .quiz-tag {
+            font-size: 10px;
+        }
+
+        /* バックアップリマインダーバナー */
+        .backup-reminder {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #ffb74d;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .backup-reminder.show {
+            display: block;
+        }
+
+        .backup-reminder-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .backup-reminder-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e65100;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .backup-reminder-icon {
+            font-size: 24px;
+        }
+
+        .backup-reminder-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .backup-reminder-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .backup-reminder-btn.primary {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .backup-reminder-btn.secondary {
+            background: rgba(255, 152, 0, 0.2);
+            color: #e65100;
+        }
+
+        .backup-reminder-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* フッターのバックアップセクション */
+        .backup-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #c5cae9;
+        }
+
+        .backup-section-title {
+            font-size: 13px;
+            color: #5c6bc0;
+            margin-bottom: 12px;
+        }
+
+        .backup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .backup-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 2px solid #e8eaf6;
+            background: white;
+            color: #5c6bc0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .backup-btn:active {
+            transform: scale(0.95);
+        }
+
+        .backup-btn.download {
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .backup-btn.restore {
+            border-color: #2196f3;
+            color: #1565c0;
+        }
+
+        .last-backup-info {
+            font-size: 12px;
+            color: #9fa8da;
+            margin-top: 10px;
+        }
+
+        .last-backup-date {
+            color: #5c6bc0;
+            font-weight: 500;
+        }
+
+        /* 復元用の隠しinput */
+        #restoreInput {
+            display: none;
+        }
+
+        /* ダークモード対応 */
+        @media (prefers-color-scheme: dark) {
+            .backup-reminder {
+                background: linear-gradient(135deg, #3d2f20, #4a3828);
+                border-color: #8d6e3a;
+            }
+
+            .backup-reminder-text {
+                color: #ffb74d;
+            }
+
+            .backup-reminder-btn.secondary {
+                background: rgba(255, 152, 0, 0.15);
+                color: #ffb74d;
+            }
+
+            .backup-section {
+                border-top-color: #3a3a4e;
+            }
+
+            .backup-section-title {
+                color: #a0a0b0;
+            }
+
+            .backup-btn {
+                background: #2a2a3e;
+                border-color: #3a3a4e;
+                color: #a0a0b0;
+            }
+
+            .backup-btn.download {
+                border-color: #4caf50;
+                color: #81c784;
+            }
+
+            .backup-btn.restore {
+                border-color: #2196f3;
+                color: #64b5f6;
+            }
+
+            .last-backup-info {
+                color: #707080;
+            }
+
+            .last-backup-date {
+                color: #a0a0b0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo-icon">👁️✨</div>
-            <h1>ひかり眼科 学習クイズ</h1>
-            <div class="subtitle">📚 知識を深めて、より良い医療を提供しましょう 📚</div>
-            <div class="subtitle-decoration">✦ ✦ ✦</div>
-            <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+            <img src="images/app/ふじみ野ぴかぴかり眼科_ロゴ.png" alt="ふじみ野ひかり眼科ロゴ" class="logo-icon">
+            <div class="header-content">
+                <h1>ひかり眼科 学習クイズ</h1>
+                <div class="subtitle">📚 知識を深めて、より良い医療を 📚</div>
+                <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+                <button onclick="startRandomQuiz()" class="random-quiz-button">🎲 今日の3問</button>
+                <a href="help.html" class="help-link">❓ 使い方</a>
+                <a href="settings.html" class="settings-link">⚙️ 設定</a>
+            </div>
         </div>
 
+        <!-- バックアップリマインダーバナー -->
+        <div id="backupReminder" class="backup-reminder">
+            <div class="backup-reminder-content">
+                <div class="backup-reminder-text">
+                    <span class="backup-reminder-icon">⚠️</span>
+                    <div>
+                        <div id="reminderText" style="font-weight: bold;">データ保護について</div>
+                        <div style="font-size: 12px; margin-top: 4px;">学習データはブラウザ内に保存されています。「履歴とWebサイトデータを消去」で消えてしまいます。</div>
+                    </div>
+                </div>
+                <div class="backup-reminder-buttons">
+                    <button class="backup-reminder-btn primary" onclick="downloadBackup()">今すぐバックアップ</button>
+                    <button class="backup-reminder-btn secondary" onclick="dismissReminder()">後で</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- メガネ・コンタクト系 -->
         <div class="section-title">
-            <span class="section-icon">👨‍⚕️</span>
-            スタッフ向けクイズ
+            <span class="section-icon">👓</span>
+            メガネ・コンタクト
         </div>
         <div class="quiz-list">
-            <!-- メガネ・コンタクト系 -->
-            <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan">
+            <a href="quizzes/コンタクト処方の基本クイズ.html" class="quiz-card cyan" data-quiz-id="contact-basic">
                 <div class="quiz-icon">💧</div>
                 <div class="quiz-content">
                     <div class="quiz-title">CL処方クイズ</div>
                     <div class="quiz-description">コンタクトレンズの処方に関する基本知識をテストします</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全29問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/大人の遠く用メガネ合わせクイズ.html" class="quiz-card amber">
+            <a href="quizzes/CL合併症_クイズ.html" class="quiz-card cyan" data-quiz-id="cl_complication">
+                <div class="quiz-icon">👁️‍🗨️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">CL合併症クイズ</div>
+                    <div class="quiz-description">コンタクトレンズの眼合併症と対策について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/CLの種類と使い方_クイズ.html" class="quiz-card cyan" data-quiz-id="cl_makeup">
+                <div class="quiz-icon">👁️‍🗨️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">CLの種類と使い方クイズ</div>
+                    <div class="quiz-description">コンタクトレンズとお化粧の順番やケア方法を学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/大人の遠く用メガネ合わせクイズ.html" class="quiz-card amber" data-quiz-id="enyo-megane">
                 <div class="quiz-icon">🤓</div>
                 <div class="quiz-content">
                     <div class="quiz-title">遠用メガネのクイズ</div>
                     <div class="quiz-description">大人の遠用メガネ処方の知識をテストします</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全28問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/老眼鏡合わせ_クイズ.html" class="quiz-card amber">
+            <a href="quizzes/老眼鏡合わせ_クイズ.html" class="quiz-card amber" data-quiz-id="megane-awase">
                 <div class="quiz-icon">👓</div>
                 <div class="quiz-content">
                     <div class="quiz-title">老眼鏡合わせクイズ</div>
                     <div class="quiz-description">老眼鏡合わせに関する基本知識をテストします</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全27問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
+        </div>
 
-            <!-- 疾患系 -->
-            <a href="quizzes/近視についてのクイズ.html" class="quiz-card blue">
+        <!-- 疾患系 -->
+        <div class="section-title">
+            <span class="section-icon">🏥</span>
+            眼の疾患
+        </div>
+        <div class="quiz-list">
+            <a href="quizzes/近視についてのクイズ.html" class="quiz-card blue" data-quiz-id="kinshi">
                 <div class="quiz-icon">👁️‍🗨️</div>
                 <div class="quiz-content">
                     <div class="quiz-title">近視クイズ</div>
                     <div class="quiz-description">近視の基礎知識と患者様への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/花粉症についてのクイズ.html" class="quiz-card teal">
+            <a href="quizzes/花粉症についてのクイズ.html" class="quiz-card teal" data-quiz-id="kafunsho">
                 <div class="quiz-icon">🤧</div>
                 <div class="quiz-content">
                     <div class="quiz-title">花粉症クイズ</div>
                     <div class="quiz-description">花粉症の症状や対処法についての知識を確認できます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全16問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/白内障についてクイズ.html" class="quiz-card cyan">
+            <a href="quizzes/白内障についてクイズ.html" class="quiz-card cyan" data-quiz-id="hakunaisho">
                 <div class="quiz-icon">📖</div>
                 <div class="quiz-content">
                     <div class="quiz-title">白内障クイズ</div>
                     <div class="quiz-description">白内障の基礎知識と患者様への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/緑内障についてクイズ.html" class="quiz-card green">
+            <a href="quizzes/緑内障についてクイズ.html" class="quiz-card green" data-quiz-id="ryokunaisho">
                 <div class="quiz-icon">👁️</div>
                 <div class="quiz-content">
                     <div class="quiz-title">緑内障クイズ</div>
                     <div class="quiz-description">緑内障について正しく理解するためのクイズです</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全17問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/弱視クイズ.html" class="quiz-card purple">
+            <a href="quizzes/弱視クイズ.html" class="quiz-card purple" data-quiz-id="jakushi">
                 <div class="quiz-icon">👀</div>
                 <div class="quiz-content">
                     <div class="quiz-title">弱視クイズ</div>
                     <div class="quiz-description">弱視の基礎知識と保護者への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全15問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/斜視クイズ.html" class="quiz-card purple">
+            <a href="quizzes/斜視クイズ.html" class="quiz-card purple" data-quiz-id="shashi">
                 <div class="quiz-icon">🧐</div>
                 <div class="quiz-content">
                     <div class="quiz-title">斜視クイズ</div>
                     <div class="quiz-description">斜視の基礎知識と保護者への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <!-- ルール・検診系 -->
-            <a href="quizzes/自治体の緑内障検診の制度のクイズ.html" class="quiz-card indigo">
-                <div class="quiz-icon">🏥</div>
+            <a href="quizzes/小児近視対策_クイズ.html" class="quiz-card purple" data-quiz-id="pediatric_myopia">
+                <div class="quiz-icon">👁️</div>
                 <div class="quiz-content">
-                    <div class="quiz-title">検診の制度クイズ</div>
-                    <div class="quiz-description">自治体の緑内障検診制度についての知識を確認できます</div>
+                    <div class="quiz-title">小児近視対策クイズ</div>
+                    <div class="quiz-description">子どもの近視予防と保護者への説明ポイントを学べます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
             </a>
 
-            <a href="quizzes/院内ルール確認クイズ.html" class="quiz-card blue">
-                <div class="quiz-icon">🏥</div>
+            <a href="quizzes/糖尿病網膜症_クイズ.html" class="quiz-card indigo" data-quiz-id="diabetic_retinopathy">
+                <div class="quiz-icon">🩺</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">糖尿病網膜症クイズ</div>
+                    <div class="quiz-description">糖尿病網膜症の基礎知識と患者様への説明ポイントを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/流涙症_クイズ.html" class="quiz-card cyan" data-quiz-id="epiphora">
+                <div class="quiz-icon">💧</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">流涙症クイズ</div>
+                    <div class="quiz-description">流涙症の原因や涙道の仕組みについて学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全8問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/黄斑前膜_クイズ.html" class="quiz-card indigo" data-quiz-id="macular_membrane">
+                <div class="quiz-icon">👁️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">黄斑前膜クイズ</div>
+                    <div class="quiz-description">黄斑前膜の症状や治療について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全8問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/色覚異常_クイズ.html" class="quiz-card purple" data-quiz-id="color_vision">
+                <div class="quiz-icon">🎨</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">色覚異常クイズ</div>
+                    <div class="quiz-description">色覚異常の頻度や遺伝、カラーユニバーサルデザインを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全9問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/アトピー性皮膚炎と目_クイズ.html" class="quiz-card cyan" data-quiz-id="atopy-eye">
+                <div class="quiz-icon">👁️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">アトピー性皮膚炎と目クイズ</div>
+                    <div class="quiz-description">アトピー性皮膚炎に伴う眼合併症について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/ぶどう膜炎_クイズ.html" class="quiz-card indigo" data-quiz-id="uveitis">
+                <div class="quiz-icon">🍇</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">ぶどう膜炎クイズ</div>
+                    <div class="quiz-description">ぶどう膜炎の基礎知識と患者対応について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全10問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/飛蚊症_クイズ.html" class="quiz-card cyan" data-quiz-id="floaters">
+                <div class="quiz-icon">🦟</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">飛蚊症クイズ</div>
+                    <div class="quiz-description">飛蚊症の基礎知識と患者対応について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全9問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+
+        <!-- 眼科検査 -->
+        <div class="section-title">
+            <span class="section-icon">🔬</span>
+            眼科検査
+        </div>
+        <div class="quiz-list">
+            <a href="quizzes/OCT検査_クイズ.html" class="quiz-card teal" data-quiz-id="oct">
+                <div class="quiz-icon">👁️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">OCT検査クイズ</div>
+                    <div class="quiz-description">OCT検査の基本とコツ、患者様への説明ポイントを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全7問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/アイモ_視野検査_クイズ.html" class="quiz-card green" data-quiz-id="imo_shinya">
+                <div class="quiz-icon">👀</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">アイモ（視野検査）クイズ</div>
+                    <div class="quiz-description">視野計アイモの基本と特徴、検査配列について学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全8問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/視力検査のコツ_クイズ.html" class="quiz-card amber" data-quiz-id="siryoku">
+                <div class="quiz-icon">👁️</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">視力検査のコツクイズ</div>
+                    <div class="quiz-description">視力検査の基本とコツ、患者様への対応ポイントを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全8問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/ノンコン眼圧検査_クイズ.html" class="quiz-card cyan" data-quiz-id="noncon-iatsu">
+                <div class="quiz-icon">💨</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">ノンコン眼圧検査クイズ</div>
+                    <div class="quiz-description">眼圧測定のコツと安全な検査のポイントを学べます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全11問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/眼科問診_クイズ.html" class="quiz-card blue" data-quiz-id="monshin">
+                <div class="quiz-icon">📋</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">眼科問診クイズ</div>
+                    <div class="quiz-description">眼科における問診のコツと注意点を学ぶクイズ</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全6問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+
+        <!-- ルール・検診系 -->
+        <div class="section-title">
+            <span class="section-icon">📋</span>
+            院内ルール・検診
+        </div>
+        <div class="quiz-list">
+            <a href="quizzes/院内ルール確認クイズ.html" class="quiz-card blue" data-quiz-id="innai-rule">
+                <div class="quiz-icon">🏢</div>
                 <div class="quiz-content">
                     <div class="quiz-title">院内ルール確認クイズ</div>
                     <div class="quiz-description">休診日、予約ルール、受付時間など、院内の基本ルールを確認できます</div>
                     <div class="quiz-meta">
                         <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全15問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/自治体の緑内障検診の制度のクイズ.html" class="quiz-card indigo" data-quiz-id="ryokunaisho-kenshin">
+                <div class="quiz-icon">📝</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">検診の制度クイズ</div>
+                    <div class="quiz-description">自治体の緑内障検診制度についての知識を確認できます</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全14問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+
+        <!-- レセプト・保険点数 -->
+        <div class="section-title">
+            <span class="section-icon">💰</span>
+            レセプト・保険点数
+        </div>
+        <div class="quiz-list">
+            <a href="quizzes/眼科保険診療_クイズ.html" class="quiz-card blue" data-quiz-id="hoken-shinryo">
+                <div class="quiz-icon">🏥</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">眼科保険診療クイズ</div>
+                    <div class="quiz-description">眼科外来で必要な保険診療のルールを学ぶクイズ</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全8問</span>
+                    </div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="quizzes/眼科保険点数_クイズ.html" class="quiz-card blue" data-quiz-id="hoken-tensuu">
+                <div class="quiz-icon">💰</div>
+                <div class="quiz-content">
+                    <div class="quiz-title">眼科保険点数クイズ</div>
+                    <div class="quiz-description">眼科で頻出の保険点数を円換算で学ぶクイズ（1点=10円）</div>
+                    <div class="quiz-meta">
+                        <span class="quiz-tag tag-staff">スタッフ向け</span>
+                        <span class="quiz-count">全16問</span>
                     </div>
                 </div>
                 <span class="arrow">→</span>
@@ -494,7 +1210,531 @@
             <div class="footer-text">目の健康をサポートします</div>
             <div class="footer-name">ふじみ野ひかり眼科</div>
             <a href="mypage.html" class="mypage-link">📊 学習記録</a>
+
+            <!-- バックアップセクション -->
+            <div class="backup-section">
+                <div class="backup-section-title">💾 学習データの保護</div>
+                <div class="backup-buttons">
+                    <button class="backup-btn download" onclick="downloadBackup()">
+                        <span>📥</span> バックアップ
+                    </button>
+                    <button class="backup-btn restore" onclick="startRestore()">
+                        <span>📂</span> ファイルを選んで復元
+                    </button>
+                    <input type="file" id="restoreInput" accept=".json" onchange="handleRestoreFile(event)">
+                </div>
+                <div class="last-backup-info">
+                    最終バックアップ: <span id="lastBackupDate" class="last-backup-date">なし</span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- 復元プレビューモーダル -->
+    <div id="restorePreviewModal" class="restore-modal" style="display: none;">
+        <div class="restore-modal-content">
+            <div id="restorePreviewContent"></div>
+        </div>
+    </div>
+
+    <style>
+        .restore-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .restore-modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .restore-preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .restore-preview-title.success { color: #2e7d32; }
+        .restore-preview-title.error { color: #c62828; }
+        .restore-preview-info {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .restore-preview-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .restore-preview-row:last-child { border-bottom: none; }
+        .restore-preview-label { color: #666; }
+        .restore-preview-value { font-weight: bold; color: #333; }
+        .restore-warning {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .restore-error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .restore-modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .restore-modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .restore-modal-btn.primary {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        .restore-modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .restore-modal-btn.close {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        /* 復元モーダル ダークモード */
+        @media (prefers-color-scheme: dark) {
+            .restore-modal-content {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+            .restore-preview-title.success { color: #81c784; }
+            .restore-preview-title.error { color: #ef5350; }
+            .restore-preview-info {
+                background: #2a2a3e;
+            }
+            .restore-preview-row {
+                border-bottom-color: #3a3a4e;
+            }
+            .restore-preview-label { color: #a0a0b0; }
+            .restore-preview-value { color: #e0e0e0; }
+            .restore-warning {
+                background: #3d2f20;
+                color: #ffb74d;
+            }
+            .restore-error-message {
+                background: #3d1f1f;
+                color: #ef5350;
+            }
+            .restore-modal-btn.secondary,
+            .restore-modal-btn.close {
+                background: #3a3a4e;
+                color: #e0e0e0;
+            }
+        }
+    </style>
+
+    <script src="quizzes/quiz-config.js"></script>
+    <script>
+        // ランダムクイズ用のクイズリスト（院内ルール・検診制度クイズを除く）
+        const RANDOM_QUIZ_LIST = [
+            { name: 'CL処方クイズ', file: 'コンタクト処方の基本クイズ.html', icon: '💧' },
+            { name: '遠用メガネのクイズ', file: '大人の遠く用メガネ合わせクイズ.html', icon: '🤓' },
+            { name: '老眼鏡合わせクイズ', file: '老眼鏡合わせ_クイズ.html', icon: '👓' },
+            { name: '近視クイズ', file: '近視についてのクイズ.html', icon: '👁️‍🗨️' },
+            { name: '花粉症クイズ', file: '花粉症についてのクイズ.html', icon: '🤧' },
+            { name: '白内障クイズ', file: '白内障についてクイズ.html', icon: '📖' },
+            { name: '緑内障クイズ', file: '緑内障についてクイズ.html', icon: '👁️' },
+            { name: '弱視クイズ', file: '弱視クイズ.html', icon: '👀' },
+            { name: '斜視クイズ', file: '斜視クイズ.html', icon: '🧐' },
+            { name: '小児近視対策クイズ', file: '小児近視対策_クイズ.html', icon: '👁️' },
+            { name: 'CL合併症クイズ', file: 'CL合併症_クイズ.html', icon: '👁️‍🗨️' },
+            { name: 'CLの種類と使い方クイズ', file: 'CLの種類と使い方_クイズ.html', icon: '👁️‍🗨️' },
+            { name: '糖尿病網膜症クイズ', file: '糖尿病網膜症_クイズ.html', icon: '🩺' },
+            { name: '流涙症クイズ', file: '流涙症_クイズ.html', icon: '💧' },
+            { name: '黄斑前膜クイズ', file: '黄斑前膜_クイズ.html', icon: '👁️' },
+            { name: 'アトピーと目クイズ', file: 'アトピー性皮膚炎と目_クイズ.html', icon: '👁️' },
+            { name: 'ぶどう膜炎クイズ', file: 'ぶどう膜炎_クイズ.html', icon: '👁️' },
+            { name: '飛蚊症クイズ', file: '飛蚊症_クイズ.html', icon: '👁️' },
+            { name: '色覚異常クイズ', file: '色覚異常_クイズ.html', icon: '🎨' },
+            { name: 'OCT検査クイズ', file: 'OCT検査_クイズ.html', icon: '👁️' },
+            { name: 'アイモ（視野検査）クイズ', file: 'アイモ_視野検査_クイズ.html', icon: '👀' },
+            { name: '視力検査のコツクイズ', file: '視力検査のコツ_クイズ.html', icon: '👁️' },
+            { name: 'ノンコン眼圧検査クイズ', file: 'ノンコン眼圧検査_クイズ.html', icon: '💨' },
+            { name: '眼科問診クイズ', file: '眼科問診_クイズ.html', icon: '📋' },
+            { name: '眼科保険診療クイズ', file: '眼科保険診療_クイズ.html', icon: '🏥' },
+            { name: '眼科保険点数クイズ', file: '眼科保険点数_クイズ.html', icon: '💰' }
+        ];
+
+        function startRandomQuiz() {
+            const data = getQuizData();
+            const progress = data.progress || {};
+
+            // 各クイズの重みを計算（未挑戦ジャンル優先）
+            const weighted = [];
+            RANDOM_QUIZ_LIST.forEach(quiz => {
+                // QUIZ_LISTから該当するクイズを探して、idとtotalQuestionsを取得
+                const quizInfo = QUIZ_LIST.find(q => q.file === quiz.file);
+                if (!quizInfo) {
+                    // 情報が見つからない場合は通常の重みで追加
+                    weighted.push(quiz.file);
+                    return;
+                }
+
+                const quizProgress = progress[quizInfo.id] || {};
+                const totalQ = quizInfo.totalQuestions;
+
+                // 未挑戦・間違い・正解の数を計算
+                const results = quizProgress.questionResults || {};
+                let incorrectCount = 0;
+                let correctCount = 0;
+                Object.values(results).forEach(isCorrect => {
+                    if (isCorrect) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                });
+                const unansweredCount = totalQ - incorrectCount - correctCount;
+                const isPerfect = quizProgress.isPerfect || false;
+
+                // 完全未挑戦かどうか（一度も回答していないジャンル）
+                const isCompletelyUntried = Object.keys(results).length === 0;
+
+                // 重み計算: (未挑戦 × 20) + (間違い × 5) + (完全未挑戦なら +50) + (未マスターなら +20)
+                // 未挑戦のジャンルを大幅に優先
+                let weight = (unansweredCount * 20) + (incorrectCount * 5) + (isCompletelyUntried ? 50 : 0) + (isPerfect ? 0 : 20);
+
+                // 最低でも重み1は保証（完全にゼロにはしない）
+                weight = Math.max(weight, 1);
+
+                // 重みの分だけプールに追加
+                for (let i = 0; i < weight; i++) {
+                    weighted.push(quiz.file);
+                }
+            });
+
+            // ランダムに1つ選ぶ
+            const randomIndex = Math.floor(Math.random() * weighted.length);
+            const selectedFile = weighted[randomIndex];
+
+            const dailyCount = getDailyQuestionCount();
+            window.location.href = `quizzes/${selectedFile}?mode=daily${dailyCount}`;
+        }
+
+        // 今日の○問ボタンのテキストを更新
+        function updateDailyButtonText() {
+            const dailyCount = getDailyQuestionCount();
+            const btn = document.querySelector('.random-quiz-button');
+            if (btn) {
+                btn.textContent = `🎲 今日の${dailyCount}問`;
+            }
+        }
+
+        // 進捗表示を更新
+        function updateProgressDisplay() {
+            const data = getQuizData();
+            const progress = data.progress || {};
+
+            document.querySelectorAll('.quiz-card[data-quiz-id]').forEach(card => {
+                const quizId = card.dataset.quizId;
+                const quizProgress = progress[quizId];
+
+                if (quizProgress) {
+                    // 進捗バッジを追加
+                    let badge = card.querySelector('.progress-badge');
+                    if (!badge) {
+                        badge = document.createElement('span');
+                        badge.className = 'progress-badge';
+                        card.appendChild(badge);
+                    }
+
+                    if (quizProgress.isPerfect) {
+                        // 満点達成
+                        card.classList.add('perfect');
+                        card.classList.remove('tried');
+                        badge.textContent = '🌸';
+                        badge.title = '満点達成！';
+                    } else {
+                        // 挑戦中
+                        card.classList.add('tried');
+                        card.classList.remove('perfect');
+                        badge.textContent = '🔥';
+                        badge.title = '挑戦中';
+                    }
+                }
+            });
+        }
+
+        // バックアップ関連の定数（BACKUP_STORAGE_KEYはquiz-config.jsで定義済み）
+        const REMINDER_DISMISS_KEY = 'hikari_quiz_reminder_dismissed';
+        const BACKUP_REMINDER_DAYS = 7;
+
+        // 最終バックアップ日を取得
+        function getLastBackupDate() {
+            const dateStr = localStorage.getItem(BACKUP_STORAGE_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        // setLastBackupDate()はquiz-config.jsで定義済み
+
+        // リマインダーを閉じた日を取得
+        function getReminderDismissDate() {
+            const dateStr = localStorage.getItem(REMINDER_DISMISS_KEY);
+            return dateStr ? new Date(dateStr) : null;
+        }
+
+        // 日付をフォーマット
+        function formatDate(date) {
+            if (!date) return 'なし';
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}/${month}/${day}`;
+        }
+
+        // バックアップリマインダーの表示判定
+        function shouldShowReminder() {
+            const lastBackup = getLastBackupDate();
+            const dismissDate = getReminderDismissDate();
+            const now = new Date();
+
+            // 一度もバックアップしていない場合
+            if (!lastBackup) {
+                // データがある場合のみ表示
+                const data = getQuizData();
+                if (data.totalAnswered > 0) {
+                    return { show: true };
+                }
+                return { show: false };
+            }
+
+            // 最後のバックアップから何日経過したか
+            const daysSinceBackup = Math.floor((now - lastBackup) / (1000 * 60 * 60 * 24));
+
+            if (daysSinceBackup >= BACKUP_REMINDER_DAYS) {
+                // 今日すでに「後で」を押していたら表示しない
+                if (dismissDate) {
+                    const daysSinceDismiss = Math.floor((now - dismissDate) / (1000 * 60 * 60 * 24));
+                    if (daysSinceDismiss < 1) {
+                        return { show: false };
+                    }
+                }
+                return { show: true };
+            }
+
+            return { show: false };
+        }
+
+        // リマインダーバナーを表示
+        function updateReminderBanner() {
+            const reminder = document.getElementById('backupReminder');
+            const result = shouldShowReminder();
+
+            if (result.show) {
+                reminder.classList.add('show');
+            } else {
+                reminder.classList.remove('show');
+            }
+        }
+
+        // リマインダーを閉じる
+        function dismissReminder() {
+            localStorage.setItem(REMINDER_DISMISS_KEY, new Date().toISOString());
+            document.getElementById('backupReminder').classList.remove('show');
+        }
+
+        // 最終バックアップ日の表示を更新
+        function updateLastBackupDisplay() {
+            const lastBackupDate = document.getElementById('lastBackupDate');
+            const date = getLastBackupDate();
+            lastBackupDate.textContent = formatDate(date);
+        }
+
+        // バックアップをダウンロード
+        function downloadBackup() {
+            const data = getQuizData();
+            data.backupDate = new Date().toISOString();
+            data.appVersion = '1.0';
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = generateBackupFileName();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            // 最終バックアップ日を更新
+            setLastBackupDate();
+            updateLastBackupDisplay();
+
+            // リマインダーを非表示
+            document.getElementById('backupReminder').classList.remove('show');
+
+            alert('✅ バックアップが完了しました！\nダウンロードしたファイルを安全な場所に保管してください。');
+        }
+
+        // 復元開始（確認ダイアログを表示してからファイル選択）
+        async function startRestore() {
+            const proceed = await showRestoreGuideDialog();
+            if (proceed) {
+                document.getElementById('restoreInput').click();
+            }
+        }
+
+        // 復元用の一時データ
+        let pendingRestoreData = null;
+
+        // ファイル選択時の処理
+        function handleRestoreFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    const validation = validateBackupData(data);
+
+                    if (validation.valid) {
+                        pendingRestoreData = data;
+                        showRestorePreview(data);
+                    } else {
+                        showRestoreError(validation.error);
+                    }
+                } catch (error) {
+                    showRestoreError('invalid_format');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // 復元プレビューを表示
+        function showRestorePreview(data) {
+            const info = getBackupPreviewInfo(data);
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            content.innerHTML = `
+                <div class="restore-preview-title success">✅ バックアップファイルを確認</div>
+                <div class="restore-preview-info">
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📅 バックアップ日</span>
+                        <span class="restore-preview-value">${formatBackupDate(info.backupDate)}</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">📝 累計回答数</span>
+                        <span class="restore-preview-value">${info.totalAnswered}回</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🌸 満点クイズ</span>
+                        <span class="restore-preview-value">${info.perfectCount}個</span>
+                    </div>
+                    <div class="restore-preview-row">
+                        <span class="restore-preview-label">🏅 獲得バッジ</span>
+                        <span class="restore-preview-value">${info.badgeCount}個</span>
+                    </div>
+                </div>
+                <div class="restore-warning">⚠️ 現在のデータは上書きされます</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn secondary" onclick="closeRestoreModal()">キャンセル</button>
+                    <button class="restore-modal-btn primary" onclick="executeRestore()">復元する</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // エラー表示
+        function showRestoreError(errorType) {
+            const modal = document.getElementById('restorePreviewModal');
+            const content = document.getElementById('restorePreviewContent');
+
+            let message = '';
+            if (errorType === 'invalid_format') {
+                message = 'このファイルはバックアップファイルではありません。<br><br>「ひかりクイズデータ_」で始まるJSONファイルを選択してください。';
+            } else if (errorType === 'no_quiz_data') {
+                message = '学習データが含まれていません。<br><br>正しいバックアップファイルを選択してください。';
+            }
+
+            content.innerHTML = `
+                <div class="restore-preview-title error">❌ ファイルを読み込めません</div>
+                <div class="restore-error-message">${message}</div>
+                <div class="restore-modal-buttons">
+                    <button class="restore-modal-btn close" onclick="closeRestoreModal()">閉じる</button>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        // 復元実行
+        function executeRestore() {
+            if (!pendingRestoreData) return;
+
+            delete pendingRestoreData.backupDate;
+            delete pendingRestoreData.appVersion;
+            saveQuizData(pendingRestoreData);
+            setLastBackupDate();
+
+            closeRestoreModal();
+            alert('✅ データを復元しました！\nページを再読み込みします。');
+            location.reload();
+        }
+
+        // モーダルを閉じる
+        function closeRestoreModal() {
+            document.getElementById('restorePreviewModal').style.display = 'none';
+            pendingRestoreData = null;
+        }
+
+        // クイズカードの問題数をquiz-config.jsから動的に更新
+        function updateQuizCounts() {
+            document.querySelectorAll('.quiz-card[data-quiz-id]').forEach(card => {
+                const quizId = card.dataset.quizId;
+                const quizInfo = QUIZ_LIST.find(q => q.id === quizId);
+                if (quizInfo) {
+                    const countElement = card.querySelector('.quiz-count');
+                    if (countElement) {
+                        countElement.textContent = `全${quizInfo.totalQuestions}問`;
+                    }
+                }
+            });
+        }
+
+        // ページ読み込み時に実行
+        updateQuizCounts();
+        updateProgressDisplay();
+        updateDailyButtonText();
+        updateLastBackupDisplay();
+        updateReminderBanner();
+    </script>
 </body>
 </html>

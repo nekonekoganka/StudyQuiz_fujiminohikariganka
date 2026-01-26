@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>眼科問診クイズ - スタッフ向け</title>
+    <link rel="stylesheet" href="../css/quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>📋 眼科問診クイズ 📋</h1>
+        <div class="subtitle">眼科スタッフ向け - 情報をうまく引き出す問診術を学ぼう</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">📋 眼科問診クイズ</div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
+
+        <div id="modeSelection" class="mode-selection">
+            <button class="mode-button" onclick="startQuiz('daily')">
+                📋 今日の3問
+            </button>
+            <button class="mode-button" onclick="startQuiz('full')">
+                📚 全問モード（全6問）
+            </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">6問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">6問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
+            <div class="mode-description">
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全6問を順番に出題
+            </div>
+        </div>
+
+        <div id="quizArea" class="hidden">
+            <div class="quiz-status">
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">6</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question1">
+                <div class="question-number">問題 1</div>
+                <div class="question-text">問診が大切な理由として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">患者さんとの世間話を楽しむため</div>
+                    <div class="option" data-answer="false">検査や診察の効率化につながるため</div>
+                    <div class="option" data-answer="false">検査の方向性や注意すべきポイントが把握できるため</div>
+                    <div class="option" data-answer="false">緊急性のあるケースを見抜くため</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>問診の段階で必要な情報を聞き出せれば、検査や診察の効率化につながります。問診から得られた情報で検査の方向性や注意すべきポイントが把握でき、緊急性のあるケースを見抜くことも重要です。世間話になってしまうと本来の目的から外れてしまいます。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>話が逸れていることに気付いたら軌道修正し、流されないように意識しましょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question2">
+                <div class="question-number">問題 2</div>
+                <div class="question-text">緊急度の高い眼科疾患として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">老視（老眼）</div>
+                    <div class="option" data-answer="false">網膜中心動脈閉塞症</div>
+                    <div class="option" data-answer="false">網膜剥離</div>
+                    <div class="option" data-answer="false">急性緑内障発作</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緊急度の高い眼科疾患には、網膜中心動脈閉塞症、網膜剥離、急性緑内障発作、眼内炎、眼外傷などがあります。老視（老眼）は加齢による調節力の低下であり、緊急性はありません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question3">
+                <div class="question-number">問題 3</div>
+                <div class="question-text">緊急性があると考えられる症状として適切<strong>「ではない」</strong>のはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">数年前から徐々に見えにくくなった</div>
+                    <div class="option" data-answer="false">急に見えなくなった</div>
+                    <div class="option" data-answer="false">激しい目の痛みがある</div>
+                    <div class="option" data-answer="false">目にケガをした</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>緊急性があると考えられる症状は、急激な視力低下（「急に見えなくなった」）、激しい目の痛み、眼外傷などです。「数年前から徐々に」という経過は緊急性が低いと考えられます。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question4">
+                <div class="question-number">問題 4</div>
+                <div class="question-text">初診で主訴が多い場合の対応として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">最も困っている症状はどれか確認し、優先順位を明確にする</div>
+                    <div class="option" data-answer="false">すべての症状を同じ重要度で扱う</div>
+                    <div class="option" data-answer="false">問診票に書かれた順番通りに対応する</div>
+                    <div class="option" data-answer="false">主訴が多い場合は問診を省略する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>主訴が多い場合は「最も困っている症状はどれか？」と確認し、受診した理由や優先順位を明確にしましょう。「特に困っているわけではないが当てはまる症状には丸をつける」という患者さんも少なくありません。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question5">
+                <div class="question-number">問題 5</div>
+                <div class="question-text">小児の問診における注意点として最も適切なのはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">本人への問診に加え、必ず保護者からも普段の様子を聞き出す</div>
+                    <div class="option" data-answer="false">小児の場合は本人への問診は不要</div>
+                    <div class="option" data-answer="false">保護者への問診だけで十分</div>
+                    <div class="option" data-answer="false">小児は問診を省略してよい</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>小児の問診は基本的に保護者に対して行うことが多いですが、受け答えが可能な年齢であれば本人に対しても行います。その場合は必ず保護者からも普段の様子を聞き出し、本人の訴えと照らし合わせましょう。
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question6">
+                <div class="question-number">問題 6</div>
+                <div class="question-text">心因性視力障害が疑われる小児の問診で配慮すべきことは何ですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">本人と保護者への問診を同じ場所で行わない</div>
+                    <div class="option" data-answer="false">本人への問診は行わない</div>
+                    <div class="option" data-answer="false">保護者の前で本人に詳しく質問する</div>
+                    <div class="option" data-answer="false">問診は省略して検査のみ行う</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>心因性視力障害が疑われる場合は、本人と保護者への問診を同じ場所で行わないよう配慮してください。本人が保護者の前では本当のことを話しにくい場合があります。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>心因性視力障害は心理的な要因が関係するため、問診環境への配慮が重要です。
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
+                <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-config.js"></script>
+    <script>
+        // クイズ固有の設定
+        const QUIZ_ID = 'monshin';
+        const TOTAL_QUESTIONS = 6;
+    </script>
+    <script src="quiz-core.js"></script>
+
+    <div id="finalResult" class="final-score-card hidden">
+      <div id="resultDetail" class="result-detail"></div>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

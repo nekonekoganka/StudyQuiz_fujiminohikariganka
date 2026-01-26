@@ -4,517 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>斜視クイズ - 眼科スタッフ向け</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Noto Sans JP', Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #c797d8 0%, #a17bbf 100%);
-            min-height: 100vh;
-        }
-        .quiz-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .quiz-container {
-                padding: 20px;
-            }
-        }
-        
-        h1 {
-            text-align: center;
-            color: #4a148c;
-            font-size: 28px;
-            margin-bottom: 4px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 24px;
-            }
-        }
-        
-        .subtitle {
-            text-align: center;
-            color: #6a1b9a;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .subtitle {
-                font-size: 16px;
-            }
-        }
-        
-        .mode-selection {
-            text-align: center;
-            margin: 40px 0;
-        }
-        
-        .mode-button {
-            display: block;
-            width: 80%;
-            max-width: 400px;
-            margin: 15px auto;
-            background: linear-gradient(135deg, #ab47bc, #8e24aa);
-            color: white;
-            border: none;
-            padding: 20px 40px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(171, 71, 188, 0.3);
-        }
-        
-        .mode-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(171, 71, 188, 0.4);
-        }
-        
-        @media (max-width: 768px) {
-            .mode-button {
-                width: 90%;
-                padding: 15px 30px;
-                font-size: 16px;
-                margin: 12px auto;
-            }
-        }
-        
-        .mode-description {
-            font-size: 14px;
-            color: #4a148c;
-            margin-top: 20px;
-            line-height: 1.5;
-        }
-
-        .top-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .top-link a {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px 24px;
-            border-radius: 25px;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .top-link a:active {
-            transform: scale(0.97);
-        }
-
-        @media (min-width: 768px) {
-            .top-link a:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-            }
-        }
-
-        .question-card {
-            background: #f9f4fb;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 6px solid #ab47bc;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-            border: 1px solid #e1bee7;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-        
-        .question-number {
-            font-weight: bold;
-            color: #8e24aa;
-            font-size: 19px;
-            margin-bottom: 20px;
-            margin-right: 0.75em;
-        }
-        
-        .question-text {
-            font-size: 22px;
-            font-weight: 600;
-            color: #4a148c;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .options, .feedback, .explanation {
-            width: 100%;
-        }
-
-        @media (max-width: 768px) {
-            .question-card {
-                padding: 20px;
-                display: block;
-            }
-            .question-number {
-                margin-bottom: 12px;
-            }
-            .question-text {
-                font-size: 20px;
-            }
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        @media (max-width: 768px) {
-            .options {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-        }
-        
-        .option {
-            background: white;
-            border: 2px solid #e1bee7;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
-            text-align: center;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.4;
-        }
-        
-        @media (max-width: 768px) {
-            .option {
-                padding: 15px;
-                font-size: 16px;
-                min-height: 60px;
-            }
-        }
-        
-        .option:hover {
-            border-color: #ab47bc;
-            background: #f3e5f5;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(171, 71, 188, 0.25);
-        }
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-            cursor: default;
-            transform: none;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-        }
-        .option.disabled {
-            cursor: default;
-            opacity: 0.7;
-        }
-        .option.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        .next-button, .home-button, .result-button {
-            background: linear-gradient(135deg, #ab47bc, #8e24aa);
-            color: white;
-            border: none;
-            padding: 15px 35px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 10px 10px;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .next-button, .home-button, .result-button {
-                padding: 12px 25px;
-                font-size: 16px;
-                margin: 10px 5px;
-            }
-        }
-
-        .next-button:hover, .home-button:hover, .result-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(171, 71, 188, 0.4);
-        }
-
-        .home-button, .mypage-button, .top-button {
-            display: inline-block;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            margin: 5px;
-        }
-
-        .home-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        .mypage-button {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
-        }
-
-        .top-button {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            color: white;
-        }
-        .feedback {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            display: none;
-            text-align: center;
-        }
-        .feedback.correct {
-            background: #e8eaf6;
-            color: #303f9f;
-            border: 2px solid #7986cb;
-        }
-        .feedback.incorrect {
-            background: #ffebee;
-            color: #c62828;
-            border: 2px solid #f44336;
-        }
-        
-        .quiz-status {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
-
-        .score {
-            text-align: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: #4a148c;
-            margin: 0;
-            padding: 12px;
-            background: #f3e5f5;
-            border-radius: 10px;
-            border: 2px solid #e1bee7;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e1bee7;
-            border-radius: 4px;
-            margin: 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .quiz-status {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .score {
-                font-size: 20px;
-                padding: 10px;
-                width: 100%;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-        .buttons {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .explanation {
-            background: #f3e5f5;
-            border-left: 5px solid #8e24aa;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 8px;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 768px) {
-            .explanation {
-                padding: 15px;
-                font-size: 16px;
-            }
-        }
-        
-        .staff-point {
-            background: #e8eaf6;
-            border: 2px solid #3f51b5;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 18px;
-            color: #1a237e;
-            line-height: 1.4;
-            font-weight: 600;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #ab47bc, #8e24aa);
-            transition: width 0.5s ease;
-            border-radius: 4px;
-        }
-        
-        .final-score-card{
-            background:#f9f4fb;
-            border:2px solid #ab47bc;
-            border-radius:15px;
-            padding:30px;
-            margin-top:30px;
-            text-align:center;
-            box-shadow:0 3px 15px rgba(0,0,0,.08)
-        }
-        .result-title {
-            font-size:32px;
-            font-weight:700;
-            color:#4a148c;
-            margin-bottom:20px
-        }
-        
-        .result-detail{
-            font-size: 20px;
-            line-height: 1.8;
-            color: #4a148c;
-        }
-
-        .result-evaluation {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-
-        .final-score-highlight {
-            color: #c62828;
-            font-weight: bold;
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 768px) {
-            .result-title {font-size:28px}
-            .result-detail{font-size:18px;line-height:1.7}
-            .result-evaluation {font-size: 22px;}
-        }
-
-        /* 正解エフェクト */
-        .celebrate-emoji {
-            position: fixed;
-            font-size: 40px;
-            pointer-events: none;
-            z-index: 9999;
-            animation: celebrate 1s ease-out forwards;
-        }
-
-        @keyframes celebrate {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(-60px) scale(1.2) rotate(15deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(0.8) rotate(-10deg);
-            }
-        }
-
-        .correct-flash {
-            animation: flashGreen 0.4s ease-out;
-        }
-
-        @keyframes flashGreen {
-            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
-            50% { box-shadow: 0 0 20px 10px rgba(76, 175, 80, 0.4); }
-            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-        }
-
-    </style>
+    <link rel="stylesheet" href="../css/quiz.css">
 </head>
 <body>
     <div class="quiz-container">
         <h1>🧐 斜視クイズ 🧐</h1>
         <div class="subtitle">スタッフ向け - 保護者への説明力UP！</div>
+        <div id="quizTitleHeader" class="quiz-title-header hidden">🧐 斜視クイズ</div>
 
-        <div class="top-link"><a href="../index.html">← トップページへ</a></div>
+        <div class="top-link">
+            <a href="../index.html" class="home-link">🏠 ホームへ</a>
+            <button id="prevButton" class="prev-button hidden" onclick="prevQuestion()">← 前の問題へ</button>
+        </div>
 
         <div id="modeSelection" class="mode-selection">
-            <button class="mode-button" onclick="startQuiz('daily3')">
+            <button class="mode-button" onclick="startQuiz('daily')">
                 📋 今日の3問
             </button>
-            <button class="mode-button" onclick="startQuiz('daily5')">
-                📊 今日の5問
-            </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 フルコース（全10問）
+                📚 全問モード（全10問）
             </button>
+
+            <div id="progressStatus" class="progress-status">
+                <div class="progress-status-item">
+                    <span>❌ 間違えた問題:</span>
+                    <span id="incorrectCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>🆕 未挑戦の問題:</span>
+                    <span id="unansweredCount">10問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>✅ 正解した問題:</span>
+                    <span id="correctCount">0問</span>
+                </div>
+                <div class="progress-status-item">
+                    <span>📊 全問題数:</span>
+                    <span id="totalQuestionsCount">10問</span>
+                </div>
+            </div>
+
+            <button id="reviewModeButton" class="review-mode-button hidden" onclick="startQuiz('review')">
+                ❌ 間違えた問題だけ復習
+                <span class="btn-sub">苦手を克服しよう</span>
+            </button>
+
             <div class="mode-description">
-                <strong>今日の3問:</strong> 全10問からランダムに3問を出題<br>
-                <strong>今日の5問:</strong> 全10問からランダムに5問を出題<br>
-                <strong>フルコース:</strong> 全10問を順番に出題
+                <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
+                <strong>全問モード:</strong> 全10問を順番に出題
             </div>
         </div>
         
         <div id="quizArea" class="hidden">
             <div class="quiz-status">
-                <div class="score">スコア: <span id="score">0</span> / <span id="total">10</span></div>
+                <div class="status-row">
+                    <span class="question-progress">問題 <span id="currentQ">1</span> / <span id="total">10</span></span>
+                    <span class="score-display">正解: <span id="score">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar"></div>
                 </div>
             </div>
             
-            <div class="question-card" id="question1">
+            <div class="question-card hidden" id="question1">
                 <div class="question-number">問題 1</div>
                 <div class="question-text">斜視とは、どのような状態ですか？</div>
                 <div class="options">
@@ -526,12 +78,16 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>斜視とは、片方の目は正面を向いているのに、もう片方の目が違う方向（内側、外側、上、下）を向いてしまっている状態を指します。両目のチームワークが取れていない状態と説明できます。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/斜視/斜視の正常と異常.jpg" alt="斜視の種類">
+                        <span class="image-caption">斜視の種類：正常、偽斜視、外斜視、内斜視、上斜視、下斜視</span>
+                    </div>
                 </div>
             </div>
 
             <div class="question-card hidden" id="question2">
                 <div class="question-number">問題 2</div>
-                <div class="question-text">斜視の分類のうち、目の向きによるものではないのはどれですか？</div>
+                <div class="question-text">斜視の分類のうち、目の向きによるもの<strong>「ではない」</strong>のはどれですか？</div>
                 <div class="options">
                     <div class="option" data-answer="false">内斜視</div>
                     <div class="option" data-answer="false">外斜視</div>
@@ -556,6 +112,14 @@
                 <div class="feedback"></div>
                 <div class="explanation hidden">
                     <strong>解説：</strong>偽斜視は、実際には目の位置に問題はないものの、赤ちゃんならではの顔立ち（広い鼻すじなど）によって、内斜視のように見える状態です。成長とともに目立たなくなりますが、自己判断はせず、眼科で正しく診断してもらうことが重要です。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/斜視/斜視の正常と異常.jpg" alt="斜視と偽斜視の違い">
+                        <span class="image-caption">斜視と偽斜視の違い：偽斜視は実際には目の位置に問題がない</span>
+                    </div>
+                    <div class="explanation-image">
+                        <img src="../images/explanation/斜視/カバーテスト.png" alt="カバーテスト">
+                        <span class="image-caption">カバーテスト：斜視と偽斜視を見分ける検査方法</span>
+                    </div>
                 </div>
             </div>
 
@@ -667,363 +231,41 @@
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
+                <button id="backToResultButton" class="back-to-result-button hidden" onclick="backToResult()">📊 結果に戻る</button>
             </div>
         </div>
     </div>
 
     <script src="quiz-config.js"></script>
     <script>
+        // クイズ固有の設定
         const QUIZ_ID = 'shashi';
-
-        let currentQuestion = 1;
-        let score = 0;
-        let totalQuestions = 10;
-        let questionList = [];
-        let isDaily = false;
-
-        const allQuestions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-        // 正解時フラッシュ効果
-        function flashCorrect(element) {
-            const card = element.closest('.question-card');
-            if (card) {
-                card.classList.add('correct-flash');
-                setTimeout(() => card.classList.remove('correct-flash'), 400);
-            }
-        }
-
-        // 結果発表エフェクト
-        function celebrateResult(isPerfect) {
-            // 振動フィードバック（スマホのみ）
-            if (navigator.vibrate) {
-                if (isPerfect) {
-                    navigator.vibrate([100, 50, 100, 50, 100]);
-                } else {
-                    navigator.vibrate([50, 30, 50]);
-                }
-            }
-
-            // 絵文字を飛ばす
-            const emojis = isPerfect
-                ? ['🎉', '🏆', '👑', '💯', '⭐', '✨', '🌟', '🥇']
-                : ['🎉', '⭐', '✨', '👏', '🎊'];
-            const count = isPerfect ? 15 : 8;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 3;
-
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const emoji = document.createElement('div');
-                    emoji.className = 'celebrate-emoji';
-                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.left = (centerX - 100 + Math.random() * 200) + 'px';
-                    emoji.style.top = (centerY + Math.random() * 50) + 'px';
-                    document.body.appendChild(emoji);
-
-                    setTimeout(() => emoji.remove(), 1000);
-                }, i * 100);
-            }
-        }
-
-        function startQuiz(mode) {
-            document.querySelector('h1').classList.add('hidden');
-            document.querySelector('.subtitle').classList.add('hidden');
-            document.getElementById('modeSelection').classList.add('hidden');
-            document.getElementById('quizArea').classList.remove('hidden');
-            
-            if (mode === 'daily3') {
-                isDaily = true;
-                totalQuestions = 3;
-                questionList = getRandomQuestions(3);
-            } else if (mode === 'daily5') {
-                isDaily = true;
-                totalQuestions = 5;
-                questionList = getRandomQuestions(5);
-            } else {
-                isDaily = false;
-                totalQuestions = 10;
-                questionList = [...allQuestions];
-            }
-            
-            for (let i = 1; i <= 10; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if (questionList.includes(i)) {
-                    if (i === questionList[0]) {
-                        questionElement.classList.remove('hidden');
-                    } else {
-                        questionElement.classList.add('hidden');
-                    }
-                } else {
-                    if(document.getElementById(`question${i}`)){
-                        document.getElementById(`question${i}`).style.display = 'none';
-                    }
-                }
-            }
-            
-            currentQuestion = 0;
-            updateQuestionNumbers();
-            document.getElementById('total').textContent = totalQuestions;
-            shuffleOptions(questionList[0]);
-            updateProgress();
-        }
-
-        function getRandomQuestions(count) {
-            const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
-            return shuffled.slice(0, count);
-        }
-
-        function updateQuestionNumbers() {
-            questionList.forEach((questionId, index) => {
-                const questionElement = document.getElementById(`question${questionId}`);
-                if(questionElement) {
-                    const questionNumber = questionElement.querySelector('.question-number');
-                    questionNumber.textContent = `問題 ${index + 1}`;
-                }
-            });
-        }
-
-        function shuffleOptions(questionId) {
-            if (!questionId) return;
-            const container = document
-                .getElementById(`question${questionId}`)
-                .querySelector('.options');
-            if (!container) return;
-            
-            for (let i = container.children.length; i >= 0; i--) {
-                const rand = Math.floor(Math.random() * i);
-                if (container.children[rand]) {
-                    container.appendChild(container.children[rand]);
-                }
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function selectAnswer(selectedOption) {
-            const currentQuestionId = questionList[currentQuestion];
-            const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
-            const options = currentQuestionElement.querySelectorAll('.option');
-            const feedback = currentQuestionElement.querySelector('.feedback');
-            const explanation = currentQuestionElement.querySelector('.explanation');
-            const nextButton = document.querySelector('.next-button');
-            const resultButton = document.querySelector('.result-button');
-            
-            const isCorrect = selectedOption.dataset.answer === 'true';
-            let correctAnswerText = '';
-            
-            options.forEach(option => {
-                if (option.dataset.answer === 'true') {
-                    correctAnswerText = option.textContent;
-                }
-            });
-            
-            options.forEach(option => {
-                option.classList.add('disabled');
-                if (option.dataset.answer === 'true') {
-                    option.classList.add('correct');
-                } else if (option === selectedOption && option.dataset.answer === 'false') {
-                    option.classList.add('incorrect');
-                }
-            });
-
-            if (isCorrect) {
-                feedback.textContent = '🎉 正解です！';
-                feedback.className = 'feedback correct';
-                score++;
-                flashCorrect(selectedOption);
-            } else {
-                feedback.textContent = `❌ 不正解です。正解は「${correctAnswerText}」です。`;
-                feedback.className = 'feedback incorrect';
-            }
-            
-            feedback.style.display = 'block';
-            explanation.classList.remove('hidden');
-
-            if (currentQuestion < totalQuestions - 1) {
-                nextButton.classList.remove('hidden');
-            } else {
-                resultButton.classList.remove('hidden');
-            }
-
-            updateScore();
-
-            // フィードバックが画面上部に来るようにスクロール
-            feedback.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function nextQuestion() {
-            const currentQuestionId = questionList[currentQuestion];
-            document.getElementById(`question${currentQuestionId}`).classList.add('hidden');
-            
-            currentQuestion++;
-            const nextQuestionId = questionList[currentQuestion];
-            
-            shuffleOptions(nextQuestionId);
-            document.getElementById(`question${nextQuestionId}`).classList.remove('hidden');
-            document.querySelector('.next-button').classList.add('hidden');
-            updateProgress();
-        }
-
-        function showFinalScore() {
-            questionList.forEach(questionId => {
-                const qElem = document.getElementById(`question${questionId}`);
-                if(qElem) qElem.classList.add('hidden');
-            });
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.add('hidden');
-
-            const percentage = Math.round((score / totalQuestions) * 100);
-
-            // 結果発表エフェクト（満点かどうかで演出を変える）
-            const isPerfect = score === totalQuestions;
-            setTimeout(() => {
-                celebrateResult(isPerfect);
-            }, 300);
-
-            // 結果を記録
-            if (typeof recordQuizResult === 'function') {
-                recordQuizResult(QUIZ_ID, score, totalQuestions);
-            }
-
-            let title, message;
-
-            if (score === totalQuestions) {
-                title = '🏆 完璧です！ 🏆';
-                message = `全問正解！斜視に関する知識は万全です。\n保護者の不安に寄り添い、自信を持って説明や指導ができますね。`;
-            } else if (score >= totalQuestions * 0.8) {
-                title = '🌟 素晴らしい！ 🌟';
-                message = `高得点です！斜視治療の重要ポイントをしっかり理解されています。\n間違えた箇所を復習すれば、さらに的確なアドバイスができますよ。`;
-            } else if (score >= totalQuestions * 0.5) {
-                title = '👍 よくできました！ 👍';
-                message = `基本的な知識は身についています。\n解説を読み直して、特に治療の目的や弱視との関連について知識を固めましょう。`;
-            } else {
-                title = '💪 これからが本番！ 💪';
-                message = `良い復習の機会になりましたね。\nこのクイズを元に知識を整理し、日々の患者様・保護者様対応に活かしていきましょう！`;
-            }
-
-            const resultTitleHTML = `<div class="result-title">🎊 結果発表 🎊</div>`;
-            const scoreHTML = `<span class="final-score-highlight">最終スコア : ${score}/${totalQuestions}（${percentage}%）</span>`;
-            const evaluationHTML = `<div class="result-evaluation">${title}</div>`;
-            const messageHTML = `<div>${message.replace(/\n/g, '<br>')}</div>`;
-
-            document.getElementById('resultDetail').innerHTML = resultTitleHTML + evaluationHTML + scoreHTML + messageHTML;
-
-            document.getElementById('finalResult').classList.remove('hidden');
-            document.querySelector('.home-button').classList.remove('hidden');
-            document.querySelector('.mypage-button').classList.remove('hidden');
-            document.querySelector('.top-button').classList.remove('hidden');
-            document.querySelector('.top-link').classList.add('hidden');
-
-            // トップへスクロール
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function resetQuiz() {
-            document.getElementById('finalResult').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.remove('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-            score = 0;
-            updateScore();
-
-            for (let i = 1; i <= 10; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement){
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            if (totalQuestions === 3) {
-                startQuiz('daily3');
-            } else if (totalQuestions === 5) {
-                startQuiz('daily5');
-            } else {
-                startQuiz('full');
-            }
-        }
-
-        function goHome() {
-            document.getElementById('finalResult').classList.add('hidden');
-            document.getElementById('quizArea').classList.add('hidden');
-            document.querySelector('.quiz-container').classList.remove('hidden');
-            document.querySelector('.top-link').classList.remove('hidden');
-
-            document.querySelector('h1').classList.remove('hidden');
-            document.querySelector('.subtitle').classList.remove('hidden');
-
-            for (let i = 1; i <= 10; i++) {
-                const questionElement = document.getElementById(`question${i}`);
-                if(questionElement) {
-                    questionElement.style.display = '';
-                    questionElement.classList.add('hidden');
-
-                    const options = questionElement.querySelectorAll('.option');
-                    options.forEach(option => {
-                        option.classList.remove('correct', 'incorrect', 'disabled');
-                    });
-
-                    questionElement.querySelector('.feedback').style.display = 'none';
-                    questionElement.querySelector('.explanation').classList.add('hidden');
-                }
-            }
-
-            document.querySelector('.next-button').classList.add('hidden');
-            document.querySelector('.result-button').classList.add('hidden');
-            document.querySelector('.home-button').classList.add('hidden');
-            document.querySelector('.mypage-button').classList.add('hidden');
-            document.querySelector('.top-button').classList.add('hidden');
-            document.querySelector('.quiz-status').classList.remove('hidden');
-
-            currentQuestion = 1;
-            score = 0;
-            totalQuestions = 10;
-            questionList = [];
-            isDaily = false;
-
-            updateScore();
-
-            document.getElementById('modeSelection').classList.remove('hidden');
-        }
-
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('option') && !e.target.classList.contains('disabled')) {
-                selectAnswer(e.target);
-            }
-        });
+        const TOTAL_QUESTIONS = 10;
     </script>
+    <script src="quiz-core.js"></script>
 
     <div id="finalResult" class="final-score-card hidden">
       <div id="resultDetail" class="result-detail"></div>
-      <div class="buttons">
-        <button class="home-button hidden" onclick="goHome()">🔄 モード選択</button>
-        <a href="../mypage.html" class="mypage-button hidden">📊 学習記録</a>
-        <a href="../index.html" class="top-button hidden">🏠 ホーム</a>
+      <div id="badgeAchievement"></div>
+      <div class="result-buttons">
+        <div class="result-buttons-row primary">
+          <button id="shuffleButton" class="shuffle-button hidden" onclick="goToRandomQuiz()">🎲 シャッフル3問<span class="btn-sub">別ジャンル</span></button>
+          <button id="retryButton" class="retry-button hidden" onclick="restartThisQuiz()">🔄 もう3問<span class="btn-sub">同ジャンル</span></button>
+        </div>
+        <div class="result-buttons-row" style="margin-bottom: 12px;">
+          <button id="reviewIncorrectButton" class="review-incorrect-button hidden" onclick="reviewIncorrectQuestions()">
+            ❌ 間違えた問題を復習
+            <span class="btn-sub">苦手を克服</span>
+          </button>
+          <button id="reviewAllButton" class="review-all-button" onclick="reviewAllQuestions()">
+            📖 問題を振り返る
+            <span class="btn-sub">解説を確認</span>
+          </button>
+        </div>
+        <div class="result-buttons-row secondary">
+          <a href="../mypage.html" class="record-button hidden">📊 記録</a>
+          <a href="../index.html" class="home-button-small hidden">🏠 ホーム</a>
+        </div>
       </div>
     </div>
 
