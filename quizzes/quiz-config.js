@@ -255,7 +255,7 @@ const QUIZ_LIST = [
         id: 'imo_shinya',
         name: 'アイモ（視野検査）クイズ',
         file: 'アイモ_視野検査_クイズ.html',
-        totalQuestions: 6,
+        totalQuestions: 8,
         icon: '👀',
         category: 'staff',
         description: '視野計アイモの基本と特徴、検査配列について学べます',

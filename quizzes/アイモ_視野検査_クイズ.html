@@ -21,7 +21,7 @@
                 📋 今日の3問
             </button>
             <button class="mode-button" onclick="startQuiz('full')">
-                📚 全問モード（全6問）
+                📚 全問モード（全8問）
             </button>
 
             <div id="progressStatus" class="progress-status">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="progress-status-item">
                     <span>🆕 未挑戦の問題:</span>
-                    <span id="unansweredCount">6問</span>
+                    <span id="unansweredCount">8問</span>
                 </div>
                 <div class="progress-status-item">
                     <span>✅ 正解した問題:</span>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="progress-status-item">
                     <span>📊 全問題数:</span>
-                    <span id="totalQuestionsCount">6問</span>
+                    <span id="totalQuestionsCount">8問</span>
                 </div>
             </div>
 
@@ -50,7 +50,7 @@
 
             <div class="mode-description">
                 <strong>今日の3問:</strong> 間違い・未挑戦を優先出題<br>
-                <strong>全問モード:</strong> 全6問を順番に出題
+                <strong>全問モード:</strong> 全8問を順番に出題
             </div>
         </div>
 
@@ -154,10 +154,6 @@
                         <img src="../images/explanation/アイモ視野計/アイモ視野計の24plusの説明.png" alt="アイモ視野計の24plus配列の説明">
                         <span class="image-caption">24plusは周辺部（24-2）と中心部（10-2）を一度に検査できる配列</span>
                     </div>
-                    <div class="explanation-image">
-                        <img src="../images/explanation/アイモ視野計/アイモ視野計_aizeの説明.png" alt="アイモ視野計のAIZE技術の説明">
-                        <span class="image-caption">AIZE：両眼開放・暗室不要を実現するアイモ独自の技術</span>
-                    </div>
                 </div>
             </div>
 
@@ -183,6 +179,46 @@
                 </div>
             </div>
 
+            <div class="question-card hidden" id="question7">
+                <div class="question-number">問題 7</div>
+                <div class="question-text">アイモに搭載されているオリジナルプログラム「AIZE（アイズ）」の特徴として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">隣接する検査点の結果を相互に反映させて精度向上と時間短縮を両立</div>
+                    <div class="option" data-answer="false">1つの検査点を複数回測定して平均値を算出する</div>
+                    <div class="option" data-answer="false">検査点の数を減らして時間を短縮する</div>
+                    <div class="option" data-answer="false">患者さんの年齢に応じて検査難易度を自動調整する</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>AIZE（Ambient Interactive ZEST）は、各検査点での応答結果を隣接する検査点に反映させることで、検査精度を高めながら検査時間を短縮するアイモ独自のプログラムです。ベイズ推定・最尤法により網膜感度閾値を効率的に探索します。
+                    <div class="explanation-image">
+                        <img src="../images/explanation/アイモ視野計/アイモ視野計_aizeの説明.png" alt="アイモ視野計のAIZE技術の説明">
+                        <span class="image-caption">AIZE：隣接する検査点と相互作用しながら精度と速度を両立</span>
+                    </div>
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>患者様への説明：「最新の技術で、短い時間でも正確な検査ができるようになっています」と伝えると良いでしょう。
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card hidden" id="question8">
+                <div class="question-number">問題 8</div>
+                <div class="question-text">アイモの「AIZE-Rapid」モードが通常のAIZEよりもさらに検査時間を短縮できる理由として正しいものはどれですか？</div>
+                <div class="options">
+                    <div class="option" data-answer="true">偽陰性・偽陽性・固視状態を検査中に推定し、視標呈示回数を減らせるから</div>
+                    <div class="option" data-answer="false">検査する視野の範囲を狭くしているから</div>
+                    <div class="option" data-answer="false">光の明るさを強くして見えやすくしているから</div>
+                    <div class="option" data-answer="false">患者さんのボタン反応を予測して自動で進めるから</div>
+                </div>
+                <div class="feedback"></div>
+                <div class="explanation hidden">
+                    <strong>解説：</strong>AIZE-Rapidは、検査中に偽陰性（見えているのに押さない）・偽陽性（見えていないのに押す）・固視状態を推定することで、閾値決定までに必要な視標呈示回数を減らし、さらなる時間短縮を実現しています。検査範囲や精度は維持したままです。
+                    <div class="staff-point">
+                        <strong>👩‍⚕️ スタッフポイント：</strong>検査に慣れている患者様や、体力的に長時間の検査が難しい患者様には、AIZE-Rapidモードが適している場合があります。
+                    </div>
+                </div>
+            </div>
+
             <div class="buttons">
                 <button class="next-button hidden" onclick="nextQuestion()">次の問題へ</button>
                 <button class="result-button hidden" onclick="showFinalScore()">🎊 結果発表へ 🎊</button>
@@ -195,7 +231,7 @@
     <script>
         // クイズ固有の設定
         const QUIZ_ID = 'imo_shinya';
-        const TOTAL_QUESTIONS = 6;
+        const TOTAL_QUESTIONS = 8;
     </script>
     <script src="quiz-core.js"></script>
 
