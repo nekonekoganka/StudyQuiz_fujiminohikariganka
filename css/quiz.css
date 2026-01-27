@@ -974,6 +974,35 @@ h1 {
     .result-buttons-row {
         margin-bottom: 8px;
     }
+
+    /* バッジ獲得カードを中央揃えに */
+    .badge-achievement {
+        flex: none;
+        width: auto;
+        max-width: 500px;
+        margin: 15px auto;
+    }
+}
+
+/* PC + ダークモード用のリザルト画面 */
+@media (min-width: 769px) and (prefers-color-scheme: dark) {
+    /* 進捗統計の色分け（ダークモード用） */
+    .result-progress-stat:nth-child(1) {
+        background: #1e3a2f; /* 正解：ダークグリーン */
+        color: #a5d6a7;
+    }
+    .result-progress-stat:nth-child(2) {
+        background: #3a1e2a; /* 間違い：ダークピンク */
+        color: #f48fb1;
+    }
+    .result-progress-stat:nth-child(3) {
+        background: #1e2a3a; /* 未挑戦：ダークブルー */
+        color: #90caf9;
+    }
+    .result-progress-stat:nth-child(4) {
+        background: #2a1e3a; /* 全問題：ダークパープル */
+        color: #ce93d8;
+    }
 }
 
 @media (max-width: 768px) {
