@@ -281,7 +281,9 @@ function updateQuestionNumbers() {
         const questionElement = document.getElementById(`question${questionId}`);
         if(questionElement) {
             const questionNumber = questionElement.querySelector('.question-number');
-            questionNumber.textContent = `問題 ${index + 1}`;
+            if (questionNumber) {
+                questionNumber.textContent = `問題 ${index + 1}`;
+            }
         }
     });
 }
@@ -289,9 +291,9 @@ function updateQuestionNumbers() {
 // 選択肢シャッフル
 function shuffleOptions(questionId) {
     if (!questionId) return;
-    const container = document
-        .getElementById(`question${questionId}`)
-        .querySelector('.options');
+    const questionElement = document.getElementById(`question${questionId}`);
+    if (!questionElement) return;
+    const container = questionElement.querySelector('.options');
     if (!container) return;
 
     for (let i = container.children.length; i >= 0; i--) {
@@ -313,6 +315,7 @@ function updateProgress() {
 function selectAnswer(selectedOption) {
     const currentQuestionId = questionList[currentQuestion];
     const currentQuestionElement = document.getElementById(`question${currentQuestionId}`);
+    if (!currentQuestionElement) return;
     const options = currentQuestionElement.querySelectorAll('.option');
     const feedback = currentQuestionElement.querySelector('.feedback');
     const explanation = currentQuestionElement.querySelector('.explanation');

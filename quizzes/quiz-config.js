@@ -1781,7 +1781,7 @@ function validateBackupData(data) {
 function getBackupPreviewInfo(data) {
     const backupDate = data.backupDate ? new Date(data.backupDate) : null;
     const totalAnswered = data.totalAnswered || 0;
-    const badges = data.badges ? Object.keys(data.badges).length : 0;
+    const badges = data.badges ? data.badges.length : 0;
 
     // 満点クイズ数を計算
     let perfectCount = 0;
