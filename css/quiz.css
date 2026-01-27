@@ -740,6 +740,26 @@ h1 {
     }
 }
 
+/* 解説内の情報ボックス */
+.info-box {
+    background: #f0f8ff;
+    border-left: 4px solid #2196F3;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
+@media (prefers-color-scheme: dark) {
+    .info-box {
+        background: #1a2a40;
+        border-color: #4dabf5;
+        color: #e0ecf8;
+    }
+}
+
 .progress-fill {
     height: 100%;
     background: linear-gradient(135deg, #48c6ef, #6f86d6);
