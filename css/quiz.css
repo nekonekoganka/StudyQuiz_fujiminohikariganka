@@ -731,12 +731,29 @@ h1 {
     font-weight: normal;
 }
 
+/* 解説内の補足情報ボックス */
+.info-box {
+    background: #f0f8ff;
+    border-left: 4px solid #2196F3;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #333;
+}
+
 @media (prefers-color-scheme: dark) {
     .explanation-image img {
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
     .explanation-image .image-caption {
         color: #aaa;
+    }
+    .info-box {
+        background: #1a3a50;
+        color: #e0e8f0;
+        border-color: #4dabf5;
     }
 }
 
